@@ -7,7 +7,7 @@ Plugin URI: http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.2.0
+Version: 0.2.1
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
