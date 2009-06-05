@@ -22,3 +22,8 @@ This plugin is not created or provided by the Piwik project team.
 3. Open the new 'Settings/WP-Piwik Settings' menu, enter your Piwik base URL and your auth token. Save settings.
 4. If you have view access to multiple site stats, choose your blog and save settings again.
 5. Look at 'Dashboard/WP-Piwik' to get your site stats.
+
+== Screenshots ==
+
+1. WP-Piwik stats page. Left: visitor history (daily/30 days). Right: stats overview, keywords and external websites (yesterday).
+2. WP-Piwik settings.
