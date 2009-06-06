@@ -2,7 +2,7 @@
 Contributors: braekling
 Requires at least: 2.7
 Tested up to: 2.7
-Stable tag: 0.2.0
+Stable tag: 0.2.1
 Tags: statistics, stats, analytics, piwik
 
 This plugin adds a piwik stats site to your WordPress dashboard.

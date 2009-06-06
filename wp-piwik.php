@@ -1,6 +1,5 @@
 <?php
 /*
-
 Plugin Name: WP-Piwik
 
 Plugin URI: http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html
@@ -33,6 +32,7 @@ class wp_piwik {
 	function __construct() {
 		register_activation_hook(__FILE__, array($this, 'install'));
 		add_action('admin_menu', array($this, 'build_menu'));
+		add_action('wp_ajax_meta-box-order', array($this, 'meta_box_order'));
 		if (get_option('wp-piwik_addjs') == 1) 
 			add_action('wp_footer', array($this, 'footer'));
 	}
@@ -46,120 +46,121 @@ class wp_piwik {
 	}
 
 	function build_menu() {
-		add_dashboard_page(__('Piwik Statistics'), __('WP-Piwik'), 8, __FILE__, array($this, 'show_stats'));
+		$intPage = add_dashboard_page(__('Piwik Statistics'), __('WP-Piwik'), 8, __FILE__, array($this, 'show_stats'));
+		add_action('admin_print_scripts-'.$intPage, array($this, 'load_scripts'));
+		add_action('admin_head-'.$intPage, array($this, 'add_admin_header'));
+
 		add_options_page(__('WP-Piwik Settings'), __('WP-Piwik Settings'), 8, __FILE__, array($this, 'show_settings'));
 	}
+
+	function load_scripts() {
+		wp_enqueue_script('wp-piwik', $this->get_plugin_url().'js/wp-piwik.js', array( 'jquery', 'admin-comments', 'postbox' ));
+	}
+
+	function add_admin_header() {
+		echo '<link rel="stylesheet" href="'.$this->get_plugin_url().'css/wp-piwik.css" type="text/css"/>';
+	}
 	
+	function get_plugin_url() {
+		return trailingslashit(WP_CONTENT_URL.'/plugins/'.plugin_basename(dirname(__FILE__)));
+	}
+
 	function call_API($strMethod, $strPeriod='', $strDate='', $intLimit='') {
-                $strToken = get_option('wp-piwik_token');
-                $strURL = get_option('wp-piwik_url');
-		$intSite = get_option('wp-piwik_siteid');
-		if (empty($strToken) || empty($strURL)) return array('result' => 'error', 'message' => 'Piwik base URL or auth token not set.');
-                if (substr($strURL, -1, 1) != '/') $strURL .= '/';
-                $strURL .= '?module=API&method='.$strMethod;
-                $strURL .= '&idSite='.$intSite.'&period='.$strPeriod.'&date='.$strDate;
-                $strURL .= '&format=PHP&filter_limit='.$intLimit;
-                $strURL .= '&token_auth='.$strToken;
-                $strResult = file_get_contents($strURL);
-                $aryData = unserialize($strResult);
-		return $aryData;
+		$strKey = $strMethod.'_'.$strPeriod.'_'.$strDate.'_'.$intLimit;
+		if (empty($this->aryCache[$strKey])) {
+                	$strToken = get_option('wp-piwik_token');
+                	$strURL = get_option('wp-piwik_url');
+			$intSite = get_option('wp-piwik_siteid');
+			if (empty($strToken) || empty($strURL)) {
+				$this->aryCache[$key] = array(
+					'result' => 'error',
+					'message' => 'Piwik base URL or auth token not set.'
+				);
+				return $this->aryCache[$strKey];
+			}
+                	if (substr($strURL, -1, 1) != '/') $strURL .= '/';
+                	$strURL .= '?module=API&method='.$strMethod;
+                	$strURL .= '&idSite='.$intSite.'&period='.$strPeriod.'&date='.$strDate;
+                	$strURL .= '&format=PHP&filter_limit='.$intLimit;
+                	$strURL .= '&token_auth='.$strToken;
+                	$strResult = file_get_contents($strURL);
+                	$this->aryCache[$strKey] = unserialize($strResult);
+		}
+		return $this->aryCache[$strKey];
+	}
+
+	function create_dashboard_widget($strFile, $aryConfig) {
+		foreach ($aryConfig as $strParam) {
+			$strDesc .= $strParam.', ';
+                        $strID .= '_'.$strParam;
+                }
+		$strFile = str_replace('.', '', $strFile);
+
+                $aryConf = array(
+                	'id' => $strFile.$strID,
+                       	'desc' => substr($strDesc, 0, -2),
+                        'params' => $aryConfig,
+                );
+
+		$strRoot = dirname(__FILE__);
+		if (file_exists($strRoot.DIRECTORY_SEPARATOR.'dashboard/'.$strFile.'.php'))
+                	include($strRoot.DIRECTORY_SEPARATOR.'dashboard/'.$strFile.'.php');
+ 	}
+
+	function meta_box_order() {
+		echo "HALLO";
+		return "WORLD";
 	}
 
 	function show_stats() {
-		$aryError = array();
-
-		$aryVisitors = $this->call_API('VisitsSummary.getVisits', 'day', 'last30');	
-		if ($aryVisitors['result'] == 'error')
-			$aryError[] = $aryVisitors['message'];
-
-		$aryUVisitors = $this->call_API('VisitsSummary.getUniqueVisitors', 'day', 'last30');	
-		if ($aryUVisitors['result'] == 'error')
-			$aryError[] = $aryUVisitors['message'];
-
-		$aryOverview = $this->call_API('VisitsSummary.get', 'day', 'yesterday');
-		if ($aryOverview['result'] == 'error')
-			$aryError[] = $aryOverview['message'];
-		
-		$aryKeywords = $this->call_API('Referers.getKeywords', 'day', 'yesterday', 10);
-		if ($aryKeywords['result'] == 'error')
-			$aryError[] = $aryKeywords['message'];
-
-		$aryWebsites = $this->call_API('Referers.getWebsites', 'day', 'yesterday', 10);
-		if ($aryWebsites['result'] == 'error')
-			$aryError[] = $aryWebsites['message'];
-
-		echo '<div class="wrap">';
-            echo '<h2>'.__('Piwik Statistics').'</h2>';
-			echo '<div class="inside">';
-
-		if (!empty($aryError)) {
-			foreach ($aryError as $strEMessage)
-				echo '<p><strong>'.__('An error occured').': </strong> '.$strError.'</p>';
-			echo '<p><a href="options-general.php?page=wp-piwik/wp-piwik.php">'.__('Settings').'</a></p>';
-		} else {
-			echo '<table class="layout">';
-			echo '<tr><td>';
-				$strValues = $strLabels = $strValuesU = '';
-				$intMax = max($aryVisitors);
-				while ($intMax % 10 != 0 || $intMax == 0) $intMax++;
-				$intStep = $intMax / 5;
-				while ($intStep % 10 != 0 && $intStep != 1) $intStep--;
-
-				foreach ($aryVisitors as $strDate => $intValue) {
-					$strValues .= round($intValue/($intMax/100),2).',';
-					if (isset($aryUVisitors[$strDate])) $strValuesU .= round($aryUVisitors[$strDate]/($intMax/100),2).',';
-					$strLabels .= '|'.substr($strDate,-2);
-				}
-				$strValues = substr($strValues, 0, -1);
-				$strValuesU = substr($strValuesU, 0, -1);
-				$strGraph  = 'http://chart.apis.google.com/chart?';
-				$strGraph .= 'cht=lc&';
-				$strGraph .= 'chg=0,'.round($intStep/($intMax/100),2).',2,2&';
-				$strGraph .= 'chs=450x220&';
-				$strGraph .= 'chd=t:'.$strValues.'|'.$strValuesU.'&';
-				$strGraph .= 'chxl=0:'.$strLabels.'&';
-				$strGraph .= 'chco=90AAD9,A0BAE9&';
-				$strGraph .= 'chm=B,D4E2ED,0,1,0|B,E4F2FD,1,2,0&';
-				$strGraph .= 'chxt=x,y&';
-				$strGraph .= 'chxr=1,0,'.$intMax.','.$intStep;
-				echo '<img src="'.$strGraph.'" width="450" height="220" alt="Visits graph" /><br /><br />';
-				echo '<table class="widefat">';
-					echo '<thead><tr><th>'.__('Date').'</th><th>'.__('Visits').'</th><th>'.__('Unique').'</th></tr></thead>';
-					echo '<tbody>';
-					$aryTmp = array_reverse($aryVisitors);
-					foreach ($aryTmp as $strDate => $intValue)
-						echo '<tr><td>'.$strDate.'</td><td>'.$intValue.'</td><td>'.$aryUVisitors[$strDate].'</td></tr>';
-					unset($aryTmp);
-				echo '</tbody></table>';
-			echo '</td><td style="width:10px;"></td><td>';		
-				echo '<table class="widefat">';
-					echo '<thead><tr><th colspan="2">'.__('Overview').'</th></tr></thead>';
-					$strTime = floor($aryOverview['sum_visit_length']/3600).'h '.floor(($aryOverview['sum_visit_length'] % 3600)/60).'m '.floor(($aryOverview['sum_visit_length'] % 3600) % 60).'s';
-					echo '<tbody>';
-					echo '<tr><td>'.__('Visitors').':</td><td>'.$aryOverview['nb_visits'].'</td></tr>';
-					echo '<tr><td>'.__('Unique visitors').':</td><td>'.$aryOverview['nb_uniq_visitors'].'</td></tr>';
-					echo '<tr><td>'.__('Page views').':</td><td>'.$aryOverview['nb_actions'].'</td></tr>';
-					echo '<tr><td>'.__('Max. page views in one visit').':</td><td>'.$aryOverview['max_actions'].'</td></tr>';
-					echo '<tr><td>'.__('Total time spent by the visitors').':</td><td>'.$strTime.'</td></tr>';
-					echo '<tr><td>'.__('Bounce count').':</td><td>'.$aryOverview['bounce_count'].'</td></tr>';
-    			echo '</tbody></table><br />';
-				echo '<table class="widefat">';
-					echo '<thead><tr><th>'.__('Keyword').'</th><th>'.__('Unique visitors').'</th></tr></thead>';
-					echo '<tbody>';
-					foreach ($aryKeywords as $aryValues)
-						echo '<tr><td>'.$aryValues['label'].'</td><td>'.$aryValues['nb_uniq_visitors'].'</td></tr>';
-				echo '</tbody></table><br />';
-				echo '<table class="widefat">';
-					echo '<thead><tr><th>'.__('Website').'</th><th>'.__('Unique visitors').'</th></tr></thead>';
-					echo '<tbody>';
-					foreach ($aryWebsites as $aryValues)
-						echo '<tr><td>'.$aryValues['label'].'</td><td>'.$aryValues['nb_uniq_visitors'].'</td></tr>';
-					echo '</tbody></table>';
-			echo '</td></tr>';
-			echo '</table>';
+		$aryDashboard = unserialize(get_option('wp-piwik_dashboard', false));
+		if (!$aryDashboard) {
+			// Set default configuration
+			$aryDashboard = array(
+				'normal' => array(
+					'graph-visitors' => array('day', 'last30'),
+					'table-visitors' => array('day', 'last30')),
+				'side' => array(
+					'overview' => array('day', 'yesterday'),
+					'keywords' => array('day', 'yesterday', 10),
+					'websites' => array('day', 'yesterday', 10))
+				);
+			update_option('wp-piwik_dashboard', serialize($aryDashboard));
 		}
-		echo '</div>';
-		echo '</div>';
+?>
+<div class="wrap"><div id="icon-tools" class="icon32"><br /></div>
+<h2><?php _e('Piwik Statistics'); ?></h2>
+<div id="wppiwik-widgets-wrap">
+<div id="wppiwik-widgets" class="metabox-holder">
+<div id="side-info-column" class="inner-sidebar">
+	<div id="side-sortables" class="meta-box-sortables">
+<?php
+foreach ($aryDashboard['side'] as $strFile => $aryConfig)
+$this->create_dashboard_widget($strFile, $aryConfig);
+?>
+	</div>
+</div>
+<div id='post-body' class="has-sidebar">
+<div id='wppiwik-widgets-main-content' class='has-sidebar-content'>
+<div id='normal-sortables' class='meta-box-sortables'>
+<?php
+foreach ($aryDashboard['normal'] as $strFile => $aryConfig)
+$this->create_dashboard_widget($strFile, $aryConfig);
+wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );
+?>
+
+<div class="clear"></div>
+</div><!-- wppiwik-widgets-wrap -->
+
+</div><!-- wrap -->
+
+
+<div class="clear"></div></div><!-- wpbody-content -->
+<div class="clear"></div></div><!-- wpbody -->
+<div class="clear"></div></div><!-- wpcontent -->
+</div>
+</div>
+<?php
 	}
 
 	function show_settings() { 
