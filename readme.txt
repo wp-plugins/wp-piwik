@@ -1,7 +1,7 @@
 === WP-Piwik ===
 Contributors: braekling
 Requires at least: 2.7
-Tested up to: 2.7
+Tested up to: 2.7.1
 Stable tag: 0.3.0
 Tags: statistics, stats, analytics, piwik
 
