@@ -1,48 +1,61 @@
 <?php
-$aryConf['data'] = $this->call_API(
-                        'UserSettings.getBrowser', 
+/*********************************
+	WP-Piwik::Stats:Browser
+**********************************/
+
+	$aryConf['data'] = $this->call_API(
+			'UserSettings.getBrowser', 
 			$aryConf['params']['period'], 
 			$aryConf['params']['date'],
-                        $aryConf['params']['limit']
-                );
-$aryConf['title'] = __('Browser', 'wp-piwik');
-include('header.php');
-$strValues = $strLabels = '';
-
-$intSum = 0;
-foreach ($aryConf['data'] as $aryValues)
-	$intSum += $aryValues['nb_uniq_visitors'];
-
-foreach ($aryConf['data'] as $aryValues) {
-        $strValues .= round(($aryValues['nb_uniq_visitors']/$intSum*100), 2).',';
-        $strLabels .= '|'.urlencode($aryValues['shortLabel']);
-}
-
-$strValues = substr($strValues, 0, -1);
-$strLabels = substr($strLabels, 1);
-
-$strBase  = 'http://chart.apis.google.com/chart?';
-$strGraph = 'cht=p&amp;';
-$strGraph .= 'chs=500x220&amp;';
-$strGraph .= 'chd=t:'.$strValues.'&amp;';
-$strGraph .= 'chl='.$strLabels.'&amp;';
-$strGraph .= 'chco=90AAD9,A0BAE9&amp;';
-?>
+			$aryConf['params']['limit']
+	);
+	$aryConf['title'] = __('Browser', 'wp-piwik');
+	include('header.php');
+	$strValues = $strLabels = '';
+	$intSum = 0;
+	foreach ($aryConf['data'] as $aryValues)
+		$intSum += $aryValues['nb_uniq_visitors'];
+	foreach ($aryConf['data'] as $aryValues) {
+		$strValues .= round(($aryValues['nb_uniq_visitors']/$intSum*100), 2).',';
+		$strLabels .= '|'.urlencode($aryValues['shortLabel']);
+	}
+	$strValues = substr($strValues, 0, -1);
+	$strLabels = substr($strLabels, 1);
+	$strBase  = 'http://chart.apis.google.com/chart?';
+		'cht=p&amp;'.
+		'chs=500x220&amp;'.
+		'chd=t:'.$strValues.'&amp;'.
+		'chl='.$strLabels.'&amp;'.
+		'chco=90AAD9,A0BAE9&amp;';
+/***************************************************************************/ ?>
 <div class="wp-piwik-graph-wide">
-<img src="<?php echo $strBase.$strGraph; ?>" width="500" height="220" alt="Visits graph" />
+	<img src="<?php echo $strBase.$strGraph; ?>" width="500" height="220" alt="Visits graph" />
 </div>
 <div class="table">
-<table class="widefat wp-piwik-table">
-        <thead>
-                <tr><th><?php _e('Browser', 'wp-piwik'); ?></th><th class="n"><?php _e('Unique', 'wp-piwik'); ?></th><th class="n"><?php _e('Percent', 'wp-piwik'); ?></tr>
-        </thead>
-        <tbody>
-<?php
-foreach ($aryConf['data'] as $aryValues)
-        echo '<tr><td>'.$aryValues['shortLabel'].'</td><td class="n">'.$aryValues['nb_uniq_visitors'].'</td><td class="n">'.number_format(($aryValues['nb_uniq_visitors']*$intSum/100),2).'%</td></tr>';
-unset($aryTmp);
-?>
-        </tbody>
-</table>
+	<table class="widefat wp-piwik-table">
+		<thead>
+			<tr>
+				<th><?php _e('Browser', 'wp-piwik'); ?></th>
+				<th class="n"><?php _e('Unique', 'wp-piwik'); ?></th>
+				<th class="n"><?php _e('Percent', 'wp-piwik'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+<?php /************************************************************************/
+	foreach ($aryConf['data'] as $aryValues)
+		echo '<tr><td>'.
+				$aryValues['shortLabel'].
+			'</td><td class="n">'.
+				$aryValues['nb_uniq_visitors'].
+			'</td><td class="n">'.
+				number_format(($aryValues['nb_uniq_visitors']*$intSum/100),2).
+			'%</td></tr>';
+	unset($aryTmp);
+/***************************************************************************/ ?>
+		</tbody>
+	</table>
 </div>
-<?php include ('footer.php');
+<?php /************************************************************************/
+	include ('footer.php');
+
+/* EOF */
