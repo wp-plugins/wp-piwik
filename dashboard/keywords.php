@@ -5,12 +5,12 @@ $aryConf['data'] = $this->call_API(
                         $aryConf['params']['date'],
                         $aryConf['params']['limit']
                 );
-$aryConf['title'] = __('Keywords');
+$aryConf['title'] = __('Keywords', 'wp-piwik');
 include('header.php');
 ?>
 <table class="widefat">
 <thead>
-	<tr><th><?php _e('Keyword'); ?></th><th><?php _e('Unique'); ?></th></tr>
+	<tr><th><?php _e('Keyword', 'wp-piwik'); ?></th><th><?php _e('Unique', 'wp-piwik'); ?></th></tr>
 </thead>
 <tbody>
 <?php

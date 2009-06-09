@@ -18,7 +18,7 @@ $aryConf['data']['Bounced'] = $this->call_API(
                         $aryConf['params']['limit']
 		);
 
-$aryConf['title'] = __('Visitors');
+$aryConf['title'] = __('Visitors', 'wp-piwik');
 include('header.php');
 $strValues = $strLabels = $strBounced =  $strValuesU = '';
 $intMax = max($aryConf['data']['Visitors']);
@@ -53,7 +53,7 @@ $strGraph .= 'chxr=1,0,'.$intMax.','.$intStep;
 <div class="table">
 <table class="widefat wp-piwik-table">
         <thead>
-                <tr><th><?php _e('Date'); ?></th><th class="n"><?php _e('Visits'); ?></th><th class="n"><?php _e('Unique'); ?></th><th class="n"><?php _e('Bounced'); ?></tr>
+                <tr><th><?php _e('Date', 'wp-piwik'); ?></th><th class="n"><?php _e('Visits', 'wp-piwik'); ?></th><th class="n"><?php _e('Unique', 'wp-piwik'); ?></th><th class="n"><?php _e('Bounced', 'wp-piwik'); ?></tr>
         </thead>
         <tbody>
 <?php

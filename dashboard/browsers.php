@@ -5,7 +5,7 @@ $aryConf['data'] = $this->call_API(
 			$aryConf['params']['date'],
                         $aryConf['params']['limit']
                 );
-$aryConf['title'] = __('Browser');
+$aryConf['title'] = __('Browser', 'wp-piwik');
 include('header.php');
 $strValues = $strLabels = '';
 
@@ -34,7 +34,7 @@ $strGraph .= 'chco=90AAD9,A0BAE9&amp;';
 <div class="table">
 <table class="widefat wp-piwik-table">
         <thead>
-                <tr><th><?php _e('Browser'); ?></th><th class="n"><?php _e('Unique'); ?></th><th class="n"><?php _e('Percent'); ?></tr>
+                <tr><th><?php _e('Browser', 'wp-piwik'); ?></th><th class="n"><?php _e('Unique', 'wp-piwik'); ?></th><th class="n"><?php _e('Percent', 'wp-piwik'); ?></tr>
         </thead>
         <tbody>
 <?php

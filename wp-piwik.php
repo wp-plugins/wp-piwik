@@ -30,6 +30,12 @@ Author URI: http://www.braekling.de
 class wp_piwik {
 
 	function __construct() {
+                $strLocale = get_locale();
+                if ( !empty( $strLocale ) ) {
+                        $strMOfile = ABSPATH . 'wp-content/plugins/'.basename(dirname(__FILE__)).'/languages/wp-piwik-'.$strLocale.'.mo';
+                        load_textdomain('wp-piwik', $strMOfile);
+                }
+
 		register_activation_hook(__FILE__, array($this, 'install'));
 		add_action('admin_menu', array($this, 'build_menu'));
 		add_filter('plugin_row_meta', array($this, 'set_plugin_meta', 10, 2));
@@ -46,17 +52,17 @@ class wp_piwik {
 	}
 
 	function build_menu() {
-		$intPage = add_dashboard_page(__('Piwik Statistics'), __('WP-Piwik'), 8, __FILE__, array($this, 'show_stats'));
+		$intPage = add_dashboard_page(__('Piwik Statistics', 'wp-piwik'), __('WP-Piwik', 'wp-piwik'), 8, __FILE__, array($this, 'show_stats'));
 		add_action('admin_print_scripts-'.$intPage, array($this, 'load_scripts'));
 		add_action('admin_head-'.$intPage, array($this, 'add_admin_header'));
 
-		add_options_page(__('WP-Piwik Settings'), __('WP-Piwik Settings'), 8, __FILE__, array($this, 'show_settings'));
+		add_options_page(__('WP-Piwik Settings', 'wp-piwik'), __('WP-Piwik Settings', 'wp-piwik'), 8, __FILE__, array($this, 'show_settings'));
 	}
 
 function set_plugin_meta($strLinks, $strFile) {
 		$strPlugin = plugin_basename(__FILE__);
 		if ($strFile == $strPlugin) 
-			return array_merge($strLinks, array( sprintf( '<a href="options-general.php?page=%s">%s</a>', $strPlugin, __('Settings') ) )); 
+			return array_merge($strLinks, array( sprintf( '<a href="options-general.php?page=%s">%s</a>', $strPlugin, __('Settings', 'wp-piwik') ) )); 
 		return $strLinks;
 	}
     
@@ -144,7 +150,7 @@ function set_plugin_meta($strLinks, $strFile) {
 		}
 ?>
 <div class="wrap"><div id="icon-post" class="icon32"><br /></div>
-<h2><?php _e('Piwik Statistics'); ?></h2>
+<h2><?php _e('Piwik Statistics', 'wp-piwik'); ?></h2>
 <div id="wppiwik-widgets-wrap">
 <div id="wppiwik-widgets" class="metabox-holder">
 <div id="side-info-column" class="inner-sidebar wp-piwik-side">
@@ -182,31 +188,31 @@ wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false);
 		$intSite = get_option('wp-piwik_siteid');
 ?>
 <div class="wrap">
-<h2><?php _e('WP-Piwik Settings') ?></h2>
+<h2><?php _e('WP-Piwik Settings', 'wp-piwik') ?></h2>
 <div class="inside">
 <form method="post" action="options.php">
 	<?php wp_nonce_field('update-options'); ?>
 <table class="form-table">
-	<tr><td colspan="2"><h3><?php _e('Account settings'); ?></h3></td></tr>
+	<tr><td colspan="2"><h3><?php _e('Account settings', 'wp-piwik'); ?></h3></td></tr>
 	<tr>
-		<td><?php _e('Piwik URL'); ?>:</td>
+		<td><?php _e('Piwik URL', 'wp-piwik'); ?>:</td>
 		<td><input type="text" name="wp-piwik_url" id="wp-piwik_url" value="<?php echo $strURL; ?>" /></td>
 	</tr>
 	<tr>
-		<td><?php _e('Auth token'); ?>:</td>
+		<td><?php _e('Auth token', 'wp-piwik'); ?>:</td>
 		<td><input type="text" name="wp-piwik_token" id="wp-piwik_token" value="<?php echo $strToken; ?>" /></td>
 	</tr>
 
-	<tr><td colspan="2"><span class="setting-description"><?php _e('To enable Piwik statistics, please enter your Piwik base URL (like http://mydomain.com/piwik) and your personal authentification token. You can get the token on the API page inside your Piwik interface. It looks like &quot;1234a5cd6789e0a12345b678cd9012ef&quot;.'); ?></span></td></tr>
+	<tr><td colspan="2"><span class="setting-description"><?php _e('To enable Piwik statistics, please enter your Piwik base URL (like http://mydomain.com/piwik) and your personal authentification token. You can get the token on the API page inside your Piwik interface. It looks like &quot;1234a5cd6789e0a12345b678cd9012ef&quot;.', 'wp-piwik'); ?></span></td></tr>
 	<?php
 		if (!empty($strToken) && !empty($strURL)) { 
 			$aryData = $this->call_API('SitesManager.getSitesWithAtLeastViewAccess');
 			if (empty($aryData)) {
-				echo '<tr><td colspan="2"><p><strong>'.__('An error occured').': </strong>'.__('Please check URL and auth token. You need at least view access to one site.').'</p></td></tr>';
+				echo '<tr><td colspan="2"><p><strong>'.__('An error occured', 'wp-piwik').': </strong>'.__('Please check URL and auth token. You need at least view access to one site.', 'wp-piwik').'</p></td></tr>';
 			} elseif ($aryData['result'] == 'error') {
-                        	echo '<tr><td colspan="2"><p><strong>'.__('An error occured').': </strong>'.$aryData['message'].'</p></td></tr>';
+                        	echo '<tr><td colspan="2"><p><strong>'.__('An error occured', 'wp-piwik').': </strong>'.$aryData['message'].'</p></td></tr>';
                 	} else {
-				echo '<tr><td>Choose site:</td><td><select name="wp-piwik_siteid" id="wp-piwik_siteid">';
+				echo '<tr><td>'.__('Choose site', 'wp-piwik').':</td><td><select name="wp-piwik_siteid" id="wp-piwik_siteid">';
 				foreach ($aryData as $arySite) {
 					echo '<option value="'.$arySite['idsite'].'"'.($arySite['idsite']==$intSite?' selected':'').'>'.htmlentities($arySite['name'], ENT_QUOTES, 'utf-8').'</option>';
 				}
@@ -217,8 +223,8 @@ wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false);
 				$strJavaScript = $this->call_API('SitesManager.getJavascriptTag');
 				if ($intAddJS) update_option('wp-piwik_jscode', $strJavaScript);
 				echo '<tr><td>JavaScript:</td><td><textarea readonly rows="17" cols="80">'.($strJavaScript).'</textarea></td></tr>';
-				echo '<tr><td>Add script to wp_footer():</td><td><input type="checkbox" value="1" name="wp-piwik_addjs" '.($intAddJS?' checked':'').'/></td></tr>';
-				echo '<tr><td colspan="2"><span class="setting-description">'.__('If your template uses wp_footer(), WP-Piwik can automatically add the Piwik javascript code to your blog.').'</span></td></tr>';
+				echo '<tr><td>'.__('Add script to wp_footer()', 'wp-piwik').':</td><td><input type="checkbox" value="1" name="wp-piwik_addjs" '.($intAddJS?' checked':'').'/></td></tr>';
+				echo '<tr><td colspan="2"><span class="setting-description">'.__('If your template uses wp_footer(), WP-Piwik can automatically add the Piwik javascript code to your blog.', 'wp-piwik').'</span></td></tr>';
 			}
                 }
 	?>
@@ -226,7 +232,7 @@ wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false);
 <input type="hidden" name="action" value="update" />
 <input type="hidden" name="page_options" value="wp-piwik_token,wp-piwik_url,wp-piwik_siteid,wp-piwik_addjs" />
 <p class="submit">
-	<input type="submit" name="Submit" value="<?php _e('Save settings') ?>" />
+	<input type="submit" name="Submit" value="<?php _e('Save settings', 'wp-piwik') ?>" />
 </p>
 </form>
 </div>
