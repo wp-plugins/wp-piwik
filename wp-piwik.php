@@ -6,7 +6,7 @@ Plugin URI: http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.2.1
+Version: 0.3.0
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -32,7 +32,7 @@ class wp_piwik {
 	function __construct() {
 		register_activation_hook(__FILE__, array($this, 'install'));
 		add_action('admin_menu', array($this, 'build_menu'));
-		add_action('wp_ajax_meta-box-order', array($this, 'meta_box_order'));
+		add_filter('plugin_row_meta', array($this, 'set_plugin_meta', 10, 2));
 		if (get_option('wp-piwik_addjs') == 1) 
 			add_action('wp_footer', array($this, 'footer'));
 	}
@@ -53,6 +53,13 @@ class wp_piwik {
 		add_options_page(__('WP-Piwik Settings'), __('WP-Piwik Settings'), 8, __FILE__, array($this, 'show_settings'));
 	}
 
+function set_plugin_meta($strLinks, $strFile) {
+		$strPlugin = plugin_basename(__FILE__);
+		if ($strFile == $strPlugin) 
+			return array_merge($strLinks, array( sprintf( '<a href="options-general.php?page=%s">%s</a>', $strPlugin, __('Settings') ) )); 
+		return $strLinks;
+	}
+    
 	function load_scripts() {
 		wp_enqueue_script('wp-piwik', $this->get_plugin_url().'js/wp-piwik.js', array( 'jquery', 'admin-comments', 'postbox' ));
 	}
@@ -90,49 +97,57 @@ class wp_piwik {
 	}
 
 	function create_dashboard_widget($strFile, $aryConfig) {
-		foreach ($aryConfig as $strParam) {
-			$strDesc .= $strParam.', ';
-                        $strID .= '_'.$strParam;
+		foreach ($aryConfig['params'] as $strParam) {
+			if (!empty($strParam)) {
+				$strDesc .= $strParam.', ';
+                        	$strID .= '_'.$strParam;
+			}
                 }
 		$strFile = str_replace('.', '', $strFile);
 
-                $aryConf = array(
+                $aryConf = array_merge($aryConfig, array(
                 	'id' => $strFile.$strID,
-                       	'desc' => substr($strDesc, 0, -2),
-                        'params' => $aryConfig,
-                );
-
+                       	'desc' => substr($strDesc, 0, -2)));
 		$strRoot = dirname(__FILE__);
 		if (file_exists($strRoot.DIRECTORY_SEPARATOR.'dashboard/'.$strFile.'.php'))
                 	include($strRoot.DIRECTORY_SEPARATOR.'dashboard/'.$strFile.'.php');
  	}
 
-	function meta_box_order() {
-		echo "HALLO";
-		return "WORLD";
-	}
-
 	function show_stats() {
-		$aryDashboard = unserialize(get_option('wp-piwik_dashboard', false));
-		if (!$aryDashboard) {
+		$arySortOrder = get_user_option('meta-box-order_wppiwik');
+		$aryClosed = get_user_option('closedpostboxes_wppiwik');
+		if (empty($aryClosed)) $aryClosed = array();
+
+		$aryDashboard = array();
+		if (!$arySortOrder) {
 			// Set default configuration
-			$aryDashboard = array(
-				'normal' => array(
-					'graph-visitors' => array('day', 'last30'),
-					'table-visitors' => array('day', 'last30')),
-				'side' => array(
-					'overview' => array('day', 'yesterday'),
-					'keywords' => array('day', 'yesterday', 10),
-					'websites' => array('day', 'yesterday', 10))
+			$arySortOrder = array(
+				'side' => 'overview_day_yesterday,keywords_day_yesterday_10,websites_day_yesterday_10',
+				'normal' => 'visitors_day_last30,browsers_day_yesterday'
 				);
-			update_option('wp-piwik_dashboard', serialize($aryDashboard));
+
+			update_user_option($GLOBALS['current_user']->ID, 'meta-box-order_wppiwik', $arySortOrder);
+		}
+		foreach ($arySortOrder as $strCol => $strWidgets) {
+			$aryWidgets = explode(',', $strWidgets);
+			if (is_array($aryWidgets)) foreach ($aryWidgets as $strParams) {
+				$aryParams = explode('_', $strParams);
+				$aryDashboard[$strCol][$aryParams[0]] = array(
+					'params' => array(
+						'period' => (isset($aryParams[1])?$aryParams[1]:''),
+						'date'   => (isset($aryParams[2])?$aryParams[2]:''),
+						'limit'  => (isset($aryParams[3])?$aryParams[3]:'')
+					),
+					'closed' => (in_array($strParams, $aryClosed))
+				);
+			}
 		}
 ?>
-<div class="wrap"><div id="icon-tools" class="icon32"><br /></div>
+<div class="wrap"><div id="icon-post" class="icon32"><br /></div>
 <h2><?php _e('Piwik Statistics'); ?></h2>
 <div id="wppiwik-widgets-wrap">
 <div id="wppiwik-widgets" class="metabox-holder">
-<div id="side-info-column" class="inner-sidebar">
+<div id="side-info-column" class="inner-sidebar wp-piwik-side">
 	<div id="side-sortables" class="meta-box-sortables">
 <?php
 foreach ($aryDashboard['side'] as $strFile => $aryConfig)
@@ -146,18 +161,16 @@ $this->create_dashboard_widget($strFile, $aryConfig);
 <?php
 foreach ($aryDashboard['normal'] as $strFile => $aryConfig)
 $this->create_dashboard_widget($strFile, $aryConfig);
-wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );
+wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
+wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false);
 ?>
 
 <div class="clear"></div>
 </div><!-- wppiwik-widgets-wrap -->
 
-</div><!-- wrap -->
-
-
-<div class="clear"></div></div><!-- wpbody-content -->
-<div class="clear"></div></div><!-- wpbody -->
-<div class="clear"></div></div><!-- wpcontent -->
+</div>
+</div>
+</div>
 </div>
 </div>
 <?php

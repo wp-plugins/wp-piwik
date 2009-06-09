@@ -25,5 +25,5 @@ This plugin is not created or provided by the Piwik project team.
 
 == Screenshots ==
 
-1. WP-Piwik stats page. Left: visitor history (daily/30 days). Right: stats overview, keywords and external websites (yesterday).
+1. WP-Piwik stats page.
 2. WP-Piwik settings.

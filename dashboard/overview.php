@@ -1,9 +1,9 @@
 <?php 
 $aryConf['data'] = $this->call_API(
 			'VisitsSummary.get',
-			isset($aryConf['params'][0])?$aryConf['params'][0]:'',
-			isset($aryConf['params'][1])?$aryConf['params'][1]:'',
-			isset($aryConf['params'][2])?$aryConf['params'][2]:''
+			$aryConf['params']['period'],
+                        $aryConf['params']['date'],
+                        $aryConf['params']['limit']
 		);
 $aryConf['title'] = __('Overview');
 include('header.php');
