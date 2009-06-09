@@ -14,7 +14,9 @@ You need a running Piwik installation and at least view access to your stats.
 
 Look at the [Piwik website](http://piwik.org/) to get further information about Piwik.
 
-This plugin is not created or provided by the Piwik project team.
+*This plugin is not created or provided by the Piwik project team.*
+
+License: GNU General Public License Version 3, 29 June 2007
 
 == Installation ==
 1. Upload the full `wp-piwik` directory into your `wp-content/plugins` directory.
