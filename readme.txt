@@ -3,6 +3,7 @@ Contributors: braekling
 Requires at least: 2.7
 Tested up to: 2.7.1
 Stable tag: 0.3.0
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik
 
 This plugin adds a piwik stats site to your WordPress dashboard.
