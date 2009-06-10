@@ -6,7 +6,7 @@ Plugin URI: http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.3.1
+Version: 0.3.2
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -29,8 +29,6 @@ Author URI: http://www.braekling.de
 
 class wp_piwik {
 
-	var $intStatsPage;
-
 	function __construct() {
 		$strLocale = get_locale();
 		if ( !empty( $strLocale ) ) {
@@ -39,8 +37,6 @@ class wp_piwik {
 		}
 		register_activation_hook(__FILE__, array($this, 'install'));
 		add_action('admin_menu', array($this, 'build_menu'));
-		add_action('admin_print_scripts-'.$this->intStatsPage, array($this, 'load_scripts'));
-		add_action('admin_head-'.$this->intStatsPage, array($this, 'add_admin_header'));
 		add_filter('plugin_row_meta', array($this, 'set_plugin_meta', 10, 2));
 		if (get_option('wp-piwik_addjs') == 1) 
 			add_action('wp_footer', array($this, 'footer'));
@@ -55,13 +51,16 @@ class wp_piwik {
 	}
 
 	function build_menu() {
-		$this->intStatsPage = add_dashboard_page(
+		$intStatsPage = add_dashboard_page(
 			__('Piwik Statistics', 'wp-piwik'), 
 			__('WP-Piwik', 'wp-piwik'), 
 			8,
 			__FILE__,
 			array($this, 'show_stats')
 		);
+		add_action('admin_print_scripts-'.$intStatsPage, array($this, 'load_scripts'));
+		add_action('admin_head-'.$intStatsPage, array($this, 'add_admin_header'));
+
 		add_options_page(
 			__('WP-Piwik Settings', 'wp-piwik'),
 			__('WP-Piwik Settings', 'wp-piwik'), 

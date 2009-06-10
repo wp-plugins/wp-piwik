@@ -21,7 +21,7 @@
 	}
 	$strValues = substr($strValues, 0, -1);
 	$strLabels = substr($strLabels, 1);
-	$strBase  = 'http://chart.apis.google.com/chart?';
+	$strBase  = 'http://chart.apis.google.com/chart?'.
 		'cht=p&amp;'.
 		'chs=500x220&amp;'.
 		'chd=t:'.$strValues.'&amp;'.
