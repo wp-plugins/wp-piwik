@@ -1,9 +1,8 @@
 === WP-Piwik ===
 Contributors: braekling
 Requires at least: 2.7
-Tested up to: 2.7.1
-Stable tag: 0.3.0
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
+Tested up to: 2.8
+Stable tag: 0.3.1
 Tags: statistics, stats, analytics, piwik
 
 This plugin adds a piwik stats site to your WordPress dashboard.
@@ -18,6 +17,7 @@ Look at the [Piwik website](http://piwik.org/) to get further information about 
 *This plugin is not created or provided by the Piwik project team.*
 
 License: GNU General Public License Version 3, 29 June 2007
+
 Languages: English, German
 
 == Installation ==

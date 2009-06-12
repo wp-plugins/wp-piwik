@@ -6,7 +6,7 @@ Plugin URI: http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.3.2
+Version: 0.3.1
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -37,7 +37,7 @@ class wp_piwik {
 		}
 		register_activation_hook(__FILE__, array($this, 'install'));
 		add_action('admin_menu', array($this, 'build_menu'));
-		add_filter('plugin_row_meta', array($this, 'set_plugin_meta', 10, 2));
+		add_filter('plugin_row_meta', array($this, 'set_plugin_meta'), 10, 2);
 		if (get_option('wp-piwik_addjs') == 1) 
 			add_action('wp_footer', array($this, 'footer'));
 	}
@@ -62,8 +62,8 @@ class wp_piwik {
 		add_action('admin_head-'.$intStatsPage, array($this, 'add_admin_header'));
 
 		add_options_page(
-			__('WP-Piwik Settings', 'wp-piwik'),
-			__('WP-Piwik Settings', 'wp-piwik'), 
+			__('WP-Piwik', 'wp-piwik'),
+			__('WP-Piwik', 'wp-piwik'), 
 			8, 
 			__FILE__,
 			array($this, 'show_settings')
@@ -168,19 +168,19 @@ class wp_piwik {
 <div class="wrap">
 	<div id="icon-post" class="icon32"><br /></div>
 	<h2><?php _e('Piwik Statistics', 'wp-piwik'); ?></h2>
-	<div id="wppiwik-widgets-wrap">
-		<div id="wppiwik-widgets" class="metabox-holder">
-			<div id="side-info-column" class="inner-sidebar wp-piwik-side">
-				<div id="side-sortables" class="meta-box-sortables">
+	<div id="dashboard-widgets-wrap">
+		<div id="dashboard-widgets" class="metabox-holder">
+			<div id="postbox-container" class="wp-piwik-side" style="width:300px; float:left;">
+				<div id="side-sortables" class="meta-box-sortables ui-sortable wp-piwik-sortables">
 <?php /************************************************************************/
 		foreach ($aryDashboard['side'] as $strFile => $aryConfig)
 		$this->create_dashboard_widget($strFile, $aryConfig);
 /***************************************************************************/ ?>
 				</div>
 			</div>
-			<div id='post-body' class="has-sidebar">
-				<div id='wppiwik-widgets-main-content' class='has-sidebar-content'>
-					<div id='normal-sortables' class='meta-box-sortables'>
+			<div id="postbox-container" class="" style="width:520px; float:left; ">
+				<div id="wppiwik-widgets-main-content" class="has-sidebar-content">
+					<div id="normal-sortables" class="meta-box-sortables ui-sortable wp-piwik-sortables">
 <?php /************************************************************************/
 		foreach ($aryDashboard['normal'] as $strFile => $aryConfig)
 			$this->create_dashboard_widget($strFile, $aryConfig);
