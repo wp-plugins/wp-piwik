@@ -6,7 +6,7 @@ Plugin URI: http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.3.1
+Version: 0.3.2
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -98,6 +98,22 @@ class wp_piwik {
 		return trailingslashit(WP_CONTENT_URL.'/plugins/'.plugin_basename(dirname(__FILE__)));
 	}
 
+	function get_remote_file($strURL) {
+		if (ini_get('allow_url_fopen'))
+			$strResult = file_get_contents($strURL);
+		elseif (function_exists('curl_init')) {
+			$c = curl_init($strURL);
+			curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($c, CURLOPT_HEADER, 0);
+			$strResult = curl_exec($c);
+			curl_close($c);
+		} else $strResult = serialize(array(
+				'result' => 'error',
+				'message' => 'Remote access to Piwik not possible. Enable allow_url_fopen or CURL.'
+			));
+		return $strResult;
+	}
+
 	function call_API($strMethod, $strPeriod='', $strDate='', $intLimit='') {
 		$strKey = $strMethod.'_'.$strPeriod.'_'.$strDate.'_'.$intLimit;
 		if (empty($this->aryCache[$strKey])) {
@@ -116,7 +132,8 @@ class wp_piwik {
 			$strURL .= '&idSite='.$intSite.'&period='.$strPeriod.'&date='.$strDate;
 			$strURL .= '&format=PHP&filter_limit='.$intLimit;
 			$strURL .= '&token_auth='.$strToken;
-			$strResult = file_get_contents($strURL);
+
+			$strResult = $this->get_remote_file($strURL);
 			$this->aryCache[$strKey] = unserialize($strResult);
 		}
 		return $this->aryCache[$strKey];
@@ -170,7 +187,7 @@ class wp_piwik {
 	<h2><?php _e('Piwik Statistics', 'wp-piwik'); ?></h2>
 	<div id="dashboard-widgets-wrap">
 		<div id="dashboard-widgets" class="metabox-holder">
-			<div id="postbox-container" class="wp-piwik-side" style="width:300px; float:left;">
+			<div id="postbox-container" class="wp-piwik-side" style="width:290px; float:left;">
 				<div id="side-sortables" class="meta-box-sortables ui-sortable wp-piwik-sortables">
 <?php /************************************************************************/
 		foreach ($aryDashboard['side'] as $strFile => $aryConfig)

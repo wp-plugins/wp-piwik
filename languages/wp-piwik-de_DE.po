@@ -102,6 +102,10 @@ msgstr "WP-Piwik Einstellungen"
 msgid "Settings"
 msgstr "Einstellungen"
 
+#: wp-piwik.php:112
+msgid "Remote access to Piwik not possible. Enable allow_url_fopen or CURL."
+msgstr "Zugriff auf Piwik nicht m&ouml;glich. Aktiviere allow_url_fopen oder CURL."
+
 #: wp-piwik.php:190
 msgid "Account settings"
 msgstr "Account-Konfiguration"
