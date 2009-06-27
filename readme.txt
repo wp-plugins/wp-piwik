@@ -36,25 +36,25 @@ Languages: English, German
 == Changelog ==
 
 = 0.4.0 =
-    * Tracking filter added
-    * Resolution stats
-    * Operating System stats
-    * Plugin stats
+* Tracking filter added
+* Resolution stats
+* Operating System stats
+* Plugin stats
 
 = 0.3.2 =
-    * If allow_url_fopen is disabled in php.ini, WP-Piwik tries to use CURL instead of file_get_contents.
+* If allow_url_fopen is disabled in php.ini, WP-Piwik tries to use CURL instead of file_get_contents.
 
 = 0.3.1 =
-    * WordPress 2.8 compatible
-    * Bugfix: Warnings on WP 2.8 plugins site
-    * Dashboard revised
-    * Partly optimized code
+* WordPress 2.8 compatible
+* Bugfix: Warnings on WP 2.8 plugins site
+* Dashboard revised
+* Partly optimized code
 
 = 0.3.0 =
-    * WP-Piwik dashboard widgetized.
-    * Stats-boxes sortable and closeable.
-    * German language file added
-    * Browser stats and bounced visitors
+* WP-Piwik dashboard widgetized.
+* Stats-boxes sortable and closeable.
+* German language file added
+* Browser stats and bounced visitors
 
 = 0.2.0 =
-    * First public version.
+* First public version.
