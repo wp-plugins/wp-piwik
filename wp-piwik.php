@@ -6,7 +6,7 @@ Plugin URI: http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.3.2
+Version: 0.4.0
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -29,7 +29,12 @@ Author URI: http://www.braekling.de
 
 class wp_piwik {
 
+	public static $intRevisionId = 10;
+	public static $intDashboardID = 5;
+
 	function __construct() {
+		$intCurrentRevision = get_option('wp-piwik_revision',0);
+		if ($intCurrentRevision < self::$intRevisionId) $this->install();
 		$strLocale = get_locale();
 		if ( !empty( $strLocale ) ) {
 			$strMOfile = ABSPATH . 'wp-content/plugins/'.basename(dirname(__FILE__)).'/languages/wp-piwik-'.$strLocale.'.mo';
@@ -43,11 +48,20 @@ class wp_piwik {
 	}
 
 	function install() {
-		// not used
+		update_option('wp-piwik_revision', self::$intRevisionId);
 	}
 
 	function footer() {
-		echo get_option('wp-piwik_jscode');
+		global $current_user;
+		get_currentuserinfo();
+		$bolDisplay = true;
+		if (!empty($current_user->roles)) {
+			$aryFilter = get_option('wp-piwik_filter');
+			foreach ($current_user->roles as $strRole)
+				if (isset($aryFilter[$strRole]) && $aryFilter[$strRole])
+					$bolDisplay = false;
+		}
+		if ($bolDisplay) echo get_option('wp-piwik_jscode');
 	}
 
 	function build_menu() {
@@ -159,14 +173,28 @@ class wp_piwik {
 		$aryClosed = get_user_option('closedpostboxes_wppiwik');
 		if (empty($aryClosed)) $aryClosed = array();
 		$aryDashboard = array();
+
+                $intCurrentDashboard = get_option('wp-piwik_dashboardid',0);
+
 		if (!$arySortOrder) {
 			// Set default configuration
 			$arySortOrder = array(
-				'side' => 'overview_day_yesterday,keywords_day_yesterday_10,websites_day_yesterday_10',
-				'normal' => 'visitors_day_last30,browsers_day_yesterday'
+				'side' => 'overview_day_yesterday,keywords_day_yesterday_10,websites_day_yesterday_10,plugins_day_yesterday',
+				'normal' => 'visitors_day_last30,browsers_day_yesterday,screens_day_yesterday,systems_day_yesterday'
 			);
-			update_user_option($GLOBALS['current_user']->ID, 'meta-box-order_wppiwik', $arySortOrder);
+			global $current_user;
+			get_currentuserinfo();
+			update_user_option($current_user->ID, 'meta-box-order_wppiwik', $arySortOrder);
+			update_option('wp-piwik_dashboardid', self::$intDashboardID);
+		} elseif ($intCurrentDashboard < self::$intDashboardID) {
+			$arySortOrder['normal'] .= ',screens_day_yesterday,systems_day_yesterday';
+			$arySortOrder['side'] .= ',plugins_day_yesterday';
+			global $current_user;
+                        get_currentuserinfo();
+			update_user_option($current_user->ID, 'meta-box-order_wppiwik', $arySortOrder);
+			update_option('wp-piwik_dashboardid', self::$intDashboardID);
 		}
+
 		foreach ($arySortOrder as $strCol => $strWidgets) {
 			$aryWidgets = explode(',', $strWidgets);
 			if (is_array($aryWidgets)) foreach ($aryWidgets as $strParams) {
@@ -234,7 +262,7 @@ class wp_piwik {
 					<td><?php _e('Auth token', 'wp-piwik'); ?>:</td>
 					<td><input type="text" name="wp-piwik_token" id="wp-piwik_token" value="<?php echo $strToken; ?>" /></td>
 				</tr>
-				<tr><td colspan="2"><span class="setting-description">
+				<tr><td></td><td><span class="setting-description">
 				<?php _e(
 						'To enable Piwik statistics, please enter your Piwik'.
 						' base URL (like http://mydomain.com/piwik) and your'.
@@ -248,7 +276,7 @@ class wp_piwik {
 		if (!empty($strToken) && !empty($strURL)) { 
 			$aryData = $this->call_API('SitesManager.getSitesWithAtLeastViewAccess');
 			if (empty($aryData)) {
-				echo '<tr><td colspan="2"><p><strong>'.__('An error occured', 'wp-piwik').': </strong>'.
+				echo '<tr><td></td><td><p><strong>'.__('An error occured', 'wp-piwik').': </strong>'.
 					__('Please check URL and auth token. You need at least view access to one site.', 'wp-piwik').
 					'</p></td></tr>';
 			} elseif ($aryData['result'] == 'error') {
@@ -259,7 +287,7 @@ class wp_piwik {
 					':</td><td><select name="wp-piwik_siteid" id="wp-piwik_siteid">';
 				foreach ($aryData as $arySite)
 					echo '<option value="'.$arySite['idsite'].
-						'"'.($arySite['idsite']==$intSite?' selected':'').
+						'"'.($arySite['idsite']==$intSite?' selected=""':'').
 						'>'.htmlentities($arySite['name'], ENT_QUOTES, 'utf-8').
 						'</option>';
 				echo '</select></td></tr>';
@@ -275,16 +303,28 @@ class wp_piwik {
 				echo '<tr><td>'.__('Add script to wp_footer()', 'wp-piwik').
 						':</td><td><input type="checkbox" value="1" name="wp-piwik_addjs" '.
 						($intAddJS?' checked':'').'/></td></tr>';
-				echo '<tr><td colspan="2"><span class="setting-description">'.
+				echo '<tr><td></td><td><span class="setting-description">'.
 						__('If your template uses wp_footer(), WP-Piwik can automatically'.
 							' add the Piwik javascript code to your blog.', 'wp-piwik').
 						'</span></td></tr>';
+				global $wp_roles;
+				echo '<tr><td>'.__('Tracking filter', 'wp-piwik').':</td><td>';
+				$aryFilter = get_option('wp-piwik_filter');
+				foreach($wp_roles->role_names as $strKey => $strName)  {
+					echo '<input type="checkbox" '.(isset($aryFilter[$strKey]) && $aryFilter[$strKey]?'checked="checked" ':'').'value="1" name="wp-piwik_filter['.$strKey.']" /> '.$strName.' &nbsp; ';
+				}
+				echo '</td></tr>';
+				echo '<tr><td></td><td><span class="setting-description">'.
+                                                __('Choose users by user role you do <strong>not</strong> want to track.'.
+                                                        ' Requires enabled &quot;Add script to wp_footer()&quot;-functionality.', 'wp-piwik').
+                                                '</span></td></tr>';
+						
 			}
 		}
 /***************************************************************************/ ?>
 			</table>
 			<input type="hidden" name="action" value="update" />
-			<input type="hidden" name="page_options" value="wp-piwik_token,wp-piwik_url,wp-piwik_siteid,wp-piwik_addjs" />
+			<input type="hidden" name="page_options" value="wp-piwik_token,wp-piwik_url,wp-piwik_siteid,wp-piwik_addjs,wp-piwik_filter" />
 			<p class="submit">
 				<input type="submit" name="Submit" value="<?php _e('Save settings', 'wp-piwik') ?>" />
 			</p>

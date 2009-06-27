@@ -2,7 +2,7 @@
 Contributors: braekling
 Requires at least: 2.7
 Tested up to: 2.8
-Stable tag: 0.3.2
+Stable tag: 0.4.0
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik
 
@@ -32,3 +32,29 @@ Languages: English, German
 
 1. WP-Piwik stats page.
 2. WP-Piwik settings.
+
+== Changelog ==
+
+= 0.4.0 =
+    * Tracking filter added
+    * Resolution stats
+    * Operating System stats
+    * Plugin stats
+
+= 0.3.2 =
+    * If allow_url_fopen is disabled in php.ini, WP-Piwik tries to use CURL instead of file_get_contents.
+
+= 0.3.1 =
+    * WordPress 2.8 compatible
+    * Bugfix: Warnings on WP 2.8 plugins site
+    * Dashboard revised
+    * Partly optimized code
+
+= 0.3.0 =
+    * WP-Piwik dashboard widgetized.
+    * Stats-boxes sortable and closeable.
+    * German language file added
+    * Browser stats and bounced visitors
+
+= 0.2.0 =
+    * First public version.

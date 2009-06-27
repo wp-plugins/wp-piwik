@@ -19,6 +19,12 @@ msgstr ""
 msgid "Browser"
 msgstr "Browser"
 
+msgid "Resolution"
+msgstr "Aufl&ouml;sung"
+
+msgid "Operating System"
+msgstr "Betriebssystem"
+
 #: dashboard/browsers.php:37 dashboard/keywords.php:13
 #: dashboard/visitors.php:56 dashboard/websites.php:13
 msgid "Unique"
@@ -153,6 +159,15 @@ msgstr "Wenn Dein Template wp_footer() benutzt, kann WP-Piwik den Piwik "
 #: wp-piwik.php:226
 msgid "Add script to wp_footer()"
 msgstr "Skript zu wp_footer() hinzuf&uuml;gen"
+
+msgid "Tracking filter"
+msgstr "Tracking-Filter"
+
+msgid "Choose users by user role you do <strong>not</strong> want to track. "
+"Requires enabled &quot;Add script to wp_footer()&quot;-functionality."
+msgstr "W&auml;hle Nutzer anhand ihrer Nutzerrolle, die <strong>nicht</strong> erfasst "
+"werden sollen. Die Funktion &quot;Skript zu wp_footer() hinzuf&uuml;gen&quot; muss "
+"dazu verwendet werden."
 
 #: wp-piwik.php:229
 msgid "Save settings"
