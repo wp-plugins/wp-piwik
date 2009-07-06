@@ -11,7 +11,7 @@ This plugin adds a piwik stats site to your WordPress dashboard.
 == Description ==
 This plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog using wp_footer.
 
-You need a running Piwik installation and at least view access to your stats.
+You need a running Piwik installation and at least view access to your stats. Also PHP 5 or higher is strictly required.
 
 Look at the [Piwik website](http://piwik.org/) to get further information about Piwik.
 
