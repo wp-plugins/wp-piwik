@@ -1,0 +1,202 @@
+# WP-Piwik 0.3.0 - German language file
+# Copyright (C) 2009 Andre Braekling
+# This file is distributed under the same license as the WP-Piwik package.
+# Andre Braekling <webmaster@braekling.de>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.3.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-piwik\n"
+"POT-Creation-Date: 2009-06-09 19:05+0000\n"
+"PO-Revision-Date: 2009-06-09 20:05+0000\n"
+"Last-Translator: Andre Braekling <webmaster@braekling.de>\n"
+"Language-Team: German <webmaster@braekling.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: dashboard/browsers.php:8 dashboard/browsers.php:37
+msgid "Browser"
+msgstr "Browser"
+
+msgid "Resolution"
+msgstr "Aufl&ouml;sung"
+
+msgid "Operating System"
+msgstr "Betriebssystem"
+
+#: dashboard/browsers.php:37 dashboard/keywords.php:13
+#: dashboard/visitors.php:56 dashboard/websites.php:13
+msgid "Unique"
+msgstr "Unique"
+
+#: dashboard/browsers.php:37
+msgid "Percent"
+msgstr "Prozent"
+
+#: dashboard/keywords.php:8
+msgid "Keywords"
+msgstr "Keywords"
+
+#: dashboard/keywords.php:13
+msgid "Keyword"
+msgstr "Keyword"
+
+#: dashboard/overview.php:8
+msgid "Overview"
+msgstr "&Uuml;bersicht"
+
+#: dashboard/overview.php:16 dashboard/visitors.php:21
+msgid "Visitors"
+msgstr "Besucher"
+
+#: dashboard/overview.php:17
+msgid "Unique visitors"
+msgstr "Eindeutige Besucher"
+
+#: dashboard/overview.php:18
+msgid "Page views"
+msgstr "Pageviews"
+
+#: dashboard/overview.php:19
+msgid "Max. page views in one visit"
+msgstr "Max. Pageviews/Besuch"
+
+#: dashboard/overview.php:20
+msgid "Total time spent by visitors"
+msgstr "Zeit aller Besucher"
+
+#: dashboard/overview.php:21
+msgid "Bounce count"
+msgstr "Sofortige Abspr&uuml;nge"
+
+#: dashboard/visitors.php:56
+msgid "Date"
+msgstr "Datum"
+
+#: dashboard/visitors.php:56
+msgid "Visits"
+msgstr "Visits"
+
+#: dashboard/visitors.php:56
+msgid "Bounced"
+msgstr "Abspr&uuml;nge"
+
+#: dashboard/websites.php:8
+msgid "Websites"
+msgstr "Webseiten"
+
+#: dashboard/websites.php:13
+msgid "Website"
+msgstr "Webseite"
+
+#: wp-piwik.php:49 wp-piwik.php:147
+msgid "Piwik Statistics"
+msgstr "Piwik Statistiken"
+
+#. #-#-#-#-#  plugin.pot (PACKAGE VERSION)  #-#-#-#-#
+#. Plugin Name of an extension
+#: wp-piwik.php:49
+msgid "WP-Piwik"
+msgstr "WP-Piwik"
+
+#: wp-piwik.php:53 wp-piwik.php:185
+msgid "WP-Piwik Settings"
+msgstr "WP-Piwik Einstellungen"
+
+#: wp-piwik.php:59
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: wp-piwik.php:112
+msgid "Remote access to Piwik not possible. Enable allow_url_fopen or CURL."
+msgstr "Zugriff auf Piwik nicht m&ouml;glich. Aktiviere allow_url_fopen oder CURL."
+
+#: wp-piwik.php:190
+msgid "Account settings"
+msgstr "Account-Konfiguration"
+
+#: wp-piwik.php:192
+msgid "Piwik URL"
+msgstr "Piwik URL"
+
+#: wp-piwik.php:196
+msgid "Auth token"
+msgstr "Auth token"
+
+#: wp-piwik.php:200
+msgid ""
+"To enable Piwik statistics, please enter your Piwik base URL (like http://"
+"mydomain.com/piwik) and your personal authentification token. You can get "
+"the token on the API page inside your Piwik interface. It looks like "
+"&quot;1234a5cd6789e0a12345b678cd9012ef&quot;."
+msgstr "Um Piwik Statistiken abrufen zu k&ouml;nnen, musst Du die URL zu Deiner Piwik-Installation "
+"(z.B. http://mydomain.com/piwik) und deinen pers&ouml;nlichen Authentifizierungs-Sch&uuml;ssel (Token) "
+"angeben. Du findest den Token auf der API-Seite in Deinem Piwik-Interface. Er sieht z.B. so aus: "
+"&quot;1234a5cd6789e0a12345b678cd9012ef&quot;."
+
+#: wp-piwik.php:205 wp-piwik.php:207
+msgid "An error occured"
+msgstr "Ein Fehler ist aufgetreten"
+
+#: wp-piwik.php:205
+msgid ""
+"Please check URL and auth token. You need at least view access to one site."
+msgstr ""
+"Bitte &uuml;berpr&uuml;fe die URL und den Token. Du ben&ouml;tigst zumindest View-Zugriff auf eine erfasste Seite."
+
+#: wp-piwik:php:215
+msgid "Choose site"
+msgstr "Seite w&auml;hlen"
+
+#: wp-piwik.php:221
+msgid ""
+"If your template uses wp_footer(), WP-Piwik can automatically add the Piwik "
+"javascript code to your blog."
+msgstr "Wenn Dein Template wp_footer() benutzt, kann WP-Piwik den Piwik "
+"JavaScript-Code automatisch in Dein Blog einf&uuml;gen."
+
+#: wp-piwik.php:226
+msgid "Add script to wp_footer()"
+msgstr "Skript zu wp_footer() hinzuf&uuml;gen"
+
+msgid "Tracking filter"
+msgstr "Tracking-Filter"
+
+msgid "Choose users by user role you do <strong>not</strong> want to track. "
+"Requires enabled &quot;Add script to wp_footer()&quot;-functionality."
+msgstr "W&auml;hle Nutzer anhand ihrer Nutzerrolle, die <strong>nicht</strong> erfasst "
+"werden sollen. Die Funktion &quot;Skript zu wp_footer() hinzuf&uuml;gen&quot; muss "
+"dazu verwendet werden."
+
+msgid "Display statistics to"
+msgstr "Statistiken sichtbar f&uuml;r"
+
+msgid "or above"
+msgstr "oder h&ouml;her"
+
+msgid "Minimum user level required to display statistics page."
+msgstr "Mindestens ben&ouml;tigter User Level, um die Statistiken einzusehen."
+
+#: wp-piwik.php:229
+msgid "Save settings"
+msgstr "Einstellungen speichern"
+
+#. Plugin URI of an extension
+msgid "http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html"
+msgstr "http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html"
+
+#. Description of an extension
+msgid ""
+"Adds Piwik stats to your dashboard menu and Piwik code to your wordpress "
+"footer."
+msgstr "F&uuml;gt Piwik-Statistiken zu Deinem Dashboard-Men&uuml; hinzu und "
+"kann den Piwik-Tracking-Code in den Blog-Footer einf&uuml;gen."
+
+#. Author of an extension
+msgid "Andr&eacute; Br&auml;kling"
+msgstr "Andr&eacute; Br&auml;kling"
+
+#. Author URI of an extension
+msgid "http://www.braekling.de"
+msgstr "http://www.braekling.de"
