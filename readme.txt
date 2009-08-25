@@ -1,8 +1,8 @@
 === WP-Piwik ===
 Contributors: braekling
 Requires at least: 2.7
-Tested up to: 2.8
-Stable tag: 0.4.0
+Tested up to: 2.8.4
+Stable tag: 0.5.0
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik
 
@@ -11,7 +11,7 @@ This plugin adds a piwik stats site to your WordPress dashboard.
 == Description ==
 This plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog using wp_footer.
 
-You need a running Piwik installation and at least view access to your stats. Also PHP 5 or higher is strictly required.
+You need a running Piwik installation and at least view access to your stats.
 
 Look at the [Piwik website](http://piwik.org/) to get further information about Piwik.
 
@@ -35,26 +35,30 @@ Languages: English, German
 
 == Changelog ==
 
+= 0.5.0 =
+    * Display statistics to selected user roles
+    * Some HTML fixes (settings page)
+
 = 0.4.0 =
-* Tracking filter added
-* Resolution stats
-* Operating System stats
-* Plugin stats
+    * Tracking filter added
+    * Resolution stats
+    * Operating System stats
+    * Plugin stats
 
 = 0.3.2 =
-* If allow_url_fopen is disabled in php.ini, WP-Piwik tries to use CURL instead of file_get_contents.
+    * If allow_url_fopen is disabled in php.ini, WP-Piwik tries to use CURL instead of file_get_contents.
 
 = 0.3.1 =
-* WordPress 2.8 compatible
-* Bugfix: Warnings on WP 2.8 plugins site
-* Dashboard revised
-* Partly optimized code
+    * WordPress 2.8 compatible
+    * Bugfix: Warnings on WP 2.8 plugins site
+    * Dashboard revised
+    * Partly optimized code
 
 = 0.3.0 =
-* WP-Piwik dashboard widgetized.
-* Stats-boxes sortable and closeable.
-* German language file added
-* Browser stats and bounced visitors
+    * WP-Piwik dashboard widgetized.
+    * Stats-boxes sortable and closeable.
+    * German language file added
+    * Browser stats and bounced visitors
 
 = 0.2.0 =
-* First public version.
+    * First public version.

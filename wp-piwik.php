@@ -6,7 +6,7 @@ Plugin URI: http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.4.0
+Version: 0.5.0
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -29,7 +29,7 @@ Author URI: http://www.braekling.de
 
 class wp_piwik {
 
-	public static $intRevisionId = 10;
+	public static $intRevisionId = 11;
 	public static $intDashboardID = 5;
 
 	function __construct() {
@@ -65,16 +65,18 @@ class wp_piwik {
 	}
 
 	function build_menu() {
+		$intDisplayTo = get_option('wp-piwik_displayto', 8);
 		$intStatsPage = add_dashboard_page(
 			__('Piwik Statistics', 'wp-piwik'), 
 			__('WP-Piwik', 'wp-piwik'), 
-			8,
+			$intDisplayTo,
 			__FILE__,
 			array($this, 'show_stats')
 		);
 		add_action('admin_print_scripts-'.$intStatsPage, array($this, 'load_scripts'));
 		add_action('admin_head-'.$intStatsPage, array($this, 'add_admin_header'));
-
+		//add_filter('manage_posts_columns', array($this, 'display_post_unique_column'));
+		//add_action('manage_posts_custom_column', array($this, 'display_post_unique_content'), $intDisplayTo, 2);
 		add_options_page(
 			__('WP-Piwik', 'wp-piwik'),
 			__('WP-Piwik', 'wp-piwik'), 
@@ -167,6 +169,16 @@ class wp_piwik {
 		if (file_exists($strRoot.DIRECTORY_SEPARATOR.'dashboard/'.$strFile.'.php'))
 			include($strRoot.DIRECTORY_SEPARATOR.'dashboard/'.$strFile.'.php');
  	}
+
+	function display_post_unique_column($aryCols) {
+	 	$aryCols['wp-piwik_unique'] = __('Unique');
+	        return $aryCols;
+	}
+
+	function display_post_unique_content($strCol, $intID) {
+		if( $strCol == 'wp-piwik_unique' ) {
+		}
+	}
 
 	function show_stats() {
 		$arySortOrder = get_user_option('meta-box-order_wppiwik');
@@ -302,7 +314,7 @@ class wp_piwik {
 						($strJavaScript).'</textarea></td></tr>';
 				echo '<tr><td>'.__('Add script to wp_footer()', 'wp-piwik').
 						':</td><td><input type="checkbox" value="1" name="wp-piwik_addjs" '.
-						($intAddJS?' checked':'').'/></td></tr>';
+						($intAddJS?' checked="checked"':'').'/></td></tr>';
 				echo '<tr><td></td><td><span class="setting-description">'.
 						__('If your template uses wp_footer(), WP-Piwik can automatically'.
 							' add the Piwik javascript code to your blog.', 'wp-piwik').
@@ -318,13 +330,23 @@ class wp_piwik {
                                                 __('Choose users by user role you do <strong>not</strong> want to track.'.
                                                         ' Requires enabled &quot;Add script to wp_footer()&quot;-functionality.', 'wp-piwik').
                                                 '</span></td></tr>';
-						
+				echo '<tr><td>'.__('Display statistics to', 'wp-piwik').':</td><td><select name="wp-piwik_displayto">';
+				$intDisplayTo = get_option('wp-piwik_displayto', 8);
+				foreach($wp_roles->role_names as $strKey => $strName) {
+						$role = get_role($strKey);
+						$intLevel = array_reduce( array_keys( $role->capabilities ), array( 'WP_User', 'level_reduction' ), 0 );
+						echo '<option value="'.$intLevel.'"'.($intDisplayTo == $intLevel?' selected="selected"':'').'>'.$strName.'</option>';
+				}
+				echo '</select> '.__('or above', 'wp-piwik').'</td></tr>';
+				echo '<tr><td></td><td><span class="setting-description">'.
+						__('Minimum user level required to display statistics page.', 'wp-piwik').
+						'</span></td></tr>';
 			}
 		}
 /***************************************************************************/ ?>
 			</table>
 			<input type="hidden" name="action" value="update" />
-			<input type="hidden" name="page_options" value="wp-piwik_token,wp-piwik_url,wp-piwik_siteid,wp-piwik_addjs,wp-piwik_filter" />
+			<input type="hidden" name="page_options" value="wp-piwik_token,wp-piwik_url,wp-piwik_siteid,wp-piwik_addjs,wp-piwik_filter,wp-piwik_displayto" />
 			<p class="submit">
 				<input type="submit" name="Submit" value="<?php _e('Save settings', 'wp-piwik') ?>" />
 			</p>

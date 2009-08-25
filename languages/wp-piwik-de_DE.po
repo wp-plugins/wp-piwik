@@ -169,6 +169,15 @@ msgstr "W&auml;hle Nutzer anhand ihrer Nutzerrolle, die <strong>nicht</strong> e
 "werden sollen. Die Funktion &quot;Skript zu wp_footer() hinzuf&uuml;gen&quot; muss "
 "dazu verwendet werden."
 
+msgid "Display statistics to"
+msgstr "Statistiken sichtbar f&uuml;r"
+
+msgid "or above"
+msgstr "oder h&ouml;her"
+
+msgid "Minimum user level required to display statistics page."
+msgstr "Mindestens ben&ouml;tigter User Level, um die Statistiken einzusehen."
+
 #: wp-piwik.php:229
 msgid "Save settings"
 msgstr "Einstellungen speichern"
