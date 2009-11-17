@@ -9,9 +9,9 @@ Tested up to: 2.8.6
 Stable tag: 0.6.0
 
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
-Tags: statistics, stats, analytics, piwik
+Tags: statistics, stats, analytics, piwik, wpmu
 
-This plugin adds a piwik stats site to your WordPress dashboard.
+This plugin adds a piwik stats site to your WordPress or WordPressMU dashboard.
 
 
 == Description ==
@@ -28,6 +28,30 @@ License: GNU General Public License Version 3, 29 June 2007
 
 Languages: English, German, Albanian, Belorussian
 
+= WPMU =
+Version 0.6.0 includes experimental WPMU support.
+
+**Experimental**
+
+The WPMU support is currently experimental. Please test it own your own (e.g. using a local copy of your WPMU) before you use it in an user context.
+
+**Simple**
+
+Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP-Piwik and use his own Piwik instance.
+
+**Extended**
+
+1. Add the whole WP-Piwik folder to /wp-content/mu-plugins.
+2. Copy /wp-content/mu-plugins/wp-piwik/wpmu/wpmu-piwik.php to /wp-content/mu-plugins/wpmu-piwik.php.
+3. Go to the WPMU-Piwik settings page and enter the Piwik URL and the auth token. You should use a clear Piwik installation and a token with full admin rights due to avoid conflicts. WPMU-Piwik will add a new site to Piwik each time a new blog is visited the first time.
+4. Users have access to their own statistics, site admins can access each blog's statistics.
+
+= Credits =
+
+* Albanian [sq] language file by [Besnik Bleta](http://blogu.programeshqip.org/).
+* Belorussian [be_BY] language file by [FatCow](http://www.fatcow.com/).
+
+Thank you, guys!
 
 == Installation ==
 
@@ -44,31 +68,6 @@ Languages: English, German, Albanian, Belorussian
 
 1. WP-Piwik stats page.
 2. WP-Piwik settings.
-
-
-== Credits ==
-
-* Albanian [sq] language file by [Besnik Bleta](http://blogu.programeshqip.org/).
-* Belorussian [be_BY] language file by [FatCow](http://www.fatcow.com/).
-
-Thank you, guys!
-
-
-== WPMU ==
-Version 0.6.0 includes experimental WPMU support.
-
-= Experimental =
-The WPMU support is currently experimental. Please test it own your own (e.g. using a local copy of your WPMU) before you use it in an user context.
-
-= Simple =
-Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP-Piwik and use his own Piwik instance.
-
-= Extended =
-1. Add the whole WP-Piwik folder to /wp-content/mu-plugins.
-2. Copy /wp-content/mu-plugins/wp-piwik/wpmu/wpmu-piwik.php to /wp-content/mu-plugins/wpmu-piwik.php.
-3. Go to the WPMU-Piwik settings page and enter the Piwik URL and the auth token. You should use a clear Piwik installation and a token with full admin rights due to avoid conflicts. WPMU-Piwik will add a new site to Piwik each time a new blog is visited the first time.
-4. Users have access to their own statistics, site admins can access each blog's statistics.
-
 
 == Changelog ==
 
