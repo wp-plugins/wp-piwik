@@ -4,9 +4,9 @@ Contributors: braekling
 
 Requires at least: 2.7
 
-Tested up to: 2.8.4
+Tested up to: 2.8.6
 
-Stable tag: 0.5.0
+Stable tag: 0.6.0
 
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik
