@@ -8,7 +8,7 @@ Tested up to: 2.8.6
 
 Stable tag: 0.6.0
 
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
+Donate link: http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&filter=all&sort=priority&layout=standard&x=12&y=14
 Tags: statistics, stats, analytics, piwik, wpmu
 
 This plugin adds a piwik stats site to your WordPress or WordPressMU dashboard.
@@ -33,7 +33,7 @@ Version 0.6.0 includes experimental WPMU support.
 
 **Experimental**
 
-The WPMU support is currently experimental. Please test it own your own (e.g. using a local copy of your WPMU) before you use it in an user context.
+The WPMU support is currently experimental. Please test it on your own (e.g. using a local copy of your WPMU) before you use it in an user context.
 
 **Simple**
 
