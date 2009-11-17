@@ -47,9 +47,14 @@
 		'chm=B,D4E2ED,0,1,0|B,E4F2FD,1,2,0|B,FDE4F2,2,3,0&amp;'.
 		'chxt=x,y&amp;'.
 		'chxr=1,0,'.$intMax.','.$intStep;
+	if (self::$bolWPMU)		
+		$bolDisableGAPI = get_site_option('wpmu-piwik_disable_gapi');
+	else
+		$bolDisableGAPI = get_option('wp-piwik_disable_gapi');
+
 /***************************************************************************/ ?>
 <div class="wp-piwik-graph-wide">
-	<img src="<?php echo $strBase.$strGraph; ?>" width="500" height="220" alt="Visits graph" />
+	<?php if (!$bolDisableGAPI) { ?><img src="<?php echo $strBase.$strGraph; ?>" width="500" height="220" alt="Visits graph" /><?php } ?>
 </div>
 <div class="table">
 	<table class="widefat wp-piwik-table">

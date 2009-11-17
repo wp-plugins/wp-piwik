@@ -27,9 +27,14 @@
 		'chd=t:'.$strValues.'&amp;'.
 		'chl='.$strLabels.'&amp;'.
 		'chco=90AAD9,A0BAE9&amp;';
+	if (self::$bolWPMU)		
+		$bolDisableGAPI = get_site_option('wpmu-piwik_disable_gapi');
+	else
+		$bolDisableGAPI = get_option('wp-piwik_disable_gapi');
+
 /***************************************************************************/ ?>
 <div class="wp-piwik-graph-wide">
-	<img src="<?php echo $strBase.$strGraph; ?>" width="500" height="220" alt="Visits graph" />
+	<?php if (!$bolDisableGAPI) { ?><img src="<?php echo $strBase.$strGraph; ?>" width="500" height="220" alt="Visits graph" /><?php } ?>
 </div>
 <div class="table">
 	<table class="widefat wp-piwik-table">

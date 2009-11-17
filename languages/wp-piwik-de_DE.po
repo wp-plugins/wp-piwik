@@ -169,6 +169,10 @@ msgstr "W&auml;hle Nutzer anhand ihrer Nutzerrolle, die <strong>nicht</strong> e
 "werden sollen. Die Funktion &quot;Skript zu wp_footer() hinzuf&uuml;gen&quot; muss "
 "dazu verwendet werden."
 
+msgid "Choose users by user role you do <strong>not</strong> want to track."
+msgstr "W&auml;hle Nutzer anhand ihrer Nutzerrolle, die <strong>nicht</strong> erfasst "
+"werden sollen."
+
 msgid "Display statistics to"
 msgstr "Statistiken sichtbar f&uuml;r"
 
@@ -181,6 +185,35 @@ msgstr "Mindestens ben&ouml;tigter User Level, um die Statistiken einzusehen."
 #: wp-piwik.php:229
 msgid "Save settings"
 msgstr "Einstellungen speichern"
+
+msgid "Currently shown stats:"
+msgstr "Aktuell angezeigte Statistiken:"
+
+msgid "Change"
+msgstr "Ausw&auml;hlen"
+
+msgid "WPMU-Piwik Settings"
+msgstr "WPMU-Piwik Einstellungen"
+
+msgid "<strong>Important note:</strong> You have to choose a token which provides administration access. WPMU-Piwik will "
+"create new Piwik sites for each blog if it is shown the first time and it is not added yet. All users can access "
+"their own statistics only, while site admins can access all statistics. To avoid conflicts, you should use a clean Piwik "
+"installation without other sites added. The provided themes should use wp_footer, because it adds the Piwik javascript "
+"code to each page."
+msgstr "<strong>Wichtiger Hinweis:</strong> Du solltest einen Token mit Adminstrator-Zugang angeben. WPMU-Piwik erstellt "
+"f&uuml;r jedes Blog eine eigene Piwik Site, sobald es zum ersten Mal angezeigt wird. Nutzer k&ouml;nnen nur ihre eigenen "
+"Statistiken einsehen, w&auml;hrend Site Admins Zugriff auf alle Statistiken haben. Um Konflikte zu vermeiden, solltest Du "
+"eine neue Piwik-Installation ohne andere Sites verwenden. Alle verwendeten Themes sollten wp_footer benutzen, da diese "
+"Funktion den Piwik JavaScript Code zu jeder Seite hinzuf&uuml;gt."
+
+msgid "<strong>Important note:</strong> If you do not host this blog on your own, your site admin is able to get your auth token from the database. So he is able to access your statistics. You should never use an auth token with more than simple view access!"
+msgstr "<strong>Wichtiger Hinweis:</strong> Wenn Du dieses Blog nicht selber hostest, kann Dein Site Admin Deinen Auth Token aus der Datenbank auslesen. Dadurch kann er auf Deine Statistiken zugreifen. Du solltest niemals einen Auth Token mit mehr als einfachen View-Rechten verwenden!"
+
+msgid "WP-Piwik uses the Google Chart API to create graphs. To avoid this, just check this box."
+msgstr "WP-Piwik benutzt das Google Chart API um Graphen zu erzeugen. M&ouml;chtest Du dies verhindern, markiere diese Box."
+
+msgid "Disable Google Chart API"
+msgstr "Google Chart API ausschalten"
 
 #. Plugin URI of an extension
 msgid "http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html"
