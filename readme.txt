@@ -4,7 +4,7 @@ Contributors: braekling
 
 Requires at least: 2.7
 
-Tested up to: 2.8.6
+Tested up to: 2.9.0
 
 Stable tag: 0.6.0
 
