@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP-Piwik
 
-Plugin URI: http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html
+Plugin URI: http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
