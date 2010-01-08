@@ -4,9 +4,9 @@ Contributors: braekling
 
 Requires at least: 2.7
 
-Tested up to: 2.9.0
+Tested up to: 2.9.1
 
-Stable tag: 0.6.0
+Stable tag: 0.6.3
 
 Donate link: http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&filter=all&sort=priority&layout=standard&x=12&y=14
 Tags: statistics, stats, analytics, piwik, wpmu
@@ -70,6 +70,10 @@ Thank you, guys!
 2. WP-Piwik settings.
 
 == Changelog ==
+
+= 0.6.3 =
+* Click at a visitor stats day-row to load its details.
+* Add stats overview to your WordPress dashboard
 
 = 0.6.0 =
 * Added experimental WPMU support

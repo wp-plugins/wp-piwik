@@ -10,7 +10,8 @@
 		$aryConf['params']['limit']
 	);
 	$aryConf['title'] = __('Overview', 'wp-piwik');
-	include('header.php');
+	if (!isset($aryConf['inline']) || isset($aryConf['inline']) != true)
+		include('header.php');
 /***************************************************************************/ ?>
 <div class="table">
 	<table class="widefat">
@@ -31,6 +32,7 @@
 	</table>
 </div>
 <?php /************************************************************************/
-	include ('footer.php');
+	if (!isset($aryConf['inline']) || isset($aryConf['inline']) != true)
+		include ('footer.php');
 
 /* EOF */

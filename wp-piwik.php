@@ -2,11 +2,11 @@
 /*
 Plugin Name: WP-Piwik
 
-Plugin URI: http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/
+Plugin URI: http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.6.0
+Version: 0.6.3
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -53,10 +53,14 @@ class wp_piwik {
 		if (!self::$bolWPMU)
 			add_filter('plugin_row_meta', array($this, 'set_plugin_meta'), 10, 2);
 
-		if (self::$bolWPMU || get_option('wp-piwik_addjs') == 1) 
+		if (self::$bolWPMU || (get_option('wp-piwik_addjs') == 1)) 
 			add_action('wp_footer', array($this, 'footer'));
 
 		add_action('admin_menu', array($this, 'build_menu'));
+
+		$intDashboardWidget = get_option('wp-piwik_dbwidget', 0);
+		if ($intDashboardWidget > 0) 
+			add_action('wp_dashboard_setup', array($this, 'extend_wp_dashboard_setup'));
 	}
 
 	function install() {
@@ -71,13 +75,13 @@ class wp_piwik {
 		get_currentuserinfo();
 		$bolDisplay = true;
 		if (!empty($current_user->roles)) {
+			echo 'HR3';
 			$aryFilter = (self::$bolWPMU?get_site_option('wpmu-piwik_filter'):get_option('wp-piwik_filter'));
 			foreach ($current_user->roles as $strRole)
 				if (isset($aryFilter[$strRole]) && $aryFilter[$strRole])
 					$bolDisplay = false;
 		}
 		$strJSCode = get_option('wp-piwik_jscode', '');
-		
 		if (self::$bolWPMU && empty($strJSCode)) {
 			$aryReturn = $this->create_wpmu_site();
 			$strJSCode = $aryReturn['js'];
@@ -90,10 +94,12 @@ class wp_piwik {
 			$intDisplayTo = get_option('wp-piwik_displayto', 8);
 			$strToken = get_option('wp-piwik_token');
 			$strPiwikURL = get_option('wp-piwik_url');
+			$bolDashboardWidget = get_option('wp-piwik_dbwidget', false);
 		} else {
 			$intDisplayTo = 8;
 			$strToken = get_site_option('wpmu-piwik_token');
 			$strPiwikURL = get_site_option('wpmu-piwik_url');
+			$bolDashboardWidget = false;
 		}
 		if (!empty($strToken) && !empty($strPiwikURL)) {
 			$intStatsPage = add_dashboard_page(
@@ -124,6 +130,27 @@ class wp_piwik {
 				__FILE__,
 				array($this, 'show_mu_settings')
 			);
+	}
+
+	function extend_wp_dashboard_setup() {
+		$intDashboardWidget = get_option('wp-piwik_dbwidget');
+		wp_add_dashboard_widget(
+			'wp-piwik_dashboard_widget',
+			__('WP-Piwik', 'wp-piwik').' - '.($intDashboardWidget == 1?__('yesterday', 'wp-piwik'):__('today', 'wp-piwik')),
+			array (&$this, 'add_wp_dashboard_widget')
+		);
+	}
+
+	function add_wp_dashboard_widget() {
+		$intDashboardWidget = get_option('wp-piwik_dbwidget');
+		$arySetup = array(
+			'params' => array(
+                		'period' => 'day',
+                        	'date'   => ($intDashboardWidget == 1?'yesterday':'today')
+			),
+			'inline' => true
+		);
+		$this->create_dashboard_widget('overview', $arySetup);
 	}
 
 	function set_plugin_meta($strLinks, $strFile) {
@@ -287,13 +314,15 @@ class wp_piwik {
 			if (is_array($aryWidgets)) foreach ($aryWidgets as $strParams) {
 				$aryParams = explode('_', $strParams);
 					$aryDashboard[$strCol][$aryParams[0]] = array(
-					'params' => array(
-						'period' => (isset($aryParams[1])?$aryParams[1]:''),
-						'date'   => (isset($aryParams[2])?$aryParams[2]:''),
-						'limit'  => (isset($aryParams[3])?$aryParams[3]:'')
-					),
-					'closed' => (in_array($strParams, $aryClosed))
-				);
+						'params' => array(
+							'period' => (isset($aryParams[1])?$aryParams[1]:''),
+							'date'   => (isset($aryParams[2])?$aryParams[2]:''),
+							'limit'  => (isset($aryParams[3])?$aryParams[3]:'')
+						),
+						'closed' => (in_array($strParams, $aryClosed))
+					);
+					if (isset($_GET['date']) && preg_match('/^[0-9]{8}$/', $_GET['date']) && $aryParams[0] != 'visitors')
+						$aryDashboard[$strCol][$aryParams[0]]['params']['date'] = $_GET['date'];
 			}
 		}
 /***************************************************************************/ ?>
@@ -362,6 +391,7 @@ class wp_piwik {
 		update_option('wp-piwik_filter', $_POST['wp-piwik_filter'],'');
 		update_option('wp-piwik_displayto', $_POST['wp-piwik_displayto'],'');
 		update_option('wp-piwik_disable_gapi', $_POST['wp-piwik_disable_gapi'],'');
+		update_option('wp-piwik_dbwidget', $_POST['wp-piwik_dbwidget'], 0);
 	}
 
 	function show_settings() { 
@@ -425,6 +455,7 @@ class wp_piwik {
 				$intSite = get_option('wp-piwik_siteid');
 				$intAddJS = get_option('wp-piwik_addjs');
 				$intDisableGAPI = get_option('wp-piwik_disable_gapi');
+				$intDashboardWidget = get_option('wp-piwik_dbwidget');
 				$strJavaScript = $this->call_API('SitesManager.getJavascriptTag');
 				if ($intAddJS)
 					update_option('wp-piwik_jscode', $strJavaScript);
@@ -443,6 +474,12 @@ class wp_piwik {
 				echo '<tr><td></td><td><span class="setting-description">'.
 						__('WP-Piwik uses the Google Chart API to create graphs. To avoid this, just check this box.', 'wp-piwik').
 						'</span></td></tr>';
+				echo '<tr><td>'.__('Show overview on WordPress dashboard', 'wp-piwik').':</td><td>'.
+						'<select name="wp-piwik_dbwidget">'.
+						'<option value="0"'.($intDashboardWidget == 0?' selected=""':'').'>No.</option>'.
+						'<option value="1"'.($intDashboardWidget == 1?' selected=""':'').'>Yes (yesterday).</option>'.
+						'<option value="2"'.($intDashboardWidget == 2?' selected=""':'').'>Yes (today).</option>'.
+						'</select></td></tr>';
 				global $wp_roles;
 				echo '<tr><td>'.__('Tracking filter', 'wp-piwik').':</td><td>';
 				$aryFilter = get_option('wp-piwik_filter');

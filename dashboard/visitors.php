@@ -66,16 +66,16 @@
 				<th class="n"><?php _e('Bounced', 'wp-piwik'); ?></th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody style="cursor:pointer;">
 <?php /************************************************************************/
 	$aryTmp = array_reverse($aryConf['data']['Visitors']);
 	foreach ($aryTmp as $strDate => $intValue)
-		echo '<tr><td>'.$strDate.'</td><td class="n">'.
+		echo '<tr onclick="javascript:datelink(\''.str_replace('-', '', $strDate).'\');"><td>'.$strDate.'</td><td class="n">'.
 			$intValue.'</td><td class="n">'.
 			$aryConf['data']['Unique'][$strDate].
 			'</td><td class="n">'.
 			$aryConf['data']['Bounced'][$strDate].
-			'</td></tr>';
+			'</td></tr>'."\n";
 	unset($aryTmp);
 /***************************************************************************/ ?>
 		</tbody>
