@@ -29,7 +29,7 @@ License: GNU General Public License Version 3, 29 June 2007
 Languages: English, German, Albanian, Belorussian
 
 = WPMU =
-Version 0.6+ includes experimental WPMU support.
+Version 0.6.0 includes experimental WPMU support.
 
 **Experimental**
 
