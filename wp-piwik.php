@@ -75,7 +75,6 @@ class wp_piwik {
 		get_currentuserinfo();
 		$bolDisplay = true;
 		if (!empty($current_user->roles)) {
-			echo 'HR3';
 			$aryFilter = (self::$bolWPMU?get_site_option('wpmu-piwik_filter'):get_option('wp-piwik_filter'));
 			foreach ($current_user->roles as $strRole)
 				if (isset($aryFilter[$strRole]) && $aryFilter[$strRole])
