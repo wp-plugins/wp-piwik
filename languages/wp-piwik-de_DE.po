@@ -233,3 +233,22 @@ msgstr "Andr&eacute; Br&auml;kling"
 #. Author URI of an extension
 msgid "http://www.braekling.de"
 msgstr "http://www.braekling.de"
+
+msgid "last 30 days"
+msgstr "letzte 30 Tage"
+
+msgid "today"
+msgstr "heute"
+
+msgid "yesterday"
+msgstr "gestern"
+
+msgid "No"
+msgstr "Nein"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "Show overview on WordPress dashboard"
+msgstr "&Uuml;bersicht auf WordPress Dashboard anzeigen"
+
