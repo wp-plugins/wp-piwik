@@ -133,19 +133,31 @@ class wp_piwik {
 
 	function extend_wp_dashboard_setup() {
 		$intDashboardWidget = get_option('wp-piwik_dbwidget');
+		$arySub = array(
+			1 => __('yesterday', 'wp-piwik'),
+			2 => __('today', 'wp-piwik'),
+			3 => __('last 30 days', 'wp-piwik')
+		);
+		$strTitle = __('WP-Piwik', 'wp-piwik').' - '.$arySub[$intDashboardWidget];
+
 		wp_add_dashboard_widget(
 			'wp-piwik_dashboard_widget',
-			__('WP-Piwik', 'wp-piwik').' - '.($intDashboardWidget == 1?__('yesterday', 'wp-piwik'):__('today', 'wp-piwik')),
+			$strTitle,
 			array (&$this, 'add_wp_dashboard_widget')
 		);
 	}
 
 	function add_wp_dashboard_widget() {
 		$intDashboardWidget = get_option('wp-piwik_dbwidget');
+		$aryDate = array (
+			1 => 'yesterday',
+			2 => 'today',
+			3 => 'last30'
+		);
 		$arySetup = array(
 			'params' => array(
                 		'period' => 'day',
-                        	'date'   => ($intDashboardWidget == 1?'yesterday':'today')
+                        	'date'   => $aryDate[$intDashboardWidget]
 			),
 			'inline' => true
 		);
@@ -475,9 +487,10 @@ class wp_piwik {
 						'</span></td></tr>';
 				echo '<tr><td>'.__('Show overview on WordPress dashboard', 'wp-piwik').':</td><td>'.
 						'<select name="wp-piwik_dbwidget">'.
-						'<option value="0"'.($intDashboardWidget == 0?' selected=""':'').'>No.</option>'.
-						'<option value="1"'.($intDashboardWidget == 1?' selected=""':'').'>Yes (yesterday).</option>'.
-						'<option value="2"'.($intDashboardWidget == 2?' selected=""':'').'>Yes (today).</option>'.
+						'<option value="0"'.($intDashboardWidget == 0?' selected=""':'').'>'.__('No', 'wp-piwik').'</option>'.
+						'<option value="1"'.($intDashboardWidget == 1?' selected=""':'').'>'.__('Yes','wp-piwik').' ('.__('yesterday', 'wp-piwik').').</option>'.
+						'<option value="2"'.($intDashboardWidget == 2?' selected=""':'').'>'.__('Yes','wp-piwik').' ('.__('today', 'wp-piwik').').</option>'.
+						'<option value="3"'.($intDashboardWidget == 3?' selected=""':'').'>'.__('Yes','wp-piwik').' ('.__('last 30 days','wp-piwik').').</option>'.
 						'</select></td></tr>';
 				global $wp_roles;
 				echo '<tr><td>'.__('Tracking filter', 'wp-piwik').':</td><td>';
