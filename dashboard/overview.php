@@ -12,6 +12,24 @@
 	$aryConf['title'] = __('Overview', 'wp-piwik');
 	if (!isset($aryConf['inline']) || isset($aryConf['inline']) != true)
 		include('header.php');
+	if ($aryConf['params']['date'] == 'last30') {
+		$aryTmp = array(
+			'bounce_count' => 0,
+			'max_actions' => 0,
+			'nb_actions' => 0,
+			'nb_uniq_visitors' => 0,
+			'nb_visits' => 0,
+			'nb_visits_converted' => 0,
+			'sum_visit_length' => 0
+		);
+		foreach ($aryConf['data'] as $aryDay) 
+			foreach ($aryDay as $strKey => $strValue)
+				if ($strKey != 'max_actions')
+					$aryTmp[$strKey] += $strValue;
+				elseif ($aryTmp['max_actions'] < $strValue)
+					$aryTmp['max_actions'] = $strValue;
+		$aryConf['data'] = $aryTmp;
+	}
 /***************************************************************************/ ?>
 <div class="table">
 	<table class="widefat">

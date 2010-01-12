@@ -6,7 +6,7 @@ Plugin URI: http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.6.3
+Version: 0.6.4
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -438,7 +438,8 @@ class wp_piwik {
 						, 'wp-piwik'
 				); ?>
 				<?php _e(
-						'<strong>Important note:</strong> If you do not host this blog on your own, your site admin is able to get your auth token from the database. So he is able to access your statistics. You should never use an auth token with more than simple view access!'
+						'<strong>Important note:</strong> If you do not host this blog on your own, your site admin is able to get your auth token from the database. So he is able to access your statistics. You should never use an auth token with more than simple view access!',
+						'wp-piwik'
 				);
 				?>
 				</span></td></tr>
