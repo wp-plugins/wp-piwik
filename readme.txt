@@ -76,7 +76,7 @@ Thank you, guys!
 * Bugfix: Visitor chart: No label overlapping if < 50 visitory/day
 * Visitor chart: Added a red unique visitor average line
 * Visitor table: Added a TOTAL stats line
-* Pie charts: Show top 10 + "others", new color range
+* Pie charts: Show top 9 + "others", new color range
 * Option: Show Piwik shortcut in overview box
 * Some performance optimization
 
