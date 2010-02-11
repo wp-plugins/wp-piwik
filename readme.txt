@@ -6,7 +6,7 @@ Requires at least: 2.7
 
 Tested up to: 2.9.1
 
-Stable tag: 0.6.4
+Stable tag: 0.7.0
 
 Donate link: http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&filter=all&sort=priority&layout=standard&x=12&y=14
 Tags: statistics, stats, analytics, piwik, wpmu
@@ -70,6 +70,15 @@ Thank you, guys!
 2. WP-Piwik settings.
 
 == Changelog ==
+
+= 0.7.0 =
+* Bugfix: Percent calculation fixed
+* Bugfix: Visitor chart: No label overlapping if < 50 visitory/day
+* Visitor chart: Added a red unique visitor average line
+* Visitor table: Added a TOTAL stats line
+* Pie charts: Show top 10 + "others", new color range
+* Option: Show Piwik shortcut in overview box
+* Some performance optimization
 
 = 0.6.4 =
 * Unnecessary debug output removed

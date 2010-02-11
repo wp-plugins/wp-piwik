@@ -6,7 +6,7 @@ Plugin URI: http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.6.4
+Version: 0.7.0
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -403,6 +403,7 @@ class wp_piwik {
 		update_option('wp-piwik_displayto', $_POST['wp-piwik_displayto'],'');
 		update_option('wp-piwik_disable_gapi', $_POST['wp-piwik_disable_gapi'],'');
 		update_option('wp-piwik_dbwidget', $_POST['wp-piwik_dbwidget'], 0);
+		update_option('wp-piwik_piwiklink', $_POST['wp-piwik_piwiklink'], 0);
 	}
 
 	function show_settings() { 
@@ -468,6 +469,7 @@ class wp_piwik {
 				$intAddJS = get_option('wp-piwik_addjs');
 				$intDisableGAPI = get_option('wp-piwik_disable_gapi');
 				$intDashboardWidget = get_option('wp-piwik_dbwidget');
+				$intShowLink = get_option('wp-piwik_piwiklink');
 				$strJavaScript = $this->call_API('SitesManager.getJavascriptTag');
 				if ($intAddJS)
 					update_option('wp-piwik_jscode', $strJavaScript);
@@ -493,6 +495,9 @@ class wp_piwik {
 						'<option value="2"'.($intDashboardWidget == 2?' selected=""':'').'>'.__('Yes','wp-piwik').' ('.__('today', 'wp-piwik').').</option>'.
 						'<option value="3"'.($intDashboardWidget == 3?' selected=""':'').'>'.__('Yes','wp-piwik').' ('.__('last 30 days','wp-piwik').').</option>'.
 						'</select></td></tr>';
+				echo '<tr><td>'.__('Show Piwik link in overview', 'wp-piwik').':</td><td>'.
+						'<input type="checkbox" value="1" name="wp-piwik_piwiklink" '.
+						($intShowLink?' checked="checked"':"").'/></td></tr>';
 				global $wp_roles;
 				echo '<tr><td>'.__('Tracking filter', 'wp-piwik').':</td><td>';
 				$aryFilter = get_option('wp-piwik_filter');
@@ -524,6 +529,7 @@ class wp_piwik {
 				<input type="submit" name="Submit" value="<?php _e('Save settings', 'wp-piwik') ?>" />
 			</p>
 		</form>
+			<p><strong><?php _e('Advertisement', 'wp-piwik'); ?>:</strong> <?php _e('Looking for premium themes? Visit ', 'wp-piwik'); ?> <a href="https://www.e-junkie.com/ecom/gb.php?cl=55482&c=ib&aff=103060">RichWP</a>.</p>
 	</div>
 	<?php $this->credits(); ?>
 </div>

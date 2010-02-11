@@ -27,13 +27,18 @@
 	$intMax = max($aryConf['data']['Visitors']);
 	while ($intMax % 10 != 0 || $intMax == 0) $intMax++;
 	$intStep = $intMax / 5;
-	while ($intStep % 10 != 0 && $intStep != 1) $intStep--;
+	if ($intStep < 10) $intStep = 10;
+	else while ($intStep % 10 != 0 && $intStep != 1) $intStep--;
+	$intUSum = 0;
 	foreach ($aryConf['data']['Visitors'] as $strDate => $intValue) {
 		$strValues .= round($intValue/($intMax/100),2).',';
 		$strValuesU .= round($aryConf['data']['Unique'][$strDate]/($intMax/100),2).',';
 		$strBounced .= round($aryConf['data']['Bounced'][$strDate]/($intMax/100),2).',';
 		$strLabels .= '|'.substr($strDate,-2);
+		$intUSum += $aryConf['data']['Unique'][$strDate];
 	}
+	$intAvg = round($intUSum/30,0);
+	$intAvgG = round($intAvg/($intMax/100),2);
 	$strValues = substr($strValues, 0, -1);
 	$strValuesU = substr($strValuesU, 0, -1);
 	$strBounced = substr($strBounced, 0, -1);
@@ -41,9 +46,9 @@
 	$strGraph = 'cht=lc&amp;'.
 		'chg=0,'.round($intStep/($intMax/100),2).',2,2&amp;'.
 		'chs=500x220&amp;'.
-		'chd=t:'.$strValues.'|'.$strValuesU.'|'.$strBounced.'&amp;'.
+		'chd=t:'.$strValues.'|'.$strValuesU.'|'.$strBounced.'|'.$intAvgG.','.$intAvgG.'&amp;'.
 		'chxl=0:'.$strLabels.'&amp;'.
-		'chco=90AAD9,A0BAE9,E9A0BA&amp;'.
+		'chco=90AAD9,A0BAE9,E9A0BA,FF0000&amp;'.
 		'chm=B,D4E2ED,0,1,0|B,E4F2FD,1,2,0|B,FDE4F2,2,3,0&amp;'.
 		'chxt=x,y&amp;'.
 		'chxr=1,0,'.$intMax.','.$intStep;
@@ -76,6 +81,7 @@
 			'</td><td class="n">'.
 			$aryConf['data']['Bounced'][$strDate].
 			'</td></tr>'."\n";
+	echo '<tr><td class="n" colspan="4"><strong>'.__('Unique TOTAL', 'wp-piwik').'</strong> '.__('Sum', 'wp-piwik').': '.$intUSum.' '.__('Avg', 'wp-piwik').': '.$intAvg.'</td></tr>';	
 	unset($aryTmp);
 /***************************************************************************/ ?>
 		</tbody>

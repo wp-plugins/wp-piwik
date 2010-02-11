@@ -15,10 +15,19 @@
 	$intSum = 0;
 	foreach ($aryConf['data'] as $aryValues)
 		$intSum += $aryValues['nb_uniq_visitors'];
-	foreach ($aryConf['data'] as $aryValues) {
-		$strValues .= round(($aryValues['nb_uniq_visitors']/$intSum*100), 2).',';
-		$strLabels .= '|'.urlencode($aryValues['label']);
-	}
+        $intCount = 0; $intMore = 0;
+        foreach ($aryConf['data'] as $key => $aryValues) {
+                $aryConf['data'][$key]['wp_piwik_percent'] = round(($aryValues['nb_uniq_visitors']/$intSum*100), 2);
+                $intCount++;
+                if ($intCount <= 9) {
+                        $strValues .= $aryConf['data'][$key]['wp_piwik_percent'].',';
+                        $strLabels .= '|'.urlencode($aryValues['label']);
+                } else ($intMore += $aryConf['data'][$key]['wp_piwik_percent']);
+        }
+        if ($intMore) {
+                $strValues .= $intMore.',';
+                $strLabels .= '|'.__('Others', 'wp-piwik');
+        }
 	$strValues = substr($strValues, 0, -1);
 	$strLabels = substr($strLabels, 1);
 	$strBase  = 'http://chart.apis.google.com/chart?'.
@@ -26,7 +35,7 @@
 		'chs=500x220&amp;'.
 		'chd=t:'.$strValues.'&amp;'.
 		'chl='.$strLabels.'&amp;'.
-		'chco=90AAD9,A0BAE9&amp;';
+		'chco=405A89,C0DAFF&amp;';
 	if (self::$bolWPMU)		
 		$bolDisableGAPI = get_site_option('wpmu-piwik_disable_gapi');
 	else
@@ -53,7 +62,7 @@
 			'</td><td class="n">'.
 				$aryValues['nb_uniq_visitors'].
 			'</td><td class="n">'.
-				number_format(($aryValues['nb_uniq_visitors']*$intSum/100),2).
+				number_format($aryValues['wp_piwik_percent'], 2).
 			'%</td></tr>';
 	unset($aryTmp);
 /***************************************************************************/ ?>

@@ -19,11 +19,32 @@ msgstr ""
 msgid "Browser"
 msgstr "Browser"
 
+msgid "Others"
+msgstr "Andere"
+
 msgid "Resolution"
 msgstr "Aufl&ouml;sung"
 
 msgid "Operating System"
 msgstr "Betriebssystem"
+
+msgid "Shortcut"
+msgstr "Verkn&uuml;pfung"
+
+msgid "Advertisement"
+msgstr "Werbung"
+
+msgid "Looking for premium themes? Visit "
+msgstr "Suchst Du Premium-Themes? Besuche "
+
+msgid "Avg"
+msgstr "Schnitt"
+
+msgid "Sum"
+msgstr "Summe"
+
+msgid "Unique TOTAL"
+msgstr "Eindeutige Besucher TOTAL"
 
 #: dashboard/browsers.php:37 dashboard/keywords.php:13
 #: dashboard/visitors.php:56 dashboard/websites.php:13
@@ -252,3 +273,5 @@ msgstr "Ja"
 msgid "Show overview on WordPress dashboard"
 msgstr "&Uuml;bersicht auf WordPress Dashboard anzeigen"
 
+msgid "Show Piwik link in overview"
+msgstr "Piwik-Link in &Uuml;bersicht anzeigen"
