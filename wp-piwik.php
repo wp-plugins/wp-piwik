@@ -529,7 +529,6 @@ class wp_piwik {
 				<input type="submit" name="Submit" value="<?php _e('Save settings', 'wp-piwik') ?>" />
 			</p>
 		</form>
-			<p><strong><?php _e('Advertisement', 'wp-piwik'); ?>:</strong> <?php _e('Looking for premium themes? Visit ', 'wp-piwik'); ?> <a href="https://www.e-junkie.com/ecom/gb.php?cl=55482&c=ib&aff=103060">RichWP</a>.</p>
 	</div>
 	<?php $this->credits(); ?>
 </div>
@@ -616,7 +615,8 @@ class wp_piwik {
 /***************************************************************************/ ?>
 	<h2>Credits</h2>
 	<div class="inside">
-		<p>Thank you very much, <a href="http://blogu.programeshqip.org/">Besnik Bleta</a> and <a href="http://www.fatcow.com/">FatCow</a> for your translation work!</p>
+D
+		<p>Thank you very much, <a href="http://blogu.programeshqip.org/">Besnik Bleta</a>, <a href="http://www.fatcow.com/">FatCow</a>, <a href="http://www.pamukkaleturkey.com/">Rene</a> and Fab for your translation work!</p>
 		<p>Thank you very much, all users who send me mails containing criticism, commendation, feature requests and bug reports! You help me to make WP-Piwik much better.</p>
 		<p>Thank <strong>you</strong> for using my plugin. It is the best commendation if my piece of code is really used!</p>
 	</div>

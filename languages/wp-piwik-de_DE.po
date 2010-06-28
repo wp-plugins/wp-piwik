@@ -237,8 +237,8 @@ msgid "Disable Google Chart API"
 msgstr "Google Chart API ausschalten"
 
 #. Plugin URI of an extension
-msgid "http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html"
-msgstr "http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html"
+msgid "http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress"
+msgstr "http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress"
 
 #. Description of an extension
 msgid ""

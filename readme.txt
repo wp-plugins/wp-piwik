@@ -50,6 +50,8 @@ Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP
 
 * Albanian [sq] language file by [Besnik Bleta](http://blogu.programeshqip.org/).
 * Belorussian [be_BY] language file by [FatCow](http://www.fatcow.com/).
+* Dutch [nl_NL] language file by [Rene](http://www.pamukkaleturkey.com/).
+* French [fr_FR] language file by Fab.
 
 Thank you, guys!
 
