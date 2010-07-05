@@ -1,0 +1,259 @@
+# WP-Piwik 0.3.0 - Albanian language file
+# Copyright (C) 2009 Andre Braekling
+# This file is distributed under the same license as the WP-Piwik package.
+# Andre Braekling <webmaster@braekling.de>, 2009.
+# Besnik Bleta <besnik@programeshqip.org>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.3.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-piwik\n"
+"POT-Creation-Date: 2009-06-09 19:05+0000\n"
+"PO-Revision-Date: 2010-06-10 14:39+0200\n"
+"Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
+"Language-Team: Albanian <besnik@programeshqip.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: dashboard/browsers.php:8
+#: dashboard/browsers.php:37
+msgid "Browser"
+msgstr "Shfletues"
+
+msgid "Others"
+msgstr "Të tjerë"
+
+msgid "Resolution"
+msgstr "Qartësi"
+
+msgid "Operating System"
+msgstr "Sistem Operativ"
+
+msgid "Shortcut"
+msgstr "Shkurtore"
+
+msgid "Advertisement"
+msgstr "Reklamë"
+
+msgid "Looking for premium themes? Visit "
+msgstr "Po shihni për tema me pagesë? Vizitoni "
+
+msgid "Avg"
+msgstr "Mes"
+
+msgid "Sum"
+msgstr "Shuma"
+
+msgid "Unique TOTAL"
+msgstr "GJITHSEJ unikë"
+
+#: dashboard/browsers.php:37
+#: dashboard/keywords.php:13
+#: dashboard/visitors.php:56
+#: dashboard/websites.php:13
+msgid "Unique"
+msgstr "Unikë"
+
+#: dashboard/browsers.php:37
+msgid "Percent"
+msgstr "Përqindje"
+
+#: dashboard/keywords.php:8
+msgid "Keywords"
+msgstr "Fjalëkyça"
+
+#: dashboard/keywords.php:13
+msgid "Keyword"
+msgstr "Fjalëkyç"
+
+#: dashboard/overview.php:8
+msgid "Overview"
+msgstr "Përmbledhje"
+
+#: dashboard/overview.php:16
+#: dashboard/visitors.php:21
+msgid "Visitors"
+msgstr "Vizitorë"
+
+#: dashboard/overview.php:17
+msgid "Unique visitors"
+msgstr "Vizitorë unikë"
+
+#: dashboard/overview.php:18
+msgid "Page views"
+msgstr "Parje faqesh"
+
+#: dashboard/overview.php:19
+msgid "Max. page views in one visit"
+msgstr "Maksimum parje faqesh në një vizitë"
+
+#: dashboard/overview.php:20
+msgid "Total time spent by visitors"
+msgstr "Kohë e harxhuar nga vizitorët gjithsej"
+
+#: dashboard/overview.php:21
+msgid "Bounce count"
+msgstr "Numër kthimesh"
+
+#: dashboard/visitors.php:56
+msgid "Date"
+msgstr "Datë"
+
+#: dashboard/visitors.php:56
+msgid "Visits"
+msgstr "Vizita"
+
+#: dashboard/visitors.php:56
+msgid "Bounced"
+msgstr "Të kthyera"
+
+#: dashboard/websites.php:8
+msgid "Websites"
+msgstr "\"Websites\"-e"
+
+#: dashboard/websites.php:13
+msgid "Website"
+msgstr "\"Website\""
+
+#: wp-piwik.php:49
+#: wp-piwik.php:147
+msgid "Piwik Statistics"
+msgstr "Statistika Piwik"
+
+#. #-#-#-#-#  plugin.pot (PACKAGE VERSION)  #-#-#-#-#
+#. Plugin Name of an extension
+#: wp-piwik.php:49
+msgid "WP-Piwik"
+msgstr "WP-Piwik"
+
+#: wp-piwik.php:53
+#: wp-piwik.php:185
+msgid "WP-Piwik Settings"
+msgstr "Rregullime për WP-Piwik"
+
+#: wp-piwik.php:59
+msgid "Settings"
+msgstr "Rregullime"
+
+#: wp-piwik.php:112
+msgid "Remote access to Piwik not possible. Enable allow_url_fopen or CURL."
+msgstr "Nuk arrihet hyrja e largët te Piwik. Aktivizoni allow_url_fopen ose CURL."
+
+#: wp-piwik.php:190
+msgid "Account settings"
+msgstr "Rregullime llogarie"
+
+#: wp-piwik.php:192
+msgid "Piwik URL"
+msgstr "URL Piwik-u"
+
+#: wp-piwik.php:196
+msgid "Auth token"
+msgstr "\"Token\" mirëfilltësimi"
+
+#: wp-piwik.php:200
+msgid "To enable Piwik statistics, please enter your Piwik base URL (like http://mydomain.com/piwik) and your personal authentification token. You can get the token on the API page inside your Piwik interface. It looks like &quot;1234a5cd6789e0a12345b678cd9012ef&quot;."
+msgstr "Për të aktivizuar statistikat Piwik, ju lutem jepni URL-në tuaj bazë për Piwik-un (diçka të ngjashme me http://përkatësiaime.com/piwik) dhe varguan për mirëfilltësimin tuaj personal. Vargun do ta gjeni te faqja për API-n brenda ndërfaqes së Piwik-ut tuaj. Ngjan me diçka si &quot;1234a5cd6789e0a12345b678cd9012ef&quot;."
+
+#: wp-piwik.php:205
+#: wp-piwik.php:207
+msgid "An error occured"
+msgstr "Ndodhi një gabim"
+
+#: wp-piwik.php:205
+msgid "Please check URL and auth token. You need at least view access to one site."
+msgstr "Ju lutem, kontrolloni URL-në dhe vargun e mirëfilltësimit. Keni nevojë për të drejta parjeje të paktën në një \"site\"."
+
+#: wp-piwik:php:215
+msgid "Choose site"
+msgstr "Zgjidhni \"site\""
+
+#: wp-piwik.php:221
+msgid "If your template uses wp_footer(), WP-Piwik can automatically add the Piwik javascript code to your blog."
+msgstr "Po qe se gjedhja juaj përdor wp_footer(), WP-Piwik mund të shtojë vetvetiu te blogu juaj kodin Javascript për Piwik-un."
+
+#: wp-piwik.php:226
+msgid "Add script to wp_footer()"
+msgstr "Shtoje \"script\"-in te wp_footer()"
+
+msgid "Tracking filter"
+msgstr "Filtër Gjurmimesh"
+
+msgid "Choose users by user role you do <strong>not</strong> want to track. Requires enabled &quot;Add script to wp_footer()&quot;-functionality."
+msgstr "Zgjidhni përdoruesa sipas rolit të përdoruesit të cilin <strong>nuk</strong> doni të gjurmohet. Lyp të aktivizuar funksionin &quot;Add script to wp_footer()&quot;."
+
+msgid "Choose users by user role you do <strong>not</strong> want to track."
+msgstr "Zgjidhni përdoruesa sipas rolit të përdoruesit të cilin <strong>nuk</strong> doni të gjurmohet."
+
+msgid "Display statistics to"
+msgstr "Shfaqja statistikat"
+
+msgid "or above"
+msgstr "ose sipër"
+
+msgid "Minimum user level required to display statistics page."
+msgstr "Shkallë minimum e përdoruesit, e domosdoshme për t'i shfaqur faqen e statistikave."
+
+#: wp-piwik.php:229
+msgid "Save settings"
+msgstr "Ruaji rregullimet"
+
+msgid "Currently shown stats:"
+msgstr "Statistika të treguara tani:"
+
+msgid "Change"
+msgstr "Ndryshoje"
+
+msgid "WPMU-Piwik Settings"
+msgstr "Rregullime për WPMU-Piwik"
+
+msgid "<strong>Important note:</strong> You have to choose a token which provides administration access. WPMU-Piwik will create new Piwik sites for each blog if it is shown the first time and it is not added yet. All users can access their own statistics only, while site admins can access all statistics. To avoid conflicts, you should use a clean Piwik installation without other sites added. The provided themes should use wp_footer, because it adds the Piwik javascript code to each page."
+msgstr "<strong>Shënim i rëndësishëm:</strong> Duhet të zgjidhni një \"token\" që lejon hyrje si administrator. WPMU-Piwik do të krijojë \"site\"-e të rinj Piwik për çdo blog, nëse është shfaqur për herë të parë dhe nuk është shtuar ende. Cilido përdorues mund të hyjë vetëm te statistikat e tij, ndërkohë që përgjegjësit e site-it mund të hyjnë në krejt statistikat. Për të shmangur përplasjet, do të duhej të përdornit një instalim nga e para të Piwik-ut, pa \"site\"-e të tjerë të shtuar. Temat e dhëna duhet të përdorin wp_footer, sepse ky shton kodin javascript Piwik te secila faqe."
+
+msgid "<strong>Important note:</strong> If you do not host this blog on your own, your site admin is able to get your auth token from the database. So he is able to access your statistics. You should never use an auth token with more than simple view access!"
+msgstr "<strong>Shënim i rëndësishëm:</strong> Nëse nuk e strehoni vetë këtë blog, përgjegjësi i site-it tuaj është në gjendje të ketë prej bazës së të dhënave \"token\"-in tuaj të mirëfilltësimit. Pra është ne gjendje të hyjë në statistikat tuaja. Kurrë nuk do të duhej të përdornit një \"token\" mirëfilltësimi që lejon më tepër se hyrje të thjeshtë vetëm për parje!"
+
+msgid "WP-Piwik uses the Google Chart API to create graphs. To avoid this, just check this box."
+msgstr "WP-Piwik përdor Google Chart API për krijim grafiqesh. Për ta shmangur këtë, thjesht klikoni këtu."
+
+msgid "Disable Google Chart API"
+msgstr "Çaktivizo API Google Chart"
+
+#. Plugin URI of an extension
+msgid "http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html"
+msgstr "http://dev.braekling.de/wordpress-plugins/dev/wp-piwik/index.html"
+
+#. Description of an extension
+msgid "Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer."
+msgstr "Shton te menuja e pultit tuaj statistika Piwik dhe kodin për Piwik te \"footer\"-i juaj Wordpress."
+
+#. Author of an extension
+msgid "Andr&eacute; Br&auml;kling"
+msgstr "Andr&eacute; Br&auml;kling"
+
+#. Author URI of an extension
+msgid "http://www.braekling.de"
+msgstr "http://www.braekling.de"
+
+msgid "last 30 days"
+msgstr "30 ditët e fundit"
+
+msgid "today"
+msgstr "sot"
+
+msgid "yesterday"
+msgstr "dje"
+
+msgid "No"
+msgstr "Jo"
+
+msgid "Yes"
+msgstr "Po"
+
+msgid "Show overview on WordPress dashboard"
+msgstr "Shfaqe përmbledhjen në pultin e WordPress-it"
+
+msgid "Show Piwik link in overview"
+msgstr "Shfaq te përmbledhja lidhjen Piwik"
+
