@@ -6,7 +6,7 @@ Requires at least: 2.7
 
 Tested up to: 3.0.0
 
-Stable tag: 0.7.0
+Stable tag: 0.7.1
 
 Donate link: http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&filter=all&sort=priority&layout=standard&x=12&y=14
 Tags: statistics, stats, analytics, piwik, wpmu
