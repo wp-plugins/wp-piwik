@@ -26,7 +26,7 @@ Look at the [Piwik website](http://piwik.org/) to get further information about 
 
 License: GNU General Public License Version 3, 29 June 2007
 
-Languages: English, German, Albanian, Belorussian
+Languages: English + Albanian, Belorussian, Dutch, German, French, Swedish
 
 = WPMU =
 Version 0.6.0 includes experimental WPMU support.
@@ -52,6 +52,7 @@ Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP
 * Belorussian [be_BY] language file by [FatCow](http://www.fatcow.com/).
 * Dutch [nl_NL] language file by [Rene](http://www.pamukkaleturkey.com/).
 * French [fr_FR] language file by Fab.
+* Swedish [sv_SE] lanuage file by [EzBizNiz](http://ezbizniz.com/).
 
 Thank you, guys!
 
@@ -72,6 +73,11 @@ Thank you, guys!
 2. WP-Piwik settings.
 
 == Changelog ==
+
+= 0.7.1 =
+* Track 404-pages in an own category
+* Get some page (and article) details
+* Language updates
 
 = 0.7.0 =
 * Bugfix: Percent calculation fixed

@@ -275,3 +275,9 @@ msgstr "&Uuml;bersicht auf WordPress Dashboard anzeigen"
 
 msgid "Show Piwik link in overview"
 msgstr "Piwik-Link in &Uuml;bersicht anzeigen"
+
+msgid "If you add the Piwik javascript code by wp_footer(), WP-Piwik can automatically add a 404-category to track 404-page-visits."
+msgstr "Wenn Du den Piwik JavaScript-Code per wp_footer() einf&uuml;gen l&auml;sst, kann WP-Piwik automatisch eine 404-Kategorie f&uuml;r Aufrufe von 404-Seiten einf&uuml;gen."
+
+msgid "Track 404 pages in own category"
+msgstr "404-Seiten in eigener Kategorie erfassen"

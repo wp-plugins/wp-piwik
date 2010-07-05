@@ -29,8 +29,8 @@ Author URI: http://www.braekling.de
 
 class wp_piwik {
 
-	public static $intRevisionId = 12;
-	public static $intDashboardID = 5;
+	public static $intRevisionId = 13;
+	public static $intDashboardID = 6;
 	public static $bolWPMU = false;
 	public static $bolOverall = false;
 
@@ -74,6 +74,7 @@ class wp_piwik {
 		global $current_user;
 		get_currentuserinfo();
 		$bolDisplay = true;
+		$int404 = get_option('wp-piwik_404');
 		if (!empty($current_user->roles)) {
 			$aryFilter = (self::$bolWPMU?get_site_option('wpmu-piwik_filter'):get_option('wp-piwik_filter'));
 			foreach ($current_user->roles as $strRole)
@@ -85,6 +86,7 @@ class wp_piwik {
 			$aryReturn = $this->create_wpmu_site();
 			$strJSCode = $aryReturn['js'];
 		}
+		if (is_404() and $int404) $strJSCode = str_replace('piwikTracker.trackPageView();', 'piwikTracker.setDocumentTitle(\'404/URL = \'+encodeURIComponent(document.location.pathname+document.location.search) + \'/From = \' + encodeURIComponent(document.referrer));piwikTracker.trackPageView();', $strJSCode);
 		if ($bolDisplay) echo $strJSCode;
 	}
 
@@ -208,7 +210,7 @@ class wp_piwik {
 		return $strResult;
 	}
 
-	function call_API($strMethod, $strPeriod='', $strDate='', $intLimit='') {
+	function call_API($strMethod, $strPeriod='', $strDate='', $intLimit='',$bolExpanded=false) {
 		$strKey = $strMethod.'_'.$strPeriod.'_'.$strDate.'_'.$intLimit;
 		if (empty($this->aryCache[$strKey])) {
 			if (self::$bolWPMU) {
@@ -236,6 +238,7 @@ class wp_piwik {
 			$strURL .= '&idSite='.$intSite.'&period='.$strPeriod.'&date='.$strDate;
 			$strURL .= '&format=PHP&filter_limit='.$intLimit;
 			$strURL .= '&token_auth='.$strToken;
+			$strURL .= '&expanded='.$bolExpanded;
 			$strResult = $this->get_remote_file($strURL);			
 			$this->aryCache[$strKey] = unserialize($strResult);
 		}
@@ -305,7 +308,7 @@ class wp_piwik {
 		if (!$arySortOrder) {
 			// Set default configuration
 			$arySortOrder = array(
-				'side' => 'overview_day_yesterday,keywords_day_yesterday_10,websites_day_yesterday_10,plugins_day_yesterday',
+				'side' => 'overview_day_yesterday,pages_day_yesterday,keywords_day_yesterday_10,websites_day_yesterday_10,plugins_day_yesterday',
 				'normal' => 'visitors_day_last30,browsers_day_yesterday,screens_day_yesterday,systems_day_yesterday'
 			);
 			global $current_user;
@@ -313,10 +316,15 @@ class wp_piwik {
 			update_user_option($current_user->ID, 'meta-box-order_wppiwik', $arySortOrder);
 			update_option('wp-piwik_dashboardid', self::$intDashboardID);
 		} elseif ($intCurrentDashboard < self::$intDashboardID) {
-			$arySortOrder['normal'] .= ',screens_day_yesterday,systems_day_yesterday';
-			$arySortOrder['side'] .= ',plugins_day_yesterday';
+			if ($intCurrentDashboard < 5) {
+				$arySortOrder['normal'] .= ',screens_day_yesterday,systems_day_yesterday';
+				$arySortOrder['side'] .= ',plugins_day_yesterday';
+			}
+			if ($intCurrentDashboard < 6) {
+				$arySortOrder['side'] .= ',pages_day_yesterday';
+			}
 			global $current_user;
-            get_currentuserinfo();
+            		get_currentuserinfo();
 			update_user_option($current_user->ID, 'meta-box-order_wppiwik', $arySortOrder);
 			update_option('wp-piwik_dashboardid', self::$intDashboardID);
 		}
@@ -404,6 +412,7 @@ class wp_piwik {
 		update_option('wp-piwik_disable_gapi', $_POST['wp-piwik_disable_gapi'],'');
 		update_option('wp-piwik_dbwidget', $_POST['wp-piwik_dbwidget'], 0);
 		update_option('wp-piwik_piwiklink', $_POST['wp-piwik_piwiklink'], 0);
+		update_option('wp-piwik_404', $_POST['wp-piwik_404'], 0);
 	}
 
 	function show_settings() { 
@@ -466,6 +475,7 @@ class wp_piwik {
 				if (empty($intSite))
 					update_option('wp-piwik_siteid', $aryData[0]['idsite']);
 				$intSite = get_option('wp-piwik_siteid');
+				$int404 = get_option('wp-piwik_404');
 				$intAddJS = get_option('wp-piwik_addjs');
 				$intDisableGAPI = get_option('wp-piwik_disable_gapi');
 				$intDashboardWidget = get_option('wp-piwik_dbwidget');
@@ -479,8 +489,15 @@ class wp_piwik {
 						':</td><td><input type="checkbox" value="1" name="wp-piwik_addjs" '.
 						($intAddJS?' checked="checked"':'').'/></td></tr>';
 				echo '<tr><td></td><td><span class="setting-description">'.
-						__('If your template uses wp_footer(), WP-Piwik can automatically'.
-							' add the Piwik javascript code to your blog.', 'wp-piwik').
+                                                __('If your template uses wp_footer(), WP-Piwik can automatically'.
+                                                        ' add the Piwik javascript code to your blog.', 'wp-piwik').
+                                                '</span></td></tr>';
+				echo '<tr><td>'.__('Track 404 pages in own category', 'wp-piwik').
+						':</td><td><input type="checkbox" value="1" name="wp-piwik_404" '.
+						($int404?' checked="checked"':'').'/></td></tr>';
+				echo '<tr><td></td><td><span class="setting-description">'.
+						__('If you add the Piwik javascript code by wp_footer(), '.
+							'WP-Piwik can automatically add a 404-category to track 404-page-visits.', 'wp-piwik').
 						'</span></td></tr>';
 				echo '<tr><td>'.__('Disable Google Chart API', 'wp-piwik').
 						':</td><td><input type="checkbox" value="1" name="wp-piwik_disable_gapi" '.
@@ -613,10 +630,28 @@ class wp_piwik {
 
 	function credits() {
 /***************************************************************************/ ?>
-	<h2>Credits</h2>
+	<h2>Donate</h2>
+	<p>If you like WP-Piwik, you can support its development by a donation:</p>
+	<div style="float:left;width:100px;">
+<script type="text/javascript">
+	var flattr_url = 'http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress';
+</script>
+<script src="http://api.flattr.com/button/load.js" type="text/javascript"></script>
+	</div>
+	<div style="float:left;width:200px;">
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="6046779">
+<input type="image" src="https://www.paypal.com/en_GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online.">
+<img alt="" border="0" src="https://www.paypal.com/de_DE/i/scr/pixel.gif" width="1" height="1">
+</form>
+	</div>
+	<div style="float:left;width:300px;">
+		<a href="http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&filter=all&sort=priority&layout=standard&x=12&y=14">My Amazon.de wishlist (German)</a>
+	</div>
+	<h2 style="clear:left;">Credits</h2>
 	<div class="inside">
-D
-		<p>Thank you very much, <a href="http://blogu.programeshqip.org/">Besnik Bleta</a>, <a href="http://www.fatcow.com/">FatCow</a>, <a href="http://www.pamukkaleturkey.com/">Rene</a> and Fab for your translation work!</p>
+		<p>Thank you very much, <a href="http://blogu.programeshqip.org/">Besnik Bleta</a>, <a href="http://www.fatcow.com/">FatCow</a>, <a href="http://www.pamukkaleturkey.com/">Rene</a>, Fab and <a href="http://ezbizniz.com/">EzBizNiz</a> for your translation work!</p>
 		<p>Thank you very much, all users who send me mails containing criticism, commendation, feature requests and bug reports! You help me to make WP-Piwik much better.</p>
 		<p>Thank <strong>you</strong> for using my plugin. It is the best commendation if my piece of code is really used!</p>
 	</div>
