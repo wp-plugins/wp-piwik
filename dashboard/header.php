@@ -4,7 +4,7 @@
 **********************************/
 ?>
 <div id="<?php echo $aryConf['id']; ?>" class="postbox <?php echo ($aryConf['closed']?'if-js-closed':''); ?>" >
-	<div class="handlediv" title="Zum Umschalten klicken">
+	<div class="handlediv" title="Click to toggle">
 		<br />
 	</div>
 	<h3 class='hndle'>
