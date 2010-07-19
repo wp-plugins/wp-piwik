@@ -213,7 +213,7 @@ msgstr "Bitte &uuml;berpr&uuml;fe die URL und den auth token. Du ben&ouml;tigst 
 
 #: wp-piwik.php:492
 msgid "Choose site"
-msgstr "W&auml;hle eine Seite"
+msgstr "Seite"
 
 #: wp-piwik.php:511 wp-piwik.php:547 wp-piwik.php:584 wp-piwik.php:658
 msgid "Save settings"
@@ -225,7 +225,7 @@ msgstr "Tracking-Einstellungen"
 
 #: wp-piwik.php:521
 msgid "Add script"
-msgstr "Skript hinzuf&uuml;gen"
+msgstr "Tracking"
 
 #: wp-piwik.php:525
 msgid "If your template uses wp_footer(), WP-Piwik can automatically add the Piwik javascript code to your blog."
@@ -265,7 +265,7 @@ msgstr "Ja"
 
 #: wp-piwik.php:562
 msgid "Display a dashboard widget to your WordPress dashboard."
-msgstr "F&uuml;gt Deinem WordPress dashboard ein Widget hinzu."
+msgstr "F&uuml;gt Deinem WordPress Dashboard ein Widget hinzu."
 
 #: wp-piwik.php:567
 msgid "Display a shortcut to Piwik itself."

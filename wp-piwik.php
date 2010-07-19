@@ -633,8 +633,7 @@ class wp_piwik {
 						, 'wp-piwik'
 				); ?><br />
 				<?php _e(
-						'<strong>Important note:</strong> You have to choose a token which provides administration access. WPMU-Piwik will create new Piwik sites for each blog if it is shown the first time and it is not added yet. All users can access their own statistics only, while site admins can access all statistics. To avoid conflicts, you should use a clean Piwik installation without other sites added. The provided themes should use wp_footer, because it adds the Piwik javascript code to each page.'
-				);
+						'<strong>Important note:</strong> You have to choose a token which provides administration access. WPMU-Piwik will create new Piwik sites for each blog if it is shown the first time and it is not added yet. All users can access their own statistics only, while site admins can access all statistics. To avoid conflicts, you should use a clean Piwik installation without other sites added. The provided themes should use wp_footer, because it adds the Piwik javascript code to each page.', 'wp-piwik');
 				?>
 				</span></td></tr>
 <?php /************************************************************************/
@@ -668,7 +667,7 @@ class wp_piwik {
 /***************************************************************************/ ?>
 	<div class="wp-piwik-sidebox">
 	<strong>Donate</strong>
-	<p><?php _e('If you like WP-Piwik, you can support its development by a donation:'); ?></p>
+	<p><?php _e('If you like WP-Piwik, you can support its development by a donation:', 'wp-piwik'); ?></p>
 	<div>
 <script type="text/javascript">
 	var flattr_url = 'http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress';
@@ -684,7 +683,7 @@ class wp_piwik {
 </form>
 	</div>
 	<div>
-		<a href="http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&amp;filter=all&amp;sort=priority&amp;layout=standard&amp;x=12&amp;y=14"><?php _e('My Amazon.de wishlist (German)'); ?></a>
+		<a href="http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&amp;filter=all&amp;sort=priority&amp;layout=standard&amp;x=12&amp;y=14"><?php _e('My Amazon.de wishlist (German)', 'wp-piwik'); ?></a>
 	</div>
 	</div>
 <?php /************************************************************************/

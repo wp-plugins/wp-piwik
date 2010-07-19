@@ -2,7 +2,7 @@
 
 Contributors: braekling
 
-Requires at least: 2.7
+Requires at least: 2.9.1
 
 Tested up to: 3.0.0
 
