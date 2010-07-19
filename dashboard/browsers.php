@@ -11,40 +11,20 @@
 	);
 	$aryConf['title'] = __('Browser', 'wp-piwik');
 	include('header.php');
-	$strValues = $strLabels = '';
-	$intSum = 0;
-	foreach ($aryConf['data'] as $aryValues) {
+	$strValues = '';
+	$intCount = 0; $intMore = 0; $intSum = 0;
+	foreach ($aryConf['data'] as $key => $aryValues) {
+		$intCount++;
+		if ($intCount <= 9) $strValues .= '["'.$aryValues['shortLabel'].'",'.$aryValues['nb_uniq_visitors'].'],';
+		else $intMore += $aryValues['nb_uniq_visitors'];
 		$intSum += $aryValues['nb_uniq_visitors'];
 	}
-	$intCount = 0; $intMore = 0;
-	foreach ($aryConf['data'] as $key => $aryValues) {
-		$aryConf['data'][$key]['wp_piwik_percent'] = round(($aryValues['nb_uniq_visitors']/$intSum*100), 2);
-		$intCount++;
-		if ($intCount <= 9) {
-			$strValues .= $aryConf['data'][$key]['wp_piwik_percent'].',';
-			$strLabels .= '|'.urlencode($aryValues['shortLabel']);
-		} else ($intMore += $aryConf['data'][$key]['wp_piwik_percent']);
-	}
-	if ($intMore) {
-		$strValues .= $intMore.',';
-		$strLabels .= '|'.__('Others', 'wp-piwik');
-	}
+	if ($intMore) $strValues .= '["'.__('Others', 'wp-piwik').'",'.$intMore.'],';
 	$strValues = substr($strValues, 0, -1);
-	$strLabels = substr($strLabels, 1);
-	$strBase  = 'http://chart.apis.google.com/chart?'.
-		'cht=p&amp;'.
-		'chs=500x220&amp;'.
-		'chd=t:'.$strValues.'&amp;'.
-		'chl='.$strLabels.'&amp;'.
-		'chco=405A89,C0DAFF&amp;';
-	if (self::$bolWPMU)		
-		$bolDisableGAPI = get_site_option('wpmu-piwik_disable_gapi');
-	else
-		$bolDisableGAPI = get_option('wp-piwik_disable_gapi');
 
 /***************************************************************************/ ?>
 <div class="wp-piwik-graph-wide">
-	<?php if (!$bolDisableGAPI) { ?><img src="<?php echo $strBase.$strGraph; ?>" width="500" height="220" alt="Visits graph" /><?php } ?>
+	<div id="wp-piwik_stats_browsers_graph" style="height:310px;width:490px"></div>
 </div>
 <div class="table">
 	<table class="widefat wp-piwik-table">
@@ -63,13 +43,20 @@
 			'</td><td class="n">'.
 				$aryValues['nb_uniq_visitors'].
 			'</td><td class="n">'.
-				number_format($aryValues['wp_piwik_percent'], 2).
+				number_format($aryValues['nb_uniq_visitors']/$intSum*100, 2).
 			'%</td></tr>';
 	unset($aryTmp);
 /***************************************************************************/ ?>
 		</tbody>
 	</table>
 </div>
+<script type="text/javascript">
+$j.jqplot('wp-piwik_stats_browsers_graph', [[<?php echo $strValues; ?>]], {
+    seriesDefaults:{renderer:$j.jqplot.PieRenderer, rendererOptions:{sliceMargin:8}},
+    legend:{show:true}
+
+});
+</script>
 <?php /************************************************************************/
 	include ('footer.php');
 

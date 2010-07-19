@@ -13,6 +13,7 @@ div.wp-piwik-side div.wp-piwik-graph-wide {
 
 div.wp-piwik-graph-wide {
 	text-align:center;
+	padding-bottom:5px;
 }
 
 table.wp-piwik-table th.n, td.n {
@@ -21,4 +22,64 @@ table.wp-piwik-table th.n, td.n {
 
 table.wp-piwik-table tr:hover {
 	background-color:#ccc;
+}
+div.wp-piwik-sidebox {
+	width:200px;
+	padding:10px;
+	float:right;
+	border:1px solid black;
+	background:#ffc
+}
+div.wp-piwik-sidebox div {
+	width:190px;
+	text-align:center;
+	border-top:1px solid black;
+	padding:5px
+}
+div.wp-piwik-settings-container {
+	margin-right:250px;
+	max-width:1024px;
+}
+div.wp-piwik-settings h4 {
+	float:left;
+	font-family:"Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif !important;
+	font-size:12px !important;
+	font-weight:normal;
+	padding-top:5px !important;
+	text-align:right;
+	width:100px;
+}
+div.wp-piwik-settings h4 label {
+	margin-right:10px;
+	vertical-align:middle;
+}
+div.wp-piwik-settings .input-text-wrap input, 
+div.wp-piwik-settings .input-text-wrap select,
+div.wp-piwik-settings .input-text-wrap textarea,
+div.wp-piwik-settings .input-wrap input {
+	border:0 none;
+	color:#333333;
+	margin:0;
+	outline:medium none;
+	padding:0;
+	width:99%;
+}
+div.wp-piwik-settings .input-wrap {
+	margin:0 0 1em 100px;
+	padding:3px 3px;
+}
+
+div.wp-piwik-settings .input-text-wrap {
+	margin:0 0 1em 100px;
+	border:1px solid #CCCCCC;
+	padding:2px 3px;
+}
+div.wp-piwik_desc {
+	font-size:11px;
+	margin:0 0 10px 100px;
+	padding:0;
+}
+
+div.wp-piwik_desc strong {
+	color:#f00;
 }

@@ -26,7 +26,7 @@ Look at the [Piwik website](http://piwik.org/) to get further information about 
 
 License: GNU General Public License Version 3, 29 June 2007
 
-Languages: English + Albanian, Belorussian, Dutch, German, French, Swedish
+Languages: English, Albanian, Belorussian, Dutch, French, German, Swedish
 
 = WPMU =
 Version 0.6.0 includes experimental WPMU support.
@@ -48,6 +48,7 @@ Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP
 
 = Credits =
 
+* Graphs powered by [jqPlot](http://www.jqplot.com/), an open source project by Chris Leonello. Give it a try! (License: GPL 2.0 and MIT)
 * Albanian [sq] language file by [Besnik Bleta](http://blogu.programeshqip.org/).
 * Belorussian [be_BY] language file by [FatCow](http://www.fatcow.com/).
 * Dutch [nl_NL] language file by [Rene](http://www.pamukkaleturkey.com/).
@@ -69,10 +70,16 @@ Thank you, guys!
 
 == Screenshots ==
 
-1. WP-Piwik stats page.
-2. WP-Piwik settings.
+1. WP-Piwik settings.
+2. WP-Piwik statistics page.
+3. Closer look to a pie chart.
 
 == Changelog ==
+
+= 0.8.0 =
+* Using jqPlot instead of Google Chart API
+* Some facelifting
+* Some minor bugfixes
 
 = 0.7.1 =
 * Track 404-pages in an own category

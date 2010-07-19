@@ -23,43 +23,26 @@
 	);
 	$aryConf['title'] = __('Visitors', 'wp-piwik');
 	include('header.php');
-	$strValues = $strLabels = $strBounced =  $strValuesU = '';
-	$intMax = max($aryConf['data']['Visitors']);
-	while ($intMax % 10 != 0 || $intMax == 0) $intMax++;
-	$intStep = $intMax / 5;
-	if ($intStep < 10) $intStep = 10;
-	else while ($intStep % 10 != 0 && $intStep != 1) $intStep--;
-	$intUSum = 0;
+	$strValues = $strLabels = $strBounced =  $strValuesU = $strCounter = '';
+	$intUSum = $intCount = 0; 
 	foreach ($aryConf['data']['Visitors'] as $strDate => $intValue) {
-		$strValues .= round($intValue/($intMax/100),2).',';
-		$strValuesU .= round($aryConf['data']['Unique'][$strDate]/($intMax/100),2).',';
-		$strBounced .= round($aryConf['data']['Bounced'][$strDate]/($intMax/100),2).',';
-		$strLabels .= '|'.substr($strDate,-2);
+		$intCount++;
+		$strValues .= $intValue.',';
+		$strValuesU .= $aryConf['data']['Unique'][$strDate].',';
+		$strBounced .= $aryConf['data']['Bounced'][$strDate].',';
+		$strLabels .= '['.$intCount.',"'.substr($strDate,-2).'"],';
 		$intUSum += $aryConf['data']['Unique'][$strDate];
 	}
 	$intAvg = round($intUSum/30,0);
-	$intAvgG = round($intAvg/($intMax/100),2);
 	$strValues = substr($strValues, 0, -1);
 	$strValuesU = substr($strValuesU, 0, -1);
+	$strLabels = substr($strLabels, 0, -1);
 	$strBounced = substr($strBounced, 0, -1);
-	$strBase  = 'http://chart.apis.google.com/chart?';
-	$strGraph = 'cht=lc&amp;'.
-		'chg=0,'.round($intStep/($intMax/100),2).',2,2&amp;'.
-		'chs=500x220&amp;'.
-		'chd=t:'.$strValues.'|'.$strValuesU.'|'.$strBounced.'|'.$intAvgG.','.$intAvgG.'&amp;'.
-		'chxl=0:'.$strLabels.'&amp;'.
-		'chco=90AAD9,A0BAE9,E9A0BA,FF0000&amp;'.
-		'chm=B,D4E2ED,0,1,0|B,E4F2FD,1,2,0|B,FDE4F2,2,3,0&amp;'.
-		'chxt=x,y&amp;'.
-		'chxr=1,0,'.$intMax.','.$intStep;
-	if (self::$bolWPMU)		
-		$bolDisableGAPI = get_site_option('wpmu-piwik_disable_gapi');
-	else
-		$bolDisableGAPI = get_option('wp-piwik_disable_gapi');
+	$strCounter = substr($strCounter, 0, -1);
 
 /***************************************************************************/ ?>
 <div class="wp-piwik-graph-wide">
-	<?php if (!$bolDisableGAPI) { ?><img src="<?php echo $strBase.$strGraph; ?>" width="500" height="220" alt="Visits graph" /><?php } ?>
+	<div id="wp-piwik_stats_vistors_graph" style="height:220px;width:490px"></div>
 </div>
 <div class="table">
 	<table class="widefat wp-piwik-table">
@@ -87,6 +70,14 @@
 		</tbody>
 	</table>
 </div>
+<script type="text/javascript">
+$j.jqplot('wp-piwik_stats_vistors_graph', [[<?php echo $strValues; ?>],[<?php echo $strValuesU; ?>],[<?php echo $strBounced;?>]],
+{
+	axes:{yaxis:{min:0, tickOptions:{formatString:'%.0f'}},xaxis:{min:1,max:30,ticks:[<?php echo $strLabels; ?>]}},
+	seriesDefaults:{showMarker:false,lineWidth:1,fill:true,fillAndStroke:true,fillAlpha:0.9,trendline:{show:false,color:'#C00',lineWidth:1.5,type:'exp'}},
+	series:[{color:'#90AAD9',fillColor:'#D4E2ED'},{color:'#A3BCEA',fillColor:'#E4F2FD',trendline:{show:true,label:'Unique visitor trend'}},{color:'#E9A0BA',fillColor:'#FDE4F2'}],
+});
+</script>
 <?php /************************************************************************/
 	include ('footer.php');
 

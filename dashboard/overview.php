@@ -10,7 +10,7 @@
 		$aryConf['params']['limit']
 	);
 	$aryConf['title'] = __('Overview', 'wp-piwik');
-	if (!isset($aryConf['inline']) || isset($aryConf['inline']) != true)
+	if (!isset($aryConf['inline']) || $aryConf['inline'] != true)
 		include('header.php');
 	if ($aryConf['params']['date'] == 'last30') {
 		$aryTmp = array(
@@ -46,7 +46,7 @@
 	echo '<tr><td>'.__('Total time spent by visitors', 'wp-piwik').':</td><td>'.$strTime.'</td></tr>';
 	echo '<tr><td>'.__('Bounce count', 'wp-piwik').':</td><td>'.$aryConf['data']['bounce_count'].'</td></tr>';
 	if (get_option('wp-piwik_piwiklink', 0)) 
-		echo '<tr><td>'.__('Shortcut', 'wp-piwik').':</td><td><a href="'.get_option('wp-piwik_url').'">Piwik</a></td></tr>';
+		echo '<tr><td>'.__('Shortcut', 'wp-piwik').':</td><td><a href="'.get_option('wp-piwik_url').'">Piwik</a>'.(isset($aryConf['inline']) && $aryConf['inline']?' - <a href="?page=wp-piwik/wp-piwik.php">WP-Piwik</a>':'').'</td></tr>';
 
 /***************************************************************************/ ?>
 		</tbody>
