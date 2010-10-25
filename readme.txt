@@ -7,7 +7,7 @@ Stable tag: 0.8.1
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
-This plugin adds a piwik stats site to your WordPress or WordPressMU dashboard.
+This plugin adds a piwik stats site to your WordPress or WordPress multisite dashboard.
 
 == Description ==
 
