@@ -4,7 +4,7 @@ Contributors: Braekling
 Requires at least: 3.0.0
 Tested up to: 3.0.1
 Stable tag: 0.8.0
-Donate link: http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&filter=all&sort=priority&layout=standard&x=12&y=14
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
 This plugin adds a piwik stats site to your WordPress or WordPressMU dashboard.
