@@ -45,7 +45,7 @@ class wp_piwik {
 			$strMOfile = ABSPATH . 'wp-content/'.
 							(self::$bolWPMU?'mu-':'').'plugins/'.
 							basename(dirname(__FILE__)).'/languages/wp-piwik-'.$strLocale.'.mo';
-			load_textdomain('wp-piwik', $strMOfile);
+			load_plugin_textdomain('wp-piwik', $strMOfile);
 		}
 		
 		register_activation_hook(__FILE__, array($this, 'install'));
@@ -205,19 +205,19 @@ class wp_piwik {
 	}
 	
 	function get_plugin_url() {
-		return trailingslashit(WP_CONTENT_URL.'/'.(self::$bolWPMU?'mu-':'').'plugins/'.plugin_basename(dirname(__FILE__)));
+		return trailingslashit(plugins_url().'/wp-piwik/');
 	}
 
-	function get_remote_file($strURL) {
-		if (ini_get('allow_url_fopen'))
-			$strResult = file_get_contents($strURL);
-		elseif (function_exists('curl_init')) {
+	function get_remote_file($strURL) {		
+		if (function_exists('curl_init')) {
 			$c = curl_init($strURL);
 			curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($c, CURLOPT_HEADER, 0);
 			$strResult = curl_exec($c);
 			curl_close($c);
-		} else $strResult = serialize(array(
+		} elseif (ini_get('allow_url_fopen'))
+			$strResult = file_get_contents($strURL);
+		else $strResult = serialize(array(
 				'result' => 'error',
 				'message' => 'Remote access to Piwik not possible. Enable allow_url_fopen or CURL.'
 			));
@@ -442,7 +442,7 @@ class wp_piwik {
 
 		$strToken = get_option('wp-piwik_token');
 		$strURL = get_option('wp-piwik_url');
-		$intSite = get_option('wp-piwik_siteid');
+		$intSite = get_option('wp-piwik_siteid');		
 /***************************************************************************/ ?>
 <div class="wrap">
 	<h2><?php _e('WP-Piwik Settings', 'wp-piwik') ?></h2>
