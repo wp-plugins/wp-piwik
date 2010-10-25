@@ -25,7 +25,7 @@ Look at the [Piwik website](http://piwik.org/) to get further information about 
 
 License: GNU General Public License Version 3, 29 June 2007
 
-Languages: English, Albanian, Belorussian, Dutch, French, German, Swedish
+Languages: English, Albanian, Belorussian, Dutch, French, German, Swedish, Norwegian
 
 = WPMU =
 
