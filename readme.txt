@@ -1,8 +1,8 @@
 === WP-Piwik ===
 
 Contributors: Braekling
-Requires at least: 2.9.1
-Tested up to: 3.0.0
+Requires at least: 3.0.0
+Tested up to: 3.0.1
 Stable tag: 0.8.0
 Donate link: http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&filter=all&sort=priority&layout=standard&x=12&y=14
 Tags: statistics, stats, analytics, piwik, wpmu
@@ -21,24 +21,25 @@ Look at the [Piwik website](http://piwik.org/) to get further information about 
 
 Languages: English, Albanian, Belorussian, Dutch, French, German, Swedish, Norwegian
 
-= WPMU =
+= WP multisite =
 
-Version 0.6.0 includes experimental WPMU support.
+Version 0.6.0 includes experimental WP multisite support.
 
 **Experimental**
 
-The WPMU support is currently experimental. Please test it on your own (e.g. using a local copy of your WPMU) before you use it in an user context.
+The WP multisite support is currently experimental. Please test it on your own (e.g. using a local copy of your WP multisite) before you use it in an user context.
 
 **Simple**
 
 Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP-Piwik and use his own Piwik instance.
 
-**Extended**
+**Extended (WPMU-Piwik)**
 
-1. Add the whole WP-Piwik folder to /wp-content/mu-plugins.
-2. Copy /wp-content/mu-plugins/wp-piwik/wpmu/wpmu-piwik.php to /wp-content/mu-plugins/wpmu-piwik.php.
-3. Go to the WPMU-Piwik settings page and enter the Piwik URL and the auth token. You should use a clear Piwik installation and a token with full admin rights due to avoid conflicts. WPMU-Piwik will add a new site to Piwik each time a new blog is visited the first time.
-4. Users have access to their own statistics, site admins can access each blog's statistics.
+1. Add WP-Piwik to your /wp-content/plugins folder. Open wp-piwik.php
+2. Go to line 30 ($GLOBALS['wp-piwik_wpmu'] = false;)
+3. Change to $GLOBALS['wp-piwik_wpmu'] = true; 
+4. You should use a clear Piwik installation and a token with full admin rights due to avoid conflicts. WPMU-Piwik will add a new site to Piwik each time a new blog is visited the first time.
+5. Users have access to their own statistics, site admins can access each blog's statistics. Please test it on your own (e.g. using a local copy of your WPMU) before you use it in an user context.
 
 = Credits =
 
@@ -47,7 +48,8 @@ Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP
 * Belorussian [be_BY] language file by [FatCow](http://www.fatcow.com/).
 * Dutch [nl_NL] language file by [Rene](http://www.pamukkaleturkey.com/).
 * French [fr_FR] language file by Fab.
-* Swedish [sv_SE] lanuage file by [EzBizNiz](http://ezbizniz.com/).
+* Swedish [sv_SE] language file by [EzBizNiz](http://ezbizniz.com/).
+* Norwegian [no_NO] language file by Gormer.
 
 Thank you, guys!
 
@@ -69,6 +71,14 @@ Thank you, guys!
 3. Closer look to a pie chart.
 
 == Changelog ==
+
+= 0.8.1 =
+* Use load_plugin_textdomain instead of load_textdomain
+* Fixed js/css links if symbolic links are used
+* Changed experimental WPMU support to experimental WP multisite support
+* Try curl() before fopen() to avoid an [OpenSSL bug](http://wordpress.org/support/topic/plugin-wp-piwik-problems-reaching-an-ssl-installation-of-piwiki)
+* Added Norwegian language file by Gormer.
+* Don't worry - new features will follow soon. ;)
 
 = 0.8.0 =
 * Using jqPlot instead of Google Chart API
