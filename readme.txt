@@ -13,7 +13,6 @@ Tags: statistics, stats, analytics, piwik, wpmu
 
 This plugin adds a piwik stats site to your WordPress or WordPressMU dashboard.
 
-
 == Description ==
 
 This plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog using wp_footer.
@@ -26,9 +25,10 @@ Look at the [Piwik website](http://piwik.org/) to get further information about 
 
 License: GNU General Public License Version 3, 29 June 2007
 
-Languages: English, Albanian, Belorussian, Dutch, French, German, Swedish
+Languages: English, Albanian, Belorussian, Dutch, French, German, Swedish, Norwegian
 
 = WPMU =
+
 Version 0.6.0 includes experimental WPMU support.
 
 **Experimental**
