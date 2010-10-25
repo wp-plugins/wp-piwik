@@ -42,11 +42,7 @@ class wp_piwik {
 			$intCurrentRevision = get_site_option('wpmu-piwik_revision', 0);
 		} else $intCurrentRevision = get_option('wp-piwik_revision',0);
 		if ($intCurrentRevision < self::$intRevisionId) $this->install();
-		$strLocale = get_locale();
-		if ( !empty( $strLocale ) ) {
-			$strMOfile = ABSPATH . 'wp-content/plugins/'.basename(dirname(__FILE__)).'/languages/wp-piwik-'.$strLocale.'.mo';
-			load_plugin_textdomain('wp-piwik', $strMOfile);
-		}
+		load_plugin_textdomain('wp-piwik', false, dirname(plugin_basename(__FILE__))."/languages/");
 		
 		register_activation_hook(__FILE__, array($this, 'install'));
 
