@@ -6,7 +6,7 @@ Plugin URI: http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.8.0
+Version: 0.8.2
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -27,6 +27,8 @@ Author URI: http://www.braekling.de
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************************/
 
+$GLOBALS['wp-piwik_wpmu'] = false;
+
 class wp_piwik {
 
 	public static $intRevisionId = 19;
@@ -40,13 +42,7 @@ class wp_piwik {
 			$intCurrentRevision = get_site_option('wpmu-piwik_revision', 0);
 		} else $intCurrentRevision = get_option('wp-piwik_revision',0);
 		if ($intCurrentRevision < self::$intRevisionId) $this->install();
-		$strLocale = get_locale();
-		if ( !empty( $strLocale ) ) {
-			$strMOfile = ABSPATH . 'wp-content/'.
-							(self::$bolWPMU?'mu-':'').'plugins/'.
-							basename(dirname(__FILE__)).'/languages/wp-piwik-'.$strLocale.'.mo';
-			load_plugin_textdomain('wp-piwik', $strMOfile);
-		}
+		load_plugin_textdomain('wp-piwik', false, dirname(plugin_basename(__FILE__))."/languages/");
 		
 		register_activation_hook(__FILE__, array($this, 'install'));
 
@@ -88,6 +84,14 @@ class wp_piwik {
 		if (self::$bolWPMU && empty($strJSCode)) {
 			$aryReturn = $this->create_wpmu_site();
 			$strJSCode = $aryReturn['js'];
+		} elseif (self::$bolWPMU) {
+			$intSettingsUp = get_site_option('wpmu-piwik_settingsupdate', time());
+			$intJavaScriptUp = get_option('wp-piwik_scriptupdate', 0);
+			if ($intJavaScriptUp < $intSettingsUp) {
+				$strJSCode = $this->call_API('SitesManager.getJavascriptTag');
+				update_option('wp-piwik_jscode', $strJSCode);
+				update_option('wp-piwik_scriptupdate', time());
+			}
 		}
 		if (is_404() and $int404) $strJSCode = str_replace('piwikTracker.trackPageView();', 'piwikTracker.setDocumentTitle(\'404/URL = \'+encodeURIComponent(document.location.pathname+document.location.search) + \'/From = \' + encodeURIComponent(document.referrer));piwikTracker.trackPageView();', $strJSCode);
 		if ($bolDisplay) echo $strJSCode;
@@ -185,23 +189,23 @@ class wp_piwik {
 	function load_scripts() {
 		wp_enqueue_script(
 			'wp-piwik',
-			$this->get_plugin_url().(self::$bolWPMU?'wp-piwik/':'').'js/wp-piwik.js',
+			$this->get_plugin_url().'js/wp-piwik.js',
 			array('jquery', 'admin-comments', 'postbox')
 		);
 		wp_enqueue_script(
 			'wp-piwik-jqplot',
-			$this->get_plugin_url().(self::$bolWPMU?'wp-piwik/':'').'js/jqplot/wp-piwik.jqplot.js',
+			$this->get_plugin_url().'js/jqplot/wp-piwik.jqplot.js',
 			array('jquery')
 		);
 	}
 
 	function add_admin_style() {
-		wp_enqueue_style('wp-piwik', $this->get_plugin_url().(self::$bolWPMU?'wp-piwik/':'').'css/wp-piwik.css', array('dashboard'));
+		wp_enqueue_style('wp-piwik', $this->get_plugin_url().'css/wp-piwik.css', array('dashboard'));
 	}
 
 	function add_admin_header() {		
 		echo '<!--[if IE]><script language="javascript" type="text/javascript" src="'.$this->get_plugin_url().(self::$bolWPMU?'wp-piwik/':'').'js/jqplot/excanvas.min.js"></script><![endif]-->';
-		echo '<link rel="stylesheet" href="'.$this->get_plugin_url().(self::$bolWPMU?'wp-piwik/':'').'js/jqplot/jquery.jqplot.min.css" type="text/css"/>';
+		echo '<link rel="stylesheet" href="'.$this->get_plugin_url().'js/jqplot/jquery.jqplot.min.css" type="text/css"/>';
 	}
 	
 	function get_plugin_url() {
@@ -277,6 +281,7 @@ class wp_piwik {
 				$strResult = unserialize($this->get_remote_file($strURL));
 				if (!empty($strResult)) {
 					update_option('wp-piwik_siteid', $strResult);
+					update_option('wp-piwik_scriptupdate', time());
 					$strJavaScript = $this->call_API('SitesManager.getJavascriptTag');
 				}
 			} else $strJavaScript = $this->call_API('SitesManager.getJavascriptTag');
@@ -598,6 +603,7 @@ class wp_piwik {
 		update_site_option('wpmu-piwik_token', $_POST['wp-piwik_token'],'');
 		update_site_option('wpmu-piwik_url', $_POST['wp-piwik_url'],'');
 		update_site_option('wpmu-piwik_filter', $_POST['wp-piwik_filter'],'');
+		update_site_option('wpmu-piwik_settingsupdate', time(),0);
 	}
 
 	function show_mu_settings() { 
@@ -694,7 +700,7 @@ class wp_piwik {
 	<h2 style="clear:left;">Credits</h2>
 	<div class="inside">
 		<p>Graphs powered by <a href="http://www.jqplot.com/">jqPlot</a>, an open source project by Chris Leonello. Give it a try! (License: GPL 2.0 and MIT)</p>
-		<p>Thank you very much, <a href="http://blogu.programeshqip.org/">Besnik Bleta</a>, <a href="http://www.fatcow.com/">FatCow</a>, <a href="http://www.pamukkaleturkey.com/">Rene</a>, Fab and <a href="http://ezbizniz.com/">EzBizNiz</a> for your translation work!</p>
+		<p>Thank you very much, <a href="http://blogu.programeshqip.org/">Besnik Bleta</a>, <a href="http://www.fatcow.com/">FatCow</a>, <a href="http://www.pamukkaleturkey.com/">Rene</a>, Fab, <a href="http://ezbizniz.com/">EzBizNiz</a> and Gormer for your translation work!</p>
 		<p>Thank you very much, all users who send me mails containing criticism, commendation, feature requests and bug reports! You help me to make WP-Piwik much better.</p>
 		<p>Thank <strong>you</strong> for using my plugin. It is the best commendation if my piece of code is really used!</p>
 	</div>
