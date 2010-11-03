@@ -51,7 +51,7 @@ Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP
 * Dutch [nl_NL] language file by [Rene](http://www.pamukkaleturkey.com/).
 * French [fr_FR] language file by Fab.
 * Swedish [sv_SE] language file by [EzBizNiz](http://ezbizniz.com/).
-* Norwegian [no_NO] language file by Gormer.
+* Norwegian [nb_NO] language file by Gormer.
 
 Thank you, guys!
 
