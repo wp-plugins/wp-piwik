@@ -1,9 +1,9 @@
 === WP-Piwik ===
 
 Contributors: Braekling
-Requires at least: 3.0.0
+Requires at least: 3.0
 Tested up to: 3.0.1
-Stable tag: 0.8.1
+Stable tag: 0.8.2
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
@@ -21,9 +21,11 @@ Look at the [Piwik website](http://piwik.org/) to get further information about 
 
 Languages: English, Albanian, Belorussian, Dutch, French, German, Swedish, Norwegian
 
+*Note: If you vote "It's broken", please tell me about your problem. It's hard to fix a bug I don't know about! ;)*
+
 = WP multisite =
 
-Version 0.6.0 includes experimental WP multisite support.
+Version 0.6.0+ includes experimental WP multisite support.
 
 **Experimental**
 
@@ -71,6 +73,9 @@ Thank you, guys!
 3. Closer look to a pie chart.
 
 == Changelog ==
+
+= 0.8.2 =
+* Bugfix: [WPMU URL update bug](http://wordpress.org/support/topic/plugin-wp-piwik-jscode-not-updated-when-saving-new-url-in-wpmu-mode)
 
 = 0.8.1 =
 * Use load_plugin_textdomain instead of load_textdomain

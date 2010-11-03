@@ -6,7 +6,7 @@ Plugin URI: http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.8.1
+Version: 0.8.2
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -84,6 +84,14 @@ class wp_piwik {
 		if (self::$bolWPMU && empty($strJSCode)) {
 			$aryReturn = $this->create_wpmu_site();
 			$strJSCode = $aryReturn['js'];
+		} elseif (self::$bolWPMU) {
+			$intSettingsUp = get_site_option('wpmu-piwik_settingsupdate', time());
+			$intJavaScriptUp = get_option('wp-piwik_scriptupdate', 0);
+			if ($intJavaScriptUp < $intSettingsUp) {
+				$strJSCode = $this->call_API('SitesManager.getJavascriptTag');
+				update_option('wp-piwik_jscode', $strJSCode);
+				update_option('wp-piwik_scriptupdate', time());
+			}
 		}
 		if (is_404() and $int404) $strJSCode = str_replace('piwikTracker.trackPageView();', 'piwikTracker.setDocumentTitle(\'404/URL = \'+encodeURIComponent(document.location.pathname+document.location.search) + \'/From = \' + encodeURIComponent(document.referrer));piwikTracker.trackPageView();', $strJSCode);
 		if ($bolDisplay) echo $strJSCode;
@@ -273,6 +281,7 @@ class wp_piwik {
 				$strResult = unserialize($this->get_remote_file($strURL));
 				if (!empty($strResult)) {
 					update_option('wp-piwik_siteid', $strResult);
+					update_option('wp-piwik_scriptupdate', time());
 					$strJavaScript = $this->call_API('SitesManager.getJavascriptTag');
 				}
 			} else $strJavaScript = $this->call_API('SitesManager.getJavascriptTag');
@@ -594,6 +603,7 @@ class wp_piwik {
 		update_site_option('wpmu-piwik_token', $_POST['wp-piwik_token'],'');
 		update_site_option('wpmu-piwik_url', $_POST['wp-piwik_url'],'');
 		update_site_option('wpmu-piwik_filter', $_POST['wp-piwik_filter'],'');
+		update_site_option('wpmu-piwik_settingsupdate', time(),0);
 	}
 
 	function show_mu_settings() { 
