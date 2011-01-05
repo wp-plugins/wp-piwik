@@ -6,7 +6,7 @@ Plugin URI: http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.8.2
+Version: 0.8.3
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -31,7 +31,7 @@ $GLOBALS['wp-piwik_wpmu'] = false;
 
 class wp_piwik {
 
-	public static $intRevisionId = 19;
+	public static $intRevisionId = 25;
 	public static $intDashboardID = 6;
 	public static $bolWPMU = false;
 	public static $bolOverall = false;
@@ -67,6 +67,7 @@ class wp_piwik {
 		delete_option('wp-piwik_disable_gapi');
 		$intDisplayTo = get_option('wp-piwik_displayto', 8);
 		update_option('wp-piwik_displayto', 'level_'.$intDisplayTo);
+                update_option('wp-piwik_jscode', '');
 	}
 
 	function footer() {
@@ -88,10 +89,13 @@ class wp_piwik {
 			$intSettingsUp = get_site_option('wpmu-piwik_settingsupdate', time());
 			$intJavaScriptUp = get_option('wp-piwik_scriptupdate', 0);
 			if ($intJavaScriptUp < $intSettingsUp) {
-				$strJSCode = $this->call_API('SitesManager.getJavascriptTag');
+				$strJSCode = html_entity_decode($this->call_API('SitesManager.getJavascriptTag'));
 				update_option('wp-piwik_jscode', $strJSCode);
 				update_option('wp-piwik_scriptupdate', time());
 			}
+		} elseif (empty($strJSCode)) {
+			$strJSCode = html_entity_decode($this->call_API('SitesManager.getJavascriptTag'));
+                        update_option('wp-piwik_jscode', $strJSCode);
 		}
 		if (is_404() and $int404) $strJSCode = str_replace('piwikTracker.trackPageView();', 'piwikTracker.setDocumentTitle(\'404/URL = \'+encodeURIComponent(document.location.pathname+document.location.search) + \'/From = \' + encodeURIComponent(document.referrer));piwikTracker.trackPageView();', $strJSCode);
 		if ($bolDisplay) echo $strJSCode;
@@ -282,9 +286,9 @@ class wp_piwik {
 				if (!empty($strResult)) {
 					update_option('wp-piwik_siteid', $strResult);
 					update_option('wp-piwik_scriptupdate', time());
-					$strJavaScript = $this->call_API('SitesManager.getJavascriptTag');
+					$strJavaScript = html_entity_decode($this->call_API('SitesManager.getJavascriptTag'));
 				}
-			} else $strJavaScript = $this->call_API('SitesManager.getJavascriptTag');
+			} else $strJavaScript = html_entity_decode($this->call_API('SitesManager.getJavascriptTag'));
 			update_option('wp-piwik_jscode', $strJavaScript);
 		}
 		return array('js' => $strJavaScript, 'id' => $intSite);
@@ -509,7 +513,7 @@ class wp_piwik {
 				$intAddJS = get_option('wp-piwik_addjs');
 				$intDashboardWidget = get_option('wp-piwik_dbwidget');
 				$intShowLink = get_option('wp-piwik_piwiklink');
-				$strJavaScript = $this->call_API('SitesManager.getJavascriptTag');
+				$strJavaScript = html_entity_decode($this->call_API('SitesManager.getJavascriptTag'));
 				if ($intAddJS)
 					update_option('wp-piwik_jscode', $strJavaScript);
 /***************************************************************************/ ?>

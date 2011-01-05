@@ -3,7 +3,7 @@
 Contributors: Braekling
 Requires at least: 3.0
 Tested up to: 3.0.1
-Stable tag: 0.8.2
+Stable tag: 0.8.3
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
@@ -74,6 +74,9 @@ Thank you, guys!
 3. Closer look to a pie chart.
 
 == Changelog ==
+
+= 0.8.3 =
+* Piwik 1.1+ compatibility fix
 
 = 0.8.2 =
 * Bugfix: [WPMU URL update bug](http://wordpress.org/support/topic/plugin-wp-piwik-jscode-not-updated-when-saving-new-url-in-wpmu-mode)
