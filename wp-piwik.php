@@ -6,12 +6,12 @@ Plugin URI: http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.8.3
+Version: 0.8.4
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
 ****************************************************************************************** 
-	Copyright (C) 2009-2010 Andre Braekling (email: webmaster@braekling.de)
+	Copyright (C) 2009-2011 Andre Braekling (email: webmaster@braekling.de)
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -31,93 +31,115 @@ $GLOBALS['wp-piwik_wpmu'] = false;
 
 class wp_piwik {
 
-	public static $intRevisionId = 25;
-	public static $intDashboardID = 6;
-	public static $bolWPMU = false;
-	public static $bolOverall = false;
+	private static
+		$intRevisionId = 30,
+		$intDashboardID = 6,
+		$bolWPMU = false,
+		$bolOverall = false,
+		$arySettings = array(
+			'revision' => 0,
+			'add_javascript' => false,
+			'dashboard_widget' => 0,
+			'last_settings_update' => 0,
+			'last_tracking_code_update' => 0,
+			'tracking_code' => '',
+			'track_404' => false,			
+		);
 
-	function __construct() {
-		if (isset($GLOBALS['wp-piwik_wpmu']) && $GLOBALS['wp-piwik_wpmu']) {
-			self::$bolWPMU = true;
-			$intCurrentRevision = get_site_option('wpmu-piwik_revision', 0);
-		} else $intCurrentRevision = get_option('wp-piwik_revision',0);
-		if ($intCurrentRevision < self::$intRevisionId) $this->install();
-		load_plugin_textdomain('wp-piwik', false, dirname(plugin_basename(__FILE__))."/languages/");
-		
-		register_activation_hook(__FILE__, array($this, 'install'));
-
-		if (!self::$bolWPMU)
-			add_filter('plugin_row_meta', array($this, 'set_plugin_meta'), 10, 2);
-
-		if (self::$bolWPMU || (get_option('wp-piwik_addjs') == 1)) 
-			add_action('wp_footer', array($this, 'footer'));
-
-		add_action('admin_menu', array($this, 'build_menu'));
-
-		$intDashboardWidget = get_option('wp-piwik_dbwidget', 0);
-		if ($intDashboardWidget > 0) 
-			add_action('wp_dashboard_setup', array($this, 'extend_wp_dashboard_setup'));
-	}
-
-	function install() {
-		if (self::$bolWPMU)
-			update_site_option('wpmu-piwik_revision', self::$intRevisionId);
-		else
-			update_option('wp-piwik_revision', self::$intRevisionId);
-		delete_option('wp-piwik_disable_gapi');
-		$intDisplayTo = get_option('wp-piwik_displayto', 8);
-		update_option('wp-piwik_displayto', 'level_'.$intDisplayTo);
-                update_option('wp-piwik_jscode', '');
-	}
-
-	function footer() {
-		global $current_user;
-		get_currentuserinfo();
-		$bolDisplay = true;
-		$int404 = get_option('wp-piwik_404');
-		if (!empty($current_user->roles)) {
-			$aryFilter = (self::$bolWPMU?get_site_option('wpmu-piwik_filter'):get_option('wp-piwik_filter'));
-			foreach ($current_user->roles as $strRole)
-				if (isset($aryFilter[$strRole]) && $aryFilter[$strRole])
-					$bolDisplay = false;
+	static function loadSettings() {
+		if (isset($GLOBALS['wp-piwik_wpmu']) && $GLOBALS['wp-piwik_wpmu']) self::$bolWPMU = true;
+		if (self::$bolWPMU) {
+			self::$arySettings['revision'] = get_site_option('wpmu-piwik_revision', 0);
+			self::$arySettings['add_tracking_code'] = true;
+			self::$arySettings['last_settings_update'] = get_site_option('wpmu-piwik_settingsupdate', time());
+			self::$arySettings['piwik_token'] = get_site_option('wpmu-piwik_token', '');
+			self::$arySettings['piwik_url'] = get_site_option('wpmu-piwik_url', '');
+			self::$arySettings['dashboard_widget'] = false;			
+		} else {
+			self::$arySettings['revision'] = get_option('wp-piwik_revision',0);
+			self::$arySettings['add_tracking_code'] = get_option('wp-piwik_addjs');
+			self::$arySettings['last_settings_update'] = get_option('wp-piwik_settingsupdate', time());
+			self::$arySettings['piwik_token'] = get_option('wp-piwik_token', '');
+			self::$arySettings['piwik_url'] = get_option('wp-piwik_url', '');
+			self::$arySettings['dashboard_widget'] = get_option('wp-piwik_dbwidget', 0);
 		}
-		$strJSCode = get_option('wp-piwik_jscode', '');
-		if (self::$bolWPMU && empty($strJSCode)) {
+		self::$arySettings['tracking_code'] = get_option('wp-piwik_jscode', '');
+		self::$arySettings['track_404'] = get_option('wp-piwik_404', false);
+		self::$arySettings['last_tracking_code_update'] = get_option('wp-piwik_scriptupdate', 0);
+	}
+	
+	/*
+	 * Constructor
+	 */
+	function __construct() {		
+		// Load current settings
+		self::loadSettings();		
+		// Upgrade?
+		if (self::$arySettings['revision'] < self::$intRevisionId) $this->install();
+		// Load language file
+		load_plugin_textdomain('wp-piwik', false, dirname(plugin_basename(__FILE__))."/languages/");
+		// Call install function on activation
+		register_activation_hook(__FILE__, array($this, 'install'));
+		// Add meta links to plugin details
+		if (!self::$bolWPMU) add_filter('plugin_row_meta', array($this, 'set_plugin_meta'), 10, 2);
+		// Add tracking code to footer if enabled
+		if (self::$arySettings['add_tracking_code']) add_action('wp_footer', array($this, 'footer'));
+		// Add admin menu
+		add_action('admin_menu', array($this, 'build_menu'));
+		// Add dashboard widget if enabled
+		if (self::$arySettings['dashboard_widget'])	add_action('wp_dashboard_setup', array($this, 'extend_wp_dashboard_setup'));
+	}
+
+	/*
+	 * Install or upgrade
+	 */
+	function install() {
+		// Set current revision ID 
+		if (self::$bolWPMU) update_site_option('wpmu-piwik_revision', self::$intRevisionId);
+		else update_option('wp-piwik_revision', self::$intRevisionId);
+		// Remove deprecated option values
+		delete_option('wp-piwik_disable_gapi');
+		delete_option('wp-piwik_displayto');
+		// Reset javascript code to force reload
+		update_option('wp-piwik_jscode', '');
+		// Reload settings
+		self::loadSettings();
+	}
+
+	/*
+	 * Add tracking code
+	 */
+	function footer() {
+		/* TODO: ROLE CHECK */
+		// Handle new WPMU site 
+		if (self::$bolWPMU && empty(self::$arySettings['tracking_code'])) {
 			$aryReturn = $this->create_wpmu_site();
-			$strJSCode = $aryReturn['js'];
+			self::$arySettings['tracking_code'] = $aryReturn['js'];
+		// Handle existing WPMU site		
 		} elseif (self::$bolWPMU) {
-			$intSettingsUp = get_site_option('wpmu-piwik_settingsupdate', time());
-			$intJavaScriptUp = get_option('wp-piwik_scriptupdate', 0);
-			if ($intJavaScriptUp < $intSettingsUp) {
-				$strJSCode = html_entity_decode($this->call_API('SitesManager.getJavascriptTag'));
-				update_option('wp-piwik_jscode', $strJSCode);
+			if (self::$arySettings['last_tracking_code_update'] < self::$arySettings['last_settings_update']) {
+				self::$arySettings['tracking_code'] = html_entity_decode($this->call_API('SitesManager.getJavascriptTag'));
+				update_option('wp-piwik_jscode', self::$arySettings['tracking_code']);
 				update_option('wp-piwik_scriptupdate', time());
 			}
+		// Get code if not known
 		} elseif (empty($strJSCode)) {
-			$strJSCode = html_entity_decode($this->call_API('SitesManager.getJavascriptTag'));
-                        update_option('wp-piwik_jscode', $strJSCode);
+			self::$arySettings['tracking_code'] = html_entity_decode($this->call_API('SitesManager.getJavascriptTag'));
+            update_option('wp-piwik_jscode', self::$arySettings['tracking_code']);
 		}
-		if (is_404() and $int404) $strJSCode = str_replace('piwikTracker.trackPageView();', 'piwikTracker.setDocumentTitle(\'404/URL = \'+encodeURIComponent(document.location.pathname+document.location.search) + \'/From = \' + encodeURIComponent(document.referrer));piwikTracker.trackPageView();', $strJSCode);
-		if ($bolDisplay) echo $strJSCode;
+		// Change code if 404
+		if (is_404() and self::$arySettings['track_404']) self::$arySettings['tracking_code'] = str_replace('piwikTracker.trackPageView();', 'piwikTracker.setDocumentTitle(\'404/URL = \'+encodeURIComponent(document.location.pathname+document.location.search) + \'/From = \' + encodeURIComponent(document.referrer));piwikTracker.trackPageView();', self::$arySettings['tracking_code']);
+		// Send tracking code
+		echo self::$arySettings['tracking_code'];
 	}
 
 	function build_menu() {
-		if (!self::$bolWPMU) {
-			$intDisplayTo = get_option('wp-piwik_displayto', 'administrator');
-			$strToken = get_option('wp-piwik_token');
-			$strPiwikURL = get_option('wp-piwik_url');
-			$bolDashboardWidget = get_option('wp-piwik_dbwidget', false);
-		} else {
-			$intDisplayTo = 'administrator';
-			$strToken = get_site_option('wpmu-piwik_token');
-			$strPiwikURL = get_site_option('wpmu-piwik_url');
-			$bolDashboardWidget = false;
-		}
-		if (!empty($strToken) && !empty($strPiwikURL)) {
+		/* TODO: ROLE CHECK */
+		if (!empty(self::$arySettings['piwik_token']) && !empty(self::$arySettings['piwik_url'])) {
 			$intStatsPage = add_dashboard_page(
 				__('Piwik Statistics', 'wp-piwik'), 
 				__('WP-Piwik', 'wp-piwik'), 
-				$intDisplayTo,
+				0 /* ROLE CHECK */,
 				__FILE__,
 				array($this, 'show_stats')
 			);
@@ -178,15 +200,23 @@ class wp_piwik {
 		$this->create_dashboard_widget('overview', $arySetup);
 	}
 
+	/**
+	 * Add plugin meta links to plugin details
+	 * 
+	 * @see http://wpengineer.com/1295/meta-links-for-wordpress-plugins/
+	 */
 	function set_plugin_meta($strLinks, $strFile) {
+		// Get plugin basename
 		$strPlugin = plugin_basename(__FILE__);
+		// Add link just to this plugin's details
 		if ($strFile == $strPlugin) 
 			return array_merge(
 				$strLinks,
 				array(
-					sprintf('<a href="options-general.php?page=%s">%s</a>', $strPlugin, __('Settings', 'wp-piwik'))
+					sprintf('<a href="options-general.php?uiuiui&page=%s">%s</a>', $strPlugin, __('Settings', 'wp-piwik'))
 				)
-			); 
+			);
+		// Don't affect other plugins details
 		return $strLinks;
 	}
 
