@@ -1,7 +1,7 @@
 === WP-Piwik ===
 
 Contributors: Braekling
-Requires at least: 3.0
+Requires at least: 3.0.1
 Tested up to: 3.1
 Stable tag: 0.8.3
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
