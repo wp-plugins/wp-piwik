@@ -688,7 +688,7 @@ class wp_piwik {
 				echo '</div>';
 				echo '<div class="wp-piwik_desc">'.
 					__('Choose users by user role you do <strong>not</strong> want to track.'.
-					' Requires enabled &quot;Add script to wp_footer()&quot;-functionality.','wp-piwik').'</div>';
+					' Requires enabled &quot;Add script&quot;-functionality.','wp-piwik').'</div>';
 				/***************************************************************************/ ?>
 <div><input type="submit" name="Submit" value="<?php _e('Save settings', 'wp-piwik') ?>" /></div>
 						</div>
@@ -824,13 +824,13 @@ class wp_piwik {
 
 	function credits() {
 /***************************************************************************/ ?>
-	<h2 style="clear:left;">Credits</h2>
+	<h2 style="clear:left;"><?php _e('Credits', 'wp-piwik'); ?></h2>
 	<div class="inside">
-		<p><strong>Thank you very much for your donation:</strong> Marco L., Rolf W., Tobias U., Lars K., Donna F. and all people flattering this!</p>
-		<p>Graphs powered by <a href="http://www.jqplot.com/">jqPlot</a>, an open source project by Chris Leonello. Give it a try! (License: GPL 2.0 and MIT)</p>
-		<p>Thank you very much, <a href="http://blogu.programeshqip.org/">Besnik Bleta</a>, <a href="http://www.fatcow.com/">FatCow</a>, <a href="http://www.pamukkaleturkey.com/">Rene</a>, Fab, <a href="http://ezbizniz.com/">EzBizNiz</a> and Gormer for your translation work!</p>
-		<p>Thank you very much, all users who send me mails containing criticism, commendation, feature requests and bug reports! You help me to make WP-Piwik much better.</p>
-		<p>Thank <strong>you</strong> for using my plugin. It is the best commendation if my piece of code is really used!</p>
+		<p><strong><?php _e('Thank you very much for your donation', 'wp-piwik'); ?>:</strong> Marco L., Rolf W., Tobias U., Lars K., Donna F. <?php _e('and all people flattering this'); ?>!</p>
+		<p><?php _e('Graphs powered by <a href="http://www.jqplot.com/">jqPlot</a>, an open source project by Chris Leonello. Give it a try! (License: GPL 2.0 and MIT)'); ?></p>
+		<p><?php _e('Thank you very much'); ?>, <a href="http://blogu.programeshqip.org/">Besnik Bleta</a>, <a href="http://www.fatcow.com/">FatCow</a>, <a href="http://www.pamukkaleturkey.com/">Rene</a>, Fab, <a href="http://ezbizniz.com/">EzBizNiz</a><?php _e(', and', 'wp-piwik'); ?> Gormer <?php _e('for your translation work'); ?>!</p>
+		<p><?php _e('Thank you very much, all users who send me mails containing criticism, commendation, feature requests and bug reports! You help me to make WP-Piwik much better.'); ?></p>
+		<p><?php _e('Thank <strong>you</strong> for using my plugin. It is the best commendation if my piece of code is really used!'); ?></p>
 	</div>
 <?php /************************************************************************/
 	}
