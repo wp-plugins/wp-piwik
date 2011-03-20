@@ -353,3 +353,15 @@ msgstr "Vielen Dank an alle Nutzer, die mir Mails mit Kritik, Lob, Featurew&uuml
 
 msgid "Thank <strong>you</strong> for using my plugin. It is the best commendation if my piece of code is really used!"
 msgstr "Vielen Dank an <strong>Dich</strong> für die Nutzung meines Plugins. Es ist das gr&ouml;&szlig;te Lob, wenn mein Code tats&auml;chlich benutzt wird!"
+
+msgid "Changes saved"
+msgstr "&Auml;nderungen gespeichert"
+
+msgid "installed"
+msgstr "installiert"
+
+msgid "Next you should connect to Piwik"
+msgstr "Als n&auml;chstes solltest Du eine Verbindung zu Piwik herstellen"
+
+msgid "Please validate your configuration"
+msgstr "Bitte &uuml;berpr&uuml;fe Deine Konfiguration"
