@@ -33,7 +33,8 @@ $GLOBALS['wp-piwik_wpmu'] = false;
 class wp_piwik {
 
 	private static
-		$intRevisionId = 80403,
+		$intRevisionId = 80406,
+		$strVersion = '0.8.4',
 		$intDashboardID = 6,
 		$bolWPMU = false,
 		$bolOverall = false,
@@ -131,6 +132,7 @@ class wp_piwik {
 	 * Install or upgrade
 	 */
 	function install() {
+		
 		// Update: Translate options
 		if (self::$aryGlobalSettings['revision'] < 80403) {
 			// Capability read stats: Translate level to role
@@ -142,7 +144,7 @@ class wp_piwik {
 				'level_0' => array('subscriber' => true, 'contributor' => true, 'author' => true, 'editor' => true, 'administrator' => true)
 			);
 			$strDisplayToLevel = get_option('wp-piwik_displayto','level_10');
-			if (isset($aryTranslate[$strDisplayToLevel])) $aryDisplayToCap = $aryTranslate[$strDisplayToLevel];
+			if (!is_array($strDisplayToLevel) && isset($aryTranslate[$strDisplayToLevel])) $aryDisplayToCap = $aryTranslate[$strDisplayToLevel];
 			else $aryDisplayToCap = array('administrator' => true);
 			// Build settings arrays
 			$aryDashboardWidgetRange = array(0 => false, 1 => 'yesterday', 2 => 'today', 3 => 'last30');
@@ -186,7 +188,8 @@ class wp_piwik {
 				delete_option($strRemoveOption);
 				if (self::$bolWPMU) delete_site_option($strRemoveOption);
 			}
-		};
+			add_action('admin_footer', array($this, 'updateMessage'));
+		};add_action('admin_footer', array($this, 'updateMessage'));
 		// Set current revision ID 
 		self::$aryGlobalSettings['revision'] = self::$intRevisionId;
 		self::$aryGlobalSettings['last_settings_update'] = time();
@@ -197,6 +200,19 @@ class wp_piwik {
 		self::loadSettings();
 	}
 
+	/**
+	 * Send a message after installing/updating
+	 */
+	function updateMessage() {
+		$strText = 'WP-Piwik '.self::$strVersion.' '.__('installed','wp-piwik').'.';
+		$strSettings = (empty(self::$aryGlobalSettings['piwik_token']) && empty(self::$aryGlobalSettings['piwik_url'])?
+			__('Next you should connect to Piwik','wp-piwik'):
+			__('Please validate your configuration','wp-piwik')
+		);
+		$strLink = sprintf('<a href="options-general.php?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'));
+		echo '<div id="message" class="updated fade"><p>'.$strText.' '.$strSettings.': '.$strLink.'.</p></div>';
+	}
+	
 	/**
 	 * Add tracking code
 	 */
@@ -596,7 +612,9 @@ class wp_piwik {
 	function show_settings() { 		
 		$strToken = self::$aryGlobalSettings['piwik_token'];
 		$strURL = self::$aryGlobalSettings['piwik_url'];
-		$intSite = self::$arySettings['site_id'];		
+		$intSite = self::$arySettings['site_id'];
+		if (isset($_POST['action']) && $_POST['action'] == 'save_settings') 
+			echo '<div id="message" class="updated fade"><p>'.__('Changes saved','wp-piwik').'</p></div>';
 /***************************************************************************/ ?>
 <div class="wrap">
 	<h2><?php _e('WP-Piwik Settings', 'wp-piwik') ?></h2>
@@ -752,6 +770,8 @@ class wp_piwik {
 	function show_mu_settings() { 
 		$strToken = self::$aryGlobalSettings['piwik_token'];
 		$strURL = self::$aryGlobalSettings['piwik_url'];
+		if (isset($_POST['action']) && $_POST['action'] == 'save_settings') 
+			echo '<div id="message" class="updated fade"><p>'.__('Changes saved','wp-piwik').'</p></div>';		
 /***************************************************************************/ ?>
 <div class="wrap">
 	<h2><?php _e('WPMU-Piwik Settings', 'wp-piwik') ?></h2>
