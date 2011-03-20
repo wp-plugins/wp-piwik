@@ -1,12 +1,12 @@
 # Translation of the WordPress plugin WP-Piwik 0.8.0 by Andr&eacute; Br&auml;kling.
 # Copyright (C) 2010 Andr&eacute; Br&auml;kling
 # This file is distributed under the same license as the WP-Piwik package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+# Andr&eacute; Br&auml;kling <webmaster@braekling.de>, 2011.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WP-Piwik 0.8.0\n"
+"Project-Id-Version: WP-Piwik 0.8.4\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-piwik\n"
 "POT-Creation-Date: 2010-07-19 18:06+0000\n"
 "PO-Revision-Date: 2010-MO-DA HO:MI+ZONE\n"
