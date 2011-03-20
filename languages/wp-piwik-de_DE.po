@@ -1,12 +1,12 @@
 # Translation of the WordPress plugin WP-Piwik 0.8.0 by Andr&eacute; Br&auml;kling.
 # Copyright (C) 2010 Andr&eacute; Br&auml;kling
 # This file is distributed under the same license as the WP-Piwik package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+# Andr&eacute; Br&auml;kling <webmaster@braekling.de>, 2011.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WP-Piwik 0.8.0\n"
+"Project-Id-Version: WP-Piwik 0.8.4\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-piwik\n"
 "POT-Creation-Date: 2010-07-19 18:06+0000\n"
 "PO-Revision-Date: 2010-MO-DA HO:MI+ZONE\n"
@@ -243,9 +243,11 @@ msgstr "Wenn Du den Piwik-Code per wp_footer() in Dein Blog einbindest, kann WP-
 msgid "Tracking filter"
 msgstr "Tracking-Filter"
 
-#: wp-piwik.php:544 wp-piwik.php:651
 msgid "Choose users by user role you do <strong>not</strong> want to track."
 msgstr "W&auml;hle diejenigen Nutzerrollen, die Du <strong>nicht</strong> erfassen willst."
+
+msgid "Choose users by user role you do <strong>not</strong> want to track. Requires enabled &quot;Add script&quot;-functionality."
+msgstr "W&auml;hle diejenigen Nutzerrollen, die Du <strong>nicht</strong> erfassen willst. Dazu muss die &quot;Tracking&quot;-Funktion aktiviert sein."
 
 #: wp-piwik.php:551
 msgid "Statistic view settings"
@@ -276,10 +278,8 @@ msgid "Display to"
 msgstr "Anzeigen f&uuml;r"
 
 #: wp-piwik.php:579
-msgid ""
-"Choose minimum role required to see the statistics page. (This setting will "
-"<strong>not</strong> affect the dashboard widget.)"
-msgstr "W&auml;hle die Nutzerrolle, die mindestens notwendig ist, um die Statistiken zu sehen. (Diese Einstellung hat <strong>keinen</strong> Einfluss auf das Dashboard-Widget.)"
+msgid "Choose user roles allowed to see the statistics page."
+msgstr "W&auml;hle diejenigen Nutzerrollen, die sich die Statistiken ansehen d&uuml;rfen."
 
 #: wp-piwik.php:612
 msgid "WPMU-Piwik Settings"
@@ -326,3 +326,30 @@ msgstr "Andr&eacute; Br&auml;kling"
 #. Author URI of the plugin/theme
 msgid "http://www.braekling.de"
 msgstr "http://www.braekling.de"
+
+msgid "Credits"
+msgstr "Danksagungen"
+
+msgid "Thank you very much for your donation"
+msgstr "Vielen Dank f&uuml;r eure Spenden"
+
+msgid "and all people flattering this"
+msgstr "und allen Nutzern, die bei Flatter klicken"
+
+msgid "Graphs powered by <a href=\"http://www.jqplot.com/\">jqPlot</a>, an open source project by Chris Leonello. Give it a try! (License: GPL 2.0 and MIT)"
+msgstr "Die Graphen werden mit <a href=\"http://www.jqplot.com/\">jqPlot</a> erstellt, einem Open-Source-Projekt von Chris Leonello. Probiere es mal aus! (Lizenz: GPL 2.0 und MIT)"
+
+msgid "Thank you very much"
+msgstr "Vielen Dank"
+
+msgid ", and"
+msgstr " und"
+
+msgid "for your translation work"
+msgstr "f&uur; eure &Uuml;bersetzungsarbeit"
+
+msgid "Thank you very much, all users who send me mails containing criticism, commendation, feature requests and bug reports! You help me to make WP-Piwik much better."
+msgstr "Vielen Dank an alle Nutzer, die mir Mails mit Kritik, Lob, Featurew&uuml;nsche und Bugmeldungen senden. Ihr helft mir dabei, WP-Piwik viel besser zu machen."
+
+msgid "Thank <strong>you</strong> for using my plugin. It is the best commendation if my piece of code is really used!"
+msgstr "Vielen Dank an <strong>Dich</strong> für die Nutzung meines Plugins. Es ist das gr&ouml;&szlig;te Lob, wenn mein Code tats&auml;chlich benutzt wird!"

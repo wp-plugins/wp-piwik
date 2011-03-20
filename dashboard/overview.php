@@ -20,14 +20,17 @@
 			'nb_uniq_visitors' => 0,
 			'nb_visits' => 0,
 			'nb_visits_converted' => 0,
-			'sum_visit_length' => 0
+			'sum_visit_length' => 0,
+			'bounce_rate' => 0,
+			'nb_actions_per_visit' => 0,
+			'avg_time_on_site' => 0
 		);
 		foreach ($aryConf['data'] as $aryDay) 
 			foreach ($aryDay as $strKey => $strValue)
-				if ($strKey != 'max_actions')
+				if (!in_array($strKey, array('max_actions','bounce_rate','nb_actions_per_visit','avg_time_on_site')))
 					$aryTmp[$strKey] += $strValue;
-				elseif ($aryTmp['max_actions'] < $strValue)
-					$aryTmp['max_actions'] = $strValue;
+				elseif ($aryTmp[$strKey] < $strValue)
+					$aryTmp[$strKey] = $strValue;
 		$aryConf['data'] = $aryTmp;
 	}
 /***************************************************************************/ ?>
@@ -39,12 +42,17 @@
 		floor($aryConf['data']['sum_visit_length']/3600).'h '.
 		floor(($aryConf['data']['sum_visit_length'] % 3600)/60).'m '.
 		floor(($aryConf['data']['sum_visit_length'] % 3600) % 60).'s';
+	$strAvgTime = 
+		floor($aryConf['data']['avg_time_on_site']/3600).'h '.
+		floor(($aryConf['data']['avg_time_on_site'] % 3600)/60).'m '.
+		floor(($aryConf['data']['avg_time_on_site'] % 3600) % 60).'s';
 	echo '<tr><td>'.__('Visitors', 'wp-piwik').':</td><td>'.$aryConf['data']['nb_visits'].'</td></tr>';
 	echo '<tr><td>'.__('Unique visitors', 'wp-piwik').':</td><td>'.$aryConf['data']['nb_uniq_visitors'].'</td></tr>';
-	echo '<tr><td>'.__('Page views', 'wp-piwik').':</td><td>'.$aryConf['data']['nb_actions'].'</td></tr>';
+	echo '<tr><td>'.__('Page views', 'wp-piwik').':</td><td>'.$aryConf['data']['nb_actions'].' (&#8960; '.$aryConf['data']['nb_actions_per_visit'].')</td></tr>';
 	echo '<tr><td>'.__('Max. page views in one visit', 'wp-piwik').':</td><td>'.$aryConf['data']['max_actions'].'</td></tr>';
 	echo '<tr><td>'.__('Total time spent by visitors', 'wp-piwik').':</td><td>'.$strTime.'</td></tr>';
-	echo '<tr><td>'.__('Bounce count', 'wp-piwik').':</td><td>'.$aryConf['data']['bounce_count'].'</td></tr>';
+	echo '<tr><td>'.__('Average time spent by visitors', 'wp-piwik').':</td><td>'.$strAvgTime.'</td></tr>';
+	echo '<tr><td>'.__('Bounce count', 'wp-piwik').':</td><td>'.$aryConf['data']['bounce_count'].' ('.$aryConf['data']['bounce_rate'].')</td></tr>';
 	if (get_option('wp-piwik_piwiklink', 0)) 
 		echo '<tr><td>'.__('Shortcut', 'wp-piwik').':</td><td><a href="'.get_option('wp-piwik_url').'">Piwik</a>'.(isset($aryConf['inline']) && $aryConf['inline']?' - <a href="?page=wp-piwik/wp-piwik.php">WP-Piwik</a>':'').'</td></tr>';
 

@@ -1,8 +1,8 @@
 === WP-Piwik ===
 
 Contributors: Braekling
-Requires at least: 3.0
-Tested up to: 3.0.1
+Requires at least: 3.0.1
+Tested up to: 3.1
 Stable tag: 0.8.3
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
@@ -13,7 +13,7 @@ This plugin adds a piwik stats site to your WordPress or WordPress multisite das
 
 This plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog using wp_footer.
 
-You need a running Piwik installation and at least view access to your stats. Also PHP 5 or higher is strictly required.
+**You need a running Piwik installation** and at least view access to your stats. Also PHP 5 or higher is strictly required.
 
 
 Look at the [Piwik website](http://piwik.org/) to get further information about Piwik.
@@ -74,6 +74,13 @@ Thank you, guys!
 3. Closer look to a pie chart.
 
 == Changelog ==
+
+= 0.8.4 =
+* New stats in overview box
+* WP 3.x compability fixes (capability and deprecated function warnings)
+* Some minor bugfixes
+* New config handling
+* Code clean up (not finished)
 
 = 0.8.3 =
 * Piwik 1.1+ compatibility fix

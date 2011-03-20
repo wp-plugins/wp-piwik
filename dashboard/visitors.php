@@ -58,7 +58,7 @@
 <?php /************************************************************************/
 	$aryTmp = array_reverse($aryConf['data']['Visitors']);
 	foreach ($aryTmp as $strDate => $intValue)
-		echo '<tr onclick="javascript:datelink(\''.str_replace('-', '', $strDate).'\');"><td>'.$strDate.'</td><td class="n">'.
+		echo '<tr onclick="javascript:datelink(\''.urlencode(self::$strPluginBasename).'\',\''.str_replace('-', '', $strDate).'\');"><td>'.$strDate.'</td><td class="n">'.
 			$intValue.'</td><td class="n">'.
 			$aryConf['data']['Unique'][$strDate].
 			'</td><td class="n">'.
