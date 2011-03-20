@@ -28,7 +28,7 @@ Author URI: http://www.braekling.de
 *******************************************************************************************/
 
 // Change this to enable *experimental* multisite-mode
-$GLOBALS['wp-piwik_wpmu'] = true;
+$GLOBALS['wp-piwik_wpmu'] = false;
 
 class wp_piwik {
 
