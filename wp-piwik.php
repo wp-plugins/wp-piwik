@@ -28,7 +28,7 @@ Author URI: http://www.braekling.de
 *******************************************************************************************/
 
 // Change this to enable *experimental* multisite-mode
-$GLOBALS['wp-piwik_wpmu'] = false;
+$GLOBALS['wp-piwik_wpmu'] = true;
 
 class wp_piwik {
 
@@ -37,6 +37,7 @@ class wp_piwik {
 		$intDashboardID = 6,
 		$bolWPMU = false,
 		$bolOverall = false,
+		$strPluginBasename = NULL,
 		$aryGlobalSettings = array(
 			'revision' 				=> 0,
 			'add_tracking_code' 	=> false,
@@ -59,7 +60,7 @@ class wp_piwik {
 	/**
 	 * Load plugin settings 
 	 */
-	static function loadSettings() {
+	static function loadSettings() {		
 		// Running as multisite?
 		if (isset($GLOBALS['wp-piwik_wpmu']) && $GLOBALS['wp-piwik_wpmu']) self::$bolWPMU = true;
 		// Get global settings depending on mode
@@ -97,7 +98,9 @@ class wp_piwik {
 	/**
 	 * Constructor
 	 */
-	function __construct() {		
+	function __construct() {
+		// Store plugin basename
+		self::$strPluginBasename = plugin_basename(__FILE__);
 		// Load current settings
 		self::loadSettings();
 		// Upgrade?
@@ -106,7 +109,7 @@ class wp_piwik {
 		if (isset($_POST['action']) && $_POST['action'] == 'save_settings')
 			$this->applySettings();
 		// Load language file
-		load_plugin_textdomain('wp-piwik', false, dirname(plugin_basename(__FILE__))."/languages/");
+		load_plugin_textdomain('wp-piwik', false, dirname(self::$strPluginBasename)."/languages/");
 		// Call install function on activation
 		register_activation_hook(__FILE__, array($this, 'install'));
 		// Add meta links to plugin details
@@ -198,7 +201,13 @@ class wp_piwik {
 	 * Add tracking code
 	 */
 	function footer() {
-		if (!self::$aryGlobalSettings['add_tracking_code'] || current_user_can('wp-piwik_stealth')) return;
+		// Hotfix: Custom capability problem with WP multisite
+		if (self::$bolWPMU) {
+			foreach (self::$aryGlobalSettings['capability_stealth'] as $strKey => $strVal)
+				if ($strVal && current_user_can($strKey))
+					return;
+		// Add tracking code?
+		} elseif (current_user_can('wp-piwik_stealth')) return;
 		// Handle new WPMU site 
 		if (self::$bolWPMU && empty(self::$arySettings['tracking_code'])) {
 			$aryReturn = $this->create_wpmu_site();
@@ -234,7 +243,7 @@ class wp_piwik {
 			$intStatsPage = add_dashboard_page(
 				__('Piwik Statistics', 'wp-piwik'), 
 				__('WP-Piwik', 'wp-piwik'), 
-				'wp-piwik_read_stats',
+				(!self::$bolWPMU?'wp-piwik_read_stats':'administrator'),
 				__FILE__,
 				array($this, 'show_stats')
 			);
@@ -256,7 +265,7 @@ class wp_piwik {
 				array($this, 'show_settings')
 			);
 		// Add options page if multi-user and current user is site admin
-		elseif (is_site_admin())
+		elseif (function_exists('is_super_admin') && is_super_admin())
 			// Add options page
 			$intOptionsPage = add_options_page(
 				__('WPMU-Piwik', 'wpmu-piwik'),
@@ -265,8 +274,10 @@ class wp_piwik {
 				__FILE__,
 				array($this, 'show_mu_settings')
 			);
+		else $intOptionsPage = false;
 		// Add styles required by options page
-		add_action('admin_print_styles-'.$intOptionsPage, array($this, 'add_admin_style'));
+		if ($intOptionsPage)
+			add_action('admin_print_styles-'.$intOptionsPage, array($this, 'add_admin_style'));
 	}
 
 	function extend_wp_dashboard_setup() {
@@ -299,11 +310,11 @@ class wp_piwik {
 		// Get plugin basename
 		$strPlugin = plugin_basename(__FILE__);
 		// Add link just to this plugin's details
-		if ($strFile == $strPlugin) 
+		if ($strFile == self::$strPluginBasename) 
 			return array_merge(
 				$strLinks,
 				array(
-					sprintf('<a href="options-general.php?page=%s">%s</a>', $strPlugin, __('Settings', 'wp-piwik'))
+					sprintf('<a href="options-general.php?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'))
 				)
 			);
 		// Don't affect other plugins details
@@ -514,16 +525,17 @@ class wp_piwik {
 	<h2><?php _e('Piwik Statistics', 'wp-piwik'); ?></h2>
 <?php /************************************************************************/
 
-		if (self::$bolWPMU && function_exists('is_site_admin') && is_site_admin()) {
+		if (self::$bolWPMU && function_exists('is_super_admin') && is_super_admin()) {
 			if (isset($_POST['wpmu_show_stats']))
 				/*if ($_POST['wpmu_show_stats'] == 'all') self::$bolOverall = true;
 				else*/ switch_to_blog((int) $_POST['wpmu_show_stats']);
 			global $blog_id;
-			$aryBlogs = get_blog_list(0, 'all');
+			global $wpdb;
+			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM wp_blogs ORDER BY blog_id'));			
 			echo '<form method="POST" action="">'."\n";
 			echo '<select name="wpmu_show_stats">'."\n";
 			foreach ($aryBlogs as $aryBlog) {
-				$objBlog = get_blog_details($aryBlog['blog_id'], true);
+				$objBlog = get_blog_details($aryBlog->blog_id, true);
 				echo '<option value="'.$objBlog->blog_id.'"'.($blog_id == $objBlog->blog_id?' selected="selected"':'').'>'.$objBlog->blogname.'</option>'."\n";
 			}
 			echo '</select><input type="submit" value="'.__('Change').'" />'."\n ";
@@ -560,7 +572,7 @@ class wp_piwik {
 	</div>
 </div>
 <?php /************************************************************************/
-		if (self::$bolWPMU && function_exists('is_site_admin') && is_site_admin()) {
+		if (self::$bolWPMU && function_exists('is_super_admin') && is_super_admin()) {
 			restore_current_blog(); self::$bolOverall = false;
 		}
 	}
@@ -569,7 +581,6 @@ class wp_piwik {
 		if (!self::$bolWPMU) {
 			self::$aryGlobalSettings['add_tracking_code']  		= (isset($_POST['wp-piwik_addjs'])?$_POST['wp-piwik_addjs']:'');
 			self::$aryGlobalSettings['dashboard_widget'] 	 	= (isset($_POST['wp-piwik_dbwidget'])?$_POST['wp-piwik_dbwidget']:false);
-			self::$aryGlobalSettings['capability_read_stats'] 	= (isset($_POST['wp-piwik_displayto'])?$_POST['wp-piwik_displayto']:array());
 			self::$aryGlobalSettings['piwik_shortcut']	 		= (isset($_POST['wp-piwik_piwiklink'])?$_POST['wp-piwik_piwiklink']:false);
 			self::$arySettings['site_id']			 		 	= (isset($_POST['wp-piwik_siteid'])?$_POST['wp-piwik_siteid']:NULL);
 			self::$arySettings['track_404'] 			 	 	= (isset($_POST['wp-piwik_404'])?$_POST['wp-piwik_404']:false);
@@ -577,6 +588,7 @@ class wp_piwik {
 		self::$aryGlobalSettings['piwik_token'] 		 	= (isset($_POST['wp-piwik_token'])?$_POST['wp-piwik_token']:'');
 		self::$aryGlobalSettings['piwik_url'] 		 		= (isset($_POST['wp-piwik_url'])?$_POST['wp-piwik_url']:'');
 		self::$aryGlobalSettings['capability_stealth'] 		= (isset($_POST['wp-piwik_filter'])?$_POST['wp-piwik_filter']:array());
+		self::$aryGlobalSettings['capability_read_stats'] 	= (isset($_POST['wp-piwik_displayto'])?$_POST['wp-piwik_displayto']:array());
 		self::$aryGlobalSettings['last_settings_update'] 	= time();
 		self::saveSettings();
 	}
@@ -744,53 +756,68 @@ class wp_piwik {
 <div class="wrap">
 	<h2><?php _e('WPMU-Piwik Settings', 'wp-piwik') ?></h2>
 	<?php $this->donate(); ?>
-	<div class="inside">
 		<form method="post" action="">
-			<table class="form-table">
-				<tr><td colspan="2"><h3><?php _e('Account settings', 'wp-piwik'); ?></h3></td></tr>
-				<tr>
-					<td><?php _e('Piwik URL', 'wp-piwik'); ?>:</td>
-					<td><input type="text" name="wp-piwik_url" id="wp-piwik_url" value="<?php echo $strURL; ?>" /></td>
-				</tr>
-				<tr>
-					<td><?php _e('Auth token', 'wp-piwik'); ?>:</td>
-					<td><input type="text" name="wp-piwik_token" id="wp-piwik_token" value="<?php echo $strToken; ?>" /></td>
-				</tr>
-				<tr><td></td><td><span class="setting-description">
-				<?php _e(
-						'To enable Piwik statistics, please enter your Piwik'.
-						' base URL (like http://mydomain.com/piwik) and your'.
-						' personal authentification token. You can get the token'.
-						' on the API page inside your Piwik interface. It looks'.
-						' like &quot;1234a5cd6789e0a12345b678cd9012ef&quot;.'
-						, 'wp-piwik'
-				); ?><br />
-				<?php _e(
-						'<strong>Important note:</strong> You have to choose a token which provides administration access. WPMU-Piwik will create new Piwik sites for each blog if it is shown the first time and it is not added yet. All users can access their own statistics only, while site admins can access all statistics. To avoid conflicts, you should use a clean Piwik installation without other sites added. The provided themes should use wp_footer, because it adds the Piwik javascript code to each page.', 'wp-piwik');
-				?>
-				</span></td></tr>
+		<div id="dashboard-widgets-wrap">
+			<div id="dashboard-widgets" class="metabox-holder">
+				<div class="wp-piwik-settings-container" id="postbox-container">
+					<div class="postbox wp-piwik-settings" >
+					<h3 class='hndle'><span><?php _e('Account settings', 'wp-piwik'); ?></span></h3>
+						<div class="inside">
+							<h4><label for="wp-piwik_url"><?php _e('Piwik URL', 'wp-piwik'); ?>:</label></h4>
+								<div class="input-text-wrap">
+									<input type="text" name="wp-piwik_url" id="wp-piwik_url" value="<?php echo $strURL; ?>" />
+								</div>
+							<h4><label for="wp-piwik_token"><?php _e('Auth token', 'wp-piwik'); ?>:</label></h4>
+								<div class="input-text-wrap">
+									<input type="text" name="wp-piwik_token" id="wp-piwik_token" value="<?php echo $strToken; ?>" />
+								</div>
+								<div class="wp-piwik_desc">
+								<?php _e(
+									'To enable Piwik statistics, please enter your Piwik'.
+									' base URL (like http://mydomain.com/piwik) and your'.
+									' personal authentification token. You can get the token'.
+									' on the API page inside your Piwik interface. It looks'.
+									' like &quot;1234a5cd6789e0a12345b678cd9012ef&quot;.'
+									, 'wp-piwik'
+								); ?>
+								</div>
+								<div class="wp-piwik_desc">
+								<?php _e(
+									'<strong>Important note:</strong> You have to choose a token which provides administration access. WPMU-Piwik will create new Piwik sites for each blog if it is shown the first time and it is not added yet. All users can access their own statistics only, while site admins can access all statistics. To avoid conflicts, you should use a clean Piwik installation without other sites added. The provided themes should use wp_footer, because it adds the Piwik javascript code to each page.', 'wp-piwik');
+								?>
+								</div>
 <?php /************************************************************************/
-		if (!empty($strToken) && !empty($strURL)) { 
+		if (!empty($strToken) && !empty($strURL)) {
 			global $wp_roles;
-			?><tr><td colspan="2"><h3><?php _e('Tracking settings', 'wp-piwik'); ?></h3></td></tr><?php
-			echo '<tr><td>'.__('Tracking filter', 'wp-piwik').':</td><td>';
+			echo '<h4><label>'.__('Tracking filter', 'wp-piwik').':</label></h4>';
+			echo '<div class="input-wrap">';
 			$aryFilter = self::$aryGlobalSettings['capability_stealth'];
 			foreach($wp_roles->role_names as $strKey => $strName)  {
 				echo '<input type="checkbox" '.(isset($aryFilter[$strKey]) && $aryFilter[$strKey]?'checked="checked" ':'').'value="1" name="wp-piwik_filter['.$strKey.']" /> '.$strName.' &nbsp; ';
+			};
+			echo '</div>';
+			echo '<div class="wp-piwik_desc">'.
+				__('Choose users by user role you do <strong>not</strong> want to track.', 'wp-piwik').'</div>';
+			
+			/*echo '<h4><label>'.__('Display to', 'wp-piwik').':</label></h4>';
+			echo '<div class="input-wrap">';
+			$intDisplayTo = self::$aryGlobalSettings['capability_read_stats'];
+			foreach($wp_roles->role_names as $strKey => $strName) {
+				$role = get_role($strKey);						
+				echo '<input name="wp-piwik_displayto['.$strKey.']" type="checkbox" value="1"'.(isset(self::$aryGlobalSettings['capability_read_stats'][$strKey]) && self::$aryGlobalSettings['capability_read_stats'][$strKey]?' checked="checked"':'').'/> '.$strName.' &nbsp; ';
 			}
-			echo '</td></tr>';
-			echo '<tr><td></td><td><span class="setting-description">'.
-					__('Choose users by user role you do <strong>not</strong> want to track.', 'wp-piwik').
-					'</span></td></tr>';
+			echo '</div><div class="wp-piwik_desc">'.
+				__('Choose user roles allowed to see the statistics page.', 'wp-piwik').
+				'</div>';*/				
 		}
 /***************************************************************************/ ?>
-			</table>
-			<input type="hidden" name="action" value="save_settings" />
-			<p class="submit">
-				<input type="submit" name="Submit" value="<?php _e('Save settings', 'wp-piwik') ?>" />
-			</p>
+			<div><input type="submit" name="Submit" value="<?php _e('Save settings', 'wp-piwik') ?>" /></div>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" name="action" value="save_settings" />
+		</div></div>		
 		</form>
-	</div>
 	<?php $this->credits(); ?>
 </div>
 <?php /************************************************************************/

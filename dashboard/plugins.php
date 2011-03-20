@@ -41,7 +41,10 @@
 			'</td><td class="n">'.
 				$aryValues['nb_visits'].
 			'</td><td class="n">'.
-				number_format(($aryValues['nb_visits']/$intTotalVisits*100),2).
+				($intTotalVisits != 0?
+					number_format(($aryValues['nb_visits']/$intTotalVisits*100),2):
+					'0.00%'
+				).
 			'%</td></tr>';
 	unset($aryTmp);
 /***************************************************************************/ ?>

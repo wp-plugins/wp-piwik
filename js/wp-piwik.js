@@ -4,6 +4,6 @@ jQuery( function($) {
 	postboxes.add_postbox_toggles('wppiwik');
 } );
 
-function datelink(strDate) {
-	window.location.href='index.php?page=wp-piwik/wp-piwik.php&date='+strDate;
+function datelink(strPage,strDate) {
+	window.location.href='index.php?page='+strPage+'&date='+strDate;
 }

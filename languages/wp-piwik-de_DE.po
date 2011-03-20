@@ -243,6 +243,9 @@ msgstr "Wenn Du den Piwik-Code per wp_footer() in Dein Blog einbindest, kann WP-
 msgid "Tracking filter"
 msgstr "Tracking-Filter"
 
+msgid "Choose users by user role you do <strong>not</strong> want to track."
+msgstr "W&auml;hle diejenigen Nutzerrollen, die Du <strong>nicht</strong> erfassen willst."
+
 msgid "Choose users by user role you do <strong>not</strong> want to track. Requires enabled &quot;Add script&quot;-functionality."
 msgstr "W&auml;hle diejenigen Nutzerrollen, die Du <strong>nicht</strong> erfassen willst. Dazu muss die &quot;Tracking&quot;-Funktion aktiviert sein."
 
