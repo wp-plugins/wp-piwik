@@ -6,7 +6,7 @@ Plugin URI: http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.8.4
+Version: 0.8.5
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -33,8 +33,8 @@ $GLOBALS['wp-piwik_wpmu'] = false;
 class wp_piwik {
 
 	private static
-		$intRevisionId = 80406,
-		$strVersion = '0.8.4',
+		$intRevisionId = 80502,
+		$strVersion = '0.8.5',
 		$intDashboardID = 6,
 		$bolWPMU = false,
 		$bolOverall = false,
@@ -48,7 +48,8 @@ class wp_piwik {
 			'dashboard_widget' 		=> false,
 			'capability_stealth' 	=> array(),
 			'capability_read_stats' => array('administrator' => true),
-			'piwik_shortcut' 		=> false
+			'piwik_shortcut' 		=> false,
+			'default_date'			=> 'yesterday'
 		),
 		$arySettings = array(
 			'tracking_code' 			=> '',
@@ -157,7 +158,7 @@ class wp_piwik {
 				'dashboard_widget' 		=> false,
 				'capability_stealth' 	=> get_site_option('wpmu-piwik_filter', array()),
 				'capability_read_stats' => $aryDisplayToCap,
-				'piwik_shortcut' 		=> false
+				'piwik_shortcut' 		=> false,
 			);		
 			else self::$aryGlobalSettings = array(
 				'revision' 				=> get_option('wp-piwik_revision',0),
@@ -168,7 +169,7 @@ class wp_piwik {
 				'dashboard_widget' 		=> $aryDashboardWidgetRange[get_option('wp-piwik_dbwidget', 0)],			
 				'capability_stealth' 	=> get_option('wp-piwik_filter', array()),
 				'capability_read_stats' => $aryDisplayToCap,
-				'piwik_shortcut' 		=> get_option('wp-piwik_piwiklink',false)
+				'piwik_shortcut' 		=> get_option('wp-piwik_piwiklink',false),
 			);
 			self::$arySettings = array(
 				'tracking_code' => '',
@@ -187,9 +188,12 @@ class wp_piwik {
 			foreach ($aryRemoveOptions as $strRemoveOption) {
 				delete_option($strRemoveOption);
 				if (self::$bolWPMU) delete_site_option($strRemoveOption);
-			}
-			add_action('admin_footer', array($this, 'updateMessage'));
-		};add_action('admin_footer', array($this, 'updateMessage'));
+			}			
+		};
+		if (self::$aryGlobalSettings['revision'] < 80502) {
+			self::$aryGlobalSettings['default_date'] = 'yesterday';
+		}
+		add_action('admin_footer', array($this, 'updateMessage'));
 		// Set current revision ID 
 		self::$aryGlobalSettings['revision'] = self::$intRevisionId;
 		self::$aryGlobalSettings['last_settings_update'] = time();
@@ -532,6 +536,8 @@ class wp_piwik {
 					);
 					if (isset($_GET['date']) && preg_match('/^[0-9]{8}$/', $_GET['date']) && $aryParams[0] != 'visitors')
 						$aryDashboard[$strCol][$aryParams[0]]['params']['date'] = $_GET['date'];
+					elseif ($aryParams[0] != 'visitors') 
+						$aryDashboard[$strCol][$aryParams[0]]['params']['date'] = self::$aryGlobalSettings['default_date'];
 			}
 		}
 /***************************************************************************/ ?>
@@ -595,11 +601,12 @@ class wp_piwik {
 
 	function applySettings() {
 		if (!self::$bolWPMU) {
-			self::$aryGlobalSettings['add_tracking_code']  		= (isset($_POST['wp-piwik_addjs'])?$_POST['wp-piwik_addjs']:'');
-			self::$aryGlobalSettings['dashboard_widget'] 	 	= (isset($_POST['wp-piwik_dbwidget'])?$_POST['wp-piwik_dbwidget']:false);
-			self::$aryGlobalSettings['piwik_shortcut']	 		= (isset($_POST['wp-piwik_piwiklink'])?$_POST['wp-piwik_piwiklink']:false);
-			self::$arySettings['site_id']			 		 	= (isset($_POST['wp-piwik_siteid'])?$_POST['wp-piwik_siteid']:NULL);
-			self::$arySettings['track_404'] 			 	 	= (isset($_POST['wp-piwik_404'])?$_POST['wp-piwik_404']:false);
+			self::$aryGlobalSettings['add_tracking_code']  	= (isset($_POST['wp-piwik_addjs'])?$_POST['wp-piwik_addjs']:'');
+			self::$aryGlobalSettings['dashboard_widget'] 	= (isset($_POST['wp-piwik_dbwidget'])?$_POST['wp-piwik_dbwidget']:false);
+			self::$aryGlobalSettings['piwik_shortcut']	 	= (isset($_POST['wp-piwik_piwiklink'])?$_POST['wp-piwik_piwiklink']:false);
+			self::$arySettings['site_id']			 		= (isset($_POST['wp-piwik_siteid'])?$_POST['wp-piwik_siteid']:NULL);
+			self::$arySettings['track_404'] 			 	= (isset($_POST['wp-piwik_404'])?$_POST['wp-piwik_404']:false);
+			self::$aryGlobalSettings['default_date'] 		= (isset($_POST['wp-piwik_default_date'])?$_POST['wp-piwik_default_date']:'yesterday');
 		}
 		self::$aryGlobalSettings['piwik_token'] 		 	= (isset($_POST['wp-piwik_token'])?$_POST['wp-piwik_token']:'');
 		self::$aryGlobalSettings['piwik_url'] 		 		= (isset($_POST['wp-piwik_url'])?$_POST['wp-piwik_url']:'');
@@ -741,6 +748,13 @@ class wp_piwik {
 						($intShowLink?' checked="checked"':"").'/></div>';
 				echo '<div class="wp-piwik_desc">'.
 					__('Display a shortcut to Piwik itself.', 'wp-piwik').'</div>';
+				echo '<h4><label for="wp-piwik_default_date">'.__('Default date', 'wp-piwik').':</label></h4>'.
+						'<div class="input-wrap"><select id="wp-piwik_default_date" name="wp-piwik_default_date">'.
+						'<option value="yesterday"'.(self::$aryGlobalSettings['default_date'] == 'yesterday'?' selected="selected"':'').'> '.__('yesterday', 'wp-piwik').'</option>'.
+						'<option value="today"'.(self::$aryGlobalSettings['default_date'] == 'today'?' selected="selected"':'').'> '.__('today', 'wp-piwik').'</option>'.
+						'</select></div>';
+				echo '<div class="wp-piwik_desc">'.
+					__('Default date shown on statistics page.', 'wp-piwik').'</div>';
 				echo '<h4><label>'.__('Display to', 'wp-piwik').':</label></h4>';
 				echo '<div class="input-wrap">';
 				$intDisplayTo = self::$aryGlobalSettings['capability_read_stats'];
