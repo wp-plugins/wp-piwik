@@ -74,7 +74,7 @@ msgstr "Absprungrate"
 
 #: dashboard/overview.php:49 wp-piwik.php:563
 msgid "Shortcut"
-msgstr "Link"
+msgstr "Shortcut"
 
 #: dashboard/pages.php:13
 msgid "Pages"
@@ -365,3 +365,9 @@ msgstr "Als n&auml;chstes solltest Du eine Verbindung zu Piwik herstellen"
 
 msgid "Please validate your configuration"
 msgstr "Bitte &uuml;berpr&uuml;fe Deine Konfiguration"
+
+msgid "Default date"
+msgstr "Default-Datum"
+
+msgid "Default date shown on statistics page."
+msgstr "Default-Datum, das auf der Statistik-Seite gezeigt wird."

@@ -75,6 +75,11 @@ Thank you, guys!
 
 == Changelog ==
 
+= 0.8.5 =
+* Select default date (today or yesterday) shown on statistics page
+* Bugfix: Shortcut links are shown again
+* German language fixes
+
 = 0.8.4 =
 * New stats in overview box
 * WP 3.x compability fixes (capability and deprecated function warnings)

@@ -53,8 +53,8 @@
 	echo '<tr><td>'.__('Total time spent by visitors', 'wp-piwik').':</td><td>'.$strTime.'</td></tr>';
 	echo '<tr><td>'.__('Average time spent by visitors', 'wp-piwik').':</td><td>'.$strAvgTime.'</td></tr>';
 	echo '<tr><td>'.__('Bounce count', 'wp-piwik').':</td><td>'.$aryConf['data']['bounce_count'].' ('.$aryConf['data']['bounce_rate'].')</td></tr>';
-	if (get_option('wp-piwik_piwiklink', 0)) 
-		echo '<tr><td>'.__('Shortcut', 'wp-piwik').':</td><td><a href="'.get_option('wp-piwik_url').'">Piwik</a>'.(isset($aryConf['inline']) && $aryConf['inline']?' - <a href="?page=wp-piwik/wp-piwik.php">WP-Piwik</a>':'').'</td></tr>';
+	if (self::$aryGlobalSettings['piwik_shortcut']) 
+		echo '<tr><td>'.__('Shortcut', 'wp-piwik').':</td><td><a href="'.self::$aryGlobalSettings['piwik_url'].'">Piwik</a>'.(isset($aryConf['inline']) && $aryConf['inline']?' - <a href="?page=wp-piwik/wp-piwik.php">WP-Piwik</a>':'').'</td></tr>';
 
 /***************************************************************************/ ?>
 		</tbody>
