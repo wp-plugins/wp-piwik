@@ -58,15 +58,18 @@ msgstr "Eindeutige Besucher"
 
 #: dashboard/overview.php:44
 msgid "Page views"
-msgstr "Page views"
+msgstr "Page Views"
 
 #: dashboard/overview.php:45
 msgid "Max. page views in one visit"
 msgstr "Max. Seiten/Besuch"
 
 #: dashboard/overview.php:46
-msgid "Total time spent by visitors"
-msgstr "Von Besuchern verbrachte Zeit"
+msgid "Total time spent"
+msgstr "Verbrachte Zeit"
+
+msgid "Time/visit"
+msgstr "Zeit/Besuch"
 
 #: dashboard/overview.php:47
 msgid "Bounce count"
