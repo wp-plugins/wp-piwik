@@ -79,6 +79,7 @@ Thank you, guys!
 * Select default date (today or yesterday) shown on statistics page
 * Bugfix: Shortcut links are shown again
 * German language fixes
+* Minor optical fixes (text length)
 
 = 0.8.4 =
 * New stats in overview box
