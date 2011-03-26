@@ -6,7 +6,7 @@ Plugin URI: http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.8.5
+Version: 0.8.6
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -33,30 +33,30 @@ $GLOBALS['wp-piwik_wpmu'] = false;
 class wp_piwik {
 
 	private static
-		$intRevisionId = 80502,
-		$strVersion = '0.8.5',
+		$intRevisionId = 80601,
+		$strVersion = '0.8.6',
 		$intDashboardID = 6,
 		$bolWPMU = false,
 		$bolOverall = false,
 		$strPluginBasename = NULL,
 		$aryGlobalSettings = array(
-			'revision' 				=> 0,
-			'add_tracking_code' 	=> false,
-			'last_settings_update' 	=> 0,
-			'piwik_token' 			=> '',
-			'piwik_url' 			=> '',
-			'dashboard_widget' 		=> false,
-			'capability_stealth' 	=> array(),
+			'revision' => 0,
+			'add_tracking_code' => false,
+			'last_settings_update' => 0,
+			'piwik_token' => '',
+			'piwik_url' => '',
+			'dashboard_widget' => false,
+			'capability_stealth' => array(),
 			'capability_read_stats' => array('administrator' => true),
-			'piwik_shortcut' 		=> false,
-			'default_date'			=> 'yesterday'
+			'piwik_shortcut' => false,
+			'default_date' => 'yesterday'
 		),
 		$arySettings = array(
-			'tracking_code' 			=> '',
-			'site_id' 					=> NULL,
-			'track_404' 				=> false,
+			'tracking_code' => '',
+			'site_id' => NULL,
+			'track_404' => false,
 			'last_tracking_code_update' => 0,
-			'dashboard_revision' 		=> 0
+			'dashboard_revision' => 0
 		);
 
 	/**
@@ -153,41 +153,36 @@ class wp_piwik {
 				'revision' 				=> get_site_option('wpmu-piwik_revision', 0),
 				'add_tracking_code' 	=> true,
 				'last_settings_update' 	=> get_site_option('wpmu-piwik_settingsupdate', time()),
-				'piwik_token' 			=> get_site_option('wpmu-piwik_token', ''),
-				'piwik_url'				=> get_site_option('wpmu-piwik_url', ''),
-				'dashboard_widget' 		=> false,
+				'piwik_token' 		=> get_site_option('wpmu-piwik_token', ''),
+				'piwik_url'		=> get_site_option('wpmu-piwik_url', ''),
+				'dashboard_widget' 	=> false,
 				'capability_stealth' 	=> get_site_option('wpmu-piwik_filter', array()),
 				'capability_read_stats' => $aryDisplayToCap,
-				'piwik_shortcut' 		=> false,
+				'piwik_shortcut' 	=> false,
 			);		
 			else self::$aryGlobalSettings = array(
-				'revision' 				=> get_option('wp-piwik_revision',0),
+				'revision' 		=> get_option('wp-piwik_revision',0),
 				'add_tracking_code' 	=> get_option('wp-piwik_addjs'),
 				'last_settings_update' 	=> get_option('wp-piwik_settingsupdate', time()),
-				'piwik_token' 			=> get_option('wp-piwik_token', ''),
-				'piwik_url' 			=> get_option('wp-piwik_url', ''),
-				'dashboard_widget' 		=> $aryDashboardWidgetRange[get_option('wp-piwik_dbwidget', 0)],			
+				'piwik_token' 		=> get_option('wp-piwik_token', ''),
+				'piwik_url' 		=> get_option('wp-piwik_url', ''),
+				'dashboard_widget' 	=> $aryDashboardWidgetRange[get_option('wp-piwik_dbwidget', 0)],			
 				'capability_stealth' 	=> get_option('wp-piwik_filter', array()),
 				'capability_read_stats' => $aryDisplayToCap,
-				'piwik_shortcut' 		=> get_option('wp-piwik_piwiklink',false),
+				'piwik_shortcut' 	=> get_option('wp-piwik_piwiklink',false),
 			);
-			self::$arySettings = array(
-				'tracking_code' => '',
-				'site_id' => get_option('wp-piwik_siteid', NULL),
-				'track_404' => get_option('wp-piwik_404', false),
-				'last_tracking_code_update' => get_option('wp-piwik_scriptupdate', 0),
-				'dashboard_revision' => get_option('wp-piwik_dashboardid', 0)
-			);
+
+			$this->installSite(false);
 			
 			// Remove deprecated option values
 			$aryRemoveOptions = array(
-				'wp-piwik_disable_gapi','wp-piwik_displayto','wp-piwik_siteid','wp-piwik_404','wp-piwik_scriptupdate',
-				'wp-piwik_dashboardid','wp-piwik_revision','wp-piwik_addjs','wp-piwik_settingsupdate','wp-piwik_token',
-				'wp-piwik_url','wp-piwik_dbwidget','wp-piwik_filter','wp-piwik_piwiklink','wp-piwik_jscode'
+				'wp-piwik_disable_gapi','wp-piwik_displayto',
+				'wp-piwik_revision','wp-piwik_addjs','wp-piwik_settingsupdate','wp-piwik_token',
+				'wp-piwik_url','wp-piwik_dbwidget','wp-piwik_filter','wp-piwik_piwiklink'
 			);
-			foreach ($aryRemoveOptions as $strRemoveOption) {
-				delete_option($strRemoveOption);
+			foreach ($aryRemoveOptions as $strRemoveOption) {				
 				if (self::$bolWPMU) delete_site_option($strRemoveOption);
+				else delete_option($strRemoveOption);
 			}			
 		};
 		if (self::$aryGlobalSettings['revision'] < 80502) {
@@ -202,6 +197,33 @@ class wp_piwik {
 		self::saveSettings();
 		// Reload settings
 		self::loadSettings();
+	}
+
+	/**
+	 * Install or upgrade site settings
+	 */
+	function installSite($bolSave = true) {
+		self::$arySettings = array(
+			'tracking_code' => '',
+			'site_id' => get_option('wp-piwik_siteid', NULL),
+			'track_404' => get_option('wp-piwik_404', false),
+			'last_tracking_code_update' => get_option('wp-piwik_scriptupdate', 0),
+			'dashboard_revision' => get_option('wp-piwik_dashboardid', 0)
+		);
+			
+		// Remove deprecated option values
+		$aryRemoveOptions = array(
+			'wp-piwik_siteid','wp-piwik_404','wp-piwik_scriptupdate','wp-piwik_dashboardid','wp-piwik_jscode'
+		);
+		foreach ($aryRemoveOptions as $strRemoveOption) {
+			delete_option($strRemoveOption);
+		};
+		if ($bolSave) {
+			// Save upgraded or default settings
+			self::saveSettings();
+			// Reload settings
+			self::loadSettings();
+		}
 	}
 
 	/**
@@ -228,6 +250,8 @@ class wp_piwik {
 					return;
 		// Add tracking code?
 		} elseif (current_user_can('wp-piwik_stealth')) return;
+		// Hotfix: Update WPMU site if not done yet
+		if (self::$bolWPMU && get_option('wp-piwik_siteid', false)) $this->installSite();
 		// Handle new WPMU site 
 		if (self::$bolWPMU && empty(self::$arySettings['tracking_code'])) {
 			$aryReturn = $this->create_wpmu_site();
