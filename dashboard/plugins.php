@@ -35,7 +35,7 @@
 		</thead>
 		<tbody>
 <?php /************************************************************************/
-	foreach ($aryConf['data'] as $aryValues)
+	if (is_array($aryConf['data'])) foreach ($aryConf['data'] as $aryValues)
 		echo '<tr><td>'.
 				$aryValues['label'].
 			'</td><td class="n">'.
@@ -46,6 +46,7 @@
 					'0.00%'
 				).
 			'%</td></tr>';
+	else echo '<tr><td colspan="3">'.__('No data available.', 'wp-piwik').'</td></tr>';
 	unset($aryTmp);
 /***************************************************************************/ ?>
 		</tbody>

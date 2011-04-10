@@ -20,19 +20,24 @@
 		$aryConf['params']['period'],
 		$aryConf['params']['date'],
 		$aryConf['params']['limit']
-	);
+	);	
 	$aryConf['title'] = __('Visitors', 'wp-piwik');
-	include('header.php');
+	
+	if (!isset($aryConf['inline']) || $aryConf['inline'] != true)
+		include('header.php');
+	
 	$strValues = $strLabels = $strBounced =  $strValuesU = $strCounter = '';
 	$intUSum = $intCount = 0; 
-	foreach ($aryConf['data']['Visitors'] as $strDate => $intValue) {
-		$intCount++;
-		$strValues .= $intValue.',';
-		$strValuesU .= $aryConf['data']['Unique'][$strDate].',';
-		$strBounced .= $aryConf['data']['Bounced'][$strDate].',';
-		$strLabels .= '['.$intCount.',"'.substr($strDate,-2).'"],';
-		$intUSum += $aryConf['data']['Unique'][$strDate];
-	}
+	if (is_array($aryConf['data']['Visitors']))
+		foreach ($aryConf['data']['Visitors'] as $strDate => $intValue) {
+			$intCount++;
+			$strValues .= $intValue.',';
+			$strValuesU .= $aryConf['data']['Unique'][$strDate].',';
+			$strBounced .= $aryConf['data']['Bounced'][$strDate].',';
+			$strLabels .= '['.$intCount.',"'.substr($strDate,-2).'"],';
+			$intUSum += $aryConf['data']['Unique'][$strDate];
+		}
+	else {$strValues = '0,'; $strLabels = '[0,"-"],'; $strValuesU = '0,'; $strBounced = '0,'; }
 	$intAvg = round($intUSum/30,0);
 	$strValues = substr($strValues, 0, -1);
 	$strValuesU = substr($strValuesU, 0, -1);
@@ -42,8 +47,9 @@
 
 /***************************************************************************/ ?>
 <div class="wp-piwik-graph-wide">
-	<div id="wp-piwik_stats_vistors_graph" style="height:220px;width:490px"></div>
+	<div id="wp-piwik_stats_vistors_graph" style="height:220px;width:100%"></div>
 </div>
+<?php if (!isset($aryConf['inline']) || $aryConf['inline'] != true) { ?>
 <div class="table">
 	<table class="widefat wp-piwik-table">
 		<thead>
@@ -56,20 +62,23 @@
 		</thead>
 		<tbody style="cursor:pointer;">
 <?php /************************************************************************/
-	$aryTmp = array_reverse($aryConf['data']['Visitors']);
-	foreach ($aryTmp as $strDate => $intValue)
-		echo '<tr onclick="javascript:datelink(\''.urlencode(self::$strPluginBasename).'\',\''.str_replace('-', '', $strDate).'\');"><td>'.$strDate.'</td><td class="n">'.
-			$intValue.'</td><td class="n">'.
-			$aryConf['data']['Unique'][$strDate].
-			'</td><td class="n">'.
-			$aryConf['data']['Bounced'][$strDate].
-			'</td></tr>'."\n";
+	if (is_array($aryConf['data']['Visitors'])) {
+		$aryTmp = array_reverse($aryConf['data']['Visitors']);
+		foreach ($aryTmp as $strDate => $intValue)
+			echo '<tr onclick="javascript:datelink(\''.urlencode(self::$strPluginBasename).'\',\''.str_replace('-', '', $strDate).'\');"><td>'.$strDate.'</td><td class="n">'.
+				$intValue.'</td><td class="n">'.
+				$aryConf['data']['Unique'][$strDate].
+				'</td><td class="n">'.
+				$aryConf['data']['Bounced'][$strDate].
+				'</td></tr>'."\n";
+	}
 	echo '<tr><td class="n" colspan="4"><strong>'.__('Unique TOTAL', 'wp-piwik').'</strong> '.__('Sum', 'wp-piwik').': '.$intUSum.' '.__('Avg', 'wp-piwik').': '.$intAvg.'</td></tr>';	
 	unset($aryTmp);
 /***************************************************************************/ ?>
 		</tbody>
 	</table>
 </div>
+<?php } ?>
 <script type="text/javascript">
 $j.jqplot('wp-piwik_stats_vistors_graph', [[<?php echo $strValues; ?>],[<?php echo $strValuesU; ?>],[<?php echo $strBounced;?>]],
 {
@@ -79,6 +88,7 @@ $j.jqplot('wp-piwik_stats_vistors_graph', [[<?php echo $strValues; ?>],[<?php ec
 });
 </script>
 <?php /************************************************************************/
-	include ('footer.php');
+	if (!isset($aryConf['inline']) || $aryConf['inline'] != true)
+		include ('footer.php');
 
 /* EOF */

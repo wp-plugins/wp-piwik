@@ -13,12 +13,13 @@
 	include('header.php');
 	$strValues = '';
 	$intCount = 0; $intMore = 0; $intSum = 0;
-	foreach ($aryConf['data'] as $key => $aryValues) {
-		$intCount++;
-		if ($intCount <= 9) $strValues .= '["'.$aryValues['label'].'",'.$aryValues['nb_uniq_visitors'].'],';
-		else $intMore += $aryValues['nb_uniq_visitors'];
-		$intSum += $aryValues['nb_uniq_visitors'];
-	}
+	if (is_array($aryConf['data']))
+		foreach ($aryConf['data'] as $key => $aryValues) {
+			$intCount++;
+			if ($intCount <= 9) $strValues .= '["'.$aryValues['label'].'",'.$aryValues['nb_uniq_visitors'].'],';
+			else $intMore += $aryValues['nb_uniq_visitors'];
+			$intSum += $aryValues['nb_uniq_visitors'];
+		}
 	if ($intMore) $strValues .= '["'.__('Others', 'wp-piwik').'",'.$intMore.'],';
 	$strValues = substr($strValues, 0, -1);
 /***************************************************************************/ ?>
@@ -36,14 +37,16 @@
 		</thead>
 		<tbody>
 <?php /************************************************************************/
-	foreach ($aryConf['data'] as $aryValues)
-		echo '<tr><td>'.
-				$aryValues['label'].
-			'</td><td class="n">'.
-				$aryValues['nb_uniq_visitors'].
-			'</td><td class="n">'.
-				number_format($aryValues['nb_uniq_visitors']/$intSum*100, 2).
-			'%</td></tr>';
+	if ($intSum)
+		foreach ($aryConf['data'] as $aryValues)
+			echo '<tr><td>'.
+					$aryValues['label'].
+				'</td><td class="n">'.
+					$aryValues['nb_uniq_visitors'].
+				'</td><td class="n">'.
+					number_format($aryValues['nb_uniq_visitors']/$intSum*100, 2).
+				'%</td></tr>';
+	else echo '<tr><td colspan="3">'.__('No data available.', 'wp-piwik').'</td></tr>';
 	unset($aryTmp);
 /***************************************************************************/ ?>
 		</tbody>
