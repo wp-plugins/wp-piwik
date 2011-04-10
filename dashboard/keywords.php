@@ -18,8 +18,9 @@
 	</thead>
 	<tbody>
 <?php /************************************************************************/
-	foreach ($aryConf['data'] as $aryValues)
+	if (is_array($aryConf['data'])) foreach ($aryConf['data'] as $aryValues)
 		echo '<tr><td>'.$aryValues['label'].'</td><td>'.$aryValues['nb_uniq_visitors'].'</td></tr>';
+	else echo '<tr><td colspan="2">'.__('No data available.', 'wp-piwik').'</td></tr>';
 /***************************************************************************/ ?>
 	</tbody>
 </table>

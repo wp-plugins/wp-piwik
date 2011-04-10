@@ -75,10 +75,15 @@ Thank you, guys!
 
 == Changelog ==
 
+= 0.8.6 =
+* Added an optional visitor chart to the WordPress dashboard
+* [WPMU/multisite bug](http://wordpress.org/support/topic/plugin-wp-piwik-multisite-update-procedure) fixed
+* Minor bugfixes
+
 = 0.8.5 =
 * Select default date (today or yesterday) shown on statistics page
 * Bugfix: Shortcut links are shown again
-* German language fixes
+* German language file update
 * Minor optical fixes (text length)
 
 = 0.8.4 =

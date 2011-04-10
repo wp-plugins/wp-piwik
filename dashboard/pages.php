@@ -26,7 +26,7 @@
 		<tbody>
 <?php /************************************************************************/
 	$intCount = 0; $aryOthers = array('u' => 0, 'v' => 0);
-	foreach ($aryConf['data'] as $aryValues) {
+	if (is_array($aryConf['data'])) foreach ($aryConf['data'] as $aryValues) {
 		$intCount++;
 		if ($intCount > $intMax) {
 			$aryOthers['u'] += $aryValues['nb_uniq_visitors'];
@@ -38,7 +38,7 @@
 			'</td><td class="n">'.
 				$aryValues['nb_visits'].
 			'</td></tr>';
-	}
+	} else echo '<tr><td colspan="3">'.__('No data available.', 'wp-piwik').'</td></tr>';
 	if (!empty($aryOthers['v'])) echo '<tr><td>'.
                                 __('Others', 'wp-piwik').
                         '</td><td class="n">'.
