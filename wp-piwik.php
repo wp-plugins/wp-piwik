@@ -337,7 +337,7 @@ class wp_piwik {
 					__('WP-Piwik', 'wp-piwik').' - '.__(self::$aryGlobalSettings['dashboard_widget'], 'wp-piwik'),
 					array (&$this, 'add_wp_dashboard_widget')
 				);
-			if (true || self::$aryGlobalSettings['dashboard_chart']) {
+			if (self::$aryGlobalSettings['dashboard_chart']) {
 				// Add required scripts
 				add_action('admin_print_scripts-index.php', array($this, 'load_scripts'));
 				// Add required styles
@@ -662,6 +662,7 @@ class wp_piwik {
 		if (!self::$bolWPMU) {
 			self::$aryGlobalSettings['add_tracking_code']  	= (isset($_POST['wp-piwik_addjs'])?$_POST['wp-piwik_addjs']:'');
 			self::$aryGlobalSettings['dashboard_widget'] 	= (isset($_POST['wp-piwik_dbwidget'])?$_POST['wp-piwik_dbwidget']:false);
+			self::$aryGlobalSettings['dashboard_chart']		= (isset($_POST['wp-piwik_dbchart'])?$_POST['wp-piwik_dbchart']:false);
 			self::$aryGlobalSettings['piwik_shortcut']	 	= (isset($_POST['wp-piwik_piwiklink'])?$_POST['wp-piwik_piwiklink']:false);
 			self::$arySettings['site_id']			 		= (isset($_POST['wp-piwik_siteid'])?$_POST['wp-piwik_siteid']:NULL);
 			self::$arySettings['track_404'] 			 	= (isset($_POST['wp-piwik_404'])?$_POST['wp-piwik_404']:false);
@@ -758,7 +759,7 @@ class wp_piwik {
 					<div class="inside">
 <?php /************************************************************************/
 				echo '<h4><label for="wp-piwik_jscode">JavaScript:</label></h4>'.
-					'<div class="input-text-wrap"><textarea id="wp-piwik_jscode" name="wp-piwik_jscode" readonly="readonly" rows="17" cols="55">'.
+					'<div class="input-text-wrap"><textarea id="wp-piwik_jscode" name="wp-piwik_jscode" readonly="readonly" rows="13" cols="55">'.
 						htmlentities($strJavaScript).'</textarea></div>';
 				echo '<h4><label for="wp-piwik_addjs">'.__('Add script', 'wp-piwik').':</label></h4>'.
 						'<div class="input-wrap"><input type="checkbox" value="1" id="wp-piwik_addjs" name="wp-piwik_addjs" '.
@@ -793,7 +794,7 @@ class wp_piwik {
 						<h3 class='hndle'><span><?php _e('Statistic view settings', 'wp-piwik'); ?></span></h3>
 						<div class="inside">
 	<?php
-				echo '<h4><label for="wp-piwik_dbwidget">'.__('Dashboard', 'wp-piwik').':</label></h4>'.
+				echo '<h4><label for="wp-piwik_dbwidget">'.__('Dashboard data', 'wp-piwik').':</label></h4>'.
 						'<div class="input-wrap"><select id="wp-piwik_dbwidget" name="wp-piwik_dbwidget">'.
 						'<option value="0"'.(!$intDashboardWidget?' selected="selected"':'').'>'.__('No', 'wp-piwik').'</option>'.
 						'<option value="yesterday"'.($intDashboardWidget == 'yesterday'?' selected="selected"':'').'>'.__('Yes','wp-piwik').' ('.__('yesterday', 'wp-piwik').').</option>'.
@@ -801,7 +802,14 @@ class wp_piwik {
 						'<option value="last30"'.($intDashboardWidget == 'last30'?' selected="selected"':'').'>'.__('Yes','wp-piwik').' ('.__('last 30 days','wp-piwik').').</option>'.
 						'</select></div>';
 				echo '<div class="wp-piwik_desc">'.
-					__('Display a dashboard widget to your WordPress dashboard.', 'wp-piwik').'</div>';
+					__('Display an overview widget to your WordPress dashboard.', 'wp-piwik').'</div>';
+				 
+				echo '<h4><label for="wp-piwik_dbwidget">'.__('Boad chart', 'wp-piwik').':</label></h4>'.
+						'<div class="input-wrap"><input type="checkbox" value="1" name="wp-piwik_dbchart" id="wp-piwik_dbchart" '.
+						(self::$aryGlobalSettings['dashboard_chart']?' checked="checked"':"").'/></div>';
+				echo '<div class="wp-piwik_desc">'.
+					__('Display a visitor graph widget to your WordPress dashboard.', 'wp-piwik').'</div>';
+				
 				echo '<h4><label for="wp-piwik_piwiklink">'.__('Shortcut', 'wp-piwik').':</label></h4>'.
 						'<div class="input-wrap"><input type="checkbox" value="1" name="wp-piwik_piwiklink" id="wp-piwik_piwiklink" '.
 						($intShowLink?' checked="checked"':"").'/></div>';

@@ -374,3 +374,18 @@ msgstr "Default-Datum"
 
 msgid "Default date shown on statistics page."
 msgstr "Default-Datum, das auf der Statistik-Seite gezeigt wird."
+
+msgid "Dashboard data"
+msgstr "Board-Daten"
+
+msgid "Display an overview widget to your WordPress dashboard."
+msgstr "Zeigt ein &Uuml;bersichts-Widget auf dem WordPress-Dashboard."
+
+msgid "Boad chart"
+msgstr "Board-Chart"
+
+msgid "Display a visitor graph widget to your WordPress dashboard."
+msgstr "Zeigt einen Besucher-Graph als Widget auf dem WordPress-Dashboard."
+
+msgid "No data available."
+msgstr "Keine Daten vorhanden."
