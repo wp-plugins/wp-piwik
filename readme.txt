@@ -2,7 +2,7 @@
 
 Contributors: Braekling
 Requires at least: 3.0.1
-Tested up to: 3.1
+Tested up to: 3.1.3
 Stable tag: 0.8.6
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
@@ -48,9 +48,12 @@ Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP
 
 * Graphs powered by [jqPlot](http://www.jqplot.com/), an open source project by Chris Leonello. Give it a try! (GPL 2.0 and MIT)
 * Albanian [sq] language file by [Besnik Bleta](http://blogu.programeshqip.org/).
+* Azerbaijani [az_AZ] language file by [Galina Miklosic](wwww.webhostinggeeks.com).
 * Belorussian [be_BY] language file by [FatCow](http://www.fatcow.com/).
 * Dutch [nl_NL] language file by [Rene](http://www.pamukkaleturkey.com/).
 * French [fr_FR] language file by Fab.
+* Greek [gr_GR] language file by [AggelioPolis](www.aggeliopolis.gr).
+* Russian [ru_RU] language file by Natalya.
 * Swedish [sv_SE] language file by [EzBizNiz](http://ezbizniz.com/).
 * Norwegian [nb_NO] language file by Gormer.
 
@@ -74,6 +77,11 @@ Thank you, guys!
 3. Closer look to a pie chart.
 
 == Changelog ==
+
+= 0.8.7 =
+* New language files (Azerbaijani, Greek, Russian)
+* Fixed hardcoded database prefix (WPMU-Piwik)
+* Minor bugfixes: avoid some PHP warnings
 
 = 0.8.6 =
 * Added an optional visitor chart to the WordPress dashboard

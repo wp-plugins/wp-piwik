@@ -6,7 +6,7 @@ Plugin URI: http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.8.6
+Version: 0.8.7
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -33,8 +33,8 @@ $GLOBALS['wp-piwik_wpmu'] = false;
 class wp_piwik {
 
 	private static
-		$intRevisionId = 80602,
-		$strVersion = '0.8.6',
+		$intRevisionId = 80700,
+		$strVersion = '0.8.7',
 		$intDashboardID = 6,
 		$bolWPMU = false,
 		$bolOverall = false,
@@ -261,16 +261,19 @@ class wp_piwik {
 		if (self::$bolWPMU && empty(self::$arySettings['tracking_code'])) {
 			$aryReturn = $this->create_wpmu_site();
 			self::$arySettings['tracking_code'] = $aryReturn['js'];
+			self::saveSettings();
 		// Handle existing WPMU site		
 		} elseif (self::$bolWPMU) {
 			if (self::$arySettings['last_tracking_code_update'] < self::$aryGlobalSettings['last_settings_update']) {
-				self::$arySettings['tracking_code'] = html_entity_decode($this->call_API('SitesManager.getJavascriptTag'));				
+				$strJSCode = $this->call_API('SitesManager.getJavascriptTag');
+				self::$arySettings['tracking_code'] = html_entity_decode((is_string($strJSCode)?$strJSCode:'<!-- WP-Piwik ERROR: Tracking code not availbale -->'."\n"));
 				self::$arySettings['last_tracking_code_update'] = time();
 				self::saveSettings();
 			}
 		// Get code if not known
 		} elseif (empty($strJSCode)) {
-			self::$arySettings['tracking_code'] = html_entity_decode($this->call_API('SitesManager.getJavascriptTag'));
+			$strJSCode = $this->call_API('SitesManager.getJavascriptTag');
+			self::$arySettings['tracking_code'] = html_entity_decode((is_string($strJSCode)?$strJSCode:'<!-- WP-Piwik ERROR: Tracking code not availbale -->'."\n"));
             self::saveSettings();
 		}
 		// Change code if 404
@@ -612,7 +615,7 @@ class wp_piwik {
 				else*/ switch_to_blog((int) $_POST['wpmu_show_stats']);
 			global $blog_id;
 			global $wpdb;
-			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM wp_blogs ORDER BY blog_id'));			
+			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM '.$wpdb->prefix.'blogs ORDER BY blog_id'));			
 			echo '<form method="POST" action="">'."\n";
 			echo '<select name="wpmu_show_stats">'."\n";
 			foreach ($aryBlogs as $aryBlog) {
@@ -956,7 +959,7 @@ class wp_piwik {
 	<div class="inside">
 		<p><strong><?php _e('Thank you very much for your donation', 'wp-piwik'); ?>:</strong> Marco L., Rolf W., Tobias U., Lars K., Donna F. <?php _e('and all people flattering this','wp-piwik'); ?>!</p>
 		<p><?php _e('Graphs powered by <a href="http://www.jqplot.com/">jqPlot</a>, an open source project by Chris Leonello. Give it a try! (License: GPL 2.0 and MIT)','wp-piwik'); ?></p>
-		<p><?php _e('Thank you very much','wp-piwik'); ?>, <a href="http://blogu.programeshqip.org/">Besnik Bleta</a>, <a href="http://www.fatcow.com/">FatCow</a>, <a href="http://www.pamukkaleturkey.com/">Rene</a>, Fab, <a href="http://ezbizniz.com/">EzBizNiz</a><?php _e(', and', 'wp-piwik'); ?> Gormer <?php _e('for your translation work','wp-piwik'); ?>!</p>
+		<p><?php _e('Thank you very much','wp-piwik'); ?>, <a href="http://blogu.programeshqip.org/">Besnik Bleta</a>, <a href="http://www.fatcow.com/">FatCow</a>, <a href="http://www.pamukkaleturkey.com/">Rene</a>, Fab, <a href="http://ezbizniz.com/">EzBizNiz</a>, Gormer, Natalya, <a href="www.aggeliopolis.gr">AggelioPolis</a><?php _e(', and', 'wp-piwik'); ?> <a href="http://wwww.webhostinggeeks.com">Galina Miklosic</a><?php _e('for your translation work','wp-piwik'); ?>!</p>
 		<p><?php _e('Thank you very much, all users who send me mails containing criticism, commendation, feature requests and bug reports! You help me to make WP-Piwik much better.','wp-piwik'); ?></p>
 		<p><?php _e('Thank <strong>you</strong> for using my plugin. It is the best commendation if my piece of code is really used!','wp-piwik'); ?></p>
 	</div>
