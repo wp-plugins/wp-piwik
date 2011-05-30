@@ -349,7 +349,7 @@ msgid ", and"
 msgstr " und"
 
 msgid "for your translation work"
-msgstr "f&uur; eure &Uuml;bersetzungsarbeit"
+msgstr "f&uuml;r eure &Uuml;bersetzungsarbeit"
 
 msgid "Thank you very much, all users who send me mails containing criticism, commendation, feature requests and bug reports! You help me to make WP-Piwik much better."
 msgstr "Vielen Dank an alle Nutzer, die mir Mails mit Kritik, Lob, Featurew&uuml;nsche und Bugmeldungen senden. Ihr helft mir dabei, WP-Piwik viel besser zu machen."
