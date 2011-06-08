@@ -52,8 +52,8 @@ Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP
 * Belorussian [be_BY] language file by [FatCow](http://www.fatcow.com/).
 * Dutch [nl_NL] language file by [Rene](http://www.pamukkaleturkey.com/).
 * French [fr_FR] language file by Fab.
-* Greek [gr_GR] language file by [AggelioPolis](www.aggeliopolis.gr).
-* Russian [ru_RU] language file by Natalya.
+* Greek [gr_GR] language file by [AggelioPolis](http://www.aggeliopolis.gr).
+* Russian [ru_RU] language file by [Natalya](http://www.luxpar.de).
 * Swedish [sv_SE] language file by [EzBizNiz](http://ezbizniz.com/).
 * Norwegian [nb_NO] language file by Gormer.
 
