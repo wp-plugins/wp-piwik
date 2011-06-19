@@ -48,7 +48,7 @@ Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP
 
 * Graphs powered by [jqPlot](http://www.jqplot.com/), an open source project by Chris Leonello. Give it a try! (GPL 2.0 and MIT)
 * Albanian [sq] language file by [Besnik Bleta](http://blogu.programeshqip.org/).
-* Azerbaijani [az_AZ] language file by [Galina Miklosic](wwww.webhostinggeeks.com).
+* Azerbaijani [az_AZ] language file by [Galina Miklosic](http://www.webhostinggeeks.com).
 * Belorussian [be_BY] language file by [FatCow](http://www.fatcow.com/).
 * Dutch [nl_NL] language file by [Rene](http://www.pamukkaleturkey.com/).
 * French [fr_FR] language file by Fab.
