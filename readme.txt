@@ -78,6 +78,9 @@ Thank you, guys!
 
 == Changelog ==
 
+= 0.8.8 =
+* Bugfix: Will also work with index.php in Piwik path
+
 = 0.8.7 =
 * New language files (Azerbaijani, Greek, Russian)
 * Fixed hardcoded database prefix (WPMU-Piwik)

@@ -6,7 +6,7 @@ Plugin URI: http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.8.7
+Version: 0.8.8
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -33,8 +33,8 @@ $GLOBALS['wp-piwik_wpmu'] = false;
 class wp_piwik {
 
 	private static
-		$intRevisionId = 80700,
-		$strVersion = '0.8.7',
+		$intRevisionId = 80800,
+		$strVersion = '0.8.8',
 		$intDashboardID = 6,
 		$bolWPMU = false,
 		$bolOverall = false,
@@ -192,6 +192,9 @@ class wp_piwik {
 		}
 		if (self::$aryGlobalSettings['revision'] < 80602) {
 			self::$aryGlobalSettings['dashboard_chart'] = false;
+		}
+		if (self::$aryGlobalSettings['revision'] < 80800) {
+			self::$aryGlobalSettings['piwik_url'] = check_url(self::$aryGlobalSettings['piwik_url']);
 		}
 		add_action('admin_footer', array($this, 'updateMessage'));
 		// Set current revision ID 
@@ -488,8 +491,7 @@ class wp_piwik {
 					'message' => 'Piwik base URL or auth token not set.'
 				);
 				return $this->aryCache[$strKey];
-			}
-			if (substr($strURL, -1, 1) != '/') $strURL .= '/';
+			}			
 			$strURL .= '?module=API&method='.$strMethod;
 			$strURL .= '&idSite='.$intSite.'&period='.$strPeriod.'&date='.$strDate;
 			$strURL .= '&format=PHP&filter_limit='.$intLimit;
@@ -672,13 +674,19 @@ class wp_piwik {
 			self::$aryGlobalSettings['default_date'] 		= (isset($_POST['wp-piwik_default_date'])?$_POST['wp-piwik_default_date']:'yesterday');
 		}
 		self::$aryGlobalSettings['piwik_token'] 		 	= (isset($_POST['wp-piwik_token'])?$_POST['wp-piwik_token']:'');
-		self::$aryGlobalSettings['piwik_url'] 		 		= (isset($_POST['wp-piwik_url'])?$_POST['wp-piwik_url']:'');
+		self::$aryGlobalSettings['piwik_url']				= check_url((isset($_POST['wp-piwik_url'])?$_POST['wp-piwik_url']:''));
 		self::$aryGlobalSettings['capability_stealth'] 		= (isset($_POST['wp-piwik_filter'])?$_POST['wp-piwik_filter']:array());
 		self::$aryGlobalSettings['capability_read_stats'] 	= (isset($_POST['wp-piwik_displayto'])?$_POST['wp-piwik_displayto']:array());
 		self::$aryGlobalSettings['last_settings_update'] 	= time();
 		self::saveSettings();
 	}
 
+	function check_url($strURL) {
+		if (substr($strURL, -1, 1) != '/' && substr($strURL, -10, 10) != '/index.php') 
+			$strURL .= '/';
+		return $strURL;
+	}
+	
 	function show_settings() { 		
 		$strToken = self::$aryGlobalSettings['piwik_token'];
 		$strURL = self::$aryGlobalSettings['piwik_url'];
