@@ -80,6 +80,7 @@ Thank you, guys!
 
 = 0.8.8 =
 * Bugfix: Will also work with index.php in Piwik path
+* Bugfix: last30 dashboard widget - show correct bounce rate
 
 = 0.8.7 =
 * New language files (Azerbaijani, Greek, Russian)
