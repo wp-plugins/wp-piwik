@@ -35,7 +35,7 @@
 					$aryTmp[$strKey] = $strValue;
 			}
 		$aryConf['data'] = $aryTmp;
-		if ($intValCnt > 1) $aryConf['data']['bounce_count'] = round($aryConf['data']['bounce_count']/$aryConf['data']['nb_visits']*100);
+		if ($intValCnt > 1) $aryConf['data']['bounce_rate'] = round($aryConf['data']['bounce_count']/$aryConf['data']['nb_visits']*100);
 	}
 /***************************************************************************/ ?>
 <div class="table">
