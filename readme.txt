@@ -1,8 +1,8 @@
 === WP-Piwik ===
 
 Contributors: Braekling
-Requires at least: 3.0.1
-Tested up to: 3.2
+Requires at least: 3.1
+Tested up to: 3.1.3
 Stable tag: 0.8.7
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
