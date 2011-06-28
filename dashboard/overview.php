@@ -25,13 +25,17 @@
 			'nb_actions_per_visit' => 0,
 			'avg_time_on_site' => 0
 		);
+		$intValCnt = 0;
 		foreach ($aryConf['data'] as $aryDay) 
-			foreach ($aryDay as $strKey => $strValue)
+			foreach ($aryDay as $strKey => $strValue) {
+				$intValCnt++;
 				if (!in_array($strKey, array('max_actions','bounce_rate','nb_actions_per_visit','avg_time_on_site')))
 					$aryTmp[$strKey] += $strValue;
 				elseif ($aryTmp[$strKey] < $strValue)
 					$aryTmp[$strKey] = $strValue;
+			}
 		$aryConf['data'] = $aryTmp;
+		if ($intValCnt > 1) $aryConf['data']['bounce_count'] = round($aryConf['data']['bounce_count']/$aryConf['data']['nb_visits']*100);
 	}
 /***************************************************************************/ ?>
 <div class="table">
