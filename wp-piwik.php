@@ -194,7 +194,7 @@ class wp_piwik {
 			self::$aryGlobalSettings['dashboard_chart'] = false;
 		}
 		if (self::$aryGlobalSettings['revision'] < 80800) {
-			self::$aryGlobalSettings['piwik_url'] = check_url(self::$aryGlobalSettings['piwik_url']);
+			self::$aryGlobalSettings['piwik_url'] = self::check_url(self::$aryGlobalSettings['piwik_url']);
 		}
 		add_action('admin_footer', array($this, 'updateMessage'));
 		// Set current revision ID 
@@ -674,14 +674,14 @@ class wp_piwik {
 			self::$aryGlobalSettings['default_date'] 		= (isset($_POST['wp-piwik_default_date'])?$_POST['wp-piwik_default_date']:'yesterday');
 		}
 		self::$aryGlobalSettings['piwik_token'] 		 	= (isset($_POST['wp-piwik_token'])?$_POST['wp-piwik_token']:'');
-		self::$aryGlobalSettings['piwik_url']				= check_url((isset($_POST['wp-piwik_url'])?$_POST['wp-piwik_url']:''));
+		self::$aryGlobalSettings['piwik_url']				= self::check_url((isset($_POST['wp-piwik_url'])?$_POST['wp-piwik_url']:''));
 		self::$aryGlobalSettings['capability_stealth'] 		= (isset($_POST['wp-piwik_filter'])?$_POST['wp-piwik_filter']:array());
 		self::$aryGlobalSettings['capability_read_stats'] 	= (isset($_POST['wp-piwik_displayto'])?$_POST['wp-piwik_displayto']:array());
 		self::$aryGlobalSettings['last_settings_update'] 	= time();
 		self::saveSettings();
 	}
 
-	function check_url($strURL) {
+	static function check_url($strURL) {
 		if (substr($strURL, -1, 1) != '/' && substr($strURL, -10, 10) != '/index.php') 
 			$strURL .= '/';
 		return $strURL;
