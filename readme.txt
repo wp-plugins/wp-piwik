@@ -2,7 +2,7 @@
 
 Contributors: Braekling
 Requires at least: 3.0.1
-Tested up to: 3.1.3
+Tested up to: 3.2
 Stable tag: 0.8.7
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
@@ -80,6 +80,7 @@ Thank you, guys!
 
 = 0.8.8 =
 * Bugfix: Will also work with index.php in Piwik path
+* Bugfix: last30 dashboard widget - show correct bounce rate
 
 = 0.8.7 =
 * New language files (Azerbaijani, Greek, Russian)
