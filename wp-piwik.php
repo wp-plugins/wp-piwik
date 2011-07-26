@@ -27,6 +27,14 @@ Author URI: http://www.braekling.de
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************************/
 
+/* Avoid direct calls to this file where wp core files not present
+   seen in Heiko Rabe's metabox demo plugin http://tinyurl.com/5r5vnzs */
+if (!function_exists ('add_action')) {
+	header('Status: 403 Forbidden');
+	header('HTTP/1.1 403 Forbidden');
+	exit();
+}
+
 // Change this to enable *experimental* multisite-mode
 $GLOBALS['wp-piwik_wpmu'] = false;
 
@@ -35,7 +43,7 @@ class wp_piwik {
 	private static
 		$intRevisionId = 80800,
 		$strVersion = '0.8.8',
-		$intDashboardID = 6,
+		$intDashboardID = 20,
 		$bolWPMU = false,
 		$bolOverall = false,
 		$strPluginBasename = NULL,
@@ -59,6 +67,9 @@ class wp_piwik {
 			'last_tracking_code_update' => 0,
 			'dashboard_revision' => 0
 		);
+		
+	private
+		$intStatsPage = NULL;
 
 	/**
 	 * Load plugin settings 
@@ -295,19 +306,25 @@ class wp_piwik {
 		// Show stats dashboard page if WP-Piwik is configured
 		if (!empty(self::$aryGlobalSettings['piwik_token']) && !empty(self::$aryGlobalSettings['piwik_url'])) {
 			// Add dashboard page
-			$intStatsPage = add_dashboard_page(
+			$this->intStatsPage = add_dashboard_page(
 				__('Piwik Statistics', 'wp-piwik'), 
 				__('WP-Piwik', 'wp-piwik'), 
 				(!self::$bolWPMU?'wp-piwik_read_stats':'administrator'),
-				__FILE__,
+				'wp-piwik_stats',
 				array($this, 'show_stats')
 			);
+			// Register columns
+			add_filter('screen_layout_columns', array(&$this, 'on_screen_layout_columns'), 10, 2);
+			// Register the callback been used if options of page been submitted and needs to be processed
+			add_action('admin_post_save_wp-piwik_stats', array(&$this, 'on_stats_page_save_changes'));
 			// Add required scripts
-			add_action('admin_print_scripts-'.$intStatsPage, array($this, 'load_scripts'));
+			add_action('admin_print_scripts-'.$this->intStatsPage, array($this, 'load_scripts'));
 			// Add required styles
-			add_action('admin_print_styles-'.$intStatsPage, array($this, 'add_admin_style'));
+			add_action('admin_print_styles-'.$this->intStatsPage, array($this, 'add_admin_style'));
 			// Add required header tags
-			add_action('admin_head-'.$intStatsPage, array($this, 'add_admin_header'));
+			add_action('admin_head-'.$this->intStatsPage, array($this, 'add_admin_header'));
+			// Stats page onload callback
+			add_action('load-'.$this->intStatsPage, array(&$this, 'onload_stats_page'));
 		}
 		// Add options page if not multi-user
 		if (!self::$bolWPMU)
@@ -335,32 +352,35 @@ class wp_piwik {
 			add_action('admin_print_styles-'.$intOptionsPage, array($this, 'add_admin_style'));
 	}
 
+	/* Support two columns 
+	   seen in Heiko Rabe's metabox demo plugin http://tinyurl.com/5r5vnzs */ 
+	function on_screen_layout_columns($aryColumns, $strScreen) {		
+		//if (!defined( 'WP_NETWORK_ADMIN' ) && !defined( 'WP_USER_ADMIN' )) {
+			if ($strScreen == $this->intStatsPage) {
+				$aryColumns[$this->intStatsPage] = 2;
+			}
+		//}
+		return $aryColumns;
+	}
+	
 	function extend_wp_dashboard_setup() {
 		if (current_user_can('wp-piwik_read_stats')) {
 			if (self::$aryGlobalSettings['dashboard_widget'])
-				wp_add_dashboard_widget(
-					'wp-piwik_dashboard_widget',
-					__('WP-Piwik', 'wp-piwik').' - '.__(self::$aryGlobalSettings['dashboard_widget'], 'wp-piwik'),
-					array (&$this, 'add_wp_dashboard_widget')
-				);
-			if (self::$aryGlobalSettings['dashboard_chart']) {
+				$this->add_wp_dashboard_widget();
+			if (self::$aryGlobalSettings['dashboard_chart']) {				
 				// Add required scripts
 				add_action('admin_print_scripts-index.php', array($this, 'load_scripts'));
 				// Add required styles
 				add_action('admin_print_styles-index.php', array($this, 'add_admin_style'));
 				// Add required header tags
 				add_action('admin_head-index.php', array($this, 'add_admin_header'));
-				wp_add_dashboard_widget(
-					'wp-piwik_dashboard_chart',
-					__('WP-Piwik', 'wp-piwik').' - '.__('Visitors', 'wp-piwik'),
-					array (&$this, 'add_wp_dashboard_chart')
-				);
+				$this->add_wp_dashboard_chart();
 			}
 		}
 	}
 
 	function add_wp_dashboard_widget() {
-		$arySetup = array(
+		$aryConfig = array(
 			'params' => array(
             	'period' => 'day',
 				'date'  => self::$aryGlobalSettings['dashboard_widget'],
@@ -368,14 +388,23 @@ class wp_piwik {
 			),
 			'inline' => true,			
 		);
-		$this->create_dashboard_widget('overview', $arySetup);
+		$strFile = 'overview';
+		add_meta_box(
+				'wp-piwik_stats-dashboard-overview', 
+				__('WP-Piwik', 'wp-piwik').' - '.__(self::$aryGlobalSettings['dashboard_widget'], 'wp-piwik'), 
+				array(&$this, 'create_dashboard_widget'), 
+				'dashboard', 
+				'side', 
+				'high',
+				array('strFile' => $strFile, 'aryConfig' => $aryConfig)
+			);
 	}
 	
 	/**
 	 * Add a visitor chart to the WordPress dashboard
 	 */
 	function add_wp_dashboard_chart() {
-		$arySetup = array(
+		$aryConfig = array(
 			'params' => array(
             	'period' => 'day',
 				'date'  => 'last30',
@@ -383,7 +412,16 @@ class wp_piwik {
 			),
 			'inline' => true,			
 		);
-		$this->create_dashboard_widget('visitors', $arySetup);
+		$strFile = 'visitors';
+		add_meta_box(
+				'wp-piwik_stats-dashboard-chart', 
+				__('WP-Piwik', 'wp-piwik').' - '.__('Visitors', 'wp-piwik'), 
+				array(&$this, 'create_dashboard_widget'), 
+				'dashboard', 
+				'side', 
+				'high',
+				array('strFile' => $strFile, 'aryConfig' => $aryConfig)
+			);
 	}	
 
 	/**
@@ -411,7 +449,7 @@ class wp_piwik {
 	 */
 	function load_scripts() {
 		// Load WP-Piwik script
-		wp_enqueue_script('wp-piwik', $this->get_plugin_url().'js/wp-piwik.js', array('jquery', 'admin-comments', 'postbox'));
+		wp_enqueue_script('wp-piwik', $this->get_plugin_url().'js/wp-piwik.js', array('jquery', 'admin-comments', 'dashboard','thickbox'), self::$strVersion, true);
 		// Load jqPlot
 		wp_enqueue_script('wp-piwik-jqplot',$this->get_plugin_url().'js/jqplot/wp-piwik.jqplot.js',array('jquery'));
 	}
@@ -528,14 +566,15 @@ class wp_piwik {
 		return array('js' => $strJavaScript, 'id' => self::$arySettings['site_id']);
 	}
 
-	function create_dashboard_widget($strFile, $aryConfig) {
+	function create_dashboard_widget($objPost, $aryMetabox) {
 		$strDesc = $strID = '';
+		$aryConfig = $aryMetabox['args']['aryConfig'];
 		foreach ($aryConfig['params'] as $strParam)
 			if (!empty($strParam)) {
 				$strDesc .= $strParam.', ';
 				$strID .= '_'.$strParam;
 			}
-		$strFile = str_replace('.', '', $strFile);
+		$strFile = str_replace('.', '', $aryMetabox['args']['strFile']);
 		$aryConf = array_merge($aryConfig, array(
 			'id' => $strFile.$strID,
 			'desc' => substr($strDesc, 0, -2)));
@@ -554,7 +593,10 @@ class wp_piwik {
 		}
 	}
 
-	function show_stats() {
+	function onload_stats_page() {
+		wp_enqueue_script('common');
+		wp_enqueue_script('wp-lists');
+		wp_enqueue_script('postbox');
 		$strToken = self::$aryGlobalSettings['piwik_token'];
 		$strPiwikURL = self::$aryGlobalSettings['piwik_url'];
 		$arySortOrder = get_user_option('meta-box-order_wppiwik');
@@ -562,7 +604,7 @@ class wp_piwik {
 		if (empty($aryClosed)) $aryClosed = array();
 		$aryDashboard = array();
 		$intCurrentDashboard = self::$arySettings['dashboard_revision'];
-		if (!$arySortOrder) {
+		if (!$arySortOrder || $intCurrentDashboard < 20) {
 			// Set default configuration
 			$arySortOrder = array(
 				'side' => 'overview_day_yesterday,pages_day_yesterday,keywords_day_yesterday_10,websites_day_yesterday_10,plugins_day_yesterday',
@@ -570,23 +612,10 @@ class wp_piwik {
 			);
 			global $current_user;
 			get_currentuserinfo();
-			update_user_option($current_user->ID, 'meta-box-order_wppiwik', $arySortOrder);
+			update_user_option($current_user->ID, 'meta-box-order_wppiwik', $arySortOrder); 
 			self::$arySettings['dashboard_revision'] = self::$intDashboardID;
 			self::saveSettings();
-		} elseif ($intCurrentDashboard < self::$intDashboardID) {
-			if ($intCurrentDashboard < 5) {
-				$arySortOrder['normal'] .= ',screens_day_yesterday,systems_day_yesterday';
-				$arySortOrder['side'] .= ',plugins_day_yesterday';
-			}
-			if ($intCurrentDashboard < 6) {
-				$arySortOrder['side'] .= ',pages_day_yesterday';
-			}
-			global $current_user;
-            		get_currentuserinfo();
-			update_user_option($current_user->ID, 'meta-box-order_wppiwik', $arySortOrder);
-			self::$arySettings['dashboard_revision'] = self::$intDashboardID;
-			self::saveSettings();
-		}
+		} 
 		foreach ($arySortOrder as $strCol => $strWidgets) {
 		$aryWidgets = explode(',', $strWidgets);
 			if (is_array($aryWidgets)) foreach ($aryWidgets as $strParams) {
@@ -605,16 +634,44 @@ class wp_piwik {
 						$aryDashboard[$strCol][$aryParams[0]]['params']['date'] = self::$aryGlobalSettings['default_date'];
 			}
 		}
+		$intSideBoxCnt = $intContentBox = 0;
+		foreach ($aryDashboard['side'] as $strFile => $aryConfig) {
+			$intSideBoxCnt++;
+			add_meta_box(
+				'wp-piwik_stats-sidebox-'.$intSideBoxCnt, 
+				$strFile.' '.$aryConfig['params']['date'], 
+				array(&$this, 'create_dashboard_widget'), 
+				$this->intStatsPage, 
+				'side', 
+				'core',
+				array('strFile' => $strFile, 'aryConfig' => $aryConfig)
+			);
+		}
+		foreach ($aryDashboard['normal'] as $strFile => $aryConfig) {
+			$intContentBox++;
+			add_meta_box(
+				'wp-piwik_stats-contentbox-'.$intContentBox, 
+				$strFile.' '.$aryConfig['params']['date'],
+				array(&$this, 'create_dashboard_widget'), 
+				$this->intStatsPage, 
+				'normal', 
+				'core',
+				array('strFile' => $strFile, 'aryConfig' => $aryConfig)
+			);
+		}
+	}
+		
+	function show_stats() {
+		//we need the global screen column value to be able to have a sidebar in WordPress 2.8
+		global $screen_layout_columns;		
 /***************************************************************************/ ?>
-<div class="wrap">
-	<div id="icon-post" class="icon32"><br /></div>
+<div id="wp-piwik-stats-general" class="wrap">
+	<?php screen_icon('options-general'); ?>
 	<h2><?php _e('Piwik Statistics', 'wp-piwik'); ?></h2>
 <?php /************************************************************************/
-
 		if (self::$bolWPMU && function_exists('is_super_admin') && is_super_admin()) {
 			if (isset($_POST['wpmu_show_stats']))
-				/*if ($_POST['wpmu_show_stats'] == 'all') self::$bolOverall = true;
-				else*/ switch_to_blog((int) $_POST['wpmu_show_stats']);
+				switch_to_blog((int) $_POST['wpmu_show_stats']);
 			global $blog_id;
 			global $wpdb;
 			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM '.$wpdb->prefix.'blogs ORDER BY blog_id'));			
@@ -629,40 +686,56 @@ class wp_piwik {
 			else _e('Current shown stats: <strong>Overall</strong>');
 			echo '</form>'."\n";
 		}
-
 /***************************************************************************/ ?>
-	<div id="dashboard-widgets-wrap">
-		<div id="dashboard-widgets" class="metabox-holder">
-			<div id="postbox-container" class="wp-piwik-side" style="width:290px; float:left;">
-				<div id="side-sortables" class="meta-box-sortables ui-sortable wp-piwik-sortables">
-<?php /************************************************************************/
-		foreach ($aryDashboard['side'] as $strFile => $aryConfig)
-		$this->create_dashboard_widget($strFile, $aryConfig);
-/***************************************************************************/ ?>
+	<form action="admin-post.php" method="post">
+		<?php wp_nonce_field('wp-piwik_stats-general'); ?>
+		<?php wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false ); ?>
+        <?php wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false ); ?>
+		<input type="hidden" name="action" value="save_wp-piwik_stats_general" />
+		<div id="poststuff" class="metabox-holder has-right-sidebar">
+        	<div id="side-info-column" class="inner-sidebar">
+				<?php $meta_boxes = do_meta_boxes($this->intStatsPage, 'side', $data); ?>
+        	</div>
+        	<div id="post-body" class="has-sidebar">
+            	<div id="post-body-content" class="has-sidebar-content">
+					<?php $meta_boxes = do_meta_boxes($this->intStatsPage, 'normal', $data); ?>
+                	<?php $meta_boxes = do_meta_boxes($this->intStatsPage, 'additional', $data); ?>
 				</div>
 			</div>
-			<div id="postbox-container" class="" style="width:520px; float:left; ">
-				<div id="wppiwik-widgets-main-content" class="has-sidebar-content">
-					<div id="normal-sortables" class="meta-box-sortables ui-sortable wp-piwik-sortables">
-<?php /************************************************************************/
-		foreach ($aryDashboard['normal'] as $strFile => $aryConfig)
-			$this->create_dashboard_widget($strFile, $aryConfig);
-		wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
-		wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false);
-/***************************************************************************/ ?>
-						<div class="clear"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+			<br class="clear"/>
+    	</div>
+	</form>
 </div>
+<script type="text/javascript">
+	//<![CDATA[
+	jQuery(document).ready( function($) {
+		// close postboxes that should be closed
+		$('.if-js-closed').removeClass('if-js-closed').addClass('closed');
+		// postboxes setup
+		postboxes.add_postbox_toggles('<?php echo $this->intStatsPage; ?>');
+	});
+	//]]>
+</script>
 <?php /************************************************************************/
 		if (self::$bolWPMU && function_exists('is_super_admin') && is_super_admin()) {
 			restore_current_blog(); self::$bolOverall = false;
 		}
 	}
 
+	//executed if the post arrives initiated by pressing the submit button of form
+	function on_stats_page_save_changes() {
+		//user permission check
+		if ( !current_user_can('manage_options') )
+			wp_die( __('Cheatin&#8217; uh?') );			
+		//cross check the given referer
+		check_admin_referer('wp-piwik_stats-general');
+		
+		//process here your on $_POST validation and / or option saving
+		
+		//lets redirect the post request into get request (you may add additional params at the url, if you need to show save results
+		wp_redirect($_POST['_wp_http_referer']);		
+	}
+		
 	function applySettings() {
 		if (!self::$bolWPMU) {
 			self::$aryGlobalSettings['add_tracking_code']  	= (isset($_POST['wp-piwik_addjs'])?$_POST['wp-piwik_addjs']:'');
@@ -910,17 +983,6 @@ class wp_piwik {
 			echo '</div>';
 			echo '<div class="wp-piwik_desc">'.
 				__('Choose users by user role you do <strong>not</strong> want to track.', 'wp-piwik').'</div>';
-			
-			/*echo '<h4><label>'.__('Display to', 'wp-piwik').':</label></h4>';
-			echo '<div class="input-wrap">';
-			$intDisplayTo = self::$aryGlobalSettings['capability_read_stats'];
-			foreach($wp_roles->role_names as $strKey => $strName) {
-				$role = get_role($strKey);						
-				echo '<input name="wp-piwik_displayto['.$strKey.']" type="checkbox" value="1"'.(isset(self::$aryGlobalSettings['capability_read_stats'][$strKey]) && self::$aryGlobalSettings['capability_read_stats'][$strKey]?' checked="checked"':'').'/> '.$strName.' &nbsp; ';
-			}
-			echo '</div><div class="wp-piwik_desc">'.
-				__('Choose user roles allowed to see the statistics page.', 'wp-piwik').
-				'</div>';*/				
 		}
 /***************************************************************************/ ?>
 			<div><input type="submit" name="Submit" value="<?php _e('Save settings', 'wp-piwik') ?>" /></div>
@@ -944,7 +1006,7 @@ class wp_piwik {
 <script type="text/javascript">
 	var flattr_url = 'http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress';
 </script>
-<script src="http://api.flattr.com/button/load.js" type="text/javascript"></script>
+<script src="http<?php echo (self::isSSL()?'s':''); ?>://api.flattr.com/button/load.js" type="text/javascript"></script>
 	</div>
 	<div>Paypal
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -961,6 +1023,10 @@ class wp_piwik {
 <?php /************************************************************************/
 	}
 
+	private static function isSSL() {
+		return (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off');
+	}
+	
 	function credits() {
 /***************************************************************************/ ?>
 	<h2 style="clear:left;"><?php _e('Credits', 'wp-piwik'); ?></h2>
