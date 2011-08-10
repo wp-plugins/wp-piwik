@@ -1,9 +1,9 @@
 === WP-Piwik ===
 
 Contributors: Braekling
-Requires at least: 3.1
-Tested up to: 3.1.3
-Stable tag: 0.8.8
+Requires at least: 3.2
+Tested up to: 3.2.1
+Stable tag: 0.8.9
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
@@ -47,6 +47,7 @@ Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP
 = Credits =
 
 * Graphs powered by [jqPlot](http://www.jqplot.com/), an open source project by Chris Leonello. Give it a try! (GPL 2.0 and MIT)
+* Metabox support inspired by [Heiko Rabe's metabox demo plugin](http://www.code-styling.de/english/how-to-use-wordpress-metaboxes-at-own-plugins).
 * Albanian [sq] language file by [Besnik Bleta](http://blogu.programeshqip.org/).
 * Azerbaijani [az_AZ] language file by [Galina Miklosic](http://www.webhostinggeeks.com).
 * Belorussian [be_BY] language file by [FatCow](http://www.fatcow.com/).
@@ -77,6 +78,9 @@ Thank you, guys!
 3. Closer look to a pie chart.
 
 == Changelog ==
+
+= 0.8.9 =
+* WP 3.2 compatible, metabox support
 
 = 0.8.8 =
 * Bugfix: Will also work with index.php in Piwik path

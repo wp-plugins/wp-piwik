@@ -21,7 +21,6 @@
 		$aryConf['params']['date'],
 		$aryConf['params']['limit']
 	);	
-	$aryConf['title'] = __('Visitors', 'wp-piwik');
 	
 	if (!isset($aryConf['inline']) || $aryConf['inline'] != true)
 		include('header.php');
@@ -47,7 +46,7 @@
 
 /***************************************************************************/ ?>
 <div class="wp-piwik-graph-wide">
-	<div id="wp-piwik_stats_vistors_graph" style="height:220px;width:100%"></div>
+	<div id="wp-piwik_stats_vistors_graph" style="height:220px;width:490px;"></div>
 </div>
 <?php if (!isset($aryConf['inline']) || $aryConf['inline'] != true) { ?>
 <div class="table">
@@ -65,7 +64,7 @@
 	if (is_array($aryConf['data']['Visitors'])) {
 		$aryTmp = array_reverse($aryConf['data']['Visitors']);
 		foreach ($aryTmp as $strDate => $intValue)
-			echo '<tr onclick="javascript:datelink(\''.urlencode(self::$strPluginBasename).'\',\''.str_replace('-', '', $strDate).'\');"><td>'.$strDate.'</td><td class="n">'.
+			echo '<tr onclick="javascript:datelink(\''.urlencode('wp-piwik_stats').'\',\''.str_replace('-', '', $strDate).'\');"><td>'.$strDate.'</td><td class="n">'.
 				$intValue.'</td><td class="n">'.
 				$aryConf['data']['Unique'][$strDate].
 				'</td><td class="n">'.
