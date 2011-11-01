@@ -6,7 +6,7 @@ Plugin URI: http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.8.9
+Version: 0.8.10
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -42,8 +42,8 @@ $GLOBALS['wp-piwik_wpmu'] = false;
 class wp_piwik {
 
 	private static
-		$intRevisionId = 80900,
-		$strVersion = '0.8.9',
+		$intRevisionId = 81000,
+		$strVersion = '0.8.10',
 		$intDashboardID = 30,
 		$bolWPMU = false,
 		$bolOverall = false,
@@ -129,8 +129,6 @@ class wp_piwik {
 		register_activation_hook(__FILE__, array($this, 'install'));
 		// Add meta links to plugin details
 		if (!self::$bolWPMU) add_filter('plugin_row_meta', array($this, 'setPluginMeta'), 10, 2);
-		// Add tracking code to footer if enabled
-		if (self::$aryGlobalSettings['add_tracking_code']) add_action('wp_footer', array($this, 'footer'));
 		// Register columns
 		//add_filter('screen_layout_columns', array(&$this, 'onScreenLayoutColumns'), 10, 2);
 		// Add admin menu
@@ -140,6 +138,8 @@ class wp_piwik {
 		// Add dashboard widget if enabled
 		if (self::$aryGlobalSettings['dashboard_widget'] || self::$aryGlobalSettings['dashboard_chart'])
 			add_action('wp_dashboard_setup', array($this, 'extend_wp_dashboard_setup'));		
+		// Add tracking code to footer if enabled
+		if (self::$aryGlobalSettings['add_tracking_code']) add_action('wp_footer', array($this, 'footer'));
 	}
 
 	/**

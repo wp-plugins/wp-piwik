@@ -79,6 +79,9 @@ Thank you, guys!
 
 == Changelog ==
 
+= 0.8.10 =
+* jqplot update (IE 9 compatibility)
+
 = 0.8.9 =
 * WP 3.2 compatible, metabox support
 
