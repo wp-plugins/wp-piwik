@@ -80,7 +80,10 @@ Thank you, guys!
 == Changelog ==
 
 = 0.8.10 =
-* jqplot update (IE 9 compatibility)
+* jqplot update (IE 9 compatibility) - Thank you, Martin!
+* Bugfix: [No stats on dashboard](http://wordpress.org/support/topic/no-stats-on-dashboard-new-install)
+* Layout fix: [Graph width on dashboard](http://wordpress.org/support/topic/stats-graph-in-dashboard-changed)
+* Minor code cleanup
 
 = 0.8.9 =
 * WP 3.2 compatible, metabox support

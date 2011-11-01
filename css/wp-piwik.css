@@ -14,7 +14,10 @@ div.wp-piwik-side div.wp-piwik-graph-wide {
 div.wp-piwik-graph-wide {
 	text-align:center;
 	padding-bottom:5px;
+	overflow:hidden;
 }
+
+#wp-piwik_stats_vistors_graph{margin: 0 0 0 0}
 
 table.wp-piwik-table th.n, td.n {
 	text-align: right;
