@@ -10,8 +10,6 @@
 		$aryConf['params']['limit']
 	);
 	$aryConf['title'] = __('Overview', 'wp-piwik');
-	if (!isset($aryConf['inline']) || $aryConf['inline'] != true)
-		include('header.php');
 	if ($aryConf['params']['date'] == 'last30') {
 		$aryTmp = array(
 			'bounce_count' => 0,
