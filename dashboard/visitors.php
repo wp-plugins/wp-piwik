@@ -61,7 +61,7 @@
 	if (is_array($aryConf['data']['Visitors'])) {
 		$aryTmp = array_reverse($aryConf['data']['Visitors']);
 		foreach ($aryTmp as $strDate => $intValue)
-			echo '<tr onclick="javascript:datelink(\''.urlencode('wp-piwik_stats').'\',\''.str_replace('-', '', $strDate).'\');"><td>'.$strDate.'</td><td class="n">'.
+			echo '<tr onclick="javascript:datelink(\''.urlencode('wp-piwik_stats').'\',\''.str_replace('-', '', $strDate).'\',\''.(isset($_GET['wpmu_show_stats'])?(int) $_GET['wpmu_show_stats']:'').'\');"><td>'.$strDate.'</td><td class="n">'.
 				$intValue.'</td><td class="n">'.
 				$aryConf['data']['Unique'][$strDate].
 				'</td><td class="n">'.

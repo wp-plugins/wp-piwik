@@ -18,7 +18,7 @@
                 $aryConf['params']['limit']
         );
 
-	$intTotalVisits = $aryOverview['nb_visits'];
+	$intTotalVisits = (isset($aryOverview['nb_visits'])?$aryOverview['nb_visits']:0);
 
 	unset($aryOverview);
 /***************************************************************************/ ?>

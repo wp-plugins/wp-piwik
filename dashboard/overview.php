@@ -2,7 +2,18 @@
 /*********************************
 	WP-Piwik::Stats:Overview
 **********************************/
-
+	$aryTmp = array(
+		'bounce_count' => 0,
+		'max_actions' => 0,
+		'nb_actions' => 0,
+		'nb_uniq_visitors' => 0,
+		'nb_visits' => 0,
+		'nb_visits_converted' => 0,
+		'sum_visit_length' => 0,
+		'bounce_rate' => 0,
+		'nb_actions_per_visit' => 0,
+		'avg_time_on_site' => 0
+	);
 	$aryConf['data'] = $this->call_API(
 		'VisitsSummary.get',
 		$aryConf['params']['period'],
@@ -11,18 +22,6 @@
 	);
 	$aryConf['title'] = __('Overview', 'wp-piwik');
 	if ($aryConf['params']['date'] == 'last30') {
-		$aryTmp = array(
-			'bounce_count' => 0,
-			'max_actions' => 0,
-			'nb_actions' => 0,
-			'nb_uniq_visitors' => 0,
-			'nb_visits' => 0,
-			'nb_visits_converted' => 0,
-			'sum_visit_length' => 0,
-			'bounce_rate' => 0,
-			'nb_actions_per_visit' => 0,
-			'avg_time_on_site' => 0
-		);
 		$intValCnt = 0;
 		foreach ($aryConf['data'] as $aryDay) 
 			foreach ($aryDay as $strKey => $strValue) {
@@ -35,6 +34,7 @@
 		$aryConf['data'] = $aryTmp;
 		if ($intValCnt > 1 && $aryConf['data']['nb_visits'] >0) $aryConf['data']['bounce_rate'] = round($aryConf['data']['bounce_count']/$aryConf['data']['nb_visits']*100).'%';
 	}
+	if (empty($aryConf['data'])) $aryConf['data'] = $aryTmp;
 /***************************************************************************/ ?>
 <div class="table">
 	<table class="widefat">

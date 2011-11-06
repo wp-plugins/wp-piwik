@@ -381,7 +381,7 @@ msgstr "Board-Daten"
 msgid "Display an overview widget to your WordPress dashboard."
 msgstr "Zeigt ein &Uuml;bersichts-Widget auf dem WordPress-Dashboard."
 
-msgid "Boad chart"
+msgid "Board chart"
 msgstr "Board-Chart"
 
 msgid "Display a visitor graph widget to your WordPress dashboard."
