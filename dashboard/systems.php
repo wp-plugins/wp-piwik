@@ -3,7 +3,7 @@
 	WP-Piwik::Stats:Systems
 **********************************/
 
-	$aryConf['data'] = $this->call_API(
+	$aryConf['data'] = $this->callPiwikAPI(
 			'UserSettings.getOS', 
 			$aryConf['params']['period'], 
 			$aryConf['params']['date'],

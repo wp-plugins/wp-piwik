@@ -1,32 +1,31 @@
 === WP-Piwik ===
 
 Contributors: Braekling
-Requires at least: 3.2
-Tested up to: 3.2.1
+Requires at least: 3.3
+Tested up to: 3.3
 Stable tag: 0.8.10
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
-This plugin adds a piwik stats site to your WordPress or WordPress multisite dashboard.
+This plugin adds a Piwik stats site to your WordPress or WordPress multisite dashboard.
 
 == Description ==
 
 This plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog using wp_footer.
 
-**You need a running Piwik installation** and at least view access to your stats. Also PHP 5 or higher is strictly required.
-
+**You need a running Piwik (at least 1.6) installation** and at least view access to your stats. Also PHP 5 or higher is strictly required.
 
 Look at the [Piwik website](http://piwik.org/) to get further information about Piwik.
 
 *This plugin is not created or provided by the Piwik project team.*
 
-Languages: English, Albanian, Belorussian, Dutch, French, German, Swedish, Norwegian
+Languages: English, German, Albanian, Azerbaijani, Belorussian, Dutch, French, Greek, Russian, Swedish, Norwegian
 
 *Note: If you vote "It's broken", please tell me about your problem. It's hard to fix a bug I don't know about! ;)*
 
 = WP multisite =
 
-Version 0.6.0+ includes experimental WP multisite support.
+Version 0.6.0 (or newer) includes experimental WP multisite support.
 
 **Experimental**
 
@@ -38,11 +37,7 @@ Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP
 
 **Extended (WPMU-Piwik)**
 
-1. Add WP-Piwik to your /wp-content/plugins folder. Open wp-piwik.php
-2. Go to line 30 ($GLOBALS['wp-piwik_wpmu'] = false;)
-3. Change to $GLOBALS['wp-piwik_wpmu'] = true; 
-4. You should use a clear Piwik installation and a token with full admin rights due to avoid conflicts. WPMU-Piwik will add a new site to Piwik each time a new blog is visited the first time.
-5. Users have access to their own statistics, site admins can access each blog's statistics. Please test it on your own (e.g. using a local copy of your WPMU) before you use it in an user context.
+Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin](http://codex.wordpress.org/Create_A_Network#WordPress_Plugins). Users have access to their own statistics, site admins can access each blog's statistics. Please test it on your own (e.g. using a local copy of your WPMU) before you use it in an user context.
 
 = Credits =
 
@@ -57,19 +52,22 @@ Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP
 * Russian [ru_RU] language file by [Natalya](http://www.luxpar.de).
 * Swedish [sv_SE] language file by [EzBizNiz](http://ezbizniz.com/).
 * Norwegian [nb_NO] language file by Gormer.
+* Donations: Marco L., Rolf W., Tobias U., Lars K., Donna F., the Piwik team itself, and all people flattering this.
+* All users who send me mails containing criticism, commendation, feature requests and bug reports - you help me to make WP-Piwik much better!
 
-Thank you, guys!
+Thank you all!
 
 == Installation ==
 
 1. Upload the full `wp-piwik` directory into your `wp-content/plugins` directory.
 
-2. Activate the plugin through the 'Plugins' menu in WordPress.
+2. Activate the plugin through the 'Plugins' menu in WordPress. (As a multisite admin you can enable WP-Piwik as *experimental* [Network Plugin](http://codex.wordpress.org/Create_A_Network#WordPress_Plugins) also.)
 
 3. Open the new 'Settings/WP-Piwik Settings' menu, enter your Piwik base URL and your auth token. Save settings.
-4. If you have view access to multiple site stats, choose your blog and save settings again.
-5. Look at 'Dashboard/WP-Piwik' to get your site stats.
 
+4. If you have view access to multiple site stats and did not enable "auto config", choose your blog and save settings again.
+
+5. Look at 'Dashboard/WP-Piwik' to get your site stats.
 
 == Screenshots ==
 
@@ -78,6 +76,13 @@ Thank you, guys!
 3. Closer look to a pie chart.
 
 == Changelog ==
+
+= 0.9.0 =
+* Auto-configuration
+* Bugfix: Removed unnecessary API calls done with each site request - Thank you, Martin B.!
+* Code cleanup (still not finished)
+* Show SEO rank stats
+* WordPress dashboard SEO rank widget
 
 = 0.8.10 =
 * jqplot update (IE 9 compatibility) - Thank you, Martin!

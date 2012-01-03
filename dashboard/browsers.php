@@ -3,7 +3,7 @@
 	WP-Piwik::Stats:Browser
 **********************************/
 
-	$aryConf['data'] = $this->call_API(
+	$aryConf['data'] = $this->callPiwikAPI(
 			'UserSettings.getBrowser', 
 			$aryConf['params']['period'], 
 			$aryConf['params']['date'],

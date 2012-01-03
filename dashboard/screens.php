@@ -3,7 +3,7 @@
 	WP-Piwik::Stats:Screens
 **********************************/
 
-	$aryConf['data'] = $this->call_API(
+	$aryConf['data'] = $this->callPiwikAPI(
 			'UserSettings.getResolution', 
 			$aryConf['params']['period'], 
 			$aryConf['params']['date'],

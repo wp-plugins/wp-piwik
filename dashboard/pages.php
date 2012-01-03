@@ -3,7 +3,7 @@
 	WP-Piwik::Stats:Pages
 **********************************/
 
-	$aryConf['data'] = $this->call_API(
+	$aryConf['data'] = $this->callPiwikAPI(
 			'Actions.getPageTitles', 
 			$aryConf['params']['period'], 
 			$aryConf['params']['date'],

@@ -14,7 +14,7 @@
 		'nb_actions_per_visit' => 0,
 		'avg_time_on_site' => 0
 	);
-	$aryConf['data'] = $this->call_API(
+	$aryConf['data'] = $this->callPiwikAPI(
 		'VisitsSummary.get',
 		$aryConf['params']['period'],
 		$aryConf['params']['date'],

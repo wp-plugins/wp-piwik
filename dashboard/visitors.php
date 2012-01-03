@@ -3,19 +3,19 @@
 	WP-Piwik::Stats:Vistors
 **********************************/
 
-	$aryConf['data']['Visitors'] = $this->call_API(
+	$aryConf['data']['Visitors'] = $this->callPiwikAPI(
 		'VisitsSummary.getVisits', 
 		$aryConf['params']['period'], 
 		$aryConf['params']['date'],
 		$aryConf['params']['limit']
 	);
-	$aryConf['data']['Unique'] = $this->call_API(
+	$aryConf['data']['Unique'] = $this->callPiwikAPI(
 		'VisitsSummary.getUniqueVisitors',
 		$aryConf['params']['period'],
 		$aryConf['params']['date'],
 		$aryConf['params']['limit']
 	);
-	$aryConf['data']['Bounced'] = $this->call_API(
+	$aryConf['data']['Bounced'] = $this->callPiwikAPI(
 		'VisitsSummary.getBounceCount',
 		$aryConf['params']['period'],
 		$aryConf['params']['date'],

@@ -3,7 +3,7 @@
 	WP-Piwik::Stats:Plugins
 **********************************/
 
-	$aryConf['data'] = $this->call_API(
+	$aryConf['data'] = $this->callPiwikAPI(
 			'UserSettings.getPlugin', 
 			$aryConf['params']['period'], 
 			$aryConf['params']['date'],
@@ -11,7 +11,7 @@
 	);
 	$aryConf['title'] = __('Plugins', 'wp-piwik');
 	
-	$aryOverview = $this->call_API(
+	$aryOverview = $this->callPiwikAPI(
                 'VisitsSummary.get',
                 $aryConf['params']['period'],
                 $aryConf['params']['date'],

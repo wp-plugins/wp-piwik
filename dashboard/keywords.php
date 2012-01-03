@@ -3,7 +3,7 @@
 	WP-Piwik::Stats:Keywords
 **********************************/
 
-	$aryConf['data'] = $this->call_API(
+	$aryConf['data'] = $this->callPiwikAPI(
 		'Referers.getKeywords',
 		$aryConf['params']['period'],
 		$aryConf['params']['date'],

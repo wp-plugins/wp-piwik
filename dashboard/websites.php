@@ -3,7 +3,7 @@
 	WP-Piwik::Stats:Websites
 **********************************/
 
-	$aryConf['data'] = $this->call_API(
+	$aryConf['data'] = $this->callPiwikAPI(
 		'Referers.getWebsites',
 		$aryConf['params']['period'],
 		$aryConf['params']['date'],
