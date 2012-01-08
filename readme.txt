@@ -1,9 +1,9 @@
 === WP-Piwik ===
 
 Contributors: Braekling
-Requires at least: 3.3.1
+Requires at least: 3.3
 Tested up to: 3.3.1
-Stable tag: 0.8.10
+Stable tag: 0.9.0
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
@@ -29,11 +29,11 @@ Version 0.6.0 (or newer) includes experimental WP multisite support.
 
 **Experimental**
 
-The WP multisite support is currently experimental. Please test it on your own (e.g. using a local copy of your WP multisite) before you use it in an user context.
+The WP multisite support is still experimental. Please test it on your own (e.g. using a local copy of your WP multisite) before you use it in an user context.
 
 **Simple**
 
-Just add WP-Piwik to your /wp-content/plugins folder. So each user can enable WP-Piwik and use his own Piwik instance.
+Just add WP-Piwik to your /wp-content/plugins folder and enable the Plugins page for individual site administrators. So each user can enable WP-Piwik and use his own Piwik instance.
 
 **Extended (WPMU-Piwik)**
 
@@ -80,11 +80,13 @@ Thank you all!
 = 0.9.0 =
 * Auto-configuration
 * No code change required to enable WPMU mode anymore (Still experimental. Please create a backup before trying 0.9.0!)
+* All features in WPMU available
 * Bugfix: Removed unnecessary API calls done with each site request - Thank you, Martin B.!
 * Bugfix: [No stats on dashboard](http://wordpress.org/support/topic/no-stats-on-dashboard-new-install) (sometimes this issue still occured, should be fixed now)
 * Code cleanup (still not finished)
 * Minor UI fixes
 * Minor language/gettext improvements
+* Security improvements
 * Show SEO rank stats (very slow, caching will be added in 0.9.1)
 * WordPress dashboard SEO rank widget (very slow, caching will be added in 0.9.1)
 * New option: use js/index.php
