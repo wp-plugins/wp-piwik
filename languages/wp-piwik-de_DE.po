@@ -462,3 +462,6 @@ msgstr "Spenden"
 
 msgid "My Amazon.de wishlist"
 msgstr "Meine Wunschliste bei Amazon.de"
+
+msgid "Piwik error"
+msgstr "Piwik-Fehler"

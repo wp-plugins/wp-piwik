@@ -567,7 +567,7 @@ class wp_piwik {
 	/**
 	 * Call Piwik's API
 	 */
-	function callPiwikAPI($strMethod, $strPeriod='', $strDate='', $intLimit='',$bolExpanded=false, $intId = false) {
+	function callPiwikAPI($strMethod, $strPeriod='', $strDate='', $intLimit='',$bolExpanded=false, $intId = false, $strFormat = 'PHP') {
 		// Create unique cache key
 		$strKey = $strMethod.'_'.$strPeriod.'_'.$strDate.'_'.$intLimit;
 		// Call API if data not cached
@@ -593,14 +593,15 @@ class wp_piwik {
 			// Build URL			
 			$strURL .= '?module=API&method='.$strMethod;
 			$strURL .= '&idSite='.$intSite.'&period='.$strPeriod.'&date='.$strDate;
-			$strURL .= '&format=PHP&filter_limit='.$intLimit;
+			$strURL .= '&filter_limit='.$intLimit;
 			$strURL .= '&token_auth='.$strToken;
 			$strURL .= '&expanded='.$bolExpanded;
 			$strURL .= '&url='.urlencode(get_bloginfo('url'));
+			$strURL .= '&format='.$strFormat;			
 			// Fetch data if site exists
 			if (!empty($intSite)) {
-				$strResult = $this->getRemoteFile($strURL);			
-				$this->aryCache[$strKey] = unserialize($strResult);
+				$strResult = (string) $this->getRemoteFile($strURL);			
+				$this->aryCache[$strKey] = ($strFormat == 'PHP'?unserialize($strResult):$strResult);
 			// Otherwise return error message
 			} else $this->aryCache[$strKey] = array('result' => 'error', 'message' => 'Unknown site/blog.');
 		}

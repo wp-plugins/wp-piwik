@@ -22,11 +22,14 @@
 	if ($intMore) $strValues .= '["'.__('Others', 'wp-piwik').'",'.$intMore.'],';
 	$strValues = substr($strValues, 0, -1);
 
-
+	if ($intSum) {
 /***************************************************************************/ ?>
 <div class="wp-piwik-graph-wide">
 	<div id="wp-piwik_stats_systems_graph" style="height:310px;width:490px"></div>
 </div>
+<?php /************************************************************************/
+	}
+/***************************************************************************/ ?>
 <div class="table">
 	<table class="widefat wp-piwik-table">
 		<thead>
