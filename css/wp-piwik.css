@@ -27,18 +27,27 @@ table.wp-piwik-table tr:hover {
 	background-color:#ccc;
 }
 div.wp-piwik-sidebox {
-	width:200px;
-	padding:10px;
+	width:220px;
 	float:right;
-	border:1px solid black;
-	background:#ffc
 }
+
 div.wp-piwik-sidebox div {
+	padding:10px;
+	border:1px solid black;
+	margin-bottom:10px;
+}
+
+div.wp-piwik-donate {background:#ffc}
+div.wp-piwik-support {background:#eef}
+
+div.wp-piwik-sidebox div div {
 	width:190px;
 	text-align:center;
-	border-top:1px solid black;
+	border:solid black;
+	border-width:1px 0 0 0 ;
 	padding:5px
 }
+
 div.wp-piwik-settings-container {
 	margin-right:250px;
 	max-width:1024px;
@@ -50,7 +59,7 @@ div.wp-piwik-settings h4 {
 	font-weight:normal;
 	padding-top:0px !important;
 	text-align:right;
-	width:120px;
+	width:160px;
 }
 div.wp-piwik-settings h4 label {
 	margin-right:10px;
@@ -77,13 +86,13 @@ div.wp-piwik-settings .input-wrap input {
 }
 
 div.wp-piwik-settings .input-text-wrap {
-	margin:0 0 1em 120px;
+	margin:0 0 1em 160px;
 	border:1px solid #CCCCCC;
 }
 
 div.wp-piwik_desc {
 	font-size:11px;
-	margin:0 0 10px 120px;
+	margin:0 0 10px 160px;
 	padding:0;
 }
 

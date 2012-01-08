@@ -21,7 +21,7 @@ Look at the [Piwik website](http://piwik.org/) to get further information about 
 
 Languages: English, German, Albanian, Azerbaijani, Belorussian, Dutch, French, Greek, Russian, Swedish, Norwegian
 
-*Note: If you vote "It's broken", please tell me about your problem. It's hard to fix a bug I don't know about! ;)*
+*Note: If you vote "It's broken", please tell me about your problem. It's hard to fix a bug I don't know about! ;-)*
 
 = WP multisite =
 
@@ -79,10 +79,18 @@ Thank you all!
 
 = 0.9.0 =
 * Auto-configuration
+* No code change required to enable WPMU mode anymore (Still experimental. Please create a backup before trying 0.9.0!)
 * Bugfix: Removed unnecessary API calls done with each site request - Thank you, Martin B.!
+* Bugfix: [No stats on dashboard](http://wordpress.org/support/topic/no-stats-on-dashboard-new-install) (sometimes this issue still occured, should be fixed now)
 * Code cleanup (still not finished)
-* Show SEO rank stats
-* WordPress dashboard SEO rank widget
+* Minor UI fixes
+* Minor language/gettext improvements
+* Show SEO rank stats (very slow, caching will be added in 0.9.1)
+* WordPress dashboard SEO rank widget (very slow, caching will be added in 0.9.1)
+* New option: use js/index.php
+* New option: avoid mod_security
+* Mulisite: Order blog list alphabetically (Network Admin stats site)
+* Settings: Order site list alphabetically (site list shown if order conf is disabled)
 
 = 0.8.10 =
 * jqplot update (IE 9 compatibility) - Thank you, Martin!

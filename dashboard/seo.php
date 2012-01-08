@@ -13,7 +13,9 @@
 <div class="table">
 	<table class="widefat">
 		<tbody>
-			<tr><td><?php print_r($aryConf); ?></td></tr>
+			<?php foreach ($aryConf['data'] as $aryVal) { ?>
+			<tr><td><?php echo $aryVal['label']; ?></td><td><?php echo $aryVal['rank']; ?></td></tr>
+			<?php } ?>
 		</tbody>
 	</table>
 </div>

@@ -50,7 +50,7 @@
 		floor(($aryConf['data']['avg_time_on_site'] % 3600) % 60).'s';
 	echo '<tr><td>'.__('Visitors', 'wp-piwik').':</td><td>'.$aryConf['data']['nb_visits'].'</td></tr>';
 	echo '<tr><td>'.__('Unique visitors', 'wp-piwik').':</td><td>'.$aryConf['data']['nb_uniq_visitors'].'</td></tr>';
-	echo '<tr><td>'.__('Page views', 'wp-piwik').':</td><td>'.$aryConf['data']['nb_actions'].' (&#8960; '.$aryConf['data']['nb_actions_per_visit'].')</td></tr>';
+	echo '<tr><td>'.__('Page views', 'wp-piwik').':</td><td>'.$aryConf['data']['nb_actions'].' (&#216; '.$aryConf['data']['nb_actions_per_visit'].')</td></tr>';
 	echo '<tr><td>'.__('Max. page views in one visit', 'wp-piwik').':</td><td>'.$aryConf['data']['max_actions'].'</td></tr>';
 	echo '<tr><td>'.__('Total time spent', 'wp-piwik').':</td><td>'.$strTime.'</td></tr>';
 	echo '<tr><td>'.__('Time/visit', 'wp-piwik').':</td><td>'.$strAvgTime.'</td></tr>';

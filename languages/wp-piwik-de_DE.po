@@ -154,8 +154,12 @@ msgid "today"
 msgstr "heute"
 
 #: wp-piwik.php:144 wp-piwik.php:559
+msgid "last30"
+msgstr "letzte 30 Tage"
+
+#: wp-piwik.php:144 wp-piwik.php:559
 msgid "last 30 days"
-msgstr "letzten 30 Tage"
+msgstr "letzte 30 Tage"
 
 #: wp-piwik.php:179
 msgid "Settings"
@@ -239,8 +243,8 @@ msgid "Track 404"
 msgstr "404-Tracking"
 
 #: wp-piwik.php:532
-msgid "If you add the Piwik javascript code by wp_footer(), WP-Piwik can automatically add a 404-category to track 404-page-visits."
-msgstr "Wenn Du den Piwik-Code per wp_footer() in Dein Blog einbindest, kann WP-Piwik automatisch eine eigene Kategorie f&uuml;r 404-Seiten hinzuf&uuml;gen."
+msgid "WP-Piwik can automatically add a 404-category to track 404-page-visits."
+msgstr "kann WP-Piwik automatisch eine eigene Kategorie f&uuml;r 404-Seiten hinzuf&uuml;gen."
 
 #: wp-piwik.php:536 wp-piwik.php:644
 msgid "Tracking filter"
@@ -337,7 +341,7 @@ msgid "Thank you very much for your donation"
 msgstr "Vielen Dank f&uuml;r eure Spenden"
 
 msgid "and all people flattering this"
-msgstr "und allen Nutzern, die bei Flatter klicken"
+msgstr "und alle Nutzern, die bei Flatter klicken"
 
 msgid "Graphs powered by <a href=\"http://www.jqplot.com/\">jqPlot</a>, an open source project by Chris Leonello. Give it a try! (License: GPL 2.0 and MIT)"
 msgstr "Die Graphen werden mit <a href=\"http://www.jqplot.com/\">jqPlot</a> erstellt, einem Open-Source-Projekt von Chris Leonello. Probiere es mal aus! (Lizenz: GPL 2.0 und MIT)"
@@ -389,3 +393,72 @@ msgstr "Zeigt einen Besucher-Graph als Widget auf dem WordPress-Dashboard."
 
 msgid "No data available."
 msgstr "Keine Daten vorhanden."
+
+msgid "Check this to automatically choose your blog from your Piwik sites by URL. If your blog is not added to Piwik yet, WP-Piwik will add a new site."
+msgstr "Aktiviere diesen Haken, um Dein Blog &uuml;ber seine URL automatisch aus Deinen Piwik-Seiten auszuw&auml;hlen. Wenn Dein Blog bisher nicht zu Piwik hinzugef&uuml;gt wurde, wird WP-Piwik eine neue Seite hinzuf&uuml;gen."
+
+msgid "If you add the Piwik javascript code by wp_footer(),"
+msgstr "Wenn Du den Piwik-Code per wp_footer() in Dein Blog einbindest,"
+
+msgid "WP-Piwik can automatically use js/index.php instead of piwik.js. See"
+msgstr "kann WP-Piwik automatisch js/index.php statt piwik.js verwenden. Siehe"
+
+msgid "WP-Piwik can automatically force the Tracking Code to sent data in POST. See"
+msgstr "kann WP-Piwik automatisch den Tracking Code zwingen, die Daten via POST zu senden. Siehe"
+
+msgid "Avoid mod_security"
+msgstr "Umgehe mod_security"
+
+msgid "Determined site"
+msgstr "Ermittelte Seite"
+
+msgid "Auto config"
+msgstr "Auto-Konfiguration"
+
+msgid "Use js/index.php"
+msgstr "Nutze js/index.php"
+
+msgid "Show overview"
+msgstr "Zeige &Uuml;bersicht"
+
+msgid "Hide overview"
+msgstr "Zeige keine &Uuml;bersicht"
+
+msgid "SEO <em>(slow!)</em>"
+msgstr "SEO <em>(langsam!)</em>"
+
+msgid "Display SEO ranking data on statistics page. <em>(Slow!)</em>"
+msgstr "Zeige SEO-Rankingdaten auf der Statistik-Seite. <em>(Langsam!)</em>"
+
+msgid "Configure WP-Piwik widgets to be shown on your WordPress Home Dashboard."
+msgstr "Konfiguriere WP-Piwik-Widgets, die auf Deinem WordPress Home Dashboard erscheinen sollen."
+
+msgid "SEO data"
+msgstr "SEO-Daten"
+
+msgid "the Piwik team itself"
+msgstr "das Piwik-Team selbst"
+
+msgid "Metabox support inspired by"
+msgstr "Die Metabox-Unterst&uuml;tzung wurde inspiriert von"
+
+msgid "WP-Piwik support board"
+msgstr "WP-Piwik Support Board"
+
+msgid "no registration required, English &amp; German"
+msgstr "keine Registrierung erforderlich, Englisch &amp; Deutsch"
+
+msgid "WordPress.org forum about WP-Piwik"
+msgstr "WordPress.org Forum &uuml;ber WP-Piwik"
+
+msgid "WordPress.org registration required, English"
+msgstr "Registrierung bei WordPress.org notwendig, Englisch"
+
+msgid "Please don't forget to vote the compatibility at the"
+msgstr "Bitte denke daran, eine Kompatibilit&auml;tsbewertung abzugeben:"
+
+msgid "Donate"
+msgstr "Spenden"
+
+msgid "My Amazon.de wishlist"
+msgstr "Meine Wunschliste bei Amazon.de"
