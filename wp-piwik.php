@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP-Piwik
 
-Plugin URI: http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/
+Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
@@ -144,7 +144,7 @@ class wp_piwik {
 		// Call install function on activation
 		register_activation_hook(__FILE__, array($this, 'install'));
 		// Add meta links to plugin details
-		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php')) add_filter('plugin_row_meta', array($this, 'setPluginMeta'), 10, 2);
+		add_filter('plugin_row_meta', array($this, 'setPluginMeta'), 10, 2);
 		// Register columns
 		/* TODO: currently not working
 		 * add_filter('screen_layout_columns', array(&$this, 'onScreenLayoutColumns'), 10, 2); 
