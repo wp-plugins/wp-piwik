@@ -149,6 +149,9 @@ class wp_piwik {
 		/* TODO: currently not working
 		 * add_filter('screen_layout_columns', array(&$this, 'onScreenLayoutColumns'), 10, 2); 
 		 */
+		// Add network admin menu if required
+		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php'))
+			add_action('network_admin_menu', array($this, 'buildNetworkAdminMenu'));
 		// Add admin menu		
 		add_action('admin_menu', array($this, 'buildAdminMenu'));
 		// Register the callback been used if options of page been submitted and needs to be processed
@@ -295,18 +298,56 @@ class wp_piwik {
 			// Stats page onload callback
 			add_action('load-'.$this->intStatsPage, array(&$this, 'onloadStatsPage'));
 		}
-		// Add options page
-		$intOptionsPage = add_options_page(
+		if (!is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
+			// Add options page
+			$intOptionsPage = add_options_page(
+				__('WP-Piwik', 'wp-piwik'),
+				__('WP-Piwik', 'wp-piwik'), 
+				'activate_plugins',
+				__FILE__,
+				array($this, 'show_settings')
+			);
+			// Add styles required by options page
+			add_action('admin_print_styles-'.$intOptionsPage, array($this, 'addAdminStyle'));
+		}
+	}
+
+	/**
+	 * Add pages to network admin menu
+	 */
+	function buildNetworkAdminMenu() {
+		// Show stats dashboard page if WP-Piwik is configured
+		if (!empty(self::$aryGlobalSettings['piwik_token']) && !empty(self::$aryGlobalSettings['piwik_url'])) {
+			// Add dashboard page
+			$this->intStatsPage = add_dashboard_page(
+				__('Piwik Statistics', 'wp-piwik'), 
+				__('WP-Piwik', 'wp-piwik'), 
+				'manage_sites',
+				'wp-piwik_stats',
+				array($this, 'showStats')
+			);
+			// Add required scripts
+			add_action('admin_print_scripts-'.$this->intStatsPage, array($this, 'loadScripts'));
+			// Add required styles
+			add_action('admin_print_styles-'.$this->intStatsPage, array($this, 'addAdminStyle'));
+			// Add required header tags
+			add_action('admin_head-'.$this->intStatsPage, array($this, 'addAdminHeader'));
+			// Stats page onload callback
+			add_action('load-'.$this->intStatsPage, array(&$this, 'onloadStatsPage'));
+		}
+        $intOptionsPage = add_submenu_page(
+			'settings.php',
 			__('WP-Piwik', 'wp-piwik'),
-			__('WP-Piwik', 'wp-piwik'), 
-			(!is_plugin_active_for_network('wp-piwik/wp-piwik.php')?'activate_plugins':'manage_sites'),
+			__('WP-Piwik', 'wp-piwik'),
+			'manage_sites',
 			__FILE__,
 			array($this, 'show_settings')
 		);
+		
 		// Add styles required by options page
 		add_action('admin_print_styles-'.$intOptionsPage, array($this, 'addAdminStyle'));
 	}
-
+	
 	/**
 	 * Support two columns 
 	 * seen in Heiko Rabe's metabox demo plugin 
@@ -525,7 +566,7 @@ class wp_piwik {
 		self::$arySettings['tracking_code'] = html_entity_decode($this->callPiwikAPI('SitesManager.getJavascriptTag'));
 		self::$arySettings['last_tracking_code_update'] = time();
 		// Change Tracking code if configured
-		self::$aryGlobalSettings['tracking_code'] = $this->applyJSCodeChanges(self::$aryGlobalSettings['tracking_code']);
+		self::$arySettings['tracking_code'] = $this->applyJSCodeChanges(self::$arySettings['tracking_code']);
 		self::saveSettings();
 		return array('js' => self::$arySettings['tracking_code'], 'id' => self::$arySettings['site_id']);
 	}
@@ -575,7 +616,7 @@ class wp_piwik {
 			$strToken = self::$aryGlobalSettings['piwik_token'];
 			$strURL = self::$aryGlobalSettings['piwik_url'];
 			// If multisite stats are shown, maybe the super admin wants to show other blog's stats.
-			if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && is_super_admin() && isset($_GET['wpmu_show_stats'])) {
+			if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && function_exists('wp_get_current_user') && is_super_admin() && isset($_GET['wpmu_show_stats'])) {
 				$aryOptions = get_blog_option((int) $_GET['wpmu_show_stats'], 'wp-piwik_settings' , array());
 				if (!empty($aryOptions) && isset($aryOptions['site_id']))
 					$intSite = $aryOptions['site_id'];
