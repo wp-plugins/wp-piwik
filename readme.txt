@@ -77,6 +77,9 @@ Thank you all!
 
 == Changelog ==
 
+= 0.9.1 =
+* Hotfix: Avoid "Unknown site/blog" message without giving a chance to choose an existing site
+
 = 0.9.0 =
 * Auto-configuration
 * No code change required to enable WPMU mode anymore (Still experimental. Please create a backup before trying 0.9.0!)
