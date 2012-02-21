@@ -254,11 +254,8 @@ class wp_piwik {
 		// Hotfix: Update network site if not done yet
 		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && get_option('wp-piwik_siteid', false)) $this->updateSite();
 		// Autohandle site if no tracking code available
-		if (empty(self::$arySettings['tracking_code'])) {
+		if (empty(self::$arySettings['tracking_code']))
 			$aryReturn = $this->addPiwikSite();
-			self::$arySettings['tracking_code'] = $aryReturn['js'];
-			self::saveSettings();
-		} 		
 		// Update/get code if outdated/unknown
 		if (self::$arySettings['last_tracking_code_update'] < self::$aryGlobalSettings['last_settings_update'] || empty(self::$arySettings['tracking_code'])) {
 			$strJSCode = $this->callPiwikAPI('SitesManager.getJavascriptTag');
@@ -640,7 +637,7 @@ class wp_piwik {
 			$strURL .= '&url='.urlencode(get_bloginfo('url'));
 			$strURL .= '&format='.$strFormat;			
 			// Fetch data if site exists
-			if (!empty($intSite)) {
+			if (!empty($intSite) || $strMethod='SitesManager.getSitesWithAtLeastViewAccess') {
 				$strResult = (string) $this->getRemoteFile($strURL);			
 				$this->aryCache[$strKey] = ($strFormat == 'PHP'?unserialize($strResult):$strResult);
 			// Otherwise return error message
@@ -946,8 +943,13 @@ class wp_piwik {
 			} else {
 				if (!is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
 					if (empty($intSite)) {
-						self::$arySettings['site_id'] = $aryData[0]['idsite'];
-						self::saveSettings();
+						if (self::$aryGlobalSettings['auto_site_config'])
+							$aryReturn = $this->addPiwikSite();
+						else {
+							self::$arySettings['site_id'] = $aryData[0]['idsite'];
+							self::saveSettings();
+						}
+						$intSite = self::$arySettings['site_id'];
 					}
 					if (!self::$aryGlobalSettings['auto_site_config']) {
 						echo '<h4><label for="wp-piwik_siteid">'.__('Choose site', 'wp-piwik').':</label></h4>';
