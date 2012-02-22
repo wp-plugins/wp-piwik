@@ -243,7 +243,7 @@ class wp_piwik {
 		// Create settings Link
 		$strLink = sprintf('<a href="options-general.php?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'));
 		// Display message
-		echo '<div id="message" class="updated fade"><p>'.$strText.' <strong>Important:</strong> '.$strSettings.': '.$strLink.'.</p></div>';
+		echo '<div id="message" class="updated fade"><p>'.$strText.' <strong>'.__('Important', 'wp-piwik').':</strong> '.$strSettings.': '.$strLink.'.</p></div>';
 	}
 	
 	/**
@@ -1006,6 +1006,7 @@ class wp_piwik {
 <?php /************************************************************************/
 				echo '<h4><label for="wp-piwik_jscode">JavaScript:</label></h4>'.
 					'<div class="input-text-wrap"><textarea id="wp-piwik_jscode" name="wp-piwik_jscode" readonly="readonly" rows="13" cols="55">'.
+						(is_plugin_active_for_network('wp-piwik/wp-piwik.php')?'*** SITE SPECIFIC EXAMPLE CODE ***\n':'').
 						htmlentities($strJavaScript).'</textarea></div>';
 				echo '<h4><label for="wp-piwik_addjs">'.__('Add script', 'wp-piwik').':</label></h4>'.
 						'<div class="input-wrap"><input type="checkbox" value="1" id="wp-piwik_addjs" name="wp-piwik_addjs" '.
