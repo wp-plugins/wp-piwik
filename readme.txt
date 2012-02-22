@@ -85,7 +85,7 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 
 = 0.9.1 =
 * Bugfix: Usage as "Site Specific Plugin" [mixed up the different sites settings](http://wordpress.org/support/topic/plugin-wp-piwik-as-simple-plugin-with-multisite-fills-auth-with-last-used-token) (network mode)
-* Hotfix: Avoid "Unknown site/blog" message without giving a chance to choose an existing site
+* Hotfix: Avoid "Unknown site/blog" message without giving a chance to choose an existing site. Thank you, Taimon!
 
 = 0.9.0 =
 * Auto-configuration
