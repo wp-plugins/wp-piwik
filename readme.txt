@@ -25,19 +25,7 @@ Languages: English, German, Albanian, Azerbaijani, Belorussian, Dutch, French, G
 
 = WP multisite =
 
-Version 0.6.0 (or newer) includes experimental WP multisite support.
-
-**Experimental**
-
-The WP multisite support is still experimental. Please test it on your own (e.g. using a local copy of your WP multisite) before you use it in an user context.
-
-**Simple**
-
-Just add WP-Piwik to your /wp-content/plugins folder and enable the Plugins page for individual site administrators. So each user can enable WP-Piwik and use his own Piwik instance.
-
-**Extended (WPMU-Piwik)**
-
-Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin](http://codex.wordpress.org/Create_A_Network#WordPress_Plugins). Users have access to their own statistics, site admins can access each blog's statistics. Please test it on your own (e.g. using a local copy of your WPMU) before you use it in an user context.
+See section "Installation".
 
 = Credits =
 
@@ -59,15 +47,33 @@ Thank you all!
 
 == Installation ==
 
+= Install WP-Piwik on a simple WordPress blog =
+
 1. Upload the full `wp-piwik` directory into your `wp-content/plugins` directory.
 
-2. Activate the plugin through the 'Plugins' menu in WordPress. (As a multisite admin you can enable WP-Piwik as *experimental* [Network Plugin](http://codex.wordpress.org/Create_A_Network#WordPress_Plugins) also.)
+2. Activate the plugin through the 'Plugins' menu in WordPress. 
 
 3. Open the new 'Settings/WP-Piwik Settings' menu, enter your Piwik base URL and your auth token. Save settings.
 
 4. If you have view access to multiple site stats and did not enable "auto config", choose your blog and save settings again.
 
 5. Look at 'Dashboard/WP-Piwik' to get your site stats.
+
+= Install WP-Piwik on a WordPress blog network (WPMU/WP multisite) =
+
+There are two differents methods to use WP-Piwik in a multisite environment:
+* As a Site Specific Plugin it behaves like a plugin installed on a simple WordPress blog. Each user can enable, configure and use WP-Piwik on his own. Users can even use their own Piwik instances (and accordingly they have to). 
+* Using WP-Piwik as a Network Plugin equates to a central approach. A single Piwik instance is used and the site admin configures the plugin completely. Users are just allowed to see their own statistics, site admins can see each blog's stats.
+
+** Site Specific Plugin **
+
+Just add WP-Piwik to your /wp-content/plugins folder and enable the Plugins page for individual site administrators. Each user has to enable and configure WP-Piwik on his own if he want to use the plugin.
+
+** Network Plugin **
+
+The Network Plugin support is still experimental. Please test it on your own (e.g. using a local copy of your WP multisite) before you use it in an user context.
+
+Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin](http://codex.wordpress.org/Create_A_Network#WordPress_Plugins). Users can access their own statistics, site admins can access each blog's statistics and the plugin's configuration.
 
 == Screenshots ==
 
@@ -78,6 +84,7 @@ Thank you all!
 == Changelog ==
 
 = 0.9.1 =
+* Bugfix: Usage as "Site Specific Plugin" [mixed up the different sites settings](http://wordpress.org/support/topic/plugin-wp-piwik-as-simple-plugin-with-multisite-fills-auth-with-last-used-token) (network mode)
 * Hotfix: Avoid "Unknown site/blog" message without giving a chance to choose an existing site
 
 = 0.9.0 =

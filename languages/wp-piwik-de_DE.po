@@ -465,3 +465,6 @@ msgstr "Meine Wunschliste bei Amazon.de"
 
 msgid "Piwik error"
 msgstr "Piwik-Fehler"
+
+msgid "Important"
+msgstr "Wichtig"
