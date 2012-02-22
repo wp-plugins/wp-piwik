@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.9.1
+Version: 0.9.0
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -59,12 +59,12 @@ if (!function_exists('is_plugin_active_for_network'))
 class wp_piwik {
 
 	private static
-		$intRevisionId = 90001,
-		$strVersion = '0.9.0',
+		$intRevisionId = 90100,
+		$strVersion = '0.9.1',
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
 		$aryGlobalSettings = array(
-			'revision' => 90001,
+			'revision' => 90100,
 			'add_tracking_code' => false,
 			'last_settings_update' => 0,
 			'piwik_token' => '',
@@ -97,7 +97,10 @@ class wp_piwik {
 	 */
 	static function loadSettings() {		
 		// Get global settings
-		self::$aryGlobalSettings = get_site_option('wp-piwik_global-settings',self::$aryGlobalSettings);
+		self::$aryGlobalSettings = (is_plugin_active_for_network('wp-piwik/wp-piwik.php')?
+			get_site_option('wp-piwik_global-settings',self::$aryGlobalSettings):
+			get_option('wp-piwik_global-settings',self::$aryGlobalSettings)
+		);
 		// Get site settings
 		self::$arySettings = get_option('wp-piwik_settings',self::$arySettings);
 	}
@@ -107,8 +110,11 @@ class wp_piwik {
 	 */
 	static function saveSettings() {
 		// Save global settings
-		update_site_option('wp-piwik_global-settings',self::$aryGlobalSettings);
-		// Save site settings
+		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php'))
+			update_site_option('wp-piwik_global-settings',self::$aryGlobalSettings);
+		else 
+			update_option('wp-piwik_global-settings',self::$aryGlobalSettings);
+		// Save blog settings
 		update_option('wp-piwik_settings',self::$arySettings);
 		// Load WP_Roles class 
 		global $wp_roles;
@@ -237,7 +243,7 @@ class wp_piwik {
 		// Create settings Link
 		$strLink = sprintf('<a href="options-general.php?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'));
 		// Display message
-		echo '<div id="message" class="updated fade"><p>'.$strText.' '.$strSettings.': '.$strLink.'.</p></div>';
+		echo '<div id="message" class="updated fade"><p>'.$strText.' <strong>Important:</strong> '.$strSettings.': '.$strLink.'.</p></div>';
 	}
 	
 	/**
