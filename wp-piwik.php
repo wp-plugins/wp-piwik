@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.9.0
+Version: 0.9.1
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
