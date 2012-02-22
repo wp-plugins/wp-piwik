@@ -59,12 +59,12 @@ if (!function_exists('is_plugin_active_for_network'))
 class wp_piwik {
 
 	private static
-		$intRevisionId = 90100,
+		$intRevisionId = 90101,
 		$strVersion = '0.9.1',
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
 		$aryGlobalSettings = array(
-			'revision' => 90100,
+			'revision' => 90101,
 			'add_tracking_code' => false,
 			'last_settings_update' => 0,
 			'piwik_token' => '',
