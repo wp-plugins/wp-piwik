@@ -434,7 +434,7 @@ class wp_piwik {
 	 */
 	function addWordPressDashboardSEO() {
 		$aryConfig = array(
-			'params' => array('period' => 'day','date'  => self::$aryGlobalSettings['dashboard_widget'],'limit' => null),
+			'params' => array('period' => 'day','date'  => 'today','limit' => null),
 			'inline' => true,			
 		);
 		$strFile = 'seo';
