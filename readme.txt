@@ -40,7 +40,7 @@ See section "Installation".
 * Russian [ru_RU] language file by [Natalya](http://www.luxpar.de).
 * Swedish [sv_SE] language file by [EzBizNiz](http://ezbizniz.com/).
 * Norwegian [nb_NO] language file by Gormer.
-* Donations: Marco L., Rolf W., Tobias U., Lars K., Donna F., the Piwik team itself, and all people flattering this.
+* Donations: Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S, the Piwik team itself, and all people flattering this.
 * All users who send me mails containing criticism, commendation, feature requests and bug reports - you help me to make WP-Piwik much better!
 
 Thank you all!
