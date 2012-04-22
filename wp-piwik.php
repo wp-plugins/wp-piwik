@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.9.1
+Version: 0.9.2
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -320,7 +320,7 @@ class wp_piwik {
 				__('WP-Piwik', 'wp-piwik'), 
 				'activate_plugins',
 				__FILE__,
-				array($this, 'show_settings')
+				array($this, 'showSettings')
 			);
 			// Add styles required by options page
 			add_action('admin_print_styles-'.$intOptionsPage, array($this, 'addAdminStyle'));
@@ -356,7 +356,7 @@ class wp_piwik {
 			__('WP-Piwik', 'wp-piwik'),
 			'manage_sites',
 			__FILE__,
-			array($this, 'show_settings')
+			array($this, 'showSettings')
 		);
 		
 		// Add styles required by options page
@@ -854,6 +854,7 @@ class wp_piwik {
             echo '<a class="nav-tab'.$strClass.'" href="?page=wp-piwik/wp-piwik.php&tab='.$strTab.'">'.$strName.'</a>';
         }
         echo '</h2>';
+		return $strCurr;
     }
 		
 	/**
@@ -894,27 +895,37 @@ class wp_piwik {
 		return $strURL;
 	}
 	
-	function show_settings() { 		
-		$strToken = self::$aryGlobalSettings['piwik_token'];
-		$strURL = self::$aryGlobalSettings['piwik_url'];
-		$intSite = self::$arySettings['site_id'];
-		if (isset($_POST['action']) && $_POST['action'] == 'save_settings')
+	/**
+	 * Show settings page
+	 */
+	function showSettings() {
+		// Define globals and get request vars
+		global $pagenow;
+		$strTab = (isset($_GET['tab'])?$_GET['tab']:'homepage');
+		// Show update message if stats saved
+		if (isset($_POST['wp-piwik_settings_submit']) && $_POST['wp-piwik_settings_submit'] == 'Y')
 			echo '<div id="message" class="updated fade"><p>'.__('Changes saved','wp-piwik').'</p></div>';
-			
-/***************************************************************************/ ?>
-<div class="wrap">
-	<h2><?php _e('WP-Piwik Settings', 'wp-piwik') ?></h2>
-	<?php
-			$strTab = (isset($_GET['tab'])?$_GET['tab']:'homepage');
-			$this->showSettingsTabs(!(empty($strToken) || empty($strURL)), $strTab); 
-    ?>
-	<div class="wp-piwik-sidebox">
-		<div class="wp-piwik-support">	
-			<p><strong>Support</strong></p>
-			<p><a href="http://peepbo.de/board/viewforum.php?f=3"><?php _e('WP-Piwik support board','wp-piwik'); ?></a> (<?php _e('no registration required, English &amp; German','wp-piwik'); ?>)</p>
-			<p><a href="http://wordpress.org/tags/wp-piwik?forum_id=10"><?php _e('WordPress.org forum about WP-Piwik','wp-piwik'); ?></a> (<?php _e('WordPress.org registration required, English','wp-piwik'); ?>)</p>
-			<p><?php _e('Please don\'t forget to vote the compatibility at the','wp-piwik'); ?> <a href="http://wordpress.org/extend/plugins/wp-piwik/">WordPress.org Plugin Directory</a>.</p>
-		</div>
+		// Show settings page title
+		echo '<div class="wrap"><h2>'.__('WP-Piwik Settings', 'wp-piwik').'</h2>';
+		// Show tabs
+		$strTab = $this->showSettingsTabs(!(empty($strToken) || empty($strURL)), $strTab);
+		// Open form 
+		echo '<form method="post" action="'.admin_url('options-general.php?page=wp-piwik/wp-piwik.php').'">';
+		wp_nonce_field('wp-piwik_settings');
+		// Show settings
+		if ($pagenow == 'options-general.php' && $_GET['page'] == 'wp-piwik/wp-piwik.php') {
+			echo '<table class="form-table">';
+			// Get tab contents
+			require_once('settings/'.$strTab.'.php');				
+			echo '</table>';
+		}
+		// Show submit button
+		if (!in_array($strTab, array('homepage','credits','support')))
+			echo '<p class="submit" style="clear: both;"><input type="submit" name="Submit"  class="button-primary" value="'.__('Save settings', 'wp-piwik').'" /><input type="hidden" name="wp-piwik_settings_submit" value="Y" /></p>';
+		// Close form
+		echo '</form>';
+?>
+<?php /*	<div class="wp-piwik-sidebox">
 		<div class="wp-piwik-donate">
 			<p><strong><?php _e('Donate','wp-piwik'); ?></strong></p>
 			<p><?php _e('If you like WP-Piwik, you can support its development by a donation:', 'wp-piwik'); ?></p>
@@ -937,47 +948,7 @@ class wp_piwik {
 			</div>
 		</div>
 	</div>
-
-	<form method="post" action="">
-		<div id="dashboard-widgets-wrap">
-			<div id="dashboard-widgets" class="metabox-holder">
-				<div class="wp-piwik-settings-container" id="postbox-container">
-					<div class="postbox wp-piwik-settings" >
-						<h3 class='hndle'><span><?php _e('Account settings', 'wp-piwik'); ?></span></h3>
-						<div class="inside">
-							<h4><label for="wp-piwik_url"><?php _e('Piwik URL', 'wp-piwik'); ?>:</label></h4>
-								<div class="input-text-wrap">
-									<input type="text" name="wp-piwik_url" id="wp-piwik_url" value="<?php echo $strURL; ?>" />
-								</div>
-							<h4><label for="wp-piwik_token"><?php _e('Auth token', 'wp-piwik'); ?>:</label></h4>
-								<div class="input-text-wrap">
-									<input type="text" name="wp-piwik_token" id="wp-piwik_token" value="<?php echo $strToken; ?>" />
-								</div>
-								<div class="wp-piwik_desc">
-<?php _e(
-	'To enable Piwik statistics, please enter your Piwik'.
-	' base URL (like http://mydomain.com/piwik) and your'.
-	' personal authentification token. You can get the token'.
-	' on the API page inside your Piwik interface. It looks'.
-	' like &quot;1234a5cd6789e0a12345b678cd9012ef&quot;.'
-	, 'wp-piwik'
-); ?>
-								</div>
-								<div class="wp-piwik_desc">
-<?php _e(
-	'<strong>Important note:</strong> If you do not host this blog on your own, your site admin is able to get your auth token from the database. So he is able to access your statistics. You should never use an auth token with more than simple view access!',
-	'wp-piwik'
-); ?>
-								</div>
-							<?php if (!is_plugin_active_for_network('wp-piwik/wp-piwik.php')) { ?>
-							<h4><label for="wp-piwik_addjs"><?php _e('Auto config', 'wp-piwik') ?>:</label></h4>
-								<div class="input-wrap">
-									<input type="checkbox" value="1" id="wp-piwik_auto_site_config" name="wp-piwik_auto_site_config"<?php echo (self::$aryGlobalSettings['auto_site_config']?' checked="checked"':'') ?>/>
-								</div>
-								<div class="wp-piwik_desc">
-                                    <?php _e('Check this to automatically choose your blog from your Piwik sites by URL. If your blog is not added to Piwik yet, WP-Piwik will add a new site.', 'wp-piwik') ?>
-                                </div>
-							<?php } ?>
+*/ ?>
 								
 <?php /************************************************************************/
 		if (!empty($strToken) && !empty($strURL)) { 
@@ -1149,35 +1120,13 @@ class wp_piwik {
 			}
 		}
 /***************************************************************************/ ?>
-					<div><input type="submit" name="Submit" value="<?php _e('Save settings', 'wp-piwik') ?>" /></div>
-				</div>
-			</div>
-		</div>
-		<input type="hidden" name="action" value="save_settings" />
-		</div></div>		
-		</form>
 <pre><?php $current_user = wp_get_current_user(); ?></pre>
-	</div>
-	<?php $this->credits(); ?>
+	</div>	
 <?php /************************************************************************/
 	}
 
 	private static function isSSL() {
 		return (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off');
-	}
-	
-	function credits() {
-/***************************************************************************/ ?>
-	<h2 style="clear:left;"><?php _e('Credits', 'wp-piwik'); ?></h2>
-	<div class="inside">
-		<p><strong><?php _e('Thank you very much for your donation', 'wp-piwik'); ?>:</strong> Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S, <?php _e('the Piwik team itself','wp-piwik');?> <?php _e('and all people flattering this','wp-piwik'); ?>!</p>
-		<p><?php _e('Graphs powered by <a href="http://www.jqplot.com/">jqPlot</a>, an open source project by Chris Leonello. Give it a try! (License: GPL 2.0 and MIT)','wp-piwik'); ?></p>
-		<p><?php _e('Metabox support inspired by', 'wp-piwik'); echo ' <a href="http://www.code-styling.de/english/how-to-use-wordpress-metaboxes-at-own-plugins">Heiko Rabe\'s metabox demo plugin</a>.'?></p>
-		<p><?php _e('Thank you very much','wp-piwik'); ?>, <a href="http://blogu.programeshqip.org/">Besnik Bleta</a>, <a href="http://www.fatcow.com/">FatCow</a>, <a href="http://www.pamukkaleturkey.com/">Rene</a>, Fab, <a href="http://ezbizniz.com/">EzBizNiz</a>, Gormer, Natalya, <a href="www.aggeliopolis.gr">AggelioPolis</a><?php _e(', and', 'wp-piwik'); ?> <a href="http://wwww.webhostinggeeks.com">Galina Miklosic</a> <?php _e('for your translation work','wp-piwik'); ?>!</p>
-		<p><?php _e('Thank you very much, all users who send me mails containing criticism, commendation, feature requests and bug reports! You help me to make WP-Piwik much better.','wp-piwik'); ?></p>
-		<p><?php _e('Thank <strong>you</strong> for using my plugin. It is the best commendation if my piece of code is really used!','wp-piwik'); ?></p>
-	</div>
-<?php /************************************************************************/
 	}
 }
 
