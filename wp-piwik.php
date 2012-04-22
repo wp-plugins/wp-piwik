@@ -11,7 +11,7 @@ Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
 ****************************************************************************************** 
-	Copyright (C) 2009-2011 Andre Braekling (email: webmaster@braekling.de)
+	Copyright (C) 2009-2012 Andre Braekling (email: webmaster@braekling.de)
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -63,6 +63,7 @@ class wp_piwik {
 		$strVersion = '0.9.1',
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
+		$bolJustActivated = false,
 		$aryGlobalSettings = array(
 			'revision' => 90101,
 			'add_tracking_code' => false,
@@ -136,19 +137,19 @@ class wp_piwik {
 	 * Constructor
 	 */
 	function __construct() {
+        // Call install function on activation
+        register_activation_hook(__FILE__, array($this, 'installPlugin'));
 		// Store plugin basename
 		self::$strPluginBasename = plugin_basename(__FILE__);
 		// Load current settings
 		self::loadSettings();		
 		// Upgrade?
-		if (self::$aryGlobalSettings['revision'] < self::$intRevisionId) $this->install();
+		if (self::$aryGlobalSettings['revision'] < self::$intRevisionId) $this->upgradePlugin();
 		// Settings changed?
 		if (isset($_POST['action']) && $_POST['action'] == 'save_settings')
 			$this->applySettings();
 		// Load language file
 		load_plugin_textdomain('wp-piwik', false, dirname(self::$strPluginBasename)."/languages/");
-		// Call install function on activation
-		register_activation_hook(__FILE__, array($this, 'install'));
 		// Add meta links to plugin details
 		add_filter('plugin_row_meta', array($this, 'setPluginMeta'), 10, 2);
 		// Register columns
@@ -168,7 +169,7 @@ class wp_piwik {
 		if (self::$aryGlobalSettings['dashboard_widget'] || self::$aryGlobalSettings['dashboard_chart'] || self::$aryGlobalSettings['dashboard_seo'])
 			add_action('wp_dashboard_setup', array($this, 'extendWordPressDashboard'));		
 		// Add tracking code to footer if enabled
-		if (self::$aryGlobalSettings['add_tracking_code']) add_action('wp_footer', array($this, 'footer'));
+		if (self::$aryGlobalSettings['add_tracking_code']) add_action('wp_footer', array($this, 'footer'));        
 	}
 
 	/**
@@ -185,30 +186,41 @@ class wp_piwik {
 	}	
 	
 	/**
-	 * Install or upgrade
+	 * Install
 	 */
-	function install() {
-		// Update: Translate options
-		if (self::$aryGlobalSettings['revision'] < 80403)
-			self::includeFile('update/80403.php');
-		if (self::$aryGlobalSettings['revision'] < 80502)
-			self::includeFile('update/80502.php');
-		if (self::$aryGlobalSettings['revision'] < 80602)
-			self::includeFile('update/80602.php');
-		if (self::$aryGlobalSettings['revision'] < 80800)
-			self::includeFile('update/80800.php');
-		if (self::$aryGlobalSettings['revision'] < 90001)
-			self::includeFile('update/90001.php');			
-		// Show an info message after upgrade/install
-		add_action('admin_footer', array($this, 'updateMessage'));
+	function installPlugin() {
+	    // Keep activation/installation/upgrade in mind    
+	    self::$bolJustActivated = true;
+	    // Show an info message after upgrade/install
+        add_action('admin_notices', array($this, 'updateMessage'));
 		// Set current revision ID 
 		self::$aryGlobalSettings['revision'] = self::$intRevisionId;
 		self::$aryGlobalSettings['last_settings_update'] = time();
 		// Save upgraded or default settings
 		self::saveSettings();
 		// Reload settings
-		self::loadSettings();
+		self::loadSettings();        
 	}
+
+    /**
+     * Upgrade
+     */
+    function upgradePlugin() {
+        add_action('admin_notices', array($this, 'updateMessage'));
+        // Update: Translate options
+        if (self::$aryGlobalSettings['revision'] < 80403)
+            self::includeFile('update/80403.php');
+        if (self::$aryGlobalSettings['revision'] < 80502)
+            self::includeFile('update/80502.php');
+        if (self::$aryGlobalSettings['revision'] < 80602)
+            self::includeFile('update/80602.php');
+        if (self::$aryGlobalSettings['revision'] < 80800)
+            self::includeFile('update/80800.php');
+        if (self::$aryGlobalSettings['revision'] < 90001)
+            self::includeFile('update/90001.php');
+        // Install new version
+        $this->installPlugin();      
+    }
 
 	/**
 	 * Upgrade outdated site settings
@@ -243,7 +255,7 @@ class wp_piwik {
 		// Create settings Link
 		$strLink = sprintf('<a href="options-general.php?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'));
 		// Display message
-		echo '<div id="message" class="updated fade"><p>'.$strText.' <strong>'.__('Important', 'wp-piwik').':</strong> '.$strSettings.': '.$strLink.'.</p></div>';
+		echo '<div class="updated fade"><p>'.$strText.' <strong>'.__('Important', 'wp-piwik').':</strong> '.$strSettings.': '.$strLink.'.</p></div>';
 	}
 	
 	/**
@@ -746,7 +758,7 @@ class wp_piwik {
 		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && is_super_admin()) {
 			global $blog_id;
 			global $wpdb;
-			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM '.$wpdb->prefix.'blogs ORDER BY blog_id'));			
+			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id'));			
 			if (isset($_GET['wpmu_show_stats'])) {
 				switch_to_blog((int) $_GET['wpmu_show_stats']);
 				self::loadSettings();
@@ -815,6 +827,34 @@ class wp_piwik {
 		//lets redirect the post request into get request (you may add additional params at the url, if you need to show save results
 		wp_redirect($_POST['_wp_http_referer']);		
 	}
+
+    /**
+     * Add tabs to settings page
+     * See http://wp.smashingmagazine.com/2011/10/20/create-tabs-wordpress-settings-pages/
+     */
+    function showSettingsTabs($bolFull = true, $strCurr = 'homepage') {
+        $aryTabs = ($bolFull?array(
+            'homepage' => 'Home',
+            'piwik' => 'Piwik Settings',
+            'tracking' => 'Tracking',
+            'views' => 'Statistics',
+            'support' => 'Support',
+            'credits' => 'Credits'
+        ):array(
+            'piwik' => 'Piwik Settings',
+            'support' => 'Support',
+            'credits' => 'Credits'
+        ));
+		if (empty($strCurr)) $strCurr = 'homepage';
+		elseif (!isset($aryTabs[$strCurr])) $strCurr = 'piwik';
+        echo '<div id="icon-themes" class="icon32"><br></div>';
+        echo '<h2 class="nav-tab-wrapper">';
+        foreach( $aryTabs as $strTab => $strName ) {
+            $strClass = ($strTab == $strCurr?' nav-tab-active':'');
+            echo '<a class="nav-tab'.$strClass.'" href="?page=wp-piwik/wp-piwik.php&tab='.$strTab.'">'.$strName.'</a>';
+        }
+        echo '</h2>';
+    }
 		
 	/**
 	 * Apply & store new settings
@@ -864,7 +904,10 @@ class wp_piwik {
 /***************************************************************************/ ?>
 <div class="wrap">
 	<h2><?php _e('WP-Piwik Settings', 'wp-piwik') ?></h2>
-	
+	<?php
+			$strTab = (isset($_GET['tab'])?$_GET['tab']:'homepage');
+			$this->showSettingsTabs(!(empty($strToken) || empty($strURL)), $strTab); 
+    ?>
 	<div class="wp-piwik-sidebox">
 		<div class="wp-piwik-support">	
 			<p><strong>Support</strong></p>
