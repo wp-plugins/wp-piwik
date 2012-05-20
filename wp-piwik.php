@@ -128,8 +128,7 @@ class wp_piwik {
 			foreach (array('stealth', 'read_stats') as $strCap)
 				if (isset(self::$aryGlobalSettings['capability_'.$strCap][$strKey]) && self::$aryGlobalSettings['capability_'.$strCap][$strKey])
 					$objRole->add_cap('wp-piwik_'.$strCap);
-				else 
-					$objRole->remove_cap('wp-piwik_'.$strCap);
+				else $objRole->remove_cap('wp-piwik_'.$strCap);
 		}
 	}
 	
@@ -146,7 +145,7 @@ class wp_piwik {
 		// Upgrade?
 		if (self::$aryGlobalSettings['revision'] < self::$intRevisionId) $this->upgradePlugin();
 		// Settings changed?
-		if (isset($_POST['action']) && $_POST['action'] == 'save_settings')
+		if (isset($_POST['action']) && $_POST['action'] == 'save_wp-piwik_settings')
 			$this->applySettings();
 		// Load language file
 		load_plugin_textdomain('wp-piwik', false, dirname(self::$strPluginBasename)."/languages/");
@@ -539,7 +538,7 @@ class wp_piwik {
 		// cURL not available but url fopen allowed
 		} elseif (ini_get('allow_url_fopen'))
 			// Get file using file_get_contents
-			$strResult = file_get_contents($strURL);
+			$strResult = @file_get_contents($strURL);
 		// Error: Not possible to get remote file
 		else $strResult = serialize(array(
 				'result' => 'error',
@@ -578,7 +577,8 @@ class wp_piwik {
 			if (!empty($strResult)) self::$arySettings['site_id'] = $strResult;
 		}
 		// Store new data
-		self::$arySettings['tracking_code'] = html_entity_decode($this->callPiwikAPI('SitesManager.getJavascriptTag'));
+		$mixAPIResult = $this->callPiwikAPI('SitesManager.getJavascriptTag');
+		self::$arySettings['tracking_code'] = (!is_array($mixAPIResult)?html_entity_decode($mixAPIResult):'');
 		self::$arySettings['last_tracking_code_update'] = time();
 		// Change Tracking code if configured
 		self::$arySettings['tracking_code'] = $this->applyJSCodeChanges(self::$arySettings['tracking_code']);
@@ -834,16 +834,16 @@ class wp_piwik {
      */
     function showSettingsTabs($bolFull = true, $strCurr = 'homepage') {
         $aryTabs = ($bolFull?array(
-            'homepage' => 'Home',
-            'piwik' => 'Piwik Settings',
-            'tracking' => 'Tracking',
-            'views' => 'Statistics',
-            'support' => 'Support',
-            'credits' => 'Credits'
+            'homepage' => __('Home','wp-piwik'),
+            'piwik' => __('Piwik Settings','wp-piwik'),
+            'tracking' => __('Tracking','wp-piwik'),
+            'views' => __('Statistics','wp-piwik'),
+            'support' => __('Support','wp-piwik'),
+            'credits' => __('Credits','wp-piwik')
         ):array(
-            'piwik' => 'Piwik Settings',
-            'support' => 'Support',
-            'credits' => 'Credits'
+            'piwik' => __('Piwik Settings','wp-piwik'),
+            'support' => __('Support','wp-piwik'),
+            'credits' => __('Credits','wp-piwik')
         ));
 		if (empty($strCurr)) $strCurr = 'homepage';
 		elseif (!isset($aryTabs[$strCurr])) $strCurr = 'piwik';
@@ -861,26 +861,29 @@ class wp_piwik {
 	 * Apply & store new settings
 	 */
 	function applySettings() {
-		self::$aryGlobalSettings['add_tracking_code']  		= (isset($_POST['wp-piwik_addjs'])?$_POST['wp-piwik_addjs']:'');
-		self::$aryGlobalSettings['dashboard_widget'] 		= (isset($_POST['wp-piwik_dbwidget'])?$_POST['wp-piwik_dbwidget']:false);
-		self::$aryGlobalSettings['dashboard_chart']			= (isset($_POST['wp-piwik_dbchart'])?$_POST['wp-piwik_dbchart']:false);
-		self::$aryGlobalSettings['dashboard_seo']			= (isset($_POST['wp-piwik_dbseo'])?$_POST['wp-piwik_dbseo']:false);
-		self::$aryGlobalSettings['stats_seo']				= (isset($_POST['wp-piwik_statsseo'])?$_POST['wp-piwik_statsseo']:false);
-		self::$aryGlobalSettings['piwik_shortcut']	 		= (isset($_POST['wp-piwik_piwiklink'])?$_POST['wp-piwik_piwiklink']:false);
-		self::$aryGlobalSettings['default_date']	 		= (isset($_POST['wp-piwik_default_date'])?$_POST['wp-piwik_default_date']:'yesterday');
-		self::$aryGlobalSettings['piwik_token'] 		 	= (isset($_POST['wp-piwik_token'])?$_POST['wp-piwik_token']:'');
-		self::$aryGlobalSettings['piwik_url']				= self::check_url((isset($_POST['wp-piwik_url'])?$_POST['wp-piwik_url']:''));
-		self::$aryGlobalSettings['capability_stealth'] 		= (isset($_POST['wp-piwik_filter'])?$_POST['wp-piwik_filter']:array());
-		self::$aryGlobalSettings['capability_read_stats'] 	= (isset($_POST['wp-piwik_displayto'])?$_POST['wp-piwik_displayto']:array());
+		$strTab = (isset($_GET['tab'])?$_GET['tab']:'homepage');
+		self::$aryGlobalSettings['add_tracking_code']  		= (isset($_POST['wp-piwik_addjs'])?$_POST['wp-piwik_addjs']:self::$aryGlobalSettings['add_tracking_code']);
+		self::$aryGlobalSettings['dashboard_widget'] 		= (isset($_POST['wp-piwik_dbwidget'])?$_POST['wp-piwik_dbwidget']:self::$aryGlobalSettings['dashboard_widget']);
+		self::$aryGlobalSettings['dashboard_chart']			= (isset($_POST['wp-piwik_dbchart'])?$_POST['wp-piwik_dbchart']:self::$aryGlobalSettings['dashboard_chart']);
+		self::$aryGlobalSettings['dashboard_seo']			= (isset($_POST['wp-piwik_dbseo'])?$_POST['wp-piwik_dbseo']:self::$aryGlobalSettings['dashboard_seo']);
+		self::$aryGlobalSettings['stats_seo']				= (isset($_POST['wp-piwik_statsseo'])?$_POST['wp-piwik_statsseo']:self::$aryGlobalSettings['stats_seo']);
+		self::$aryGlobalSettings['piwik_shortcut']	 		= (isset($_POST['wp-piwik_piwiklink'])?$_POST['wp-piwik_piwiklink']:self::$aryGlobalSettings['piwik_shortcut']);
+		self::$aryGlobalSettings['default_date']	 		= (isset($_POST['wp-piwik_default_date'])?$_POST['wp-piwik_default_date']:self::$aryGlobalSettings['default_date']);
+		self::$aryGlobalSettings['capability_stealth'] 		= (isset($_POST['wp-piwik_filter'])?$_POST['wp-piwik_filter']:self::$aryGlobalSettings['capability_stealth']);
+		self::$aryGlobalSettings['capability_read_stats'] 	= (isset($_POST['wp-piwik_displayto'])?$_POST['wp-piwik_displayto']:self::$aryGlobalSettings['capability_read_stats']);
 		self::$aryGlobalSettings['last_settings_update'] 	= time();
-		self::$aryGlobalSettings['track_404']			 	= (isset($_POST['wp-piwik_404'])?$_POST['wp-piwik_404']:false);
-		self::$aryGlobalSettings['track_compress']			= (isset($_POST['wp-piwik_compress'])?$_POST['wp-piwik_compress']:false);
-		self::$aryGlobalSettings['track_post']				= (isset($_POST['wp-piwik_reqpost'])?$_POST['wp-piwik_reqpost']:false);		
-		if (!is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
-			self::$aryGlobalSettings['auto_site_config'] 	= (isset($_POST['wp-piwik_auto_site_config'])?$_POST['wp-piwik_auto_site_config']:false);
-			if (!self::$aryGlobalSettings['auto_site_config'])
-				self::$arySettings['site_id']				= (isset($_POST['wp-piwik_siteid'])?$_POST['wp-piwik_siteid']:NULL);
-		} else self::$aryGlobalSettings['auto_site_config'] = true;
+		self::$aryGlobalSettings['track_404']			 	= (isset($_POST['wp-piwik_404'])?$_POST['wp-piwik_404']:self::$aryGlobalSettings['track_404']);
+		self::$aryGlobalSettings['track_compress']			= (isset($_POST['wp-piwik_compress'])?$_POST['wp-piwik_compress']:self::$aryGlobalSettings['track_compress']);
+		self::$aryGlobalSettings['track_post']				= (isset($_POST['wp-piwik_reqpost'])?$_POST['wp-piwik_reqpost']:self::$aryGlobalSettings['track_post']);		
+		if ($strTab == 'piwik') {
+			self::$aryGlobalSettings['piwik_token'] = (isset($_POST['wp-piwik_token'])?$_POST['wp-piwik_token']:'');
+			self::$aryGlobalSettings['piwik_url'] = self::checkURL((isset($_POST['wp-piwik_url'])?$_POST['wp-piwik_url']:''));
+			if (!is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
+				self::$aryGlobalSettings['auto_site_config'] = (isset($_POST['wp-piwik_auto_site_config'])?$_POST['wp-piwik_auto_site_config']:false);
+				if (!self::$aryGlobalSettings['auto_site_config'])
+					self::$arySettings['site_id'] = (isset($_POST['wp-piwik_siteid'])?$_POST['wp-piwik_siteid']:self::$arySettings['site_id']);
+			} else self::$aryGlobalSettings['auto_site_config'] = true;
+		}
 		if (self::$aryGlobalSettings['auto_site_config']) {
 			$aryReturn = $this->addPiwikSite();
 			self::$arySettings['tracking_code'] = $aryReturn['js'];
@@ -889,7 +892,10 @@ class wp_piwik {
 		self::saveSettings();
 	}
 
-	static function check_url($strURL) {
+	/**
+	 * Check & prepare URL
+	 */
+	static function checkURL($strURL) {
 		if (substr($strURL, -1, 1) != '/' && substr($strURL, -10, 10) != '/index.php') 
 			$strURL .= '/';
 		return $strURL;
@@ -908,24 +914,9 @@ class wp_piwik {
 		// Show settings page title
 		echo '<div class="wrap"><h2>'.__('WP-Piwik Settings', 'wp-piwik').'</h2>';
 		// Show tabs
-		$strTab = $this->showSettingsTabs(!(empty($strToken) || empty($strURL)), $strTab);
+		$strTab = $this->showSettingsTabs(!(empty(self::$aryGlobalSettings['piwik_token']) || empty(self::$aryGlobalSettings['piwik_url'])), $strTab);
 		// Open form 
-		echo '<form method="post" action="'.admin_url('options-general.php?page=wp-piwik/wp-piwik.php').'">';
-		wp_nonce_field('wp-piwik_settings');
-		// Show settings
-		if ($pagenow == 'options-general.php' && $_GET['page'] == 'wp-piwik/wp-piwik.php') {
-			echo '<table class="form-table">';
-			// Get tab contents
-			require_once('settings/'.$strTab.'.php');				
-			echo '</table>';
-		}
-		// Show submit button
-		if (!in_array($strTab, array('homepage','credits','support')))
-			echo '<p class="submit" style="clear: both;"><input type="submit" name="Submit"  class="button-primary" value="'.__('Save settings', 'wp-piwik').'" /><input type="hidden" name="wp-piwik_settings_submit" value="Y" /></p>';
-		// Close form
-		echo '</form>';
-?>
-<?php /*	<div class="wp-piwik-sidebox">
+/***************************************************************************/ ?>
 		<div class="wp-piwik-donate">
 			<p><strong><?php _e('Donate','wp-piwik'); ?></strong></p>
 			<p><?php _e('If you like WP-Piwik, you can support its development by a donation:', 'wp-piwik'); ?></p>
@@ -946,11 +937,27 @@ class wp_piwik {
 			<div>
 				<a href="http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&amp;filter=all&amp;sort=priority&amp;layout=standard&amp;x=12&amp;y=14"><?php _e('My Amazon.de wishlist', 'wp-piwik'); ?></a>
 			</div>
+			<div>
+				<?php _e('Please don\'t forget to vote the compatibility at the','wp-piwik'); ?> <a href="http://wordpress.org/extend/plugins/wp-piwik/">WordPress.org Plugin Directory</a>. 
+			</div>
 		</div>
-	</div>
-*/ ?>
-								
-<?php /************************************************************************/
+<?php /***************************************************************************/		
+		echo '<form class="wp-piwik-settings" method="post" action="'.admin_url('options-general.php?page=wp-piwik/wp-piwik.php&tab='.$strTab).'">';
+		echo '<input type="hidden" name="action" value="save_wp-piwik_settings" />';
+		wp_nonce_field('wp-piwik_settings');
+		// Show settings
+		if ($pagenow == 'options-general.php' && $_GET['page'] == 'wp-piwik/wp-piwik.php') {
+			echo '<table class="wp-piwik-form-table form-table">';
+			// Get tab contents
+			require_once('settings/'.$strTab.'.php');				
+		// Show submit button
+			if (!in_array($strTab, array('homepage','credits','support')))
+				echo '<tr><td><p class="submit" style="clear: both;"><input type="submit" name="Submit"  class="button-primary" value="'.__('Save settings', 'wp-piwik').'" /><input type="hidden" name="wp-piwik_settings_submit" value="Y" /></p></td></tr>';
+			echo '</table>';
+		}
+		// Close form
+		echo '</form></div>';
+		/*
 		if (!empty($strToken) && !empty($strURL)) { 
 			$aryData = $this->callPiwikAPI('SitesManager.getSitesWithAtLeastViewAccess');
 			if (empty($aryData)) {
@@ -1010,14 +1017,14 @@ class wp_piwik {
 					self::$arySettings['tracking_code'] = $strJavaScript;
 					self::saveSettings();
 				}
-/***************************************************************************/ ?>
+/**************************************************************************
 <div><input type="submit" name="Submit" value="<?php _e('Save settings', 'wp-piwik') ?>" /></div>
 					</div>
 				</div>
 				<div class="postbox wp-piwik-settings" >
 					<h3 class='hndle'><span><?php _e('Tracking settings', 'wp-piwik'); ?></span></h3>
 					<div class="inside">
-<?php /************************************************************************/
+************************************************************************
 				echo '<h4><label for="wp-piwik_jscode">JavaScript:</label></h4>'.
 					'<div class="input-text-wrap"><textarea id="wp-piwik_jscode" name="wp-piwik_jscode" readonly="readonly" rows="13" cols="55">'.
 						(is_plugin_active_for_network('wp-piwik/wp-piwik.php')?'*** SITE SPECIFIC EXAMPLE CODE ***'."\n":'').
@@ -1064,7 +1071,7 @@ class wp_piwik {
 				echo '<div class="wp-piwik_desc">'.
 					__('Choose users by user role you do <strong>not</strong> want to track.'.
 					' Requires enabled &quot;Add script&quot;-functionality.','wp-piwik').'</div>';
-				/***************************************************************************/ ?>
+				/***************************************************************************
 <div><input type="submit" name="Submit" value="<?php _e('Save settings', 'wp-piwik') ?>" /></div>
 						</div>
 					</div>
@@ -1119,15 +1126,39 @@ class wp_piwik {
 						'</div>';
 			}
 		}
-/***************************************************************************/ ?>
-<pre><?php $current_user = wp_get_current_user(); ?></pre>
-	</div>	
-<?php /************************************************************************/
+***********************************************************************/
 	}
 
+	/**
+	 * Check if SSL is used
+	 */
 	private static function isSSL() {
 		return (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off');
 	}
+
+	/**
+	 * Show an error message extended by a support site link
+	 */
+	private static function showErrorMessage($strMessage) {
+		echo '<strong class="wp-piwik-error">'.__('An error occured', 'wp-piwik').':</strong> '.$strMessage.' [<a href="page=wp-piwik/wp-piwik.php&tab=support">'.__('Support','wp-piwik').'</a>]';
+	}
+
+	/**
+	 * Read a RSS feed
+	 */
+	private static function readRSSFeed($strFeedURL, $intCount = 5) {
+ 		$aryResult = array();
+		if (function_exists('simplexml_load_file') && !empty($strFeedURL)) {
+			$objXML = @simplexml_load_file($strFeedURL);
+			if (empty($strFeedURL) || !$objXML || !isset($objXML->channel[0]->item))
+    			return array(array('title' => 'Can\'t read RSS feed.','url' => $strFeedURL));
+ 			foreach($objXML->channel[0]->item as $objItem) {
+    			if( $intCount-- == 0 ) break;
+    			$aryResult[] = array('title' => $objItem->title[0], 'url' => $objItem->link[0]);
+			}
+		}
+		return $aryResult;
+	} 
 }
 
 if (class_exists('wp_piwik'))

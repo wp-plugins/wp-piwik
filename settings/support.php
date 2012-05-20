@@ -7,3 +7,25 @@
 <tr>
 	<td><?php _e('Please don\'t forget to vote the compatibility at the','wp-piwik'); ?> <a href="http://wordpress.org/extend/plugins/wp-piwik/">WordPress.org Plugin Directory</a>.</td>
 </tr>
+<tr>
+	<td>
+		<h3><?php _e('Debugging', 'wp-piwik'); ?></h3>
+		<p><?php _e('Either allow_url_fopen has to be enabled <em>or</em> cURL has to be available:') ?></p>
+		<ol>
+			<li><?php 
+				_e('cURL is','wp-piwik');
+				echo ' <strong>'.(function_exists('curl_init')?'':__('not','wp-piwik')).' ';
+				_e('available','wp-piwik');
+			?></strong>.</li>
+			<li><?php 
+				_e('allow_url_fopen is','wp-piwik');
+				echo ' <strong>'.(ini_get('allow_url_fopen')?'':__('not','wp-piwik')).' ';
+				_e('enabled','wp-piwik');
+			?></strong>.</li>
+		</ol>
+		<?php if (!(empty(self::$aryGlobalSettings['piwik_token']) || empty(self::$aryGlobalSettings['piwik_url']))) { ?>
+		<a href="">Run test script</a>
+		
+		<?php } else echo '<p>'.__('You have to enter your auth token and the Piwik URL before you can access more debug functions.', 'wp-piwik').'</p>'; ?>
+	</td>
+</tr>

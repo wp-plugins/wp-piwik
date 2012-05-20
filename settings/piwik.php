@@ -32,4 +32,37 @@ if (!$bolFOpen && !$bolCURL) {
 		<input name="wp-piwik_auto_site_config" id="wp-piwik_auto_site_config" value="1" type="checkbox"<?php echo (self::$aryGlobalSettings['auto_site_config']?' checked="checked"':'') ?>/>
 		<label for="wp-piwik_auto_site_config"><?php _e('Check this to automatically choose your blog from your Piwik sites by URL. If your blog is not added to Piwik yet, WP-Piwik will add a new site.', 'wp-piwik') ?></label>
 	</td>
-</tr><?php }} ?>
+</tr>
+<?php 
+if (!empty(self::$aryGlobalSettings['piwik_url']) && !empty(self::$aryGlobalSettings['piwik_token'])) { 
+	$aryData = $this->callPiwikAPI('SitesManager.getSitesWithAtLeastViewAccess');
+	if (empty($aryData)) {
+		echo '<tr><td colspan="2">';
+		self::showErrorMessage(__('Please check URL and auth token. You need at least view access to one site.', 'wp-piwik'));
+		echo '</td></tr>';
+	}
+	elseif (isset($aryData['result']) && $aryData['result'] == 'error') {
+		echo '<tr><td colspan="2">';
+		self::showErrorMessage($aryData['message']);
+		echo '</td></tr>';
+	} else if (!self::$aryGlobalSettings['auto_site_config']) {
+		echo '<tr><th>'.__('Choose site', 'wp-piwik').':</th><td>';
+		echo '<select name="wp-piwik_siteid" id="wp-piwik_siteid">';
+		$aryOptions = array();
+		foreach ($aryData as $arySite)
+			$aryOptions[$arySite['name'].'#'.$arySite['idsite']] = '<option value="'.$arySite['idsite'].
+				'"'.($arySite['idsite']==self::$arySettings['site_id']?' selected="selected"':'').
+				'>'.htmlentities($arySite['name'], ENT_QUOTES, 'utf-8').
+				'</option>';
+		ksort($aryOptions);
+		foreach ($aryOptions as $strOption) echo $strOption;
+			echo '</select></td></tr>';
+	} else {
+		echo '<tr><th>'.__('Determined site', 'wp-piwik').':</th><td>';
+		echo '<div class="input-text-wrap">';
+		foreach ($aryData as $arySite) 
+			if ($arySite['idsite'] == self::$arySettings['site_id']) {echo '<em>'.htmlentities($arySite['name'], ENT_QUOTES, 'utf-8').'</em>'; break;}		
+		echo '<input type="hidden" name="wp-piwik_siteid" id="wp-piwik_siteid" value="'.self::$arySettings['site_id'].'" /></td></tr>';
+	}
+}
+}}?>
