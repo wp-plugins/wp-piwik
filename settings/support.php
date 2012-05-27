@@ -24,8 +24,17 @@
 			?></strong>.</li>
 		</ol>
 		<?php if (!(empty(self::$aryGlobalSettings['piwik_token']) || empty(self::$aryGlobalSettings['piwik_url']))) { ?>
-		<a href="">Run test script</a>
+		<!-- <a href="">Run test script</a> -->
 		
 		<?php } else echo '<p>'.__('You have to enter your auth token and the Piwik URL before you can access more debug functions.', 'wp-piwik').'</p>'; ?>
 	</td>
 </tr>
+<tr><td><h3>Latest support threads on WordPress.org</h3>
+<?php 
+	$arySupportThreads = self::readRSSFeed('http://wordpress.org/support/rss/tags/wp-piwik');
+	if (!empty($arySupportThreads)) {
+		echo '<ol>';
+		foreach ($arySupportThreads as $arySupportThread) echo '<li><a href="'.$arySupportThread['url'].'">'.$arySupportThread['title'].'</a></li>';
+		echo '</ol>';
+	}
+?></td></tr>

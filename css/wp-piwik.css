@@ -34,6 +34,9 @@ form.wp-piwik-settings {
 table.wp-piwik-form-table {
 	clear:none !important;
 }
+table.wp-piwik-form-table-hide {
+	display:none;	
+}
 
 div.wp-piwik-donate {
 	float:right;

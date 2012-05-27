@@ -12,7 +12,7 @@ if (!$bolFOpen && !$bolCURL) {
 	</th>
 </tr><?php if (!is_plugin_active_for_network('wp-piwik/wp-piwik.php')) { ?><tr>
 	<th colspan="2">
-		<?php _e('<strong>Important note:</strong> If you do not host this blog on your own, your site admin is able to get your auth token from the database. So he is able to access your statistics. In this case you should never use an auth token with more than simple view access although &quot;Auto config&quot; won\'t work!', 'wp-piwik'); ?>
+		<?php _e('<strong>Important note:</strong> If you do not host this blog on your own, your site admin is able to get your auth token from the database.', 'wp-piwik'); ?>
 	</th>
 </tr><?php } ?><tr>
 	<th><?php _e('Piwik URL', 'wp-piwik'); ?>:</th>
@@ -24,7 +24,7 @@ if (!$bolFOpen && !$bolCURL) {
 	<th><?php _e('Auth token', 'wp-piwik'); ?>:</th>
 	<td>
 		<input name="wp-piwik_token" id="wp-piwik_token" type="text" value="<?php echo self::$aryGlobalSettings['piwik_token']; ?>" />
-		<label for="wp-piwik_url"></label>
+		<label for="wp-piwik_token"></label>
 	</td>
 </tr><?php if (!is_plugin_active_for_network('wp-piwik/wp-piwik.php')) { ?><tr>
 	<th><?php _e('Auto config', 'wp-piwik'); ?>:</th>
