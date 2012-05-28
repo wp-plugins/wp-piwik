@@ -2,7 +2,7 @@
 
 Contributors: Braekling
 Requires at least: 3.3
-Tested up to: 3.3.1
+Tested up to: 3.3.2
 Stable tag: 0.9.1
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
@@ -19,7 +19,7 @@ Look at the [Piwik website](http://piwik.org/) to get further information about 
 
 *This plugin is not created or provided by the Piwik project team.*
 
-Languages: English, German, Albanian, Azerbaijani, Belorussian, Dutch, French, Greek, Russian, Swedish, Norwegian
+Languages: English, German, Albanian, Azerbaijani, Belorussian, Dutch, French, Greek, Lithuanian, Norwegian, Persian, Romanian, Russian, Spanish, Swedish, Ukrainian
 
 *Note: If you vote "It's broken", please tell me about your problem. It's hard to fix a bug I don't know about! ;-)*
 
@@ -31,15 +31,7 @@ See section "Installation".
 
 * Graphs powered by [jqPlot](http://www.jqplot.com/), an open source project by Chris Leonello. Give it a try! (GPL 2.0 and MIT)
 * Metabox support inspired by [Heiko Rabe's metabox demo plugin](http://www.code-styling.de/english/how-to-use-wordpress-metaboxes-at-own-plugins).
-* Albanian [sq] language file by [Besnik Bleta](http://blogu.programeshqip.org/).
-* Azerbaijani [az_AZ] language file by [Galina Miklosic](http://www.webhostinggeeks.com).
-* Belorussian [be_BY] language file by [FatCow](http://www.fatcow.com/).
-* Dutch [nl_NL] language file by [Rene](http://www.pamukkaleturkey.com/).
-* French [fr_FR] language file by Fab.
-* Greek [gr_GR] language file by [AggelioPolis](http://www.aggeliopolis.gr).
-* Russian [ru_RU] language file by [Natalya](http://www.luxpar.de).
-* Swedish [sv_SE] language file by [EzBizNiz](http://ezbizniz.com/).
-* Norwegian [nb_NO] language file by Gormer.
+* Translation credits see plugin settings
 * Donations: Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S, the Piwik team itself, and all people flattering this.
 * All users who send me mails containing criticism, commendation, feature requests and bug reports - you help me to make WP-Piwik much better!
 
@@ -90,6 +82,7 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 * Tabbed settings
 * Debug tools added
 * Support forum RSS feed
+* Language updates
 
 = 0.9.1 =
 * Bugfix: Usage as "Site Specific Plugin" [mixed up the different sites settings](http://wordpress.org/support/topic/plugin-wp-piwik-as-simple-plugin-with-multisite-fills-auth-with-last-used-token) (network mode)
