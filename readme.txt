@@ -89,6 +89,7 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 * Bugfix: New created blogs won't show "Please specify a value for 'idSite'." anymore.
 * Tabbed settings
 * Debug tools added
+* Support forum RSS feed
 
 = 0.9.1 =
 * Bugfix: Usage as "Site Specific Plugin" [mixed up the different sites settings](http://wordpress.org/support/topic/plugin-wp-piwik-as-simple-plugin-with-multisite-fills-auth-with-last-used-token) (network mode)

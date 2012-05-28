@@ -1027,6 +1027,45 @@ class wp_piwik {
 	private static function loadTestscript() {
 		require_once('debug/testscript.php');
 	}
+
+	/**
+	 * Reset all WP-Piwik settings
+	 */
+	private static function resetSettings($bolFull = false) {
+		// Backup auth data
+		$aryKeep = array(
+			'revision' => self::$intRevisionId,
+			'add_tracking_code' => false,
+			'last_settings_update' => 0,
+			'piwik_token' => ($bolFull?'':self::$aryGlobalSettings['piwik_token']),
+			'piwik_url' => ($bolFull?'':self::$aryGlobalSettings['piwik_url']),
+			'dashboard_widget' => false,
+			'dashboard_chart' => false,
+			'dashboard_seo' => false,
+			'stats_seo' => false,
+			'capability_stealth' => array(),
+			'capability_read_stats' => array('administrator' => true),
+			'piwik_shortcut' => false,
+			'default_date' => 'yesterday',
+			'auto_site_config' => true,
+			'track_404' => false,
+			'track_compress' => false,
+			'track_post' => false
+		);
+		// Reset network settings
+		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
+			delete_site_option('wp-piwik_global-settings');
+			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id LIMIT '.($current_page-1).','.$per_page));
+			foreach ($aryBlogs as $aryBlog)
+				delete_blog_option($aryBlog->blog_id, 'wp-piwik_settings');
+			update_site_option('wp-piwik_global-settings', $aryKeep);
+		// Reset simple settings
+		} else { 
+			delete_option('wp-piwik_global-settings');
+			delete_option('wp-piwik_settings');
+			update_option('wp-piwik_global-settings', $aryKeep);
+		}
+	}
 	
 	/**
 	 * Get a blog's piwik ID

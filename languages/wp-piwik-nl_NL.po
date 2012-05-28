@@ -109,7 +109,7 @@ msgstr "Bezoeken"
 
 #: dashboard/visitors.php:56
 msgid "Bounced"
-msgstr "Geweigerd"
+msgstr "Bounced"
 
 #: dashboard/websites.php:8
 msgid "Websites"

@@ -25,20 +25,34 @@
 		</ol>
 <?php if (!(empty(self::$aryGlobalSettings['piwik_token']) || empty(self::$aryGlobalSettings['piwik_url']))) { ?>
 <?php 
-	if (isset($_GET['mode']) && $_GET['mode'] == 'testscript') {
-		echo '<p><strong>Test script result</strong></p>';
-		self::loadTestscript();
-	} 
+	if (isset($_GET['mode'])) {
+		switch ($_GET['mode']) {
+			case 'testscript': 
+				echo '<p><strong>'.__('Test script result','wp-piwik').'</strong></p>';
+				self::loadTestscript();
+			break;
+			case 'reset':
+				echo '<p><strong class="wp-piwik-error">'.__('Please confirm your reset request','wp-piwik').':</strong> <a href="?page=wp-piwik/wp-piwik.php&tab=support&mode=resetconfirmed">'.__('YES, please reset <strong>all</strong> WP-Piwik settings <strong>except</strong> auth token and Piwi URL.', 'wp-piwik').'</a></p>';
+			break;
+			case 'resetconfirmed':
+				// Increase time limit before resetting
+				set_time_limit(0);
+				self::resetSettings();
+				echo '<p><strong>'.__('WP-Piwik reset done','wp-piwik').'</p>';
+			default:
+		} 
+	}
 ?>
-		<p><strong>Get more debug information:</strong></p>
+		<p><strong><?php _e('Get more debug information', 'wp-piwik'); ?>:</strong></p>
 		<ol>
-			<li><a href="?page=wp-piwik/wp-piwik.php&tab=support&mode=testscript">Run test script</a></li>
-			<li><a href="?page=wp-piwik/wp-piwik.php&tab=sitebrowser">Get site configuration details</a></li>
+			<li><a href="?page=wp-piwik/wp-piwik.php&tab=support&mode=testscript"><?php _e('Run test script','wp-piwik'); ?></a></li>
+			<li><a href="?page=wp-piwik/wp-piwik.php&tab=sitebrowser"><?php _e('Get site configuration details','wp-piwik'); ?></a></li>
+			<li><a href="?page=wp-piwik/wp-piwik.php&tab=support&mode=reset"><?php _e('Reset WP-Piwik settings except auth token and Piwik URL','wp-piwik'); ?></a> (<?php _e('This will not affect Piwik itself. Resetting large networks may take some minutes.', 'wp-piwik'); ?>)</li>
 		</ol>
 <?php } else echo '<p>'.__('You have to enter your auth token and the Piwik URL before you can access more debug functions.', 'wp-piwik').'</p>'; ?>
 	</td>
 </tr>
-<tr><td><h3>Latest support threads on WordPress.org</h3>
+<tr><td><h3><?php _e('Latest support threads on WordPress.org', 'wp-piwik'); ?></h3>
 <?php 
 	$arySupportThreads = self::readRSSFeed('http://wordpress.org/support/rss/tags/wp-piwik');
 	if (!empty($arySupportThreads)) {

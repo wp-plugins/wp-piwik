@@ -191,7 +191,7 @@ msgstr "Piwik URL"
 
 #: wp-piwik.php:461 wp-piwik.php:623
 msgid "Auth token"
-msgstr "Auth token"
+msgstr "Auth Token"
 
 #: wp-piwik.php:467 wp-piwik.php:628
 msgid "To enable Piwik statistics, please enter your Piwik"
@@ -244,7 +244,7 @@ msgstr "404-Tracking"
 
 #: wp-piwik.php:532
 msgid "WP-Piwik can automatically add a 404-category to track 404-page-visits."
-msgstr "kann WP-Piwik automatisch eine eigene Kategorie f&uuml;r 404-Seiten hinzuf&uuml;gen."
+msgstr "WP-Piwik kann automatisch eine eigene Kategorie f&uuml;r 404-Seiten hinzuf&uuml;gen."
 
 #: wp-piwik.php:536 wp-piwik.php:644
 msgid "Tracking filter"
@@ -401,10 +401,10 @@ msgid "If you add the Piwik javascript code by wp_footer(),"
 msgstr "Wenn Du den Piwik-Code per wp_footer() in Dein Blog einbindest,"
 
 msgid "WP-Piwik can automatically use js/index.php instead of piwik.js. See"
-msgstr "kann WP-Piwik automatisch js/index.php statt piwik.js verwenden. Siehe"
+msgstr "WP-Piwik kann automatisch js/index.php statt piwik.js verwenden. Siehe"
 
 msgid "WP-Piwik can automatically force the Tracking Code to sent data in POST. See"
-msgstr "kann WP-Piwik automatisch den Tracking Code zwingen, die Daten via POST zu senden. Siehe"
+msgstr "WP-Piwik kann automatisch den Tracking Code zwingen, die Daten via POST zu senden. Siehe"
 
 msgid "Avoid mod_security"
 msgstr "Umgehe mod_security"
@@ -468,3 +468,93 @@ msgstr "Piwik-Fehler"
 
 msgid "Important"
 msgstr "Wichtig"
+
+msgid "Thanks for using WP-Piwik!"
+msgstr "Vielen Dank f&uuml;r die Verwendung von WP-Piwik!"
+
+msgid "Auto site configuration is"
+msgstr "Die Auto-Konfiguration ist"
+
+msgid "Tracking code insertion is"
+msgstr "Das Einf&uuml;gen des Tracking-Codes ist"
+
+msgid "enabled"
+msgstr "aktiviert"
+
+msgid "disabled"
+msgstr "deaktiviert"
+
+msgid "You are using Piwik"
+msgstr "Du verwendest Piwik"
+
+msgid "and"
+msgstr "und"
+
+msgid "Error: cURL is not enabled and fopen is not allowed to open URLs. WP-Piwik won't be able to connect to Piwik."
+msgstr "Fehler: cURL ist nicht aktiviert und fopen darf keine URLs &ouml;ffnen. WP-Piwik kann so keine Verbindung zu Piwik aufbauen."
+
+msgid "<strong>Important note:</strong> If you do not host this blog on your own, your site admin is able to get your auth token from the database."
+msgstr "<strong>Wichtiger Hinweis:</strong> Wenn Du dieses Blog nicht selber hostest, kann Dein Site Admin Deinen Auth Token aus der Datenbank auslesen."
+
+msgid "Add tracking code"
+msgstr "Tracking-Code einf&uuml;gen"
+
+msgid "Tracking code preview"
+msgstr "Tracking-Code Vorschau"
+
+msgid "Piwik Settings"
+msgstr "Piwik Einstellungen"
+
+msgid "Statistics"
+msgstr "Statistiken"
+
+msgid "Either allow_url_fopen has to be enabled <em>or</em> cURL has to be available:"
+msgstr "Entweder allow_url_fopen muss aktiviert <em>oder</em> cURL muss verf&uuml;gbar sein:"
+
+msgid "cURL is"
+msgstr "cURL ist"
+
+msgid "allow_url_fopen is"
+msgstr "allow_url_fopen ist"
+
+msgid "not"
+msgstr "nicht"
+
+msgid "available"
+msgstr "verf&uuml;gbar"
+
+msgid "Test script result"
+msgstr "Ergebnis des Testskripts"
+
+msgid "Please confirm your reset request"
+msgstr "Bitte best&auml;tige Deine Reset-Anweisung"
+
+msgid "YES, please reset <strong>all</strong> WP-Piwik settings <strong>except</strong> auth token and Piwi URL."
+msgstr "JA, bitte setze <strong>alle</strong> WP-Piwik Einstellung au&szlig;er Auth Token und Piwik URL zur&uuml;ck."
+
+msgid "WP-Piwik reset done"
+msgstr "WP-Piwik wurde zur&uuml;ckgesetzt"
+
+msgid "Get more debug information"
+msgstr "Erhalte weitere Debug-Informationen"
+
+msgid "Run test script"
+msgstr "Starte Testskript"
+
+msgid "Get site configuration details"
+msgstr "Ermittle Detailinformationen zur Seitenkonfiguration"
+
+msgid "Reset WP-Piwik settings except auth token and Piwik URL"
+msgstr "Setzte die Einstellungen von WP-Piwik mit Ausnahme von Auth Token und Piwik URL zur&uuml;ck."
+
+msgid "You have to enter your auth token and the Piwik URL before you can access more debug functions."
+msgstr "Du musst Deinen Auth Token und die Piwik URL eingeben, bevor Du auf weitere Debug-Funktionen zugreifen kannst."
+
+msgid "Latest support threads on WordPress.org"
+msgstr "Die letzten Support-Beitr&auml;ge auf WordPress.org"
+
+msgid "This will not affect Piwik itself. Resetting large networks may take some minutes."
+msgstr "Dies hat keinen Einfluss auf Piwik selbst. Das Zur&uuml;cksetzen gro&szlig;er Netzwerke kann einige Minuten dauern."
+
+msgid ", and all people flattering this"
+msgstr "und allen, die WP-Piwik flattrn"

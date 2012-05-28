@@ -17,7 +17,7 @@ if (!$bolFOpen && !$bolCURL) {
 <tr><th><?php _e('Home Dashboard', 'wp-piwik'); ?>:</th><td>
 	<select id="wp-piwik_dbwidget" name="wp-piwik_dbwidget">
 		<option value="0"'<?php echo (!self::$aryGlobalSettings['dashboard_widget']?' selected="selected"':''); ?>><?php _e('Hide overview', 'wp-piwik'); ?></option>
-		<option value="yesterday"<?php echo (self::$aryGlobalSettings['dashboard_widget'] == 'yesterday'?' selected="selected"':''); ?>><?php echo __('Show Overview','wp-piwik').' ('.__('yesterday', 'wp-piwik').')'; ?></option>
+		<option value="yesterday"<?php echo (self::$aryGlobalSettings['dashboard_widget'] == 'yesterday'?' selected="selected"':''); ?>><?php echo __('Show overview','wp-piwik').' ('.__('yesterday', 'wp-piwik').')'; ?></option>
 		<option value="today"<?php echo (self::$aryGlobalSettings['dashboard_widget'] == 'today'?' selected="selected"':''); ?>><?php echo __('Show overview','wp-piwik').' ('.__('today', 'wp-piwik').')'; ?></option>
 		<option value="last30"<?php echo (self::$aryGlobalSettings['dashboard_widget'] == 'last30'?' selected="selected"':''); ?>><?php echo __('Show overview','wp-piwik').' ('.__('last 30 days','wp-piwik').')'; ?></option>
 	</select>

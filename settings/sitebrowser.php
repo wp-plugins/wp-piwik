@@ -12,6 +12,7 @@ if (!$bolFOpen && !$bolCURL) {
 if (!class_exists('WP_List_Table'))
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 
+// See wpengineer.com/2426/wp_list_table-a-step-by-step-guide/
 class SiteBrowser extends WP_List_Table {
 
 	var $aryData = array();
