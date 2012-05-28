@@ -23,10 +23,19 @@
 				_e('enabled','wp-piwik');
 			?></strong>.</li>
 		</ol>
-		<?php if (!(empty(self::$aryGlobalSettings['piwik_token']) || empty(self::$aryGlobalSettings['piwik_url']))) { ?>
-		<!-- <a href="">Run test script</a> -->
-		
-		<?php } else echo '<p>'.__('You have to enter your auth token and the Piwik URL before you can access more debug functions.', 'wp-piwik').'</p>'; ?>
+<?php if (!(empty(self::$aryGlobalSettings['piwik_token']) || empty(self::$aryGlobalSettings['piwik_url']))) { ?>
+<?php 
+	if (isset($_GET['mode']) && $_GET['mode'] == 'testscript') {
+		echo '<p><strong>Test script result</strong></p>';
+		self::loadTestscript();
+	} 
+?>
+		<p><strong>Get more debug information:</strong></p>
+		<ol>
+			<li><a href="?page=wp-piwik/wp-piwik.php&tab=support&mode=testscript">Run test script</a></li>
+			<li><a href="?page=wp-piwik/wp-piwik.php&tab=sitebrowser">Get site configuration details</a></li>
+		</ol>
+<?php } else echo '<p>'.__('You have to enter your auth token and the Piwik URL before you can access more debug functions.', 'wp-piwik').'</p>'; ?>
 	</td>
 </tr>
 <tr><td><h3>Latest support threads on WordPress.org</h3>

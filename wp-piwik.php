@@ -870,10 +870,10 @@ class wp_piwik {
             'credits' => __('Credits','wp-piwik')
         ));
 		if (empty($strCurr)) $strCurr = 'homepage';
-		elseif (!isset($aryTabs[$strCurr])) $strCurr = 'piwik';
+		elseif (!isset($aryTabs[$strCurr]) && $strCurr != 'sitebrowser') $strCurr = 'piwik';
         echo '<div id="icon-themes" class="icon32"><br></div>';
         echo '<h2 class="nav-tab-wrapper">';
-        foreach( $aryTabs as $strTab => $strName ) {
+        foreach($aryTabs as $strTab => $strName) {
             $strClass = ($strTab == $strCurr?' nav-tab-active':'');
             echo '<a class="nav-tab'.$strClass.'" href="?page=wp-piwik/wp-piwik.php&tab='.$strTab.'">'.$strName.'</a>';
         }
@@ -945,7 +945,7 @@ class wp_piwik {
 		echo '<div class="wrap"><h2>'.__('WP-Piwik Settings', 'wp-piwik').'</h2>';
 		// Show tabs
 		$strTab = $this->showSettingsTabs(!(empty(self::$aryGlobalSettings['piwik_token']) || empty(self::$aryGlobalSettings['piwik_url'])), $strTab);
-		// Open form 
+		if ($strTab != 'sitebrowser') {
 /***************************************************************************/ ?>
 		<div class="wp-piwik-donate">
 			<p><strong><?php _e('Donate','wp-piwik'); ?></strong></p>
@@ -971,8 +971,9 @@ class wp_piwik {
 				<?php _e('Please don\'t forget to vote the compatibility at the','wp-piwik'); ?> <a href="http://wordpress.org/extend/plugins/wp-piwik/">WordPress.org Plugin Directory</a>. 
 			</div>
 		</div>
-<?php /***************************************************************************/		
-		echo '<form class="wp-piwik-settings" method="post" action="'.admin_url('options-general.php?page=wp-piwik/wp-piwik.php&tab='.$strTab).'">';
+<?php /***************************************************************************/
+		}		
+		echo '<form class="'.($strTab != 'sitebrowser'?'wp-piwik-settings':'').'" method="post" action="'.admin_url('options-general.php?page=wp-piwik/wp-piwik.php&tab='.$strTab).'">';
 		echo '<input type="hidden" name="action" value="save_wp-piwik_settings" />';
 		wp_nonce_field('wp-piwik_settings');
 		// Show settings
@@ -981,7 +982,7 @@ class wp_piwik {
 			// Get tab contents
 			require_once('settings/'.$strTab.'.php');				
 		// Show submit button
-			if (!in_array($strTab, array('homepage','credits','support')))
+			if (!in_array($strTab, array('homepage','credits','support','sitebrowser')))
 				echo '<tr><td><p class="submit" style="clear: both;"><input type="submit" name="Submit"  class="button-primary" value="'.__('Save settings', 'wp-piwik').'" /><input type="hidden" name="wp-piwik_settings_submit" value="Y" /></p></td></tr>';
 			echo '</table>';
 		}
@@ -1018,7 +1019,29 @@ class wp_piwik {
 			}
 		}
 		return $aryResult;
-	} 
+	}
+
+	/**
+	 * Execute test script
+	 */
+	private static function loadTestscript() {
+		require_once('debug/testscript.php');
+	}
+	
+	/**
+	 * Get a blog's piwik ID
+	 */
+	public static function getSiteID($intBlogID = null) {
+		$intResult = self::$arySettings['site_id'];
+		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && !empty($intBlogID)) {
+			switch_to_blog((int) $intBlogID);
+			self::loadSettings();
+			$intResult = self::$arySettings['site_id'];
+			restore_current_blog();
+			self::loadSettings();
+		}
+		return $intResult;
+	}
 }
 
 if (class_exists('wp_piwik'))

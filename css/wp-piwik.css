@@ -105,3 +105,8 @@ div.wp-piwik_desc strong {
 }
 
 strong.wp-piwik-error {color:#f00}
+
+.wp-list-table .column-id {width:20%}
+.wp-list-table .column-name {width:30%}
+.wp-list-table .column-siteurl {width:30%}
+.wp-list-table .column-piwikid {width:20%}
