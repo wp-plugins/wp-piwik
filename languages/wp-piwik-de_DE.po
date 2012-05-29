@@ -557,10 +557,13 @@ msgid "This will not affect Piwik itself. Resetting large networks may take some
 msgstr "Dies hat keinen Einfluss auf Piwik selbst. Das Zur&uuml;cksetzen gro&szlig;er Netzwerke kann einige Minuten dauern."
 
 msgid ", and all people flattering this"
-msgstr "und allen, die WP-Piwik flattrn"
+msgstr " und allen, die WP-Piwik flattrn"
 
 msgid "Disable time limit"
 msgstr "Zeitlimit deaktivieren"
 
 msgid "Use set_time_limit(0) if stats page causes a time out."
 msgstr "Verwende set_time_limit(0) falls die Statistik-Seite einen Timeout erzeugt."
+
+msgid "in network mode"
+msgstr "im Netzwerk-Modus"
