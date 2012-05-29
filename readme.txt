@@ -79,10 +79,13 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 * Uses $wpdb->blogs instead of $wpdb->prefix.'blogs' to keep it compatible to different database plugins
 * Bugfix: SEO dashboard widget will work even if "last 30" is selected
 * Bugfix: New created blogs won't show "Please specify a value for 'idSite'." anymore.
+* Bugfix: New network sites without title will be created
+* Bugfix: Upgrading from old versions will work again
 * Tabbed settings
-* Debug tools added
+* Debug tools added (testscript, site configuration overview and WP-Piwik reset)
 * Support forum RSS feed
 * Language updates
+* Optionally use of set_time_limit(0) on stats page time out
 
 = 0.9.1 =
 * Bugfix: Usage as "Site Specific Plugin" [mixed up the different sites settings](http://wordpress.org/support/topic/plugin-wp-piwik-as-simple-plugin-with-multisite-fills-auth-with-last-used-token) (network mode)

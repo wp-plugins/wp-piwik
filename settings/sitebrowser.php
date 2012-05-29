@@ -12,6 +12,9 @@ if (!$bolFOpen && !$bolCURL) {
 if (!class_exists('WP_List_Table'))
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 
+if (isset($_GET['wpmu_show_stats']) && ($_GET['wpmu_show_stats'] == (int) $_GET['wpmu_show_stats']))
+	$this->addPiwikSite();
+
 // See wpengineer.com/2426/wp_list_table-a-step-by-step-guide/
 class SiteBrowser extends WP_List_Table {
 
@@ -32,6 +35,7 @@ class SiteBrowser extends WP_List_Table {
 		$per_page = 10;
 		global $blog_id;
 		global $wpdb;
+		global $pagenow;
 		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
 			$total_items = $wpdb->get_var( $wpdb->prepare('SELECT COUNT(*) FROM '.$wpdb->blogs));
 			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id LIMIT '.($current_page-1).','.$per_page));
@@ -62,6 +66,9 @@ class SiteBrowser extends WP_List_Table {
     		'total_items' => $total_items,
     		'per_page'    => $per_page
   		));
+		foreach ($this->aryData as $intKey => $aryDataset)
+			if (empty($aryDataset['piwikid']))
+				$this->aryData[$intKey]['piwikid'] = '<a href="'.admin_url(($pagenow == 'settings.php'?'network/':'')).$pagenow.'?page=wp-piwik/wp-piwik.php&tab=sitebrowser'.($aryDataset['id'] != '-'?'&wpmu_show_stats='.$aryDataset['id']:'').'">Create Piwik site</a>';
   		$this->items = $this->aryData;
   		return count($this->items);
 	}
