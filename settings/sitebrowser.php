@@ -38,7 +38,7 @@ class SiteBrowser extends WP_List_Table {
 		global $pagenow;
 		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
 			$total_items = $wpdb->get_var( $wpdb->prepare('SELECT COUNT(*) FROM '.$wpdb->blogs));
-			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id LIMIT '.($current_page-1).','.$per_page));
+			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id LIMIT '.(($current_page-1)*$per_page).','.$per_page));
 			foreach ($aryBlogs as $aryBlog) {
 				$objBlog = get_blog_details($aryBlog->blog_id, true);
 				$this->aryData[] = array(
