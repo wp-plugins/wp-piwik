@@ -3,7 +3,7 @@
 Contributors: Braekling
 Requires at least: 3.3
 Tested up to: 3.3.2
-Stable tag: 0.9.2
+Stable tag: 0.9.3
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
@@ -74,6 +74,9 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 3. Closer look to a pie chart.
 
 == Changelog ==
+
+= 0.9.3 =
+* Bugfix: Adding a new site will work again.
 
 = 0.9.2 =
 * Uses $wpdb->blogs instead of $wpdb->prefix.'blogs' to keep it compatible to different database plugins

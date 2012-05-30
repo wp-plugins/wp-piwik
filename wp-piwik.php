@@ -59,13 +59,13 @@ if (!function_exists('is_plugin_active_for_network'))
 class wp_piwik {
 
 	private static
-		$intRevisionId = 90206,
-		$strVersion = '0.9.2',
+		$intRevisionId = 90300,
+		$strVersion = '0.9.3',
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
 		$bolJustActivated = false,
 		$aryGlobalSettings = array(
-			'revision' => 90206,
+			'revision' => 90300,
 			'add_tracking_code' => false,
 			'last_settings_update' => 0,
 			'piwik_token' => '',
@@ -600,8 +600,6 @@ class wp_piwik {
 			$strURL .= '&siteName='.urlencode($strName).'&urls='.urlencode($strBlogURL);
 			$strURL .= '&format=PHP';
 			$strURL .= '&token_auth='.self::$aryGlobalSettings['piwik_token'];
-			echo $strURL;
-			die();
 			$strResult = unserialize($this->getRemoteFile($strURL));
 			if (!empty($strResult)) self::$arySettings['site_id'] = $strResult;
 		}
