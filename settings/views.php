@@ -25,6 +25,10 @@ if (!$bolFOpen && !$bolCURL) {
 	<input type="checkbox" value="1" name="wp-piwik_dbseo" id="wp-piwik_dbseo"<?php echo (self::$aryGlobalSettings['dashboard_seo']?' checked="checked"':""); ?>/> <?php _e('SEO <em>(slow!)</em>', 'wp-piwik'); ?>
 	<br><?php _e('Configure WP-Piwik widgets to be shown on your WordPress Home Dashboard.', 'wp-piwik'); ?>
 </td></tr>
+<tr><th><?php _e('Show graph on WordPress Toolbar', 'wp-piwik'); ?>:</th><td>
+	<input type="checkbox" value="1" id="wp-piwik_toolbar" name="wp-piwik_toolbar"<?php echo (self::$aryGlobalSettings['toolbar']?' checked="checked"':''); ?> />
+	<label for="wp-piwik_toolbar"><?php echo _e('Display the last 30 days visitor stats on WordPress Toolbar.', 'wp-piwik'); ?></label>
+</td></tr>
 <tr><th><?php _e('SEO data', 'wp-piwik'); ?>:</th><td>
 	<input type="checkbox" value="1" id="wp-piwik_statsseo" name="wp-piwik_statsseo"<?php echo (self::$aryGlobalSettings['stats_seo']?' checked="checked"':''); ?> />
 	<label for="wp-piwik_statsseo"><?php echo _e('Display SEO ranking data on statistics page. <em>(Slow!)</em>', 'wp-piwik'); ?></label>

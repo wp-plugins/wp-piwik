@@ -34,8 +34,8 @@ form.wp-piwik-settings {
 table.wp-piwik-form-table {
 	clear:none !important;
 }
-table.wp-piwik-form-table-hide {
-	display:none;	
+table.wp-piwik-form-table-hide, input.wp-piwik-input-hide {
+	visibility:hidden;	
 }
 
 div.wp-piwik-donate {
@@ -110,3 +110,5 @@ strong.wp-piwik-error {color:#f00}
 .wp-list-table .column-name {width:30%}
 .wp-list-table .column-siteurl {width:30%}
 .wp-list-table .column-piwikid {width:20%}
+
+.wp-piwik_inlinebar canvas {padding-top:5px !important}

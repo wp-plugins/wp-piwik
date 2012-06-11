@@ -13,7 +13,7 @@ This plugin adds a Piwik stats site to your WordPress or WordPress multisite das
 
 This plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog using wp_footer.
 
-**You need a running Piwik (at least 1.6) installation** and at least view access to your stats. Also PHP 5 or higher is strictly required.
+**You need a running Piwik (at least 1.8.2) installation** and at least view access to your stats. Also PHP 5 or higher is strictly required.
 
 Look at the [Piwik website](http://piwik.org/) to get further information about Piwik.
 
@@ -29,7 +29,7 @@ See section "Installation".
 
 = Credits =
 
-* Graphs powered by [jqPlot](http://www.jqplot.com/), an open source project by Chris Leonello. Give it a try! (GPL 2.0 and MIT)
+* Graphs powered by [jqPlot](http://www.jqplot.com/) (GPL 2.0 and MIT) and  and [jQuery Sparklines](http://omnipotent.net/jquery.sparkline/) (New BSD License).
 * Metabox support inspired by [Heiko Rabe's metabox demo plugin](http://www.code-styling.de/english/how-to-use-wordpress-metaboxes-at-own-plugins).
 * Translation credits see plugin settings
 * Donations: Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S, the Piwik team itself, and all people flattering this.
@@ -74,6 +74,11 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 3. Closer look to a pie chart.
 
 == Changelog ==
+
+= 0.9.4 = 
+* Choose between HTTP API or PHP API
+* Show graph on WordPress Toolbar
+* Update bugfix: Upgrading from WP-Piwik 0.8.7 or less will work again
 
 = 0.9.3 =
 * Bugfix: Adding a new site will work again.
