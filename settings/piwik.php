@@ -26,7 +26,7 @@ if (!$bolFOpen && !$bolCURL) {
 		<label for="wp-piwik_url"></label>
 	</td>
 </tr><tr>
-	<th><?php _e('Piwik path', 'wp-piwik'); ?> (PHP API):</th>
+	<th><?php _e('Piwik path', 'wp-piwik'); ?> (PHP API, beta):</th>
 	<td>
 		<input type="radio" name="wp-piwik_mode" onchange="javascript:$j('#wp-piwik_path,#wp-piwik_path-label').toggleClass('wp-piwik-input-hide');" value="php" <?php echo (self::$aryGlobalSettings['piwik_mode']=='php'?'checked="checked" ':''); ?>/>
 		<input <?php echo (self::$aryGlobalSettings['piwik_mode']!='php'?'class="wp-piwik-input-hide" ':''); ?>id="wp-piwik_path" name="wp-piwik_path" type="text" value="<?php echo self::$aryGlobalSettings['piwik_path']; ?>" />

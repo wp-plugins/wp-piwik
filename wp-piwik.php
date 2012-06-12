@@ -269,7 +269,7 @@ class wp_piwik {
 			__('Please validate your configuration','wp-piwik')
 		);
 		// Create settings Link
-		$strLink = sprintf('<a href="'.(is_plugin_active_for_network('wp-piwik/wp-piwik.php')?'network/settings':'options-general').'.php?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'));
+		$strLink = sprintf('<a href="'.(is_plugin_active_for_network('wp-piwik/wp-piwik.php')?'settings':'options-general').'.php?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'));
 		// Display message
 		echo '<div class="updated fade"><p>'.$strText.' <strong>'.__('Important', 'wp-piwik').':</strong> '.$strSettings.': '.$strLink.'.</p></div>';
 	}
@@ -519,7 +519,7 @@ class wp_piwik {
 			return array_merge(
 				$strLinks,
 				array(
-					sprintf('<a href="'.(is_plugin_active_for_network('wp-piwik/wp-piwik.php')?'network/settings':'options-general').'.php?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'))
+					sprintf('<a href="'.(is_plugin_active_for_network('wp-piwik/wp-piwik.php')?'settings':'options-general').'.php?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'))
 				)
 			);
 		// Don't affect other plugins details
