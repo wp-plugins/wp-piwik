@@ -567,3 +567,42 @@ msgstr "Verwende set_time_limit(0) falls die Statistik-Seite einen Timeout erzeu
 
 msgid "in network mode"
 msgstr "im Netzwerk-Modus"
+
+msgid "To enable Piwik statistics, please enter"
+msgstr "Um die Piwik-Statistiken zu aktivieren, gibt bitte die folgenden Daten ein:"
+
+msgid "your Piwik base URL (like http://mydomain.com/piwik) or your Piwik server path (like /var/www/mydomain.com/httpdocs/piwik/)"
+msgstr "Die URL Deiner Piwik-Installation (z.B. http://mydomain.com/piwik) oder den Serverpfad zu Deiner Piwik-Installation (z.B. /var/www/mydomain.com/httpdocs/piwik/)"
+
+msgid "your personal Piwik authentification token. You can get the token on the API page inside your Piwik interface. It looks like &quot;1234a5cd6789e0a12345b678cd9012ef&quot;."
+msgstr "Deinen pers&ouml;nlichen Piwik Authentifikations-Token. Du findest ihn auf der API-Seite des Piwik-Interfaces. Er sieht z.B. so aus: &quot;1234a5cd6789e0a12345b678cd9012ef&quot;."
+
+msgid "No idea what I'm talking about?"
+msgstr "Keine Idee, wovon ich rede?"
+
+msgid "Get help."
+msgstr "Hier gibt es Hilfe."
+
+msgid "Piwik path"
+msgstr "Piwik Pfad"
+
+msgid "Disable cookies"
+msgstr "Cookies deaktivieren"
+
+msgid "Disable all tracking cookies for a visitor."
+msgstr "Schalte alle Tracking-Cookies f&uuml;r Besucher ab."
+
+msgid "Show graph on WordPress Toolbar"
+msgstr "Zeige einen Graphen in der WordPress Toolbar"
+
+msgid "Display the last 30 days visitor stats on WordPress Toolbar."
+msgstr "Zeige die Besucherstatistik der letzten 30 Tage in der WordPress Toolbar an."
+
+msgid "Graphs powered by <a href=\"http://www.jqplot.com/\">jqPlot</a> (License: GPL 2.0 and MIT) and <a href=\"http://omnipotent.net/jquery.sparkline/\">jQuery Sparklines</a> (License: New BSD License)."
+msgstr "Die Graphen werden mit <a href=\"http://www.jqplot.com/\">jqPlot</a> (Lizenz: GPL 2.0 and MIT) und <a href=\"http://omnipotent.net/jquery.sparkline/\">jQuery Sparklines</a> (Lizenz: New BSD License) erstellt."
+
+msgid "Tabbed settings page suggested by the"
+msgstr "Die Tabs f&uuml;r die Einstellungen wurden inspiriert von einem Artikel im"
+
+msgid "If you like to use the PHP API and also to enable tracking by WP-Piwik, please enter your Piwik URL, too. Otherwise your tracking code may be erroneous."
+msgstr "Falls Du die PHP API verwenden und das Tracking per WP-Piwik aktivieren willst, gib bitte auch Deine Piwik URL an. Andernfalls k&ouml;nnte Dein Tracking Code fehlerhaft sein." 

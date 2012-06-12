@@ -10,7 +10,7 @@
 <tr>
 	<td>
 		<h3><?php _e('Debugging', 'wp-piwik'); ?></h3>
-		<p><?php _e('Either allow_url_fopen has to be enabled <em>or</em> cURL has to be available:') ?></p>
+		<p><?php _e('Either allow_url_fopen has to be enabled <em>or</em> cURL has to be available:', 'wp-piwik'); ?></p>
 		<ol>
 			<li><?php 
 				_e('cURL is','wp-piwik');
@@ -54,7 +54,7 @@
 </tr>
 <tr><td><h3><?php _e('Latest support threads on WordPress.org', 'wp-piwik'); ?></h3>
 <?php 
-	$arySupportThreads = self::readRSSFeed('http://wordpress.org/support/rss/tags/wp-piwik');
+	$arySupportThreads = self::readRSSFeed('http://wordpress.org/support/rss/plugin/wp-piwik');
 	if (!empty($arySupportThreads)) {
 		echo '<ol>';
 		foreach ($arySupportThreads as $arySupportThread) echo '<li><a href="'.$arySupportThread['url'].'">'.$arySupportThread['title'].'</a></li>';

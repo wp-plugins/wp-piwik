@@ -1,5 +1,5 @@
 <?php
-$strVersion = $this->callPiwikAPI('ExampleAPI.getPiwikVersion');
+$strVersion = $this->callPiwikAPI('API.getPiwikVersion');
 // http://wordpress.org/support/rss/tags/wp-piwik
 ?><tr><td><strong><?php _e('Thanks for using WP-Piwik!', 'wp-piwik'); ?></strong></td></tr>
 <tr><td><?php 

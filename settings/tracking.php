@@ -30,6 +30,10 @@ if (self::$aryGlobalSettings['add_tracking_code']) {
 <?php echo (is_plugin_active_for_network('wp-piwik/wp-piwik.php')?'*** SITE SPECIFIC EXAMPLE CODE ***'."\n":'').htmlentities(self::$arySettings['tracking_code']); ?>
 </textarea>
 </td></tr>
+<tr><th><?php _e('Disable cookies', 'wp-piwik'); ?>:</th><td>
+	<input type="checkbox" value="1" id="wp-piwik_disable_cookies" name="wp-piwik_disable_cookies"<?php echo (self::$aryGlobalSettings['disable_cookies']?' checked="checked"':''); ?> />
+	<label for="wp-piwik_disable_cookies"><?php echo _e('Disable all tracking cookies for a visitor.', 'wp-piwik'); ?></label>
+</td></tr>
 <tr><th><?php _e('Track 404', 'wp-piwik'); ?>:</th><td>
 	<input type="checkbox" value="1" id="wp-piwik_404" name="wp-piwik_404"<?php echo (self::$aryGlobalSettings['track_404']?' checked="checked"':''); ?> />
 	<label for="wp-piwik_404"><?php echo _e('WP-Piwik can automatically add a 404-category to track 404-page-visits.', 'wp-piwik'); ?></label>

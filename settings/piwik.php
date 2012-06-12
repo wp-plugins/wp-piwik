@@ -19,18 +19,18 @@ if (!$bolFOpen && !$bolCURL) {
 	<?php } ?>
 	</th>
 </tr><tr>
-	<th><?php _e('Piwik URL', 'wp-piwik'); ?>:</th>
+	<th><?php _e('Piwik URL', 'wp-piwik'); ?> (REST API):</th>
 	<td>
-		<input type="radio" name="wp-piwik_mode" onchange="javascript:$j('#wp-piwik_path,#wp-piwik_url').toggleClass('wp-piwik-input-hide');" value="http" <?php echo (self::$aryGlobalSettings['piwik_mode']=='http'?'checked="checked" ':''); ?>/>
-		<input <?php echo (self::$aryGlobalSettings['piwik_mode']!='http'?'class="wp-piwik-input-hide" ':''); ?>id="wp-piwik_url" name="wp-piwik_url" type="text" value="<?php echo self::$aryGlobalSettings['piwik_url']; ?>" />
+		<input type="radio" name="wp-piwik_mode" onchange="javascript:$j('#wp-piwik_path,#wp-piwik_path-label').toggleClass('wp-piwik-input-hide');" value="http" <?php echo (self::$aryGlobalSettings['piwik_mode']=='http'?'checked="checked" ':''); ?>/>
+		<input id="wp-piwik_url" name="wp-piwik_url" type="text" value="<?php echo self::$aryGlobalSettings['piwik_url']; ?>" />
 		<label for="wp-piwik_url"></label>
 	</td>
 </tr><tr>
-	<th><?php _e('Piwik path', 'wp-piwik'); ?>:</th>
+	<th><?php _e('Piwik path', 'wp-piwik'); ?> (PHP API):</th>
 	<td>
-		<input type="radio" name="wp-piwik_mode" onchange="javascript:$j('#wp-piwik_path,#wp-piwik_url').toggleClass('wp-piwik-input-hide');" value="php" <?php echo (self::$aryGlobalSettings['piwik_mode']=='php'?'checked="checked" ':''); ?>/>
+		<input type="radio" name="wp-piwik_mode" onchange="javascript:$j('#wp-piwik_path,#wp-piwik_path-label').toggleClass('wp-piwik-input-hide');" value="php" <?php echo (self::$aryGlobalSettings['piwik_mode']=='php'?'checked="checked" ':''); ?>/>
 		<input <?php echo (self::$aryGlobalSettings['piwik_mode']!='php'?'class="wp-piwik-input-hide" ':''); ?>id="wp-piwik_path" name="wp-piwik_path" type="text" value="<?php echo self::$aryGlobalSettings['piwik_path']; ?>" />
-		<label for="wp-piwik_path"></label>
+		<label <?php echo (self::$aryGlobalSettings['piwik_mode']!='php'?'class="wp-piwik-input-hide" ':''); ?>id="wp-piwik_path-label" for="wp-piwik_path"><?php _e('If you like to use the PHP API and also to enable tracking by WP-Piwik, please enter your Piwik URL, too. Otherwise your tracking code may be erroneous.','wp-piwik'); ?> [<a href="http://dev.piwik.org/trac/ticket/3220">Details</a>]</label>
 	</td>
 </tr><tr>
 	<th><?php _e('Auth token', 'wp-piwik'); ?>:</th>

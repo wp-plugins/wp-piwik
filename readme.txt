@@ -37,6 +37,22 @@ See section "Installation".
 
 Thank you all!
 
+== Frequently Asked Questions ==
+
+= Where can I find the Piwik URL and the Piwik auth token? =
+
+WP-Piwik requires Piwik. If you did not install Piwik yet, first get it at the [Piwik website](http://www.piwik.org). 
+
+If Piwik works, you'll be able to configure WP-Piwik: The Piwik URL is the same URL you use to access your Piwik, e.g. for the demo site: http://demo.piwik.org. The auth token is some kind of secret password, which allows WP-Piwik to get the necessary data from Piwik. The super user's auth token, i.e. a full access password for your Piwik, can be found on Piwik's API site. You can find a detailed description [here](http://peepbo.de/board/viewtopic.php?f=5&t=10).
+
+= Tracking does not work on HostGator! =
+
+Try to enable the "avoid mod_security" option (WP-Piwik settings, Tracking tab) or create a mod_security whitelist.
+
+= WP-Piwik does not work with SSL! =
+
+See [this support thread](http://wordpress.org/support/topic/plugin-wp-piwik-https-ssl-support?replies=3).
+
 == Installation ==
 
 = Install WP-Piwik on a simple WordPress blog =
@@ -72,13 +88,17 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 1. WP-Piwik settings.
 2. WP-Piwik statistics page.
 3. Closer look to a pie chart.
+4. WordPress toolbar graph.
 
 == Changelog ==
 
 = 0.9.4 = 
+* Requires at least Piwik 1.8.2!
 * Choose between HTTP API or PHP API
 * Show graph on WordPress Toolbar
+* Add option to disable cookies - Thanks to Mathias T.!
 * Update bugfix: Upgrading from WP-Piwik 0.8.7 or less will work again
+* Some minor bugfixes
 
 = 0.9.3 =
 * Bugfix: Adding a new site will work again.
