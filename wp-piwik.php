@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.9.4
+Version: 0.9.5
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -60,13 +60,13 @@ if (!function_exists('is_plugin_active_for_network'))
 class wp_piwik {
 
 	private static
-		$intRevisionId = 90405,
-		$strVersion = '0.9.4',
+		$intRevisionId = 90500,
+		$strVersion = '0.9.5',
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
 		$bolJustActivated = false,
 		$aryGlobalSettings = array(
-			'revision' => 90405,
+			'revision' => 90500,
 			'add_tracking_code' => false,
 			'last_settings_update' => 0,
 			'piwik_token' => '',
@@ -558,7 +558,7 @@ class wp_piwik {
 	 */
 	function addAdminStyle() {
 		// Load WP-Piwik styles
-		wp_enqueue_style('wp-piwik', $this->getPluginURL().'css/wp-piwik.css');
+		wp_enqueue_style('wp-piwik', $this->getPluginURL().'css/wp-piwik.css',array(),self::$strVersion);
 	}
 
 	/**
@@ -902,7 +902,7 @@ class wp_piwik {
 				<?php do_meta_boxes($this->intStatsPage, 'side', ''); ?>
 			</div>
         	<div id="post-body" class="has-sidebar">
-					<div id="post-body-content" class="postbox-container has-sidebar-content">
+					<div id="post-body-content" class="postbox-container has-sidebar-content wp-piwik-wide-content">
 					<?php $meta_boxes = do_meta_boxes($this->intStatsPage, 'normal', ''); ?>
 				</div>
 			</div>

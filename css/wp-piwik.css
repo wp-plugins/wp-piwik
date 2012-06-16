@@ -116,3 +116,7 @@ strong.wp-piwik-error {color:#f00}
 .wp-list-table .column-piwikid {width:20%}
 
 .wp-piwik_dynbar canvas {padding-top:5px !important}
+
+.wp-piwik-wide-content {
+	width:512px !important;
+}

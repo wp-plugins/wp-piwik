@@ -2,7 +2,7 @@
 
 Contributors: Braekling
 Requires at least: 3.3
-Tested up to: 3.3.2
+Tested up to: 3.4
 Stable tag: 0.9.4
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
@@ -73,11 +73,11 @@ There are two differents methods to use WP-Piwik in a multisite environment:
 * As a Site Specific Plugin it behaves like a plugin installed on a simple WordPress blog. Each user can enable, configure and use WP-Piwik on his own. Users can even use their own Piwik instances (and accordingly they have to). 
 * Using WP-Piwik as a Network Plugin equates to a central approach. A single Piwik instance is used and the site admin configures the plugin completely. Users are just allowed to see their own statistics, site admins can see each blog's stats.
 
-** Site Specific Plugin **
+*Site Specific Plugin*
 
 Just add WP-Piwik to your /wp-content/plugins folder and enable the Plugins page for individual site administrators. Each user has to enable and configure WP-Piwik on his own if he want to use the plugin.
 
-** Network Plugin **
+*Network Plugin*
 
 The Network Plugin support is still experimental. Please test it on your own (e.g. using a local copy of your WP multisite) before you use it in an user context.
 
@@ -90,7 +90,15 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 3. Closer look to a pie chart.
 4. WordPress toolbar graph.
 
+== Upgrade Notice ==
+
+= 0.9.5 =
+Messed up stats page (WordPress 3.4) fixed
+
 == Changelog ==
+
+= 0.9.5 =
+* WordPress 3.4 compatible (workaround)
 
 = 0.9.4 = 
 * Requires at least Piwik 1.8.2!
