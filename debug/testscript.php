@@ -1,7 +1,7 @@
 <?php
 /**
  * WP-Piwik
- * Piwik API call test script revision 3
+ * Piwik API call test script revision 4
  */
 
 /*****************
@@ -14,6 +14,8 @@ $strPiwikURL = self::$aryGlobalSettings['piwik_url'];
 $strPiwikAuthToken = self::$aryGlobalSettings['piwik_token'];
 // YOUR BLOG'S URL, e.g. http://www.website.example
 $strPiwikYourBlogURL = get_bloginfo('url');
+// User agent
+$strUA = self::$aryGlobalSettings['piwik_useragent']=='php'?ini_get('user_agent'):self::$aryGlobalSettings['piwik_useragent_string'];
 
 /* That's all, stop editing! */
 
@@ -22,17 +24,24 @@ $strPiwikYourBlogURL = get_bloginfo('url');
  * 
  * @param String $strURL Remote file URL
  */
-function getRemoteFile($strURL, $strToken) {
+function getRemoteFile($strURL, $strToken, $bolSSL, $strUA) {
 	// Use cURL if available	
 	if (function_exists('curl_init')) {
 		// Init cURL
 		$c = curl_init($strURL.$strToken);
 		// Configure cURL CURLOPT_RETURNTRANSFER = 1
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-		// Configure cURL CURLOPT_HEADER = 0 
-		curl_setopt($c, CURLOPT_HEADER, 0);
+		// Verbose = 1
+		curl_setopt($c, CURLOPT_VERBOSE, 1);
+		// Configure cURL CURLOPT_HEADER = 1 & CURLINFO_HEADER_OUT = 1
+		curl_setopt($c, CURLOPT_HEADER, 1);
+		curl_setopt($c, CURLINFO_HEADER_OUT, 1);
+		// Configure SSL peer verification
+		curl_setopt($c, CURLOPT_SSL_VERIFYPEER, $bolSSL);
+		// Set user agent
+		curl_setopt($c, CURLOPT_USERAGENT, $strUA);
 		// Get result
-		$strResult = curl_exec($c);
+		$strResult = curl_exec($c);		
 		// Close connection			
 		curl_close($c);
 	// cURL not available but url fopen allowed
@@ -62,9 +71,12 @@ $intTest = 0;
 foreach ($aryURLs as $strMethod => $strURL) {
 	$intTest++;
 	echo '*** Test '.$intTest.'/'.count($aryURLs).': '.$strMethod.' ***'."\n";
+	echo 'Using: '.(function_exists('curl_init')?'cURL':'fopen')."\n";
+	echo 'SSL peer verification: '.(function_exists('curl_init') && !self::$aryGlobalSettings['disable_ssl_verify']?'enabled':'disabled')."\n";
+	echo 'User Agent: '.$strUA."\n";
 	echo 'Call: '.$strURL.'&token_auth= + TOKEN'."\n";
 	$x = microtime(true);
-	$strResult = getRemoteFile($strURL,$strToken);
+	$strResult = getRemoteFile($strURL,$strToken,!self::$aryGlobalSettings['disable_ssl_verify'],$strUA);
 	$x = microtime(true) - $x;
 	echo 'Result:'."\n";
 	echo htmlentities($strResult)."\n";

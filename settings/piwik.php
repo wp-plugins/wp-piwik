@@ -70,11 +70,41 @@ if (!empty(self::$aryGlobalSettings['piwik_url']) && !empty(self::$aryGlobalSett
 		foreach ($aryOptions as $strOption) echo $strOption;
 			echo '</select></td></tr>';
 	} else {
+		if (empty(self::$arySettings['site_id']))
+			$this->addPiwikSite();
 		echo '<tr><th>'.__('Determined site', 'wp-piwik').':</th><td>';
 		echo '<div class="input-text-wrap">';
-		foreach ($aryData as $arySite) 
+		if (is_array(self::$arySettings['site_id']) && self::$arySettings['site_id']['result'] == 'error')
+			self::showErrorMessage(self::$arySettings['site_id']['message']);
+		else foreach ($aryData as $arySite) 
 			if ($arySite['idsite'] == self::$arySettings['site_id']) {echo '<em>'.htmlentities($arySite['name'], ENT_QUOTES, 'utf-8').'</em>'; break;}		
-		echo '<input type="hidden" name="wp-piwik_siteid" id="wp-piwik_siteid" value="'.self::$arySettings['site_id'].'" /></td></tr>';
+		echo '<input type="hidden" name="wp-piwik_siteid" id="wp-piwik_siteid" value="'.(int)self::$arySettings['site_id'].'" /></td></tr>';
 	}
 }
-}}?>
+}}
+// Expert settings (cURL only)
+?><tr>
+	<th colspan="2"><strong>Expert Settings:</strong></th>
+</tr>
+<?php if (function_exists('curl_init')) { ?>
+<tr>
+	<th><label <?php echo (self::$aryGlobalSettings['piwik_mode']=='php'?'class="wp-piwik-input-hide" ':''); ?>id="wp-piwik_disable_ssl_verify-label"><?php _e('Disable SSL peer verification', 'wp-piwik'); ?>:</label></th>
+	<td>
+		<input <?php echo (self::$aryGlobalSettings['piwik_mode']=='php'?'class="wp-piwik-input-hide" ':''); ?>id="wp-piwik_disable_ssl_verify" name="wp-piwik_disable_ssl_verify" type="checkbox"<?php echo (self::$aryGlobalSettings['disable_ssl_verify']?'checked="checked"':''); ?> /> (<?php _e('not recommended','wp-piwik'); ?>)
+	</td>
+</tr><tr>
+	<th><label>User agent:</label></th>
+	<td>
+		<input type="radio" onchange="javascript:$j('#wp-piwik-useragent').toggleClass('readonly="readonly"');" name="wp-piwik_useragent" value="php" <?php echo (self::$aryGlobalSettings['piwik_useragent']=='php'?'checked="checked" ':''); ?>/> PHP default (<?php echo ini_get('user_agent'); ?>)
+	</td>
+</tr><tr>
+	<th></th>
+	<td>
+		<input type="radio" onchange="javascript:$j('#wp-piwik-useragent').toggleClass('wp-piwik-useragent-disable');" name="wp-piwik_useragent" value="own" <?php echo (self::$aryGlobalSettings['piwik_useragent']=='own'?'checked="checked" ':''); ?>/> <input type="text" id="wp-piwik-useragent" name="wp-piwik_useragent_string" value="<?php echo self::$aryGlobalSettings['piwik_useragent_string']; ?>" />
+	</td>
+</tr>
+<?php } else { ?>
+<tr>
+	<td colspan="2">cURL required. See <a href="http://www.php.net/manual/curl.setup.php">PHP manual</a>.</td>
+</tr>
+<?php }

@@ -7,7 +7,7 @@ if (!$bolFOpen && !$bolCURL) {
 		<strong><?php _e('Error: cURL is not enabled and fopen is not allowed to open URLs. WP-Piwik won\'t be able to connect to Piwik.'); ?></strong>
 	</td>
 </tr><?php } else { ?>
-<tr><th><?php _e('Add tracking code', 'wp-piwik'); ?>:</th><td>
+<tr><td colspan="2"><?php _e('Add tracking code', 'wp-piwik'); ?>: &nbsp; 
 	<input 
 		onchange="javascript:$j('#wp-piwik-tracking-settings').toggleClass('wp-piwik-form-table-hide');"
 	type="checkbox" value="1" id="wp-piwik_addjs" name="wp-piwik_addjs"<?php echo (self::$aryGlobalSettings['add_tracking_code']?' checked="checked"':''); ?> />
@@ -16,11 +16,16 @@ if (!$bolFOpen && !$bolCURL) {
 </table>
 <?php 
 if (self::$aryGlobalSettings['add_tracking_code']) {
-	$strJavaScript = html_entity_decode($this->callPiwikAPI('SitesManager.getJavascriptTag'));
-	// Change Tracking code if configured
-	$strJavaScript = $this->applyJSCodeChanges($strJavaScript);					
-	// Save javascript code
-	self::$arySettings['tracking_code'] = $strJavaScript;
+	$strJavaScript = $this->callPiwikAPI('SitesManager.getJavascriptTag');
+	if (is_array($strJavaScript)) {
+		if (isset($strJavaScript['result']) && $strJavaScript['result'] == 'error')
+			self::showErrorMessage(__($strJavaScript['message'],'wp-piwik'));
+	} else {	
+		// Change Tracking code if configured
+		$strJavaScript = $this->applyJSCodeChanges(html_entity_decode($strJavaScript));					
+		// Save javascript code
+		self::$arySettings['tracking_code'] = $strJavaScript;
+	}
 	self::saveSettings();
 }
 ?>

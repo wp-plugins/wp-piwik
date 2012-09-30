@@ -92,10 +92,19 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 
 == Upgrade Notice ==
 
-= 0.9.5 =
-Messed up stats page (WordPress 3.4) fixed
+= 0.9.6 =
+WordPress metabox concept used properly, different bugfixes, new custom variables feature added.
 
 == Changelog ==
+
+= 0.9.6 =
+* Option: Disable SSL peer verification (REST API)
+* Option: Use own user agent
+* Test script displays additional information (e.g. response headers)
+* Using WordPress metabox concept properly
+* Bugfix: Sparkline script only loaded if required
+* Stats site supports up to 3 columns
+* Feature: [Custom variables](http://piwik.org/docs/javascript-tracking/#toc-custom-variables), using [custom post meta boxes](http://wp.smashingmagazine.com/2011/10/04/create-custom-post-meta-boxes-wordpress/).
 
 = 0.9.5 =
 * WordPress 3.4 compatible (workaround)

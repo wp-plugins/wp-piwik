@@ -1,20 +1,6 @@
-div.wp-piwik-sortables {
-	margin:0 5px;
-}
-
 span.wp-piwik-details {
 	font-size:0.8em;
 	font-weight:normal;
-}
-
-div.wp-piwik-side div.wp-piwik-graph-wide {
-	display: none;
-}
-
-div.wp-piwik-graph-wide {
-	text-align:center;
-	padding-bottom:5px;
-	overflow:hidden;
 }
 
 #wp-piwik_stats_vistors_graph{margin: 0 0 0 0}
@@ -119,4 +105,8 @@ strong.wp-piwik-error {color:#f00}
 
 .wp-piwik-wide-content {
 	width:512px !important;
+}
+
+.wp-piwik-graph-wide {
+	overflow:hidden;
 }

@@ -24,7 +24,7 @@
 	if ($intSum) {
 /***************************************************************************/ ?>
 <div class="wp-piwik-graph-wide">
-	<div id="wp-piwik_stats_browsers_graph" style="height:310px;width:490px"></div>
+	<div id="wp-piwik_stats_browsers_graph" style="height:310px;width:100%"></div>
 </div>
 <?php /************************************************************************/
 	}
@@ -56,9 +56,8 @@
 	</table>
 </div>
 <script type="text/javascript">
-$j.jqplot('wp-piwik_stats_browsers_graph', [[<?php echo $strValues; ?>]], {
+$plotBrowsers = $j.jqplot('wp-piwik_stats_browsers_graph', [[<?php echo $strValues; ?>]], {
     seriesDefaults:{renderer:$j.jqplot.PieRenderer, rendererOptions:{sliceMargin:8}},
     legend:{show:true}
-
 });
 </script>
