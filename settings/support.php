@@ -32,13 +32,13 @@
 				self::loadTestscript();
 			break;
 			case 'reset':
-				echo '<p><strong class="wp-piwik-error">'.__('Please confirm your reset request','wp-piwik').':</strong> <a href="?page=wp-piwik/wp-piwik.php&tab=support&mode=resetconfirmed">'.__('YES, please reset <strong>all</strong> WP-Piwik settings <strong>except</strong> auth token and Piwi URL.', 'wp-piwik').'</a></p>';
+				echo '<p class="wp-piwik-eyecatcher"><strong class="wp-piwik-error">'.__('Please confirm your reset request','wp-piwik').':</strong> <a href="?page=wp-piwik/wp-piwik.php&tab=support&mode=resetconfirmed">'.__('YES, please reset <strong>all</strong> WP-Piwik settings <strong>except</strong> auth token and Piwi URL.', 'wp-piwik').'</a></p>';
 			break;
 			case 'resetconfirmed':
 				// Increase time limit before resetting
 				set_time_limit(0);
 				self::resetSettings();
-				echo '<p><strong>'.__('WP-Piwik reset done','wp-piwik').'</p>';
+				echo '<p class="wp-piwik-eyecatcher"><strong>'.__('WP-Piwik reset done','wp-piwik').'</strong></p>';
 			default:
 		} 
 	}

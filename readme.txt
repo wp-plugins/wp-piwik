@@ -105,6 +105,7 @@ WordPress metabox concept used properly, different bugfixes, new custom variable
 * Bugfix: Sparkline script only loaded if required
 * Stats site supports up to 3 columns
 * Feature: [Custom variables](http://piwik.org/docs/javascript-tracking/#toc-custom-variables), using [custom post meta boxes](http://wp.smashingmagazine.com/2011/10/04/create-custom-post-meta-boxes-wordpress/).
+* Some minor bugfixes
 
 = 0.9.5 =
 * WordPress 3.4 compatible (workaround)

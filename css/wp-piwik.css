@@ -5,6 +5,12 @@ span.wp-piwik-details {
 
 #wp-piwik_stats_vistors_graph{margin: 0 0 0 0}
 
+p.wp-piwik-eyecatcher {
+	border:1px solid #c00;
+	background:#ff0;
+	padding:5px;
+}
+
 table.wp-piwik-table th.n, td.n {
 	text-align: right;
 }

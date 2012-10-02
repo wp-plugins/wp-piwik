@@ -67,7 +67,7 @@ class SiteBrowser extends WP_List_Table {
     		'per_page'    => $per_page
   		));
 		foreach ($this->aryData as $intKey => $aryDataset)
-			if (empty($aryDataset['piwikid']))
+			if (empty($aryDataset['piwikid']) || !is_int($aryDataset['piwikid']))
 				$this->aryData[$intKey]['piwikid'] = '<a href="'.admin_url(($pagenow == 'settings.php'?'network/':'')).$pagenow.'?page=wp-piwik/wp-piwik.php&tab=sitebrowser'.($aryDataset['id'] != '-'?'&wpmu_show_stats='.$aryDataset['id']:'').'">Create Piwik site</a>';
   		$this->items = $this->aryData;
   		return count($this->items);

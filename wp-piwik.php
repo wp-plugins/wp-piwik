@@ -968,7 +968,8 @@ class wp_piwik {
 		if (isset(self::$aryGlobalSettings['disable_timelimit']) && self::$aryGlobalSettings['disable_timelimit']) 
 			set_time_limit(0);
 		//we need the global screen column value to be able to have a sidebar in WordPress 2.8
-		global $screen_layout_columns;		
+		global $screen_layout_columns;
+		if (empty($screen_layout_columns)) $screen_layout_columns = 2;
 /***************************************************************************/ ?>
 <div id="wp-piwik-stats-general" class="wrap">
 	<?php screen_icon('options-general'); ?>
@@ -1265,7 +1266,10 @@ class wp_piwik {
 			'track_post' => false,
 			'disable_timelimit' => false,
 			'disable_cookies' => false,
-			'toolbar' => false
+			'toolbar' => false,
+			'piwik_useragent' => 'php',
+			'piwik_useragent_string' => 'WP-Piwik',
+			'disable_ssl_verify' => false
 		);
 		// Reset network settings
 		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
