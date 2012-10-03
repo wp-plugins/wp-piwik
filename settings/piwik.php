@@ -84,7 +84,7 @@ if (!empty(self::$aryGlobalSettings['piwik_url']) && !empty(self::$aryGlobalSett
 }}
 // Expert settings (cURL only)
 ?><tr>
-	<th colspan="2"><strong>Expert Settings:</strong></th>
+	<th colspan="2"><strong><?php _e('Expert Settings', 'wp-piwik'); ?>:</strong></th>
 </tr>
 <?php if (function_exists('curl_init')) { ?>
 <tr>
