@@ -528,7 +528,7 @@ class wp_piwik {
 	 */
 	public function extendWordPressToolbar(&$objToolbar) {
 		// Is user allowed to see stats?
-		if (current_user_can('wp-piwik_read_stats')) {
+		if (current_user_can('wp-piwik_read_stats') && is_array($aryUnique)) {
 			$aryUnique = $this->callPiwikAPI('VisitsSummary.getUniqueVisitors','day','last30',null);
 			$strGraph = '<script type="text/javascript">';	
 			$strGraph .= "var \$jSpark = jQuery.noConflict();\$jSpark(function() {var piwikSparkVals=[".implode(',',$aryUnique)."];\$jSpark('.wp-piwik_dynbar').sparkline(piwikSparkVals, {type: 'bar', barColor: '#ccc', barWidth:2});});";
