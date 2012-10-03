@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.9.6
+Version: 0.9.6.1
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -60,13 +60,13 @@ if (!function_exists('is_plugin_active_for_network'))
 class wp_piwik {
 
 	private static
-		$intRevisionId = 90601,
-		$strVersion = '0.9.6',
+		$intRevisionId = 90602,
+		$strVersion = '0.9.6.1',
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
 		$bolJustActivated = false,
 		$aryGlobalSettings = array(
-			'revision' => 90601,
+			'revision' => 90602,
 			'add_tracking_code' => false,
 			'last_settings_update' => 0,
 			'piwik_token' => '',
@@ -528,8 +528,9 @@ class wp_piwik {
 	 */
 	public function extendWordPressToolbar(&$objToolbar) {
 		// Is user allowed to see stats?
-		if (current_user_can('wp-piwik_read_stats') && is_array($aryUnique)) {
+		if (current_user_can('wp-piwik_read_stats')) {
 			$aryUnique = $this->callPiwikAPI('VisitsSummary.getUniqueVisitors','day','last30',null);
+			if (!is_array($aryUnique)) $aryUnique = array();
 			$strGraph = '<script type="text/javascript">';	
 			$strGraph .= "var \$jSpark = jQuery.noConflict();\$jSpark(function() {var piwikSparkVals=[".implode(',',$aryUnique)."];\$jSpark('.wp-piwik_dynbar').sparkline(piwikSparkVals, {type: 'bar', barColor: '#ccc', barWidth:2});});";
 			$strGraph .= '</script>';
