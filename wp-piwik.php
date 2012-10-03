@@ -460,7 +460,7 @@ class wp_piwik {
 				__('WP-Piwik', 'wp-piwik'), 
 				'manage_sites',
 				'wp-piwik_stats',
-				array($this, 'showStats')
+				array($this, 'showStatsNetwork')
 			);
 			// Add required scripts
 			add_action('admin_print_scripts-'.$this->intStatsPage, array($this, 'loadStatsScripts'));
@@ -962,8 +962,13 @@ class wp_piwik {
 			);
 		}
 	}
-		
-	function showStats() {
+	
+	// Open stats page as network admin
+	function showStatsNetwork() {
+		$this->showStats(true);
+	}	
+	
+	function showStats($bolNetwork = false) {
 		// Disabled time limit if required
 		if (isset(self::$aryGlobalSettings['disable_timelimit']) && self::$aryGlobalSettings['disable_timelimit']) 
 			set_time_limit(0);
@@ -975,8 +980,8 @@ class wp_piwik {
 	<?php screen_icon('options-general'); ?>
 	<h2><?php _e('Piwik Statistics', 'wp-piwik'); ?></h2>
 <?php /************************************************************************/
-		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && is_super_admin()) {
-			global $blog_id;
+		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && is_super_admin() && $bolNetwork) {
+			/* global $blog_id;
 			global $wpdb;
 			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id'));			
 			if (isset($_GET['wpmu_show_stats'])) {
@@ -995,8 +1000,15 @@ class wp_piwik {
 			// Show blogs in alphabetical order
 			ksort($aryOptions);
 			foreach ($aryOptions as $strOption) echo $strOption;
-			echo '</select><input type="submit" value="'.__('Change').'" />'."\n ";
-			echo __('Currently shown stats:').' <a href="'.get_bloginfo('url').'">'.$blog_id.' - '.get_bloginfo('name').'</a>'."\n";			
+			echo '</select><input type="submit" value="'.__('Change').'" />'."\n "; */
+			if (isset($_GET['wpmu_show_stats'])) {
+				switch_to_blog((int) $_GET['wpmu_show_stats']);
+				self::loadSettings();
+			} else {
+				require_once('settings/sitebrowser.php');
+				return;
+			}
+			echo '<p>'.__('Currently shown stats:').' <a href="'.get_bloginfo('url').'">'.(int) $_GET['wpmu_show_stats'].' - '.get_bloginfo('name').'</a>.'.' <a href="?page=wp-piwik_stats">Show site overview</a>.</p>'."\n";			
 			echo '</form>'."\n";
 		}
 /***************************************************************************/ ?>
@@ -1032,7 +1044,7 @@ class wp_piwik {
 	//]]>
 </script>
 <?php /************************************************************************/
-		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && is_super_admin()) {
+		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && is_super_admin() && $bolNetwork) {
 			restore_current_blog();
 		}
 	}

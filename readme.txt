@@ -1,8 +1,8 @@
 === WP-Piwik ===
 
 Contributors: Braekling
-Requires at least: 3.3
-Tested up to: 3.4
+Requires at least: 3.4
+Tested up to: 3.4.2
 Stable tag: 0.9.5
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
@@ -93,7 +93,7 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 == Upgrade Notice ==
 
 = 0.9.6 =
-WordPress metabox concept used properly, different bugfixes, new custom variables feature added.
+WordPress metabox concept used properly, different bugfixes, custom variables feature added.
 
 == Changelog ==
 
@@ -104,6 +104,7 @@ WordPress metabox concept used properly, different bugfixes, new custom variable
 * Using WordPress metabox concept properly
 * Bugfix: Sparkline script only loaded if required
 * Stats site supports up to 3 columns
+* Network admin stats: Choose site using a paged table (instead of a select box).
 * Feature: [Custom variables](http://piwik.org/docs/javascript-tracking/#toc-custom-variables), using [custom post meta boxes](http://wp.smashingmagazine.com/2011/10/04/create-custom-post-meta-boxes-wordpress/).
 * Some minor bugfixes
 
