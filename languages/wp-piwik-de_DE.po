@@ -606,3 +606,18 @@ msgstr "Die Tabs f&uuml;r die Einstellungen wurden inspiriert von einem Artikel 
 
 msgid "If you like to use the PHP API and also to enable tracking by WP-Piwik, please enter your Piwik URL, too. Otherwise your tracking code may be erroneous."
 msgstr "Falls Du die PHP API verwenden und das Tracking per WP-Piwik aktivieren willst, gib bitte auch Deine Piwik URL an. Andernfalls k&ouml;nnte Dein Tracking Code fehlerhaft sein." 
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Site ID (Piwik)"
+msgstr "Seiten-ID (Piwik)"
+
+msgid "Expert Settings"
+msgstr "Expertenkonfiguration"
+
+msgid "Disable SSL peer verification"
+msgstr "SSL Peer-Verifikation deaktivieren"
+
+msgid "not recommended"
+msgstr "Nicht empfohlen"
