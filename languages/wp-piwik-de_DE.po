@@ -621,3 +621,6 @@ msgstr "SSL Peer-Verifikation deaktivieren"
 
 msgid "not recommended"
 msgstr "Nicht empfohlen"
+
+msgid "Invalid path. Please enter the file path to Piwik."
+msgstr "Ung&uuml;ltiger Pfad. Bitte gib den Dateipfad von Piwik an."

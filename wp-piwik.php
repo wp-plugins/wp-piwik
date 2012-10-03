@@ -732,13 +732,18 @@ class wp_piwik {
 	function callPHP($strParams) {
 		if (PIWIK_INCLUDE_PATH === FALSE)
 			return serialize(array('result' => 'error', 'message' => __('Could not resolve','wp-piwik').' &quot;'.htmlentities(self::$aryGlobalSettings['piwik_path']).'&quot;: '.__('realpath() returns false','wp-piwik').'.'));
-		require_once PIWIK_INCLUDE_PATH . "/index.php";
-		require_once PIWIK_INCLUDE_PATH . "/core/API/Request.php";
-		Piwik_FrontController::getInstance()->init();
+		if (file_exists(PIWIK_INCLUDE_PATH . "/index.php"))
+			require_once PIWIK_INCLUDE_PATH . "/index.php";
+		if (file_exists(PIWIK_INCLUDE_PATH . "/core/API/Request.php"))
+			require_once PIWIK_INCLUDE_PATH . "/core/API/Request.php";
+		if (class_exists('Piwik_FrontController'))
+			Piwik_FrontController::getInstance()->init();
 		// Add Piwik URL to params
 		$strParams .= '&piwikUrl='.urlencode(self::$aryGlobalSettings['piwik_url']);
 		// This inits the API Request with the specified parameters
-		$objRequest = new Piwik_API_Request($strParams);
+		if (class_exists('Piwik_API_Request'))
+			$objRequest = new Piwik_API_Request($strParams);
+		else return NULL;
 		// Calls the API and fetch XML data back
 		return $objRequest->process();		
 	}
