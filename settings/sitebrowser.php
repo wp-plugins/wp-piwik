@@ -24,10 +24,10 @@ class SiteBrowser extends WP_List_Table {
 	
 	function get_columns(){
   		$columns = array(
-			'id'    	=> __('ID'),
-			'name' 		=> __('Title'),
-			'siteurl'   => __('URL'),
-			'piwikid'	=> __('Site ID (Piwik)')
+			'id'    	=> __('ID','wp-piwik'),
+			'name' 		=> __('Title','wp-piwik'),
+			'siteurl'   => __('URL','wp-piwik'),
+			'piwikid'	=> __('Site ID (Piwik)','wp-piwik')
 		);
 		return $columns;
 	}
