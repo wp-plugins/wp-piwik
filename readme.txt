@@ -3,7 +3,7 @@
 Contributors: Braekling
 Requires at least: 3.4
 Tested up to: 3.4.2
-Stable tag: 0.9.6
+Stable tag: 0.9.6.1
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
@@ -95,7 +95,13 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 = 0.9.6 =
 WordPress metabox concept used properly, different bugfixes, custom variables feature added.
 
+= 0.9.6.1 =
+Toolbar graph bugfix
+
 == Changelog ==
+
+= 0.9.6.1 =
+* Toolbar graph bugfix
 
 = 0.9.6 =
 * Option: Disable SSL peer verification (REST API)
