@@ -31,6 +31,10 @@ if (!$bolFOpen && !$bolCURL) {
 		<input type="radio" name="wp-piwik_mode" onchange="javascript:$j('#wp-piwik_path,#wp-piwik_path-label').toggleClass('wp-piwik-input-hide');" value="php" <?php echo (self::$aryGlobalSettings['piwik_mode']=='php'?'checked="checked" ':''); ?>/>
 		<input <?php echo (self::$aryGlobalSettings['piwik_mode']!='php'?'class="wp-piwik-input-hide" ':''); ?>id="wp-piwik_path" name="wp-piwik_path" type="text" value="<?php echo self::$aryGlobalSettings['piwik_path']; ?>" />
 		<label <?php echo (self::$aryGlobalSettings['piwik_mode']!='php'?'class="wp-piwik-input-hide" ':''); ?>id="wp-piwik_path-label" for="wp-piwik_path"><?php _e('If you like to use the PHP API and also to enable tracking by WP-Piwik, please enter your Piwik URL, too. Otherwise your tracking code may be erroneous.','wp-piwik'); ?> [<a href="http://dev.piwik.org/trac/ticket/3220">Details</a>]</label>
+		<?php
+			if (isset($_POST['wp-piwik_path']) && !empty($_POST['wp-piwik_path']) && (realpath($_POST['wp-piwik_path']) === false || !file_exists(@PIWIK_INCLUDE_PATH."/index.php") || file_exists(@PIWIK_INCLUDE_PATH."/core/API/Request.php")))
+				echo '<p class="wp-piwik-eyecatcher">'.__('Invalid path. Please enter the file path to Piwik.', 'wp-piwik').'</p>';
+		?>
 	</td>
 </tr><tr>
 	<th><?php _e('Auth token', 'wp-piwik'); ?>:</th>
