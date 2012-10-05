@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.9.6.1
+Version: 0.9.6.2
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -60,13 +60,13 @@ if (!function_exists('is_plugin_active_for_network'))
 class wp_piwik {
 
 	private static
-		$intRevisionId = 90602,
-		$strVersion = '0.9.6.1',
+		$intRevisionId = 90603,
+		$strVersion = '0.9.6.2',
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
 		$bolJustActivated = false,
 		$aryGlobalSettings = array(
-			'revision' => 90602,
+			'revision' => 90603,
 			'add_tracking_code' => false,
 			'last_settings_update' => 0,
 			'piwik_token' => '',
@@ -100,7 +100,8 @@ class wp_piwik {
 		);
 		
 	private
-		$intStatsPage = NULL;
+		$intStatsPage = NULL,
+		$bolNetwork = false;
 
 	/**
 	 * Load plugin settings 
@@ -971,10 +972,11 @@ class wp_piwik {
 	
 	// Open stats page as network admin
 	function showStatsNetwork() {
-		$this->showStats(true);
+		$this->bolNetwork = true;
+		$this->showStats();
 	}	
 	
-	function showStats($bolNetwork = false) {
+	function showStats() {
 		// Disabled time limit if required
 		if (isset(self::$aryGlobalSettings['disable_timelimit']) && self::$aryGlobalSettings['disable_timelimit']) 
 			set_time_limit(0);
@@ -986,7 +988,7 @@ class wp_piwik {
 	<?php screen_icon('options-general'); ?>
 	<h2><?php _e('Piwik Statistics', 'wp-piwik'); ?></h2>
 <?php /************************************************************************/
-		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && is_super_admin() && $bolNetwork) {
+		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && is_super_admin() && $this->bolNetwork) {
 			/* global $blog_id;
 			global $wpdb;
 			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id'));			
@@ -1011,7 +1013,7 @@ class wp_piwik {
 				switch_to_blog((int) $_GET['wpmu_show_stats']);
 				self::loadSettings();
 			} else {
-				require_once('settings/sitebrowser.php');
+				$this->includeFile('settings/sitebrowser');
 				return;
 			}
 			echo '<p>'.__('Currently shown stats:').' <a href="'.get_bloginfo('url').'">'.(int) $_GET['wpmu_show_stats'].' - '.get_bloginfo('name').'</a>.'.' <a href="?page=wp-piwik_stats">Show site overview</a>.</p>'."\n";			

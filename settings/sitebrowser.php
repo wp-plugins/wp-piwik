@@ -1,8 +1,6 @@
 <?php
 $bolCURL = function_exists('curl_init');
 $bolFOpen = ini_get('allow_url_fopen');
-if (!isset($bolNetwork))
-	$bolNetwork = false;
 if (!$bolFOpen && !$bolCURL) {
 ?><tr>	
 	<td colspan="2">
@@ -68,6 +66,7 @@ class SiteBrowser extends WP_List_Table {
     		'total_items' => $total_items,
     		'per_page'    => $per_page
   		));
+  		if ($bolNetwork) $pagenow = 'settings.php';
 		foreach ($this->aryData as $intKey => $aryDataset) {
 			if (empty($aryDataset['piwikid']) || !is_int($aryDataset['piwikid']))
 				$this->aryData[$intKey]['piwikid'] = '<a href="'.admin_url(($pagenow == 'settings.php'?'network/':'')).$pagenow.'?page=wp-piwik/wp-piwik.php&tab=sitebrowser'.($aryDataset['id'] != '-'?'&wpmu_show_stats='.$aryDataset['id']:'').'">Create Piwik site</a>';
@@ -91,7 +90,7 @@ class SiteBrowser extends WP_List_Table {
 	}
 }
 $objSiteBrowser = new SiteBrowser();
-$intCnt = $objSiteBrowser->prepare_items($bolNetwork);
+$intCnt = $objSiteBrowser->prepare_items($this->bolNetwork);
 if ($intCnt > 0) $objSiteBrowser->display();
 else echo '<p>No site configured yet.</p>'
 ?>
