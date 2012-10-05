@@ -92,13 +92,12 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 
 == Upgrade Notice ==
 
-= 0.9.6 =
-WordPress metabox concept used properly, different bugfixes, custom variables feature added.
-
-= 0.9.6.1 =
-Toolbar graph bugfix
+Bugfix: ["Create Piwik site" link (network dashboard)](http://wordpress.org/support/topic/plugin-wp-piwik-you-attempted-to-access-the-networks-dashboard-but-you-do-not)
 
 == Changelog ==
+
+= 0.9.6.2 =
+* Bugfix: ["Create Piwik site" link (network dashboard)](http://wordpress.org/support/topic/plugin-wp-piwik-you-attempted-to-access-the-networks-dashboard-but-you-do-not)
 
 = 0.9.6.1 =
 * Toolbar graph bugfix
