@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.9.6.2
+Version: 0.9.6.3
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -60,13 +60,13 @@ if (!function_exists('is_plugin_active_for_network'))
 class wp_piwik {
 
 	private static
-		$intRevisionId = 90603,
-		$strVersion = '0.9.6.2',
+		$intRevisionId = 90604,
+		$strVersion = '0.9.6.3',
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
 		$bolJustActivated = false,
 		$aryGlobalSettings = array(
-			'revision' => 90603,
+			'revision' => 90604,
 			'add_tracking_code' => false,
 			'last_settings_update' => 0,
 			'piwik_token' => '',
@@ -919,6 +919,7 @@ class wp_piwik {
 			'normal' => array(
 				'visitors' => array(__('Visitors', 'wp-piwik'), 'day', 'last30'),
 				'browsers' => array(__('Browser', 'wp-piwik'), 'day', 'yesterday'),
+				'browserdetails' => array(__('Browser Details', 'wp-piwik'), 'day', 'yesterday'),
 				'screens' => array(__('Resolution', 'wp-piwik'), 'day', 'yesterday'),
 				'systems' => array(__('Operating System', 'wp-piwik'), 'day', 'yesterday')
 			)

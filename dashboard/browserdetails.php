@@ -1,15 +1,15 @@
 <?php
 /*********************************
-	WP-Piwik::Stats:Browser
+	WP-Piwik::Stats:BrowserDetails
 **********************************/
 
 	$aryConf['data'] = $this->callPiwikAPI(
-			'UserSettings.getBrowser', 
+			'UserSettings.getBrowserVersion', 
 			$aryConf['params']['period'], 
 			$aryConf['params']['date'],
 			$aryConf['params']['limit']
 	);
-	$aryConf['title'] = __('Browser', 'wp-piwik');
+	$aryConf['title'] = __('Browser Details', 'wp-piwik');
 	$strValues = '';
 	$intCount = 0; $intMore = 0; $intSum = 0;
 	if (isset($aryConf['data']['result']) && $aryConf['data']['result'] ='error')
@@ -27,7 +27,7 @@
 		if ($intSum) {
 /***************************************************************************/ ?>
 <div class="wp-piwik-graph-wide">
-	<div id="wp-piwik_stats_browsers_graph" style="height:310px;width:100%"></div>
+	<div id="wp-piwik_stats_browserdetails_graph" style="height:310px;width:100%"></div>
 </div>
 <?php /************************************************************************/
 		}
@@ -59,7 +59,7 @@
 	</table>
 </div>
 <script type="text/javascript">
-$plotBrowsers = $j.jqplot('wp-piwik_stats_browsers_graph', [[<?php echo $strValues; ?>]], {
+$plotBrowsers = $j.jqplot('wp-piwik_stats_browserdetails_graph', [[<?php echo $strValues; ?>]], {
     seriesDefaults:{renderer:$j.jqplot.PieRenderer, rendererOptions:{sliceMargin:8}},
     legend:{show:true}
 });
