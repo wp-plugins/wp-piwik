@@ -23,6 +23,20 @@ Languages: English, German, Albanian, Azerbaijani, Belorussian, Dutch, French, G
 
 *Note: If you vote "It's broken", please tell me about your problem. It's hard to fix a bug I don't know about! ;-)*
 
+= Shortcodes =
+You can use following shortcodes if activated:
+
+    [wp-piwik module="overview" title="" period="day" date="yesterday"]
+Shows overview table like WP-Piwik's overview dashboard. See Piwik API documentation on VisitsSummary.get to get more information on period and day. Multiple data arrays will be cumulated. If you fill the title attribute, its content will be shown in the table's title.
+
+    [wp-piwik module="opt-out" language="en" width="100%" height="200px"]
+Shows the Piwik opt-out Iframe. You can change the Iframe's language by the language attribute (e.g. de for German language) and its width and height using the corresponding attributes.
+
+	[wp-piwik]
+is equal to *[wp-piwik module="overview" title="" period="day" date="yesterday"]*.
+
+More shortcodes will follow soon.
+
 = WP multisite =
 
 See section "Installation".
@@ -280,17 +294,3 @@ Please update Piwik if not done yet (Piwik 1.9 or higher is recommended)!
 
 = 0.2.0 =
 * First public version.
-
-== Shortcodes ==
-You can use following shortcodes if activated:
-
-    [wp-piwik module="overview" title="" period="day" date="yesterday"]
-Shows overview table like WP-Piwik's overview dashboard. See Piwik API documentation on VisitsSummary.get to get more information on period and day. Multiple data arrays will be cumulated. If you fill the title attribute, its content will be shown in the table's title.
-
-    [wp-piwik module="opt-out" language="en" width="100%" height="200px"]
-Shows the Piwik opt-out Iframe. You can change the Iframe's language by the language attribute (e.g. de for German language) and its width and height using the corresponding attributes.
-
-	[wp-piwik]
-is equal to **[wp-piwik module="overview" title="" period="day" date="yesterday"]**.
-
-More shortcodes will follow soon.
