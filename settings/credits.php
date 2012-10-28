@@ -1,6 +1,6 @@
 <tr>
 	<td>
-		<strong><?php _e('Thank you very much for your donation', 'wp-piwik'); ?>:</strong> Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S., <?php _e('the Piwik team itself','wp-piwik');?><?php _e(', and all people flattering this','wp-piwik'); ?>!
+		<strong><?php _e('Thank you very much for your donation', 'wp-piwik'); ?>:</strong> Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S., Thomas M., <?php _e('the Piwik team itself','wp-piwik');?><?php _e(', and all people flattering this','wp-piwik'); ?>!
 	</td>
 </tr>
 <tr>
