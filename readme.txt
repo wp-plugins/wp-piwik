@@ -92,9 +92,14 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 
 == Upgrade Notice ==
 
-Piwik 1.9 compatibility fix. Please update Piwik if not done yet!
+Please update Piwik if not done yet (Piwik 1.9 or higher is recommended)!
 
 == Changelog ==
+
+= 0.9.7 =
+* Shortcodes added
+* WP-Piwik will rename sites in Piwik if site name changes in WordPress
+* Bugfix: Tracking code changes should stay active after WP-Piwik updates
 
 = 0.9.6.3 =
 * Piwik 1.9+ compatibility fix (Piwik 1.9 required!)
@@ -275,3 +280,14 @@ Piwik 1.9 compatibility fix. Please update Piwik if not done yet!
 
 = 0.2.0 =
 * First public version.
+
+== Shortcodes ==
+You can use following shortcodes if activated:
+
+<[wp-piwik module="overview" title="" period="day" date="yesterday"]>
+Shows overview table like WP-Piwik's overview dashboard. See Piwik API documentation on VisitsSummary.get to get more information on period and day. Multiple data arrays will be cumulated. If you fill the title attribute, its content will be shown in the table's title.
+
+<[wp-piwik module="opt-out" language="en" width="100%" height="200px"]>
+Shows the Piwik opt-out Iframe. You can change the Iframe's language by the language attribute (e.g. de for German language) and its width and height using the corresponding attributes.
+
+More shortcodes will follow soon.
