@@ -624,3 +624,6 @@ msgstr "Nicht empfohlen"
 
 msgid "Invalid path. Please enter the file path to Piwik."
 msgstr "Ung&uuml;ltiger Pfad. Bitte gib den Dateipfad von Piwik an."
+
+msgid "Enable shortcodes in post or page content."
+msgstr "Aktiviere Shortcodes innerhalb von Artikeln und Seiten."
