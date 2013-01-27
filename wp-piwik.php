@@ -866,7 +866,10 @@ class wp_piwik {
 	 */
 	function applyJSCodeChanges($strCode) {
 		// Change code if js/index.php should be used
-		if (self::$aryGlobalSettings['track_compress']) $strCode = str_replace('pkBaseURL + "piwik.js\'', 'pkBaseURL + "js/\'', $strCode);
+		if (self::$aryGlobalSettings['track_compress']) {
+			$strCode = str_replace('pkBaseURL + "piwik.js\'', 'pkBaseURL + "js/\'', $strCode);
+			$strCode = str_replace('"piwik.php"', '"js/"', $strCode);
+		}
 		// Change code if POST is forced to be used
 		if (self::$aryGlobalSettings['track_post']) $strCode = str_replace('piwikTracker.trackPageView();', 'piwikTracker.setRequestMethod(\'POST\');'."\n".'  piwikTracker.trackPageView();', $strCode);
 		// Change code if cookies are disabled

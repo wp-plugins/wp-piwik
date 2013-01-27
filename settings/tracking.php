@@ -45,7 +45,7 @@ if (self::$aryGlobalSettings['add_tracking_code']) {
 </td></tr>
 <tr><th><?php _e('Use js/index.php', 'wp-piwik'); ?>:</th><td>
 	<input type="checkbox" value="1" id="wp-piwik_compress" name="wp-piwik_compress"<?php echo (self::$aryGlobalSettings['track_compress']?' checked="checked"':''); ?> />
-	<label for="wp-piwik_compress"><?php _e('WP-Piwik can automatically use js/index.php instead of piwik.js. See', 'wp-piwik'); ?> <a href="http://demo.piwik.org/js/README">js/README</a>.</label>
+	<label for="wp-piwik_compress"><?php _e('WP-Piwik can automatically use js/index.php instead of piwik.js and piwik.php. See', 'wp-piwik'); ?> <a href="http://demo.piwik.org/js/README">js/README</a>.</label>
 </td></tr>
 <tr><th><?php _e('Avoid mod_security', 'wp-piwik'); ?>:</th><td>
 	<input type="checkbox" value="1" id="wp-piwik_reqpost" name="wp-piwik_reqpost"<?php echo (self::$aryGlobalSettings['track_post']?' checked="checked"':''); ?> />
