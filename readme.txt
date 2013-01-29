@@ -112,6 +112,8 @@ Please update Piwik if not done yet (Piwik 1.9 or higher is recommended)!
 
 = 0.9.8 =
 * WordPress 3.5 compatibility fix: http://wordpress.org/support/topic/v35-errors-fix?replies=5 (Thanks Christian Foellmann!)
+* Advanced Search Result Analytics, see http://piwik.org/docs/javascript-tracking/#toc-tracking-internal-search-keywords-categories-and-no-result-search-keywords
+* Use js/index.php: Replaces piwik.js and piwik.php by js/ (instead of piwik.js only)
 
 = 0.9.7 =
 * Shortcodes added
