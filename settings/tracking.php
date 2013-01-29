@@ -39,10 +39,17 @@ if (self::$aryGlobalSettings['add_tracking_code']) {
 	<input type="checkbox" value="1" id="wp-piwik_disable_cookies" name="wp-piwik_disable_cookies"<?php echo (self::$aryGlobalSettings['disable_cookies']?' checked="checked"':''); ?> />
 	<label for="wp-piwik_disable_cookies"><?php echo _e('Disable all tracking cookies for a visitor.', 'wp-piwik'); ?></label>
 </td></tr>
+
+<tr><th><?php _e('Track search', 'wp-piwik'); ?>:</th><td>
+	<input type="checkbox" value="1" id="wp-piwik_search" name="wp-piwik_search"<?php echo (self::$aryGlobalSettings['track_search']?' checked="checked"':''); ?> />
+	<label for="wp-piwik_search"><?php echo _e('Use Piwik\'s advanced Site Search Analytics feature. See', 'wp-piwik'); ?> <a href="http://piwik.org/docs/javascript-tracking/#toc-tracking-internal-search-keywords-categories-and-no-result-search-keywords">Piwik documentation</a>.</label>
+</td></tr>
+
 <tr><th><?php _e('Track 404', 'wp-piwik'); ?>:</th><td>
 	<input type="checkbox" value="1" id="wp-piwik_404" name="wp-piwik_404"<?php echo (self::$aryGlobalSettings['track_404']?' checked="checked"':''); ?> />
 	<label for="wp-piwik_404"><?php echo _e('WP-Piwik can automatically add a 404-category to track 404-page-visits.', 'wp-piwik'); ?></label>
 </td></tr>
+
 <tr><th><?php _e('Use js/index.php', 'wp-piwik'); ?>:</th><td>
 	<input type="checkbox" value="1" id="wp-piwik_compress" name="wp-piwik_compress"<?php echo (self::$aryGlobalSettings['track_compress']?' checked="checked"':''); ?> />
 	<label for="wp-piwik_compress"><?php _e('WP-Piwik can automatically use js/index.php instead of piwik.js and piwik.php. See', 'wp-piwik'); ?> <a href="http://demo.piwik.org/js/README">js/README</a>.</label>

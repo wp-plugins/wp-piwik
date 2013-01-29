@@ -6,12 +6,12 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.9.7
+Version: 0.9.8
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
 ****************************************************************************************** 
-	Copyright (C) 2009-2012 Andre Braekling (email: webmaster@braekling.de)
+	Copyright (C) 2009-2013 Andre Braekling (email: webmaster@braekling.de)
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -51,13 +51,13 @@ if (!function_exists('is_plugin_active_for_network'))
 class wp_piwik {
 
 	private static
-		$intRevisionId = 90700,
-		$strVersion = '0.9.7',
+		$intRevisionId = 90801,
+		$strVersion = '0.9.8',
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
 		$bolJustActivated = false,
 		$aryGlobalSettings = array(
-			'revision' => 90700,
+			'revision' => 90801,
 			'add_tracking_code' => false,
 			'last_settings_update' => 0,
 			'piwik_token' => '',
@@ -76,6 +76,7 @@ class wp_piwik {
 			'default_date' => 'yesterday',
 			'auto_site_config' => true,
 			'track_404' => false,
+			'track_search' => false,
 			'track_compress' => false,
 			'track_post' => false,
 			'disable_timelimit' => false,
@@ -109,6 +110,11 @@ class wp_piwik {
 		);
 		// Get site settings
 		self::$arySettings = get_option('wp-piwik_settings',self::$arySettings);
+		
+		return array(
+			'global' => self::$aryGlobalSettings,
+			'specific' => self::$arySettings
+		);
 	}
 	
 	/**
@@ -242,6 +248,8 @@ class wp_piwik {
             self::includeFile('update/90601');
 		if (self::$aryGlobalSettings['revision'] < 90700)
             self::includeFile('update/90700');
+		if (self::$aryGlobalSettings['revision'] < 90801)
+            self::includeFile('update/90801');
         // Install new version
         $this->installPlugin();      
     }
@@ -312,8 +320,16 @@ class wp_piwik {
 			self::saveSettings();
 		}
 		// Change code if 404
-		if (is_404() and self::$aryGlobalSettings['track_404']) $strTrackingCode = str_replace('piwikTracker.trackPageView();', 'piwikTracker.setDocumentTitle(\'404/URL = \'+encodeURIComponent(document.location.pathname+document.location.search) + \'/From = \' + encodeURIComponent(document.referrer));piwikTracker.trackPageView();', self::$arySettings['tracking_code']);
-		else $strTrackingCode = self::$arySettings['tracking_code'];
+		if (is_404() && self::$aryGlobalSettings['track_404']) 
+			$strTrackingCode = str_replace('piwikTracker.trackPageView();', 'piwikTracker.setDocumentTitle(\'404/URL = \'+encodeURIComponent(document.location.pathname+document.location.search) + \'/From = \' + encodeURIComponent(document.referrer));piwikTracker.trackPageView();', self::$arySettings['tracking_code']);
+		// Change code if search result
+		elseif (is_search() && self::$aryGlobalSettings['track_search']) {
+			$objSearch = &new WP_Query("s=" . get_search_query() . '&showposts=-1'); 
+			$intResultCount = $objSearch->post_count;
+			$strTrackingCode = str_replace('piwikTracker.trackPageView();', 'piwikTracker.trackSiteSearch("'.get_search_query().'", false, '.$intResultCount.');', self::$arySettings['tracking_code']);
+		// Use default tracking code
+		} else 
+			$strTrackingCode = self::$arySettings['tracking_code'];
 		// Send tracking code
 		echo '<!-- *** WP-Piwik - see http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress/ -->'."\n";
 		// Add custom variables if set:
@@ -1183,6 +1199,7 @@ class wp_piwik {
 			case 'tracking':
 				self::$aryGlobalSettings['add_tracking_code'] = (isset($_POST['wp-piwik_addjs'])?$_POST['wp-piwik_addjs']:false);
 				self::$aryGlobalSettings['track_404'] = (isset($_POST['wp-piwik_404'])?$_POST['wp-piwik_404']:false);
+				self::$aryGlobalSettings['track_search'] = (isset($_POST['wp-piwik_search'])?$_POST['wp-piwik_search']:false);
 				self::$aryGlobalSettings['track_compress'] = (isset($_POST['wp-piwik_compress'])?$_POST['wp-piwik_compress']:false);
 				self::$aryGlobalSettings['track_post'] = (isset($_POST['wp-piwik_reqpost'])?$_POST['wp-piwik_reqpost']:false);
 				self::$aryGlobalSettings['capability_stealth'] = (isset($_POST['wp-piwik_filter'])?$_POST['wp-piwik_filter']:array());
@@ -1344,6 +1361,7 @@ class wp_piwik {
 			'default_date' => 'yesterday',
 			'auto_site_config' => true,
 			'track_404' => false,
+			'track_search' => false,
 			'track_compress' => false,
 			'track_post' => false,
 			'disable_timelimit' => false,
