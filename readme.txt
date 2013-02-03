@@ -59,6 +59,10 @@ WP-Piwik requires Piwik. If you did not install Piwik yet, first get it at the [
 
 If Piwik works, you'll be able to configure WP-Piwik: The Piwik URL is the same URL you use to access your Piwik, e.g. for the demo site: http://demo.piwik.org. The auth token is some kind of secret password, which allows WP-Piwik to get the necessary data from Piwik. The super user's auth token, i.e. a full access password for your Piwik, can be found on Piwik's API site. You can find a detailed description [here](http://peepbo.de/board/viewtopic.php?f=5&t=10).
 
+= How to reset/remove all WP-Piwik settings without uninstalling? =
+
+Login to your admin dashboard and open http://YOUR_BLOG_URL/wp-admin/options-general.php?page=wp-piwik/wp-piwik.php&tab=support&mode=resetconfirmed&full=1
+
 = Tracking does not work on HostGator! =
 
 Try to enable the "avoid mod_security" option (WP-Piwik settings, Tracking tab) or create a mod_security whitelist.
@@ -113,7 +117,15 @@ Please update Piwik if not done yet (Piwik 1.9 or higher is recommended)!
 = 0.9.8 =
 * WordPress 3.5 compatibility fix: http://wordpress.org/support/topic/v35-errors-fix?replies=5 (Thanks Christian Foellmann!)
 * Advanced Search Result Analytics, see http://piwik.org/docs/javascript-tracking/#toc-tracking-internal-search-keywords-categories-and-no-result-search-keywords
+* Site Search stats added
 * Use js/index.php: Replaces piwik.js and piwik.php by js/ (instead of piwik.js only)
+* Connection timeout setting added
+* Full reset option added
+* Uninstall script added
+* Stats metaboxes: Date formatted
+* Use proxy settings defined in wp-config.php
+* Piwik.php proxy script added (see http://piwik.org/faq/how-to/#faq_132)
+* Bugfix: After upgrade, Piwik automatically places cookies again (http://wordpress.org/support/topic/after-upgrade-piwik-automatically-places-cookies-again)
 
 = 0.9.7 =
 * Shortcodes added
