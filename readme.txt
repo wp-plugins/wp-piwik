@@ -46,7 +46,7 @@ See section "Installation".
 * Graphs powered by [jqPlot](http://www.jqplot.com/) (GPL 2.0 and MIT) and  and [jQuery Sparklines](http://omnipotent.net/jquery.sparkline/) (New BSD License).
 * Metabox support inspired by [Heiko Rabe's metabox demo plugin](http://www.code-styling.de/english/how-to-use-wordpress-metaboxes-at-own-plugins).
 * Translation credits see plugin settings
-* Donations: Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S, Thomas M., Andreas G., Ben M., the Piwik team itself, and all people flattering this.
+* Donations: Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S, Thomas M., John C., Andreas G., Ben M., the Piwik team itself, and all people flattering this.
 * All users who send me mails containing criticism, commendation, feature requests and bug reports - you help me to make WP-Piwik much better!
 
 Thank you all!
@@ -113,6 +113,10 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 Please update Piwik if not done yet (Piwik 1.9 or higher is recommended)!
 
 == Changelog ==
+
+= 0.9.8.1 =
+* Warning on empty data removed (overview table)
+* Removed a possible deadlock
 
 = 0.9.8 =
 * WordPress 3.5 compatibility fix: http://wordpress.org/support/topic/v35-errors-fix?replies=5 (Thanks Christian Foellmann!)
