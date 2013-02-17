@@ -1415,7 +1415,7 @@ class wp_piwik {
 		// Reset network settings
 		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
 			delete_site_option('wp-piwik_global-settings');
-			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM %s ORDER BY blog_id', $wpdb->blogs));
+			$aryBlogs = $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id');
 			foreach ($aryBlogs as $aryBlog)
 				delete_blog_option($aryBlog->blog_id, 'wp-piwik_settings');
 			if (!$bolFull) update_site_option('wp-piwik_global-settings', $aryKeep);

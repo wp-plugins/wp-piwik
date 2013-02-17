@@ -7,7 +7,7 @@ global $wpdb;
 
 if (function_exists('is_multisite') && is_multisite()) {
 	delete_site_option('wp-piwik_global-settings');
-	$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM %s ORDER BY blog_id', $wpdb->blogs));
+	$aryBlogs = $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id');
 	if (is_array($aryBlogs))
 		foreach ($aryBlogs as $aryBlog)
 			delete_blog_option($aryBlog->blog_id, 'wp-piwik_settings');
