@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress footer.
 
-Version: 0.9.8
+Version: 0.9.8.1
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -51,13 +51,13 @@ if (!function_exists('is_plugin_active_for_network'))
 class wp_piwik {
 
 	private static
-		$intRevisionId = 90805,
-		$strVersion = '0.9.8',
+		$intRevisionId = 90810,
+		$strVersion = '0.9.8.1',
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
 		$bolJustActivated = false,
 		$aryGlobalSettings = array(
-			'revision' => 90805,
+			'revision' => 90810,
 			'add_tracking_code' => false,
 			'last_settings_update' => 0,
 			'piwik_token' => '',
@@ -326,9 +326,7 @@ class wp_piwik {
 			$aryReturn = $this->addPiwikSite();
 		// Update/get code if outdated/unknown
 		if (self::$arySettings['last_tracking_code_update'] < self::$aryGlobalSettings['last_settings_update'] || empty(self::$arySettings['tracking_code'])) {
-			$strJSCode = $this->callPiwikAPI('SitesManager.getJavascriptTag');
-			self::$arySettings['tracking_code'] = html_entity_decode((is_string($strJSCode)?$this->applyJSCodeChanges($strJSCode):'<!-- WP-Piwik ERROR: Tracking code not availbale -->'."\n"));
-			self::$arySettings['last_tracking_code_update'] = time();
+			self::$arySettings['tracking_code'] =  = $this->callPiwikAPI('SitesManager.getJavascriptTag');
 			self::saveSettings();
 		}
 		// Change code if 404
@@ -336,7 +334,7 @@ class wp_piwik {
 			$strTrackingCode = str_replace('piwikTracker.trackPageView();', 'piwikTracker.setDocumentTitle(\'404/URL = \'+encodeURIComponent(document.location.pathname+document.location.search) + \'/From = \' + encodeURIComponent(document.referrer));piwikTracker.trackPageView();', self::$arySettings['tracking_code']);
 		// Change code if search result
 		elseif (is_search() && self::$aryGlobalSettings['track_search']) {
-			$objSearch = &new WP_Query("s=" . get_search_query() . '&showposts=-1'); 
+			$objSearch = new WP_Query("s=" . get_search_query() . '&showposts=-1'); 
 			$intResultCount = $objSearch->post_count;
 			$strTrackingCode = str_replace('piwikTracker.trackPageView();', 'piwikTracker.trackSiteSearch("'.get_search_query().'", false, '.$intResultCount.');', self::$arySettings['tracking_code']);
 		// Use default tracking code
@@ -861,15 +859,13 @@ class wp_piwik {
 			$strURL .= '&format=PHP';
 			$strURL .= '&token_auth='.self::$aryGlobalSettings['piwik_token'];
 			$strResult = unserialize($this->getRemoteFile($strURL));
-			if (!empty($strResult)) self::$arySettings['site_id'] = $strResult;
+			if (!empty($strResult)) self::$arySettings['site_id'] = (int) $strResult;
 		}
-		// Store new data
-		$mixAPIResult = $this->callPiwikAPI('SitesManager.getJavascriptTag');
-		self::$arySettings['tracking_code'] = (!is_array($mixAPIResult)?html_entity_decode($mixAPIResult):'');
-		self::$arySettings['last_tracking_code_update'] = time();
-		// Change Tracking code if configured
-		self::$arySettings['tracking_code'] = $this->applyJSCodeChanges(self::$arySettings['tracking_code']);
-		self::saveSettings();
+		// Store new data if site created
+		if (!empty(self::$arySettings['site_id'])) {
+			self::$arySettings['tracking_code'] = $this->callPiwikAPI('SitesManager.getJavascriptTag');
+			self::saveSettings();
+		} else self::$arySettings['tracking_code'] = '';
 		if (isset($_GET['wpmu_show_stats']) && is_plugin_active_for_network('wp-piwik/wp-piwik.php'))
 			restore_current_blog();
 		return array('js' => self::$arySettings['tracking_code'], 'id' => self::$arySettings['site_id']);
@@ -891,11 +887,7 @@ class wp_piwik {
 		$strURL .= '&token_auth='.self::$aryGlobalSettings['piwik_token'];
 		$strResult = unserialize($this->getRemoteFile($strURL));		
 		// Store new data
-		$mixAPIResult = $this->callPiwikAPI('SitesManager.getJavascriptTag');
-		self::$arySettings['tracking_code'] = (!is_array($mixAPIResult)?html_entity_decode($mixAPIResult):'');
-		self::$arySettings['last_tracking_code_update'] = time();
-		// Change Tracking code if configured
-		self::$arySettings['tracking_code'] = $this->applyJSCodeChanges(self::$arySettings['tracking_code']);
+		self::$arySettings['tracking_code'] = $this->callPiwikAPI('SitesManager.getJavascriptTag');
 		self::saveSettings();
 	}
 
@@ -988,6 +980,11 @@ class wp_piwik {
 			if (!empty($intSite) || $strMethod='SitesManager.getSitesWithAtLeastViewAccess') {
 				$strResult = (string) $this->getRemoteFile($strURL);			
 				$this->aryCache[$strKey] = ($strFormat == 'PHP'?unserialize($strResult):$strResult);
+				// Apply tracking code changes if configured
+				if ($strMethod == 'SitesManager.getJavascriptTag') {
+					$this->aryCache[$strKey] = html_entity_decode((is_string($this->aryCache[$strKey])?$this->applyJSCodeChanges($this->aryCache[$strKey]):'<!-- WP-Piwik ERROR: Tracking code not availbale -->'."\n"));
+					self::$arySettings['last_tracking_code_update'] = time();
+				}
 			// Otherwise return error message
 			} else $this->aryCache[$strKey] = array('result' => 'error', 'message' => 'Unknown site/blog.');
 		}

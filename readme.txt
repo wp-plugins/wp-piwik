@@ -117,6 +117,7 @@ Please update Piwik if not done yet (Piwik 1.9 or higher is recommended)!
 = 0.9.8.1 =
 * Warning on empty data removed (overview table)
 * Removed a possible deadlock
+* Bugfix: Apply tracking code settings everytime the tracking code is updated
 
 = 0.9.8 =
 * WordPress 3.5 compatibility fix: http://wordpress.org/support/topic/v35-errors-fix?replies=5 (Thanks Christian Foellmann!)
