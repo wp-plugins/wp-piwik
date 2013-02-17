@@ -326,7 +326,7 @@ class wp_piwik {
 			$aryReturn = $this->addPiwikSite();
 		// Update/get code if outdated/unknown
 		if (self::$arySettings['last_tracking_code_update'] < self::$aryGlobalSettings['last_settings_update'] || empty(self::$arySettings['tracking_code'])) {
-			self::$arySettings['tracking_code'] =  = $this->callPiwikAPI('SitesManager.getJavascriptTag');
+			self::$arySettings['tracking_code'] = $this->callPiwikAPI('SitesManager.getJavascriptTag');
 			self::saveSettings();
 		}
 		// Change code if 404
