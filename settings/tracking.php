@@ -21,8 +21,6 @@ if (self::$aryGlobalSettings['add_tracking_code']) {
 		if (isset($strJavaScript['result']) && $strJavaScript['result'] == 'error')
 			self::showErrorMessage(__($strJavaScript['message'],'wp-piwik'));
 	} else {	
-		// Change Tracking code if configured
-		$strJavaScript = $this->applyJSCodeChanges(html_entity_decode($strJavaScript));					
 		// Save javascript code
 		self::$arySettings['tracking_code'] = $strJavaScript;
 	}
