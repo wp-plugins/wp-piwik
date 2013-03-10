@@ -29,7 +29,7 @@ if (self::$aryGlobalSettings['add_tracking_code']) {
 ?>
 <table id="wp-piwik-tracking-settings" class="wp-piwik-form-table form-table<?php echo (!self::$aryGlobalSettings['add_tracking_code']?' wp-piwik-form-table-hide':''); ?>">
 <tr><th><?php _e('Tracking code preview', 'wp-piwik'); ?>:</th><td>
-<textarea id="wp-piwik_jscode" name="wp-piwik_jscode" readonly="readonly" rows="13" cols="100">
+<textarea id="wp-piwik_jscode" name="wp-piwik_jscode" readonly="readonly" rows="13" cols="80">
 <?php echo (is_plugin_active_for_network('wp-piwik/wp-piwik.php')?'*** SITE SPECIFIC EXAMPLE CODE ***'."\n":'').htmlentities(self::$arySettings['tracking_code']); ?>
 </textarea>
 </td></tr>
@@ -64,7 +64,11 @@ if (self::$aryGlobalSettings['add_tracking_code']) {
 </td></tr>
 <tr><th><?php _e('Avoid mod_security', 'wp-piwik'); ?>:</th><td>
 	<input type="checkbox" value="1" id="wp-piwik_reqpost" name="wp-piwik_reqpost"<?php echo (self::$aryGlobalSettings['track_post']?' checked="checked"':''); ?> />
-	<label for="wp-piwik_reqpost"><?php _e('WP-Piwik can automatically force the Tracking Code to sent data in POST. See', 'wp-piwik'); ?> <a href="http://piwik.org/faq/troubleshooting/#faq_100">Piwik FAQ</a>.</label>
+	<label for="wp-piwik_reqpost"><?php _e('WP-Piwik can automatically force the Tracking Code to sent data in POST. See', 'wp-piwik'); ?> <a href="http://piwik.org/faq/troubleshooting/#faq_100">Piwik FAQ</a>. <?php _e('Disabled in proxy mode.', 'wp-piwik'); ?></label>
+</td></tr>
+<tr><th><?php _e('CDN URL', 'wp-piwik'); ?>:</th><td>
+	http(s)://<input type="text" value="<?php echo self::$aryGlobalSettings['track_cdnurl']; ?>" id="wp-piwik_cdnurl" name="wp-piwik_cdnurl" />
+	<label for="wp-piwik_reqpost"><?php _e('Leave blank if you do not want to define a CDN URL or you do not know what this is.', 'wp-piwik'); ?></label>
 </td></tr>
 <tr><th><?php _e('Tracking filter', 'wp-piwik'); ?>:</th><td>
 <?php

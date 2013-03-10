@@ -6,8 +6,7 @@
 
 /* PIWIK PROXY SCRIPT */
 
-/* 
- == Description ==
+/* == Description ==
  This script allows to track statistics using Piwik, without revealing the
  Piwik Server URL. This is useful for users who track multiple websites 
  in the same Piwik server, but don't want to show in the source code of all tracked 
@@ -32,15 +31,16 @@
     instead of calling directly the (secret) Piwik Server URL (http://piwik-server.com/piwik/).
  7) You now need to add the modified Piwik Javascript Code to the footer of your pages at http://trackedsite.com/ 
     Go to Piwik > Settings > Websites > Show Javascript Tracking Code.
-    Copy the Javascript snippet. Then, edit this code and change the first lines to the following:
-		<script type="text/javascript">
-		var pkBaseURL = (("https:" == document.location.protocol) ? "https://trackedsite.com/" : "http://trackedsite.com/");
-		document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.php' type='text/javascript'%3E%3C/script%3E"));
-		</script><script type="text/javascript">
-		try {
-		var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+    Copy the Javascript snippet. Then, edit this code and change the last lines to the following:
 		[...]
-		</script>
+		(function() {
+          var u=(("https:" == document.location.protocol) ? "https" : "http") + "://trackedsite.com/";
+          _paq.push(["setTrackerUrl", u+"piwik.php"]);
+          var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+          g.defer=true; g.async=true; g.src=u+"piwik.php"; s.parentNode.insertBefore(g,s);
+        })();
+      </script>
+      <!-- End Piwik Code -->
 
     What's changed in this code snippet compared to the normal Piwik code?
 	    A) the (secret) Piwik URL is now replaced by your website URL
@@ -89,7 +89,7 @@ if(empty($_GET))
 
 	// set HTTP response headers
 	header('Vary: Accept-Encoding');
-	
+
 	// Returns 304 if not modified since
 	if (!empty($modifiedSince) && $modifiedSince < $lastModified)
 	{
