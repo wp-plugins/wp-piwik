@@ -660,3 +660,9 @@ msgstr "Suchanfragen"
 
 msgid "Site Search without Results"
 msgstr "Suchanfragen ohne Ergebnisse"
+
+msgid "Disabled in proxy mode."
+msgstr "Im Proxy-Modus deaktiviert."
+
+msgid "Leave blank if you do not want to define a CDN URL or you do not know what this is."
+msgstr "Einfach freilassen, falls Du keine CDN URL definieren m&ouml;chtest oder nicht wei&szlig;t, worum es geht."
