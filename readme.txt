@@ -114,6 +114,10 @@ Please update Piwik if not done yet (Piwik 1.11 or higher is recommended)!
 
 == Changelog ==
 
+= 0.9.9.1 =
+* CDN support: http and https separated, see http://wordpress.org/support/topic/request-cdn-support-1
+* Made <noscript> code optional. Move <noscript> code to site footer.
+
 = 0.9.9.0 =
 * Piwik 1.11 compaitbility fixes (Piwik 1.11 required now!) 
 * Depending on Piwik 1.11 WP-Piwik will use async tracking now

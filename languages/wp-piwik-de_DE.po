@@ -666,3 +666,9 @@ msgstr "Im Proxy-Modus deaktiviert."
 
 msgid "Leave blank if you do not want to define a CDN URL or you do not know what this is."
 msgstr "Einfach freilassen, falls Du keine CDN URL definieren m&ouml;chtest oder nicht wei&szlig;t, worum es geht."
+
+msgid "Adds the &lt;noscript&gt; code to your footer."
+msgstr "F&uuml;gt den &lt;noscript&gt;-Code im Footer ein."
+
+msgid "Use Piwik's advanced Site Search Analytics feature. See"
+msgstr "Benutze Piwiks erweiterte Site Search Analyse. Siehe"
