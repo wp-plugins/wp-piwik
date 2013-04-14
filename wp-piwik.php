@@ -66,7 +66,7 @@ class wp_piwik {
 		// Store plugin basename
 		self::$strPluginBasename = plugin_basename(__FILE__);
 		// Upgrade?
-		if (self::$settings->getGlobalOption('revision') < self::$intRevisionId) $this->upgradePlugin();
+		if (self::$settings->getGlobalOption('revision') && self::$settings->getGlobalOption('revision') < self::$intRevisionId) $this->upgradePlugin();
 		// Settings changed?
 		if (isset($_POST['action']) && $_POST['action'] == 'save_wp-piwik_settings')
 			$this->applySettings();
@@ -749,11 +749,11 @@ class wp_piwik {
 	 * or get its ID by URL
 	 */ 
 	function addPiwikSite() {
-		self::$logger->log('Get the blog\'s ID by URL: '.get_bloginfo('url'));
 		if (isset($_GET['wpmu_show_stats']) && is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
-			self::$logger->log('Switch to blog ID '.(int) $_GET['wpmu_show_stats']);
+			self::$logger->log('Switch blog ID: '.(int) $_GET['wpmu_show_stats']);
 			switch_to_blog((int) $_GET['wpmu_show_stats']);
 		}
+		self::$logger->log('Get the blog\'s site ID by URL: '.get_bloginfo('url'));
 		// Check if blog URL already known
 		$strURL = '&method=SitesManager.getSitesIdFromSiteUrl';
 		$strURL .= '&url='.urlencode(get_bloginfo('url'));
@@ -780,6 +780,7 @@ class wp_piwik {
 			self::$logger->log('Get the site\'s tracking code');
 			self::$settings->setOption('tracking_code', $this->callPiwikAPI('SitesManager.getJavascriptTag'));
 		} else self::$settings->getOption('tracking_code', '');
+		self::$settings->save();
 		if (isset($_GET['wpmu_show_stats']) && is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
 			self::$logger->log('Back to current blog');
 			restore_current_blog();
@@ -1076,7 +1077,7 @@ class wp_piwik {
 	//]]>
 </script>
 <?php /************************************************************************/
-		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && is_super_admin() && $bolNetwork) {
+		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && is_super_admin()) {
 			restore_current_blog();
 		}
 	}
@@ -1299,7 +1300,7 @@ class wp_piwik {
 		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && !empty($intBlogID)) {
 			$aryResult = get_blog_option($intBlogID, 'wp-piwik_settings');
 			$intResult = $aryResult['site_id'];
-		}		
+		}
 		return (is_int($intResult)?$intResult:'n/a');
 	}
 	

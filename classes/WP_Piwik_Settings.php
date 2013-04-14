@@ -5,7 +5,7 @@
 		private static $logger, $defaultSettings;
 		
 		private $globalSettings = array(
-			'revision' => 90910,
+			'revision' => 90921,
 			'plugin_display_name' => 'WP-Piwik',
 			'add_tracking_code' => false,
 			'last_settings_update' => 0,
@@ -119,7 +119,7 @@
 				$aryBlogs = $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id');
 				foreach ($aryBlogs as $aryBlog)
 					delete_blog_option($aryBlog->blog_id, 'wp-piwik_settings');
-				if (!$bolFull) update_site_option('wp-piwik_global-settings', $aryKeep);
+				if (!$bolFull) update_site_option('wp-piwik_global-settings', $keepSettings);
 			} else { 
 				delete_option('wp-piwik_global-settings');
 				delete_option('wp-piwik_settings');
@@ -131,5 +131,6 @@
 				foreach ($keepSettings as $key => $value)
 					$this->setGlobalOption($key, $value);
 			}
+			$this->save();
 		}
 	}

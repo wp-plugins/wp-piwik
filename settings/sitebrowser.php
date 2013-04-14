@@ -12,8 +12,9 @@ if (!$bolFOpen && !$bolCURL) {
 if (!class_exists('WP_List_Table'))
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 
-if (isset($_GET['wpmu_show_stats']) && ($_GET['wpmu_show_stats'] == (int) $_GET['wpmu_show_stats']))
+if (isset($_GET['wpmu_show_stats']) && ($_GET['wpmu_show_stats'] == (int) $_GET['wpmu_show_stats'])) {
 	$this->addPiwikSite();
+}
 
 // See wpengineer.com/2426/wp_list_table-a-step-by-step-guide/
 class SiteBrowser extends WP_List_Table {
