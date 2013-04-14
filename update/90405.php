@@ -1,5 +1,5 @@
 <?php
-self::$aryGlobalSettings['piwik_mode'] = 'http';
-self::$aryGlobalSettings['piwik_path'] = '';
-self::$aryGlobalSettings['toolbar'] = false;
-self::$aryGlobalSettings['disable_cookies'] = false;
+self::$settings->setGlobalOption('piwik_mode', 'http');
+self::$settings->setGlobalOption('piwik_path', '');
+self::$settings->setGlobalOption('toolbar', false);
+self::$settings->setGlobalOption('disable_cookies', false);

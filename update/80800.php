@@ -1,2 +1,2 @@
 <?php
-self::$aryGlobalSettings['piwik_url'] = self::checkURL(self::$aryGlobalSettings['piwik_url']);
+self::$settings->setGlobalOption('piwik_url', self::checkURL(self::$settings->getGlobalOption('piwik_url')));

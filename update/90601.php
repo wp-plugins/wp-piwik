@@ -1,3 +1,3 @@
 <?php
-self::$aryGlobalSettings['piwik_useragent'] = 'php';
-self::$aryGlobalSettings['piwik_useragent_string'] = 'WP-Piwik';
+self::$settings->setGlobalOption('piwik_useragent', 'php');
+self::$settings->setGlobalOption('piwik_useragent_string', 'WP-Piwik');

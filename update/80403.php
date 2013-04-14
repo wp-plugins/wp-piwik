@@ -12,7 +12,7 @@ if (!is_array($strDisplayToLevel) && isset($aryTranslate[$strDisplayToLevel])) $
 else $aryDisplayToCap = array('administrator' => true);
 // Build settings arrays
 $aryDashboardWidgetRange = array(0 => false, 1 => 'yesterday', 2 => 'today', 3 => 'last30');
-if (self::$bolWPMU) self::$aryGlobalSettings = array(
+if (self::$bolWPMU) $aryGlobal = array(
 	'revision' 				=> get_site_option('wpmu-piwik_revision', 0),
 	'add_tracking_code' 	=> true,
 	'last_settings_update' 	=> get_site_option('wpmu-piwik_settingsupdate', time()),
@@ -23,7 +23,7 @@ if (self::$bolWPMU) self::$aryGlobalSettings = array(
 	'capability_read_stats' => $aryDisplayToCap,
 	'piwik_shortcut' 	=> false,
 );		
-else self::$aryGlobalSettings = array(
+else $aryGlobal = array(
 	'revision' 		=> get_option('wp-piwik_revision',0),
 	'add_tracking_code' 	=> get_option('wp-piwik_addjs'),
 	'last_settings_update' 	=> get_option('wp-piwik_settingsupdate', time()),
@@ -45,3 +45,5 @@ foreach ($aryRemoveOptions as $strRemoveOption) {
 	if (self::$bolWPMU) delete_site_option($strRemoveOption);
 	else delete_option($strRemoveOption);
 }
+foreach ($aryGlobal as $key => $value)
+	self::$settings->setGlobalOption($key, $value);

@@ -1,10 +1,7 @@
 <?php
-self::$aryGlobalSettings['track_search'] = false;
-self::$aryGlobalSettings['connection_timeout'] = 5;
-if (isset(self::$aryGlobalSettings['track_compress']) && self::$aryGlobalSettings['track_compress'])
-	self::$aryGlobalSettings['track_mode'] = 1;
+self::$settings->setGlobalOption('track_search', false);
+self::$settings->setGlobalOption('connection_timeout', 5);
+if (self::$settings->getGlobalOption('track_compress'))
+	self::$settings->setGlobalOption('track_mode', 1);
 else 
-	self::$aryGlobalSettings['track_mode'] = 0;
-
-if (isset(self::$aryGlobalSettings['track_compress']))
-	unset(self::$aryGlobalSettings['track_compress']);
+	self::$settings->setGlobalOption('track_mode', 0);

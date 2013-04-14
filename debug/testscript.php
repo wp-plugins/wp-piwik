@@ -9,13 +9,13 @@
  *****************/
 
 // PIWIK URL, e.g. http://www.website.example/piwik
-$strPiwikURL = self::$aryGlobalSettings['piwik_url'];
+$strPiwikURL = self::$settings->getGlobalOption('piwik_url');
 // PIWIK AUTH TOKEN, e.g. 1234a5cd6789e0a12345b678cd9012ef
-$strPiwikAuthToken = self::$aryGlobalSettings['piwik_token'];
+$strPiwikAuthToken = self::$settings->getGlobalOption('piwik_token');
 // YOUR BLOG'S URL, e.g. http://www.website.example
 $strPiwikYourBlogURL = get_bloginfo('url');
 // User agent
-$strUA = self::$aryGlobalSettings['piwik_useragent']=='php'?ini_get('user_agent'):self::$aryGlobalSettings['piwik_useragent_string'];
+$strUA = self::$settings->getGlobalOption('piwik_useragent')=='php'?ini_get('user_agent'):self::$settings->getGlobalOption('piwik_useragent_string');
 
 /* That's all, stop editing! */
 
@@ -72,11 +72,11 @@ foreach ($aryURLs as $strMethod => $strURL) {
 	$intTest++;
 	echo '*** Test '.$intTest.'/'.count($aryURLs).': '.$strMethod.' ***'."\n";
 	echo 'Using: '.(function_exists('curl_init')?'cURL':'fopen')."\n";
-	echo 'SSL peer verification: '.(function_exists('curl_init') && !self::$aryGlobalSettings['disable_ssl_verify']?'enabled':'disabled')."\n";
+	echo 'SSL peer verification: '.(function_exists('curl_init') && !self::$settings->getGlobalOption('disable_ssl_verify')?'enabled':'disabled')."\n";
 	echo 'User Agent: '.$strUA."\n";
 	echo 'Call: '.$strURL.'&token_auth= + TOKEN'."\n";
 	$x = microtime(true);
-	$strResult = getRemoteFile($strURL,$strToken,!self::$aryGlobalSettings['disable_ssl_verify'],$strUA);
+	$strResult = getRemoteFile($strURL,$strToken,!self::$settings->getGlobalOption('disable_ssl_verify'),$strUA);
 	$x = microtime(true) - $x;
 	echo 'Result:'."\n";
 	echo htmlentities($strResult)."\n";

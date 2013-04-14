@@ -1,2 +1,2 @@
 <?php
-self::$aryGlobalSettings['shortcodes'] = false;
+self::$settings->setGlobalOption('shortcodes', false);

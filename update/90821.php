@@ -1,2 +1,2 @@
 <?php
-self::$aryGlobalSettings['track_cdnurl'] = '';
+self::$settings->setGlobalOption('track_cdnurl', '');

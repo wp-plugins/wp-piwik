@@ -1,2 +1,2 @@
 <?php
-self::$aryGlobalSettings['dashboard_chart'] = false;
+self::$settings->setGlobalOption('dashboard_chart', false);

@@ -23,7 +23,7 @@
 				_e('enabled','wp-piwik');
 			?></strong>.</li>
 		</ol>
-<?php if (!(empty(self::$aryGlobalSettings['piwik_token']) || empty(self::$aryGlobalSettings['piwik_url']))) { ?>
+<?php if (self::$settings->getGlobalOption('piwik_token') && self::$settings->getGlobalOption('piwik_url')) { ?>
 <?php 
 	if (isset($_GET['mode'])) {
 		switch ($_GET['mode']) {
@@ -37,7 +37,7 @@
 			case 'resetconfirmed':
 				// Increase time limit before resetting
 				set_time_limit(0);
-				self::resetSettings((isset($_GET['full']) && $_GET['full']));
+				self::$settings->resetSettings((isset($_GET['full']) && $_GET['full']));
 				echo '<p class="wp-piwik-eyecatcher"><strong>'.__('WP-Piwik reset done','wp-piwik').'</strong></p>';
 			default:
 		} 

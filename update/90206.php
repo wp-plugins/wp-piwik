@@ -1,2 +1,2 @@
 <?php
-self::$aryGlobalSettings['disable_timelimit'] = false;
+self::$settings->setGlobalOption('disable_timelimit', false);
