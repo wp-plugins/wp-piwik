@@ -77,10 +77,12 @@
 			if (!is_object($wp_roles)) die("STILL NO OBJECT");
 			foreach($wp_roles->role_names as $strKey => $strName)  {
 				$objRole = get_role($strKey);
-				foreach (array('stealth', 'read_stats') as $strCap)
-					if (isset($this->getGlobalOption('capability_'.$strCap)[$strKey]) && $this->getGlobalOption('capability_'.$strCap)[$strKey])
+				foreach (array('stealth', 'read_stats') as $strCap) {
+					$aryCaps = $this->getGlobalOption('capability_'.$strCap);
+					if (isset($aryCaps[$strKey]) && $aryCaps[$strKey])
 						$objRole->add_cap('wp-piwik_'.$strCap);
 					else $objRole->remove_cap('wp-piwik_'.$strCap);
+				}
 			}
 			$this->settingsChanges = false;
 		}
