@@ -61,7 +61,7 @@ if (self::$settings->getGlobalOption('piwik_url') && self::$settings->getGlobalO
 		echo '<tr><td colspan="2">';
 		self::showErrorMessage($aryData['message']);
 		echo '</td></tr>';
-	} else if (!self::$settings->getGlobalOption('auto_site_config')) {
+	} elseif (!self::$settings->getGlobalOption('auto_site_config')) {
 		echo '<tr><th>'.__('Choose site', 'wp-piwik').':</th><td>';
 		echo '<select name="wp-piwik_siteid" id="wp-piwik_siteid">';
 		$aryOptions = array();
@@ -74,15 +74,16 @@ if (self::$settings->getGlobalOption('piwik_url') && self::$settings->getGlobalO
 		foreach ($aryOptions as $strOption) echo $strOption;
 			echo '</select></td></tr>';
 	} else {
-		if (self::$settings->getOption('site_id'))
+		if (!self::$settings->getOption('site_id'))
 			$this->addPiwikSite();
 		echo '<tr><th>'.__('Determined site', 'wp-piwik').':</th><td>';
 		echo '<div class="input-text-wrap">';
-		if (is_array(self::$settings->getOption('site_id')) && self::$settings->getOption('site_id')['result'] == 'error')
-			self::showErrorMessage(self::$settings->getOption('site_id')['message']);
+		$siteId = self::$settings->getOption('site_id');
+		if (is_array($siteId) && $siteId['result'] == 'error')
+			self::showErrorMessage($siteId['message']);
 		else foreach ($aryData as $arySite) 
-			if ($arySite['idsite'] == self::$settings->getOption('site_id')) {echo '<em>'.htmlentities($arySite['name'], ENT_QUOTES, 'utf-8').'</em>'; break;}		
-		echo '<input type="hidden" name="wp-piwik_siteid" id="wp-piwik_siteid" value="'.(int)self::$settings->getOption('site_id').'" /></td></tr>';
+			if ($arySite['idsite'] == $siteId) {echo '<em>'.htmlentities($arySite['name'], ENT_QUOTES, 'utf-8').'</em>'; break;}		
+		echo '<input type="hidden" name="wp-piwik_siteid" id="wp-piwik_siteid" value="'.(int)$siteId.'" /></td></tr>';
 	}
 }
 }}

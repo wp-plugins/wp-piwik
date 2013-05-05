@@ -114,6 +114,10 @@ Please update Piwik if not done yet (Piwik 1.11 or higher is recommended)!
 
 == Changelog ==
 
+= 0.9.9.3 = 
+* Sparkline script update (IE 10 compatbility)
+* Syntax error fixes
+
 = 0.9.9.2 =
 * Bugfix regarding tracking code changes in proxy mode, see http://wordpress.org/support/topic/problem-with-https-in-proxy-mode
 * Feature: Change text "WP-Piwik" in menu items and dashboard widgets
