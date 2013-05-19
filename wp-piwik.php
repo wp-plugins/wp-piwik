@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress header.
 
-Version: 0.9.9.3
+Version: 0.9.9.4
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -41,8 +41,8 @@ if (!function_exists('is_plugin_active_for_network'))
 class wp_piwik {
 
 	private static
-		$intRevisionId = 90930,
-		$strVersion = '0.9.9.3',
+		$intRevisionId = 90940,
+		$strVersion = '0.9.9.4',
 		$blog_id,
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
@@ -167,6 +167,8 @@ class wp_piwik {
         	self::includeFile('update/90910');
         if (self::$settings->getGlobalOption('revision') < 90921)
         	self::includeFile('update/90920');
+        if (self::$settings->getGlobalOption('revision') < 90940)
+        	self::includeFile('update/90940');
 
         // Install new version
         $this->installPlugin();      
@@ -839,8 +841,11 @@ class wp_piwik {
 		// Store <noscript> code
 		$aryNoscript = array();
 		preg_match('/<noscript>(.*)<\/noscript>/', $strCode, $aryNoscript);
-		if (isset($aryNoscript[0]))
+		if (isset($aryNoscript[0])) {
+			if (self::$settings->getGlobalOption('track_nojavascript'))
+				$aryNoscript[0] = str_replace('?idsite', '?rec=1&idsite', $aryNoscript[0]);
 			self::$settings->setOption('noscript_code', $aryNoscript[0]);
+		}
 		// Remove <noscript> code
 		$strCode = preg_replace('/<noscript>(.*)<\/noscript>/', '', $strCode);
 		// Return code without empty lines
@@ -873,11 +878,12 @@ class wp_piwik {
 	/**
 	 * Call Piwik's API
 	 */
-	function callPiwikAPI($strMethod, $strPeriod='', $strDate='', $intLimit='',$bolExpanded=false, $intId = false, $strFormat = 'PHP') {
+	function callPiwikAPI($strMethod, $strPeriod='', $strDate='', $intLimit='',$bolExpanded=false, $intId = false, $strFormat = 'PHP', $strPageURL = '') {
 		// Create unique cache key
-		$strKey = $strMethod.'_'.$strPeriod.'_'.$strDate.'_'.$intLimit;
+		$strKey = 'wp-piwik'.md5($strMethod.'_'.$strPeriod.'_'.$strDate.'_'.$intLimit);
 		// Call API if data not cached
-		if (empty($this->aryCache[$strKey])) {
+		$result = (WP_PIWIK_ACTIVATE_CACHE?get_transient($strKey):false);
+		if (false === $result) {
 			$strToken = self::$settings->getGlobalOption('piwik_token');
 			// If multisite stats are shown, maybe the super admin wants to show other blog's stats.
 			if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && function_exists('wp_get_current_user') && is_super_admin() && isset($_GET['wpmu_show_stats'])) {
@@ -894,11 +900,11 @@ class wp_piwik {
 			//die($intSite);
 			// Create error message if WP-Piwik isn't configured
 			if (!self::isConfigured()) {
-				$this->aryCache[$strKey] = array(
+				$result = array(
 					'result' => 'error',
 					'message' => 'Piwik URL/path or auth token not set.'
 				);
-				return $this->aryCache[$strKey];
+				return $result;
 			}
 			// Build URL			
 			$strURL = '&method='.$strMethod;
@@ -907,20 +913,23 @@ class wp_piwik {
 			$strURL .= '&token_auth='.$strToken;
 			$strURL .= '&expanded='.$bolExpanded;
 			$strURL .= '&url='.urlencode(get_bloginfo('url'));
-			$strURL .= '&format='.$strFormat;		
+			$strURL .= '&format='.$strFormat;
+			$strURL .= ($strPageURL?'&pageUrl='.urlencode($strPageURL):'');
 			// Fetch data if site exists
 			if (!empty($intSite) || $strMethod='SitesManager.getSitesWithAtLeastViewAccess') {
 				self::$logger->log('API method: '.$strMethod.' API call: '.$strURL);
 				$strResult = (string) $this->getRemoteFile($strURL);			
-				$this->aryCache[$strKey] = ($strFormat == 'PHP'?unserialize($strResult):$strResult);
+				$result = ($strFormat == 'PHP'?unserialize($strResult):$strResult);
 				// Apply tracking code changes if configured
-				if ($strMethod == 'SitesManager.getJavascriptTag' && !empty($this->aryCache[$strKey])) {
-					$this->aryCache[$strKey] = is_string($this->aryCache[$strKey])?$this->applyJSCodeChanges($this->aryCache[$strKey]):'<!-- WP-Piwik ERROR: Tracking code not availbale -->'."\n";
+				if ($strMethod == 'SitesManager.getJavascriptTag' && !empty($result)) {
+					$result = is_string($result)?$this->applyJSCodeChanges($result):'<!-- WP-Piwik ERROR: Tracking code not availbale -->'."\n";
 				}
 			// Otherwise return error message
-			} else $this->aryCache[$strKey] = array('result' => 'error', 'message' => 'Unknown site/blog.');
-		}
-		return $this->aryCache[$strKey];	
+			} else $result = array('result' => 'error', 'message' => 'Unknown site/blog.');
+			if ($strDate != 'today' && $strDate != date('Ymd') && substr($strDate, 0, 4) != 'last' && WP_PIWIK_ACTIVATE_CACHE)
+				set_transient($strKey, $result, WEEK_IN_SECONDS);
+		}	
+		return $result;	
 	}
  	
 	/* TODO: Add post stats
@@ -1154,7 +1163,8 @@ class wp_piwik {
 				self::$settings->setGlobalOption('track_proxy', (isset($_POST['wp-piwik_proxy'])?$_POST['wp-piwik_proxy']:false));
 				self::$settings->setGlobalOption('track_cdnurl', trim(isset($_POST['wp-piwik_cdnurl'])?$_POST['wp-piwik_cdnurl']:''));				
 				self::$settings->setGlobalOption('track_cdnurlssl', trim(isset($_POST['wp-piwik_cdnurlssl'])?$_POST['wp-piwik_cdnurlssl']:self::$settings->getGlobalOption('track_cdnurl')));
-				self::$settings->setGlobalOption('track_noscript', (isset($_POST['wp-piwik_noscript'])?$_POST['wp-piwik_noscript']:false));								
+				self::$settings->setGlobalOption('track_noscript', (isset($_POST['wp-piwik_noscript'])?$_POST['wp-piwik_noscript']:false));
+				self::$settings->setGlobalOption('track_nojavascript', (isset($_POST['wp-piwik_nojavascript'])?$_POST['wp-piwik_nojavascript']:false));
 				self::$settings->setGlobalOption('capability_stealth', (isset($_POST['wp-piwik_filter'])?$_POST['wp-piwik_filter']:array()));
 				self::$settings->setGlobalOption('disable_cookies', (isset($_POST['wp-piwik_disable_cookies'])?$_POST['wp-piwik_disable_cookies']:false));
 				self::$settings->setOption('tracking_code', $this->callPiwikAPI('SitesManager.getJavascriptTag'));

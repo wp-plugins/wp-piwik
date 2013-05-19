@@ -32,6 +32,7 @@
 			'track_proxy' => false,
 			'track_cdnurlssl' => '',
 			'track_noscript' => false,
+			'track_nojavascript' => false,
 			'disable_timelimit' => false,
 			'disable_ssl_verify' => false,
 			'disable_cookies' => false,

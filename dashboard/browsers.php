@@ -9,6 +9,7 @@
 			$aryConf['params']['date'],
 			$aryConf['params']['limit']
 	);
+	
 	$aryConf['title'] = __('Browser', 'wp-piwik');
 	$strValues = '';
 	$intCount = 0; $intMore = 0; $intSum = 0;

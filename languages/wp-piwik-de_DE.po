@@ -672,3 +672,12 @@ msgstr "F&uuml;gt den &lt;noscript&gt;-Code im Footer ein."
 
 msgid "Use Piwik's advanced Site Search Analytics feature. See"
 msgstr "Benutze Piwiks erweiterte Site Search Analyse. Siehe"
+
+msgid "Enable tracking for visitors without JavaScript (not recommended). See"
+msgstr "Aktiviere das Tracking von Besuchern ohne JavaScript (nicht empfohlen). Siehe"
+
+msgid "Add rec parameter to noscript code"
+msgstr "F&uuml;ge rec-Parameter zum noscript Code hinzu"
+
+msgid "Add &lt;noscript&gt;"
+msgstr "F&uuml;ge &lt;noscript&gt; hinzu"

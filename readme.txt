@@ -114,6 +114,10 @@ Please update Piwik if not done yet (Piwik 1.11 or higher is recommended)!
 
 == Changelog ==
 
+= 0.9.9.4 =
+* Use Transients API (one week caching)
+* Option: Track visitors without JavaScript, see http://piwik.org/faq/how-to/#faq_176
+
 = 0.9.9.3 = 
 * Sparkline script update (IE 10 compatbility)
 * Syntax error fixes

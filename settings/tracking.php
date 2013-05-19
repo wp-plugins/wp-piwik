@@ -61,6 +61,11 @@ if (self::$settings->getGlobalOption('add_tracking_code')) {
 	<label for="wp-piwik_noscript"><?php echo _e('Adds the &lt;noscript&gt; code to your footer.', 'wp-piwik'); ?> <?php _e('Disabled in proxy mode.', 'wp-piwik'); ?></label>
 </td></tr>
 
+<tr><th><?php _e('Add rec parameter to noscript code', 'wp-piwik'); ?>:</th><td>
+	<input type="checkbox" value="1" id="wp-piwik_nojavascript" name="wp-piwik_nojavascript"<?php echo (self::$settings->getGlobalOption('track_nojavascript')?' checked="checked"':''); ?> />
+	<label for="wp-piwik_nojavascript"><?php echo _e('Enable tracking for visitors without JavaScript (not recommended). See', 'wp-piwik'); ?> <a href="http://piwik.org/faq/how-to/#faq_176">Piwik FAQ</a>. <?php _e('Disabled in proxy mode.', 'wp-piwik'); ?></label>
+</td></tr>
+
 <tr><th><?php _e('Disable cookies', 'wp-piwik'); ?>:</th><td>
 	<input type="checkbox" value="1" id="wp-piwik_disable_cookies" name="wp-piwik_disable_cookies"<?php echo (self::$settings->getGlobalOption('disable_cookies')?' checked="checked"':''); ?> />
 	<label for="wp-piwik_disable_cookies"><?php echo _e('Disable all tracking cookies for a visitor.', 'wp-piwik'); ?></label>
