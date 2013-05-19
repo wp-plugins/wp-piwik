@@ -926,7 +926,7 @@ class wp_piwik {
 				}
 			// Otherwise return error message
 			} else $result = array('result' => 'error', 'message' => 'Unknown site/blog.');
-			if ($strDate != 'today' && $strDate != date('Ymd') && substr($strDate, 0, 4) != 'last' && WP_PIWIK_ACTIVATE_CACHE)
+			if ($strMethod != 'SitesManager.getJavascriptTag' && $strDate != 'today' && $strDate != date('Ymd') && substr($strDate, 0, 4) != 'last' && WP_PIWIK_ACTIVATE_CACHE)
 				set_transient($strKey, $result, WEEK_IN_SECONDS);
 		}	
 		return $result;	
