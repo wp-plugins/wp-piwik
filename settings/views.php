@@ -44,8 +44,9 @@ if (!$bolFOpen && !$bolCURL) {
 <tr><th>Piwik <?php _e('Display to', 'wp-piwik'); ?>:</th><td>
 <?php
 	global $wp_roles;
+	$aryCapability = self::$settings->getGlobalOption('capability_read_stats');
 	foreach($wp_roles->role_names as $strKey => $strName)
-		echo '<input name="wp-piwik_displayto['.$strKey.']" type="checkbox" value="1"'.(isset(self::$settings->getGlobalOption('capability_read_stats')[$strKey]) && self::$settings->getGlobalOption('capability_read_stats')[$strKey]?' checked="checked"':'').'/> '.$strName.' &nbsp; ';
+		echo '<input name="wp-piwik_displayto['.$strKey.']" type="checkbox" value="1"'.(isset($aryCapability[$strKey]) && $aryCapability[$strKey]?' checked="checked"':'').'/> '.$strName.' &nbsp; ';
 ?>
 	<br><?php echo _e('Choose user roles allowed to see the statistics page.', 'wp-piwik'); ?>
 </td></tr>
