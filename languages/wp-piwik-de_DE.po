@@ -681,3 +681,9 @@ msgstr "F&uuml;ge rec-Parameter zum noscript Code hinzu"
 
 msgid "Add &lt;noscript&gt;"
 msgstr "F&uuml;ge &lt;noscript&gt; hinzu"
+
+msgid "Cache API calls, which not contain today's values, for a week"
+msgstr "Cache alle API-Aufrufe, die keine heutigen Daten enthalten, f&uuml;r eine Woche"
+
+msgid "Enable cache"
+msgstr "Cache einschalten"
