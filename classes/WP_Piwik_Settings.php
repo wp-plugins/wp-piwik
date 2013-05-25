@@ -37,7 +37,8 @@
 			'disable_ssl_verify' => false,
 			'disable_cookies' => false,
 			'toolbar' => false,
-			'shortcodes' => false
+			'shortcodes' => false,
+			'cache' => true
 		),
 		$settings = array(
 			'name' => '',

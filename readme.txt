@@ -114,6 +114,11 @@ Please update Piwik if not done yet (Piwik 1.11 or higher is recommended)!
 
 == Changelog ==
 
+= 0.9.9.6 =
+* Bugfix: Proxy script will work again
+* Option: Enable/disable one week caching
+* Load config file using full path to avoid side effects
+
 = 0.9.9.5 =
 * Fatal error on statistics settings page fixed
 

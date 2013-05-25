@@ -1,8 +1,11 @@
 <?php
 
-	require( '../../../wp-load.php' );
+	require('../../../wp-load.php');
+	require_once('classes/WP_Piwik_Settings.php');
+	require_once('classes/WP_Piwik_Logger_Dummy.php');
 	
-	$arySettings = wp_piwik::loadSettings();
+	$logger = new WP_Piwik_Logger_Dummy(__CLASS__);
+	$settings = new WP_Piwik_Settings($logger);
 
 /* PIWIK PROXY SCRIPT */
 
@@ -58,11 +61,11 @@
 // Edit the line below, and replace http://piwik-server.com/piwik/ 
 // with your Piwik URL ending with a slash.
 // This URL will never be revealed to visitors or search engines.
-$PIWIK_URL = $arySettings['global']['piwik_url'];
+$PIWIK_URL = $settings->getGlobalOption('piwik_url');
 
 // Edit the line below, and replace xyz by the token_auth for the user "UserTrackingAPI"
 // which you created when you followed instructions above.
-$TOKEN_AUTH = $arySettings['global']['piwik_token'];
+$TOKEN_AUTH = $settings->getGlobalOption('piwik_token');
 
 // Maximum time, in seconds, to wait for the Piwik server to return the 1*1 GIF
 $timeout = 5;

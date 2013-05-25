@@ -80,9 +80,15 @@ if (self::$settings->getGlobalOption('add_tracking_code')) {
 	<input type="checkbox" value="1" id="wp-piwik_404" name="wp-piwik_404"<?php echo (self::$settings->getGlobalOption('track_404')?' checked="checked"':''); ?> />
 	<label for="wp-piwik_404"><?php echo _e('WP-Piwik can automatically add a 404-category to track 404-page-visits.', 'wp-piwik'); ?></label>
 </td></tr>
+
 <tr><th><?php _e('Avoid mod_security', 'wp-piwik'); ?>:</th><td>
 	<input type="checkbox" value="1" id="wp-piwik_reqpost" name="wp-piwik_reqpost"<?php echo (self::$settings->getGlobalOption('track_post')?' checked="checked"':''); ?> />
 	<label for="wp-piwik_reqpost"><?php _e('WP-Piwik can automatically force the Tracking Code to sent data in POST. See', 'wp-piwik'); ?> <a href="http://piwik.org/faq/troubleshooting/#faq_100">Piwik FAQ</a>. <?php _e('Disabled in proxy mode.', 'wp-piwik'); ?></label>
+</td></tr>
+
+<tr><th><?php _e('Enable cache', 'wp-piwik'); ?>:</th><td>
+	<input type="checkbox" value="1" id="wp-piwik_cache" name="wp-piwik_cache"<?php echo (self::$settings->getGlobalOption('cache')?' checked="checked"':''); ?> />
+	<label for="wp-piwik_cache"><?php _e('Cache API calls, which not contain today\'s values, for a week', 'wp-piwik'); ?>.</label>
 </td></tr>
 
 <tr><th><?php _e('CDN URL', 'wp-piwik'); ?>:</th><td>

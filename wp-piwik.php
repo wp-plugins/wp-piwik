@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress header.
 
-Version: 0.9.9.5
+Version: 0.9.9.6
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -38,11 +38,12 @@ if (!function_exists ('add_action')) {
 if (!function_exists('is_plugin_active_for_network'))
 	require_once(ABSPATH.'/wp-admin/includes/plugin.php');
 
+if (!class_exists('wp_piwik')) {
 class wp_piwik {
 
 	private static
-		$intRevisionId = 90950,
-		$strVersion = '0.9.9.5',
+		$intRevisionId = 90961,
+		$strVersion = '0.9.9.6',
 		$blog_id,
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
@@ -169,6 +170,8 @@ class wp_piwik {
         	self::includeFile('update/90920');
         if (self::$settings->getGlobalOption('revision') < 90940)
         	self::includeFile('update/90940');
+        if (self::$settings->getGlobalOption('revision') < 90961)
+        	self::includeFile('update/90961');
 
         // Install new version
         $this->installPlugin();      
@@ -882,7 +885,7 @@ class wp_piwik {
 		// Create unique cache key
 		$strKey = 'wp-piwik'.md5($strMethod.'_'.$strPeriod.'_'.$strDate.'_'.$intLimit);
 		// Call API if data not cached
-		$result = (WP_PIWIK_ACTIVATE_CACHE?get_transient($strKey):false);
+		$result = (self::$settings->getGlobalOption('cache')?get_transient($strKey):false);
 		if (false === $result) {
 			$strToken = self::$settings->getGlobalOption('piwik_token');
 			// If multisite stats are shown, maybe the super admin wants to show other blog's stats.
@@ -926,8 +929,12 @@ class wp_piwik {
 				}
 			// Otherwise return error message
 			} else $result = array('result' => 'error', 'message' => 'Unknown site/blog.');
-			if ($strMethod != 'SitesManager.getJavascriptTag' && $strDate != 'today' && $strDate != date('Ymd') && substr($strDate, 0, 4) != 'last' && WP_PIWIK_ACTIVATE_CACHE)
-				set_transient($strKey, $result, WEEK_IN_SECONDS);
+			if (
+					$strMethod != 'SitesManager.getJavascriptTag' &&
+					$strDate != 'today' && $strDate != date('Ymd') && substr($strDate, 0, 4) != 'last' &&
+					self::$settings->getGlobalOption('cache') &&
+					!(isset($result['result']) && $result['result'] == 'error')
+				) set_transient($strKey, $result, WEEK_IN_SECONDS);
 		}	
 		return $result;	
 	}
@@ -1166,6 +1173,7 @@ class wp_piwik {
 				self::$settings->setGlobalOption('track_noscript', (isset($_POST['wp-piwik_noscript'])?$_POST['wp-piwik_noscript']:false));
 				self::$settings->setGlobalOption('track_nojavascript', (isset($_POST['wp-piwik_nojavascript'])?$_POST['wp-piwik_nojavascript']:false));
 				self::$settings->setGlobalOption('capability_stealth', (isset($_POST['wp-piwik_filter'])?$_POST['wp-piwik_filter']:array()));
+				self::$settings->setGlobalOption('cache', (isset($_POST['wp-piwik_cache'])?$_POST['wp-piwik_cache']:false));
 				self::$settings->setGlobalOption('disable_cookies', (isset($_POST['wp-piwik_disable_cookies'])?$_POST['wp-piwik_disable_cookies']:false));
 				self::$settings->setOption('tracking_code', $this->callPiwikAPI('SitesManager.getJavascriptTag'));
 			break;
@@ -1364,7 +1372,9 @@ class wp_piwik {
 
 }
 
-require_once('config.php');
+}
+
+require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'config.php');
 
 if (class_exists('wp_piwik'))
 	$GLOBALS['wp_piwik'] = new wp_piwik();
