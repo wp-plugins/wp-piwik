@@ -122,10 +122,6 @@ Please update Piwik if not done yet (Piwik 1.11 or higher is recommended)!
 * Bugfix: Custom vars will now be added properly
 * Bugfix: Missing slash in proxy mode added
 * Feature: Track users on admin pages
-* TODO Feature: Track RSS views using a measurement pixel
-* PROGRESS Per post stats
-* TODO access
-* TODO flexibel time ranges
 
 = 0.9.9.6 =
 * Bugfix: Proxy script will work again
