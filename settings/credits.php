@@ -16,7 +16,7 @@
 </tr>
 <tr>
 	<td>
-		<?php _e('Thank you very much','wp-piwik'); ?>, <a href="http://blogu.programeshqip.org/">Besnik Bleta</a>, <a href="http://www.fatcow.com/">FatCow</a>, <a href="http://www.pamukkaleturkey.com/">Rene</a>, Fab, <a href="http://ezbizniz.com/">EzBizNiz</a>, Gormer, Natalya, <a href="www.aggeliopolis.gr">AggelioPolis</a><?php _e(', and', 'wp-piwik'); ?> <a href="http://wwww.webhostinggeeks.com">Web Hosting Geeks</a>, <a href="http://www.webhostingrating.com">Web Hosting Rating</a>, <a href="http://www.webhostinghub.com">Nata Strazda (Web Hosting Hub)</a>, <a href="http://www.libreoffice.ir">Hossein, LibreOffice localization team</a> &amp; <a href="http://www.vogliaditerra.com">Ste</a> <?php _e('for your translation work','wp-piwik'); ?>!
+		<?php _e('Thank you very much','wp-piwik'); ?>, <a href="http://blogu.programeshqip.org/">Besnik Bleta</a>, <a href="http://www.fatcow.com/">FatCow</a>, <a href="http://www.pamukkaleturkey.com/">Rene</a>, Fab, <a href="http://ezbizniz.com/">EzBizNiz</a>, Gormer, Natalya, <a href="www.aggeliopolis.gr">AggelioPolis</a><?php _e(', and', 'wp-piwik'); ?> <a href="http://wwww.webhostinggeeks.com">Web Hosting Geeks</a>, <a href="http://www.webhostingrating.com">Web Hosting Rating</a>, <a href="http://www.webhostinghub.com">Nata Strazda (Web Hosting Hub)</a>, <a href="http://www.libreoffice.ir">Hossein, LibreOffice localization team</a>, <a href="http://www.vogliaditerra.com">Ste</a> &amp; Chris <?php _e('for your translation work','wp-piwik'); ?>!
 	</td>
 </tr>
 <tr>
