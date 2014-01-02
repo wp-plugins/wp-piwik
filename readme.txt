@@ -117,6 +117,10 @@ Please update Piwik if not done yet (Piwik 1.11 or higher is recommended)!
 
 == Changelog ==
 
+= 0.9.9.8 =
+* Feature: Per post stats (shown at the edit post page)
+* Feature: Track RSS views using a measurement pixel
+
 = 0.9.9.7 =
 * Bugfix: Error messages won't by cached anymore
 * Bugfix: Custom vars will now be added properly
