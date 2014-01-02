@@ -19,7 +19,7 @@ Look at the [Piwik website](http://piwik.org/) to get further information about 
 
 *This plugin is not created or provided by the Piwik project team.*
 
-Languages: English, German, Albanian, Azerbaijani, Belorussian, Dutch, French, Greek, Italian, Lithuanian, Norwegian, Persian, Romanian, Russian, Spanish, Swedish, Ukrainian
+Languages: English, German, Albanian, Azerbaijani, Belorussian, Chinese (simplified), Dutch, French, Greek, Italian, Lithuanian, Norwegian, Persian, Romanian, Russian, Spanish, Swedish, Ukrainian
 
 *Note: If you vote "It's broken", please tell me about your problem. It's hard to fix a bug I don't know about! ;-)*
 
