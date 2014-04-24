@@ -32,6 +32,9 @@ Shows overview table like WP-Piwik's overview dashboard. See Piwik API documenta
     [wp-piwik module="opt-out" language="en" width="100%" height="200px"]
 Shows the Piwik opt-out Iframe. You can change the Iframe's language by the language attribute (e.g. de for German language) and its width and height using the corresponding attributes.
 
+	[wp-piwik module="post" range="last30" key="sum_daily_nb_uniq_visitors"]
+Shows the chosen keys value related to the current post. You can define a range (format: lastN, previousN or YYYY-MM-DD,YYYY-MM-DD) and the desired value's key (e.g., sum_daily_nb_uniq_visitors, nb_visits or nb_hits - for details see Piwik's API method Actions.getPageUrl using a range).
+
 	[wp-piwik]
 is equal to *[wp-piwik module="overview" title="" period="day" date="yesterday"]*.
 
@@ -74,6 +77,11 @@ See [this support thread](http://wordpress.org/support/topic/plugin-wp-piwik-htt
 = Overview shortcode shows no unique visitors using a yearly range. =
 See [Piwik FAQ](http://piwik.org/faq/how-to/#faq_113).
 
+= Can I also access some Piwik values using a PHP call? =
+
+Yes, you can access also available shortcodes using PHP, too. See this example:
+echo $GLOBALS['wp_piwik']->shortcode(array('module' => 'post', 'range' => 'last300', 'key' => 'sum_daily_nb_uniq_visitors'));
+
 == Installation ==
 
 = Install WP-Piwik on a simple WordPress blog =
@@ -113,9 +121,19 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 
 == Upgrade Notice ==
 
-Please update Piwik if not done yet (Piwik 1.11 or higher is recommended)!
+Please update Piwik if not done yet (Piwik 2.0 or higher is recommended)!
 
 == Changelog ==
+
+= 0.9.9.9 =
+* Update: PHP API will use namespaces (Piwik 2.x compatibility)
+* Feature: Disable custom var box if necessary
+* Feature: Optionally add tracking code to your site's footer or header
+* Feature: New shortcode (post)
+* Feature: Add data-cfasync=false to script tag if necessary.
+* Feature: Add annotations on new posts, see http://linuxundich.de/webhosting/beim-veroeffentlichen-von-wordpress-posts-eine-anmerkung-in-piwik-setzen/
+* Bugfix: Do not load sparklines plugin if toolbar not shown
+* jqPlot and jquery.sparkline updated
 
 = 0.9.9.8 =
 * Feature: Per post stats (shown at the edit post page)
@@ -140,7 +158,7 @@ Please update Piwik if not done yet (Piwik 1.11 or higher is recommended)!
 * Option: Track visitors without JavaScript, see http://piwik.org/faq/how-to/#faq_176
 
 = 0.9.9.3 = 
-* Sparkline script update (IE 10 compatbility)
+* Sparkline script update (IE 10 compatibility)
 * Syntax error fixes
 
 = 0.9.9.2 =

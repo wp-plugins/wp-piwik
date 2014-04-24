@@ -39,6 +39,10 @@
 			'track_cdnurlssl' => '',
 			'track_noscript' => false,
 			'track_nojavascript' => false,
+			'track_codeposition' => 'footer',
+			'track_datacfasync' => false,
+			'add_post_annotations' => false,
+			'add_customvars_box' => true,
 			'disable_timelimit' => false,
 			'disable_ssl_verify' => false,
 			'disable_cookies' => false,
@@ -97,11 +101,11 @@
 		}
 
 		public function getGlobalOption($key) {
-			return isset($this->globalSettings[$key])?$this->globalSettings[$key]:null;
+			return isset($this->globalSettings[$key])?$this->globalSettings[$key]:self::$defaultSettings['globalSettings'][$key];
 		}	
 
 		public function getOption($key) {
-			return isset($this->settings[$key])?$this->settings[$key]:null;
+			return isset($this->settings[$key])?$this->settings[$key]:self::$defaultSettings['settings'][$key];
 		}	
 
 		public function setGlobalOption($key, $value) {

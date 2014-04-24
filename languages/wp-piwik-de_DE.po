@@ -711,3 +711,30 @@ msgstr "Zeige Statistiken zu einzelnen Beitr&auml;gen auf der Bearbeiten-Seite."
 
 msgid "Show per post stats"
 msgstr "Zeige Beitrags-Statistiken"
+
+msgid "Add data-cfasync=false"
+msgstr "data-cfasync=false einf&uuml;gen"
+
+msgid "Track admin pages"
+msgstr "Admin-Seiten tracken"
+
+msgid "Adds data-cfasync=false to the script tag, e.g., to ask Rocket Loader to ignore the script."
+msgstr "Fügt data-cfasync=false zum Script-Tag hinzu, z.B. damit Rocket Loader das Skript ignoriert."
+
+msgid "Add annotation on new post"
+msgstr "Notiz bei neuem Post"
+
+msgid "Add a Piwik annotation on each new post, see"
+msgstr "F&uuml;gt in Piwik f&uuml;r jeden neuen Post eine Notiz hinzu, siehe"
+
+msgid "JavaScript code position"
+msgstr "Position des JavaScript-Codes"
+
+msgid "Choose whether the JavaScript code is added to the footer or the header."
+msgstr "W&auml;hle, ob der JavaScript-Code im Footer oder im Header eingef&uuml;gt werden soll."
+
+msgid "Show custom variables box"
+msgstr "Zeige Custom-Variables-Box"
+
+msgid "Show a custom vars edit box on post edit page."
+msgstr "Zeige eine Custom-Variables-Eingabebox auf den Edit-Post-Seiten."
