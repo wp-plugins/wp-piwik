@@ -738,3 +738,15 @@ msgstr "Zeige Custom-Variables-Box"
 
 msgid "Show a custom vars edit box on post edit page."
 msgstr "Zeige eine Custom-Variables-Eingabebox auf den Edit-Post-Seiten."
+
+msgid "Limit cookie lifetime"
+msgstr "Cookie-Lebensdauer beschr&auml;nken"
+
+msgid "Limit cookie lifetime as follows"
+msgstr "Beschr&auml;nke die Cookie-Lebensdauer wie folgt"
+
+msgid "Session timeout (seconds)"
+msgstr "Session-Timeout (Sekunden)"
+
+msgid "Visitor timeout (seconds)"
+msgstr "Besucher-Timeout (Sekunden)"

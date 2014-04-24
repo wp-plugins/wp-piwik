@@ -126,7 +126,8 @@ Please update Piwik if not done yet (Piwik 2.0 or higher is recommended)!
 == Changelog ==
 
 = 0.9.9.9 =
-* Update: PHP API will use namespaces (Piwik 2.x compatibility)
+* Update: PHP API will use namespaces (Piwik 2.x compatibility
+* Feature: Limit cookie lifetime
 * Feature: Disable custom var box if necessary
 * Feature: Optionally add tracking code to your site's footer or header
 * Feature: New shortcode (post)
@@ -134,6 +135,7 @@ Please update Piwik if not done yet (Piwik 2.0 or higher is recommended)!
 * Feature: Add annotations on new posts, see http://linuxundich.de/webhosting/beim-veroeffentlichen-von-wordpress-posts-eine-anmerkung-in-piwik-setzen/
 * Bugfix: Do not load sparklines plugin if toolbar not shown
 * jqPlot and jquery.sparkline updated
+* Partly refactored code
 
 = 0.9.9.8 =
 * Feature: Per post stats (shown at the edit post page)
