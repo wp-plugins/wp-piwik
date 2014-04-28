@@ -750,3 +750,9 @@ msgstr "Session-Timeout (Sekunden)"
 
 msgid "Visitor timeout (seconds)"
 msgstr "Besucher-Timeout (Sekunden)"
+
+msgid "Track visitors across all subdomains"
+msgstr "Besucher &uuml;ber alle Subdomains aufzeichnen"
+
+msgid "Adds *.-prefix to cookie domain."
+msgstr "F&uuml;gt ein *.-Pr&auml;fix zur Cookie Domain hinzu."

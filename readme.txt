@@ -2,7 +2,7 @@
 
 Contributors: Braekling
 Requires at least: 3.8
-Tested up to: 3.8
+Tested up to: 3.9
 Stable tag: 0.9.9.8
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
@@ -49,7 +49,7 @@ See section "Installation".
 * Graphs powered by [jqPlot](http://www.jqplot.com/) (GPL 2.0 and MIT) and  and [jQuery Sparklines](http://omnipotent.net/jquery.sparkline/) (New BSD License).
 * Metabox support inspired by [Heiko Rabe's metabox demo plugin](http://www.code-styling.de/english/how-to-use-wordpress-metaboxes-at-own-plugins).
 * Translation credits see plugin settings
-* Donations: Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S, Thomas M., John C., Andreas G., Ben M., Myra R. I., Carlos U. R.-S., the Piwik team itself, and all people flattering this.
+* Donations: Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S., Thomas M., John C., Andreas G., Ben M., Myra R. I., Carlos U. R.-S., Oleg I., M. N., Daniel K., the Piwik team itself, and all people flattering this.
 * All users who send me mails containing criticism, commendation, feature requests and bug reports - you help me to make WP-Piwik much better!
 
 Thank you all!
@@ -126,14 +126,17 @@ Please update Piwik if not done yet (Piwik 2.0 or higher is recommended)!
 == Changelog ==
 
 = 0.9.9.9 =
-* Update: PHP API will use namespaces (Piwik 2.x compatibility
+* Update: PHP API will use namespaces (Piwik 2.x compatibility)
+* Update: Piwik URL isn't necessary to use PHP API anymore.
 * Feature: Limit cookie lifetime
+* Feature: Track visitors across all subdomains
 * Feature: Disable custom var box if necessary
-* Feature: Optionally add tracking code to your site's footer or header
+* Feature: Choose if you like to add the tracking code to your site's footer or header
 * Feature: New shortcode (post)
 * Feature: Add data-cfasync=false to script tag if necessary.
 * Feature: Add annotations on new posts, see http://linuxundich.de/webhosting/beim-veroeffentlichen-von-wordpress-posts-eine-anmerkung-in-piwik-setzen/
 * Bugfix: Do not load sparklines plugin if toolbar not shown
+* Bugfix: PHP API will work again (urlencoding removed)
 * jqPlot and jquery.sparkline updated
 * Partly refactored code
 

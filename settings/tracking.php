@@ -83,6 +83,11 @@ if (self::$settings->getGlobalOption('add_tracking_code')) {
 	<label for="wp-piwik_limit_cookies"><?php echo _e('Limit cookie lifetime as follows', 'wp-piwik'); ?>:</label><br />
 	<?php echo _e('Visitor timeout (seconds)', 'wp-piwik'); ?>: <input type="text" name="wp-piwik_limit_cookies_visitor" value="<?php echo self::$settings->getGlobalOption('limit_cookies_visitor'); ?>"><br /><?php echo _e('Session timeout (seconds)', 'wp-piwik'); ?>: <input type="text" name="wp-piwik_limit_cookies_session" value="<?php echo self::$settings->getGlobalOption('limit_cookies_session'); ?>"></td></tr>
 
+<tr><th><?php _e('Track visitors across all subdomains', 'wp-piwik'); ?>:</th><td>
+	<input type="checkbox" value="1" id="wp-piwik_track_across" name="wp-piwik_track_across"<?php echo (self::$settings->getGlobalOption('track_across')?' checked="checked"':''); ?> />
+	<label for="wp-piwik_track_across"><?php echo _e('Adds *.-prefix to cookie domain.', 'wp-piwik'); ?></label>
+</td></tr>
+
 <tr><th><?php _e('Track search', 'wp-piwik'); ?>:</th><td>
 	<input type="checkbox" value="1" id="wp-piwik_search" name="wp-piwik_search"<?php echo (self::$settings->getGlobalOption('track_search')?' checked="checked"':''); ?> />
 	<label for="wp-piwik_search"><?php echo _e('Use Piwik\'s advanced Site Search Analytics feature. See', 'wp-piwik'); ?> <a href="http://piwik.org/docs/javascript-tracking/#toc-tracking-internal-search-keywords-categories-and-no-result-search-keywords">Piwik Docs</a>.</label>

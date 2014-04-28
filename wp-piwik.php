@@ -761,9 +761,9 @@ class wp_piwik {
 	 */
 	function getRemoteFile($strURL, $blogURL = '') {
 		if (self::$settings->getGlobalOption('piwik_mode') == 'php')
-			return $this->callPHP($strURL.($blogURL?'url='.$blogURL:''));
+			return $this->callPHP($strURL.($blogURL?'&url='.$blogURL:''));
 		else
-			return $this->callREST($strURL.($blogURL?'url='.urlencode($blogURL):''));
+			return $this->callREST($strURL.($blogURL?'&url='.urlencode($blogURL):''));
 	}
 
 	/**
@@ -780,7 +780,7 @@ class wp_piwik {
 		$strURL = '&method=SitesManager.getSitesIdFromSiteUrl';
 		$strURL .= '&format=PHP';
 		$strURL .= '&token_auth='.self::$settings->getGlobalOption('piwik_token');
-		$aryResult = unserialize($this->getRemoteFile($strURL));
+		$aryResult = unserialize($this->getRemoteFile($strURL, get_bloginfo('url')));
 		if (!empty($aryResult) && isset($aryResult[0]['idsite'])) {
 			self::$settings->setOption('site_id', (int) $aryResult[0]['idsite']);
 		// Otherwise create new site
@@ -857,6 +857,10 @@ class wp_piwik {
 		// Change code if POST is forced to be used
 		if (self::$settings->getGlobalOption('track_post') && self::$settings->getGlobalOption('track_mode') != 2) $strCode = str_replace("_paq.push(['trackPageView']);", "_paq.push(['setRequestMethod', 'POST']);\n_paq.push(['trackPageView']);", $strCode);
 		// Change code if cookies are disabled
+		if (self::$settings->getGlobalOption('track_across')) {
+			$referrerParsed = parse_url(get_bloginfo('url'));
+			$strCode =  str_replace("_paq.push(['trackPageView']);", "_paq.push(['setCookieDomain', '*.".$referrerParsed['host']."']);\n_paq.push(['trackPageView']);", $strCode);
+		}
 		if (self::$settings->getGlobalOption('disable_cookies')) $strCode = str_replace("_paq.push(['trackPageView']);", "_paq.push(['disableCookies']);\n_paq.push(['trackPageView']);", $strCode);
 		if (self::$settings->getGlobalOption('limit_cookies')) $strCode = str_replace("_paq.push(['trackPageView']);", "_paq.push(['setVisitorCookieTimeout', '".self::$settings->getGlobalOption('limit_cookies_visitor')."']);\n_paq.push(['setSessionCookieTimeout', '".self::$settings->getGlobalOption('limit_cookies_session')."']);\n_paq.push(['trackPageView']);", $strCode);
 		// Store <noscript> code
@@ -1205,6 +1209,7 @@ class wp_piwik {
 				self::$settings->setGlobalOption('track_feed_campaign', (isset($_POST['wp-piwik_trackfeed_campaign'])?$_POST['wp-piwik_trackfeed_campaign']:'feed'));
 				self::$settings->setGlobalOption('track_feed_addcampaign', (isset($_POST['wp-piwik_trackfeed_addcampaign'])?$_POST['wp-piwik_trackfeed_addcampaign']:false));
 				self::$settings->setGlobalOption('track_datacfasync', (isset($_POST['wp-piwik_datacfasync'])?$_POST['wp-piwik_datacfasync']:false));
+				self::$settings->setGlobalOption('track_across', (isset($_POST['wp-piwik_track_across'])?$_POST['wp-piwik_track_across']:false));
 				self::$settings->setGlobalOption('add_post_annotations', (isset($_POST['wp-piwik_annotations'])?$_POST['wp-piwik_annotations']:false));
 				self::$settings->setGlobalOption('add_customvars_box', (isset($_POST['wp-piwik_customvars'])?$_POST['wp-piwik_customvars']:false));
 				self::$settings->setGlobalOption('capability_stealth', (isset($_POST['wp-piwik_filter'])?$_POST['wp-piwik_filter']:array()));

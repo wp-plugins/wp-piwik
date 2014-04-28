@@ -41,6 +41,7 @@
 			'track_nojavascript' => false,
 			'track_codeposition' => 'footer',
 			'track_datacfasync' => false,
+			'track_across' => false,
 			'limit_cookies' => false,
 			'limit_cookies_visitor' => 1209600,
 			'limit_cookies_session' => 0,
