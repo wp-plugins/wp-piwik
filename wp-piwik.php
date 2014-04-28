@@ -747,17 +747,10 @@ class wp_piwik {
 			require_once PIWIK_INCLUDE_PATH . "/core/API/Request.php";
 		if (class_exists('Piwik\FrontController'))
 			Piwik\FrontController::getInstance()->init();
-		elseif (class_exists('Piwik_FrontController'))
-			Piwik_FrontController::getInstance()->init();
-		// Add Piwik URL to params
-		$strParams .= '&piwikUrl='.urlencode(self::$settings->getGlobalOption('piwik_url'));
-		// This inits the API Request with the specified parameters
+		else serialize(array('result' => 'error', 'message' => __('Class Piwik\FrontController does not exists.','wp-piwik')));
 		if (class_exists('Piwik\API\Request'))
 			$objRequest = new Piwik\API\Request($strParams);
-		elseif (class_exists('Piwik_API_Request'))
-			$objRequest = new Piwik_API_Request($strParams);
-		else return NULL;
-		// Calls the API and fetch XML data back
+		else serialize(array('result' => 'error', 'message' => __('Class Piwik\API\Request does not exists.','wp-piwik')));
 		return $objRequest->process();		
 	}
 
@@ -766,11 +759,11 @@ class wp_piwik {
 	 * 
 	 * @param String $strURL Remote file URL
 	 */
-	function getRemoteFile($strURL) {
+	function getRemoteFile($strURL, $blogURL = '') {
 		if (self::$settings->getGlobalOption('piwik_mode') == 'php')
-			return $this->callPHP($strURL);
+			return $this->callPHP($strURL.($blogURL?'url='.$blogURL:''));
 		else
-			return $this->callREST($strURL);
+			return $this->callREST($strURL.($blogURL?'url='.urlencode($blogURL):''));
 	}
 
 	/**
@@ -785,7 +778,6 @@ class wp_piwik {
 		self::$logger->log('Get the blog\'s site ID by URL: '.get_bloginfo('url'));
 		// Check if blog URL already known
 		$strURL = '&method=SitesManager.getSitesIdFromSiteUrl';
-		$strURL .= '&url='.urlencode(get_bloginfo('url'));
 		$strURL .= '&format=PHP';
 		$strURL .= '&token_auth='.self::$settings->getGlobalOption('piwik_token');
 		$aryResult = unserialize($this->getRemoteFile($strURL));
@@ -801,7 +793,7 @@ class wp_piwik {
 			$strURL .= '&siteName='.urlencode($strName).'&urls='.urlencode(get_bloginfo('url'));
 			$strURL .= '&format=PHP';
 			$strURL .= '&token_auth='.self::$settings->getGlobalOption('piwik_token');
-			$strResult = unserialize($this->getRemoteFile($strURL));
+			$strResult = unserialize($this->getRemoteFile($strURL, get_bloginfo('url')));
 			if (!empty($strResult)) self::$settings->setOption('site_id', (int) $strResult);
 		}
 		// Store new data if site created
@@ -946,14 +938,13 @@ class wp_piwik {
 			$strURL .= '&filter_limit='.$intLimit;
 			$strURL .= '&token_auth='.$strToken;
 			$strURL .= '&expanded='.$bolExpanded;
-			$strURL .= '&url='.urlencode(get_bloginfo('url'));
 			$strURL .= '&format='.$strFormat;
 			$strURL .= ($strPageURL?'&pageUrl='.urlencode($strPageURL):'');
 			$strURL .= ($strNote?'&note='.urlencode($strNote):'');
 			// Fetch data if site exists
 			if (!empty($intSite) || $strMethod='SitesManager.getSitesWithAtLeastViewAccess') {
 				self::$logger->log('API method: '.$strMethod.' API call: '.$strURL);
-				$strResult = (string) $this->getRemoteFile($strURL);			
+				$strResult = (string) $this->getRemoteFile($strURL, get_bloginfo('url'));			
 				$result = ($strFormat == 'PHP'?unserialize($strResult):$strResult);
 				// Apply tracking code changes if configured
 				if ($strMethod == 'SitesManager.getJavascriptTag' && !empty($result)) {
