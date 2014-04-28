@@ -739,6 +739,8 @@ class wp_piwik {
 	 * @param $strParams API call params
 	 */
 	function callPHP($strParams) {
+		if (!defined('PIWIK_INCLUDE_PATH'))
+			return;
 		if (PIWIK_INCLUDE_PATH === FALSE)
 			return serialize(array('result' => 'error', 'message' => __('Could not resolve','wp-piwik').' &quot;'.htmlentities(self::$settings->getGlobalOption('piwik_path')).'&quot;: '.__('realpath() returns false','wp-piwik').'.'));
 		if (file_exists(PIWIK_INCLUDE_PATH . "/index.php"))
