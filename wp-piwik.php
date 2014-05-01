@@ -33,8 +33,7 @@ if (!function_exists ('add_action')) {
 	exit();
 }
 
-// Makes sure all required include files are loaded before trying to use it
-require_once(ABSPATH.'wp-includes/pluggable.php');
+//require_once(ABSPATH.'wp-includes/pluggable.php');
 
 if (!class_exists('wp_piwik')) {
 class wp_piwik {
@@ -475,7 +474,7 @@ class wp_piwik {
 	 */
 	public function extendWordPressToolbar(&$objToolbar) {
 		// Is user allowed to see stats?
-		if (current_user_can('wp-piwik_read_stats')) {
+		if (current_user_can('wp-piwik_read_stats') && is_admin_bar_showing()) {
 			$aryUnique = $this->callPiwikAPI('VisitsSummary.getUniqueVisitors','day','last30',null);
 			if (!is_array($aryUnique)) $aryUnique = array();
 			$strGraph = '<script type="text/javascript">';	
@@ -585,7 +584,7 @@ class wp_piwik {
 	 */
 	function loadToolbarRequirements() {
 		// Only load if user is allowed to see stats
-		if (current_user_can('wp-piwik_read_stats')) {
+		if (current_user_can('wp-piwik_read_stats') && is_admin_bar_showing()) {
 			// Load Sparklines
 			wp_enqueue_script('wp-piwik-sparkline',$this->getPluginURL().'js/sparkline/jquery.sparkline.min.js',array('jquery'),'2.1.1');
 			// Load CSS
@@ -1400,7 +1399,7 @@ class wp_piwik {
 	}
 	
 	private function isToolbarActive() {
-		return is_admin_bar_showing() && self::$settings->getGlobalOption('toolbar');
+		return self::$settings->getGlobalOption('toolbar');
 	}
 	
 	private function isTrackingActive() {
