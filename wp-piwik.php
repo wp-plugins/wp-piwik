@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress header.
 
-Version: 0.9.9.9
+Version: 0.9.9.10
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -39,8 +39,8 @@ if (!class_exists('wp_piwik')) {
 class wp_piwik {
 
 	private static
-		$intRevisionId = 91007,
-		$strVersion = '0.9.9.9',
+		$intRevisionId = 92000,
+		$strVersion = '0.9.9.10',
 		$blog_id,
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
@@ -1490,7 +1490,7 @@ class wp_piwik {
 		$this->addNoscriptCode();
 	}
 	
-	function onPostStatusTransition($newStatus, $oldStatus = 'false', $post = null) {
+	private function onPostStatusTransition($newStatus, $oldStatus = 'false', $post = null) {
 		if ($newStatus == 'publish' && $oldStatus != 'publish' ) {
 			add_action('publish_post', array($this, 'addPiwikAnnotation'));
 		}
