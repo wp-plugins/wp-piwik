@@ -34,7 +34,6 @@ if (!function_exists ('add_action')) {
 }
 
 // Makes sure all required include files are loaded before trying to use it
-require_once(ABSPATH.'wp-admin/includes/plugin.php');
 require_once(ABSPATH.'wp-includes/pluggable.php');
 
 if (!class_exists('wp_piwik')) {
@@ -171,7 +170,7 @@ class wp_piwik {
 	}
 	
 	function getSettingsURL() {
-		return (is_plugin_active_for_network('wp-piwik/wp-piwik.php')?'settings':'options-general').'.php';
+		return (self::$settings->checkNetworkActivation()?'settings':'options-general').'.php';
 	}
 
 	private function updateTrackingCode() {
@@ -378,7 +377,7 @@ class wp_piwik {
 			// Stats page onload callback
 			add_action('load-'.$this->intStatsPage, array(&$this, 'onloadStatsPage'));
 		}
-		if (!is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
+		if (!self::$settings->checkNetworkActivation()) {
 			// Add options page
 			$intOptionsPage = add_options_page(
 				self::$settings->getGlobalOption('plugin_display_name'),
@@ -564,7 +563,7 @@ class wp_piwik {
 			return array_merge(
 				$strLinks,
 				array(
-					sprintf('<a href="'.(is_plugin_active_for_network('wp-piwik/wp-piwik.php')?'settings':'options-general').'.php?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'))
+					sprintf('<a href="'.(self::$settings->checkNetworkActivation()?'settings':'options-general').'.php?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'))
 				)
 			);
 		// Don't affect other plugins details
@@ -773,7 +772,7 @@ class wp_piwik {
 	 * or get its ID by URL
 	 */ 
 	function addPiwikSite() {
-		if (isset($_GET['wpmu_show_stats']) && is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
+		if (isset($_GET['wpmu_show_stats']) && self::$settings->checkNetworkActivation()) {
 			self::$logger->log('Switch blog ID: '.(int) $_GET['wpmu_show_stats']);
 			switch_to_blog((int) $_GET['wpmu_show_stats']);
 		}
@@ -804,7 +803,7 @@ class wp_piwik {
 			self::$settings->setOption('tracking_code', $this->callPiwikAPI('SitesManager.getJavascriptTag'));
 		} else self::$settings->getOption('tracking_code', '');
 		self::$settings->save();
-		if (isset($_GET['wpmu_show_stats']) && is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
+		if (isset($_GET['wpmu_show_stats']) && self::$settings->checkNetworkActivation()) {
 			self::$logger->log('Back to current blog');
 			restore_current_blog();
 		}
@@ -918,7 +917,7 @@ class wp_piwik {
 		if ($strMethod == "SitesManager.getSitesWithAtLeastViewAccess" || false === $result) {
 			$strToken = self::$settings->getGlobalOption('piwik_token');
 			// If multisite stats are shown, maybe the super admin wants to show other blog's stats.
-			if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && function_exists('wp_get_current_user') && is_super_admin() && isset($_GET['wpmu_show_stats'])) {
+			if (self::$settings->checkNetworkActivation() && function_exists('is_super_admin') && function_exists('wp_get_current_user') && is_super_admin() && isset($_GET['wpmu_show_stats'])) {
 				$aryOptions = get_blog_option((int) $_GET['wpmu_show_stats'], 'wp-piwik_settings' , array());
 				if (!empty($aryOptions) && isset($aryOptions['site_id']))
 					$intSite = $aryOptions['site_id'];
@@ -1079,7 +1078,7 @@ class wp_piwik {
 	<?php screen_icon('options-general'); ?>
 	<h2><?php echo (self::$settings->getGlobalOption('plugin_display_name') == 'WP-Piwik'?'Piwik '.__('Statistics', 'wp-piwik'):self::$settings->getGlobalOption('plugin_display_name')); ?></h2>
 <?php /************************************************************************/
-		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && is_super_admin() && $this->bolNetwork) {
+		if (self::$settings->checkNetworkActivation() && function_exists('is_super_admin') && is_super_admin() && $this->bolNetwork) {
 			if (isset($_GET['wpmu_show_stats'])) {
 				switch_to_blog((int) $_GET['wpmu_show_stats']);
 				// TODO OPTIMIZE
@@ -1123,7 +1122,7 @@ class wp_piwik {
 	//]]>
 </script>
 <?php /************************************************************************/
-		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && function_exists('is_super_admin') && is_super_admin()) {
+		if (self::$settings->checkNetworkActivation() && function_exists('is_super_admin') && is_super_admin()) {
 			restore_current_blog();
 		}
 	}
@@ -1231,7 +1230,7 @@ class wp_piwik {
 				self::$settings->setGlobalOption('connection_timeout', (isset($_POST['wp-piwik_timeout'])?(int)$_POST['wp-piwik_timeout']:5));
 				self::$settings->setGlobalOption('piwik_useragent_string', (isset($_POST['wp-piwik_useragent_string'])?$_POST['wp-piwik_useragent_string']:'WP-Piwik'));
 				self::$settings->setGlobalOption('disable_ssl_verify', (isset($_POST['wp-piwik_disable_ssl_verify'])?$_POST['wp-piwik_disable_ssl_verify']:false));
-				if (!is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
+				if (!self::$settings->checkNetworkActivation()) {
 					self::$settings->setGlobalOption('auto_site_config', (isset($_POST['wp-piwik_auto_site_config'])?$_POST['wp-piwik_auto_site_config']:false));
 					if (!self::$settings->getGlobalOption('auto_site_config'))
 						self::$settings->setOption('site_id', (isset($_POST['wp-piwik_siteid'])?$_POST['wp-piwik_siteid']:self::$settings->getOption('site_id')));
@@ -1328,7 +1327,7 @@ class wp_piwik {
 	 * Show an error message extended by a support site link
 	 */
 	private static function showErrorMessage($strMessage) {
-		echo '<strong class="wp-piwik-error">'.__('An error occured', 'wp-piwik').':</strong> '.$strMessage.' [<a href="'.(is_plugin_active_for_network('wp-piwik/wp-piwik.php')?'network/settings':'options-general').'.php?page=wp-piwik/wp-piwik.php&tab=support">'.__('Support','wp-piwik').'</a>]';
+		echo '<strong class="wp-piwik-error">'.__('An error occured', 'wp-piwik').':</strong> '.$strMessage.' [<a href="'.(self::$settings->checkNetworkActivation()?'network/settings':'options-general').'.php?page=wp-piwik/wp-piwik.php&tab=support">'.__('Support','wp-piwik').'</a>]';
 	}
 
 	/**
@@ -1360,7 +1359,7 @@ class wp_piwik {
 	 */
 	public static function getSiteID($intBlogID = null) {
 		$intResult = self::$settings->getOption('site_id');
-		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php') && !empty($intBlogID)) {
+		if (self::$settings->checkNetworkActivation() && !empty($intBlogID)) {
 			$aryResult = get_blog_option($intBlogID, 'wp-piwik_settings');
 			$intResult = $aryResult['site_id'];
 		}
@@ -1393,7 +1392,7 @@ class wp_piwik {
 	}
 	
 	private function isNetworkMode() {
-		return is_plugin_active_for_network('wp-piwik/wp-piwik.php');
+		return self::$settings->checkNetworkActivation();
 	}
 	
 	private function isDashboardActive() {
