@@ -36,6 +36,7 @@
 			'track_feed_revenue' => '',
 			'track_feed_campaign' => 'feed',
 			'track_feed_addcampaign' => 'false',
+			'track_cdnurl' => '',
 			'track_cdnurlssl' => '',
 			'track_noscript' => false,
 			'track_nojavascript' => false,
