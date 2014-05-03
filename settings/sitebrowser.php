@@ -91,7 +91,7 @@ class SiteBrowser extends WP_List_Table {
 	}
 }
 $objSiteBrowser = new SiteBrowser();
-$intCnt = $objSiteBrowser->prepare_items($this->bolNetwork);
+$intCnt = $objSiteBrowser->prepare_items(self::$settings->checkNetworkActivation());
 if ($intCnt > 0) $objSiteBrowser->display();
 else echo '<p>No site configured yet.</p>'
 ?>
