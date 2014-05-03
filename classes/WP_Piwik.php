@@ -89,7 +89,7 @@ class wp_piwik {
 	}
 	
 	private function loadLanguage() {
-		load_plugin_textdomain('wp-piwik', false, dirname(self::$strPluginBasename)."/languages/");
+		load_plugin_textdomain('wp-piwik', false, dirname(self::$strPluginBasename)."/../languages/");
 	}
 			
 	function installPlugin() {
