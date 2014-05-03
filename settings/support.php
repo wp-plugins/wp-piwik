@@ -1,5 +1,5 @@
 <tr>
-	<td><a href="http://wordpress.org/tags/wp-piwik?forum_id=10"><?php _e('WordPress.org forum about WP-Piwik','wp-piwik'); ?></a></td>
+	<td><a href="http://wordpress.org/support/plugin/wp-piwik"><?php _e('WordPress.org forum about WP-Piwik','wp-piwik'); ?></a></td>
 </tr>
 <tr>
 	<td><?php _e('Please don\'t forget to vote the compatibility at the','wp-piwik'); ?> <a href="http://wordpress.org/extend/plugins/wp-piwik/">WordPress.org Plugin Directory</a>.</td>
