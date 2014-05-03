@@ -128,7 +128,7 @@ class wp_piwik {
 			__('Next you should connect to Piwik','wp-piwik'):
 			__('Please validate your configuration','wp-piwik')
 		);
-		$link = sprintf('<a href="'.getSettingsURL.'?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'));
+		$link = sprintf('<a href="'.$this->getSettingsURL().'?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'));
 		printf('<div class="updated fade"><p>%s<strong>%s:</strong> %s: %s</p></div>', $text, __('Important', 'wp-piwik'), $notice, $link);
 	}
 	
