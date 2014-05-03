@@ -1127,7 +1127,7 @@ class wp_piwik {
 		echo '<h2 class="nav-tab-wrapper">';
 		foreach($aryTabs as $strTab => $strName) {
 			$strClass = ($strTab == $strCurr?' nav-tab-active':'');
-			echo '<a class="nav-tab'.$strClass.'" href="?page=wp-piwik/wp-piwik.php&tab='.$strTab.'">'.$strName.'</a>';
+			echo '<a class="nav-tab'.$strClass.'" href="?page=wp-piwik/classes/WP_Piwik.php&tab='.$strTab.'">'.$strName.'</a>';
 		}
 		echo '</h2>';
 		return $strCurr;
@@ -1262,11 +1262,11 @@ class wp_piwik {
 		</div>
 <?php /***************************************************************************/
 		}
-		echo '<form class="'.($strTab != 'sitebrowser'?'wp-piwik-settings':'').'" method="post" action="'.admin_url(($pagenow == 'settings.php'?'network/':'').$pagenow.'?page=wp-piwik/wp-piwik.php&tab='.$strTab).'">';
+		echo '<form class="'.($strTab != 'sitebrowser'?'wp-piwik-settings':'').'" method="post" action="'.admin_url(($pagenow == 'settings.php'?'network/':'').$pagenow.'?page=wp-piwik/classes/WP_Piwik.php&tab='.$strTab).'">';
 		echo '<input type="hidden" name="action" value="save_wp-piwik_settings" />';
 		wp_nonce_field('wp-piwik_settings');
 		// Show settings
-		if (($pagenow == 'options-general.php' || $pagenow == 'settings.php') && $_GET['page'] == 'wp-piwik/wp-piwik.php') {
+		if (($pagenow == 'options-general.php' || $pagenow == 'settings.php') && $_GET['page'] == 'wp-piwik/classes/WP_Piwik.php') {
 			echo '<table class="wp-piwik-form-table form-table">';
 			// Get tab contents
 			require_once('../settings/'.$strTab.'.php');				
@@ -1290,7 +1290,7 @@ class wp_piwik {
 	 * Show an error message extended by a support site link
 	 */
 	private static function showErrorMessage($strMessage) {
-		echo '<strong class="wp-piwik-error">'.__('An error occured', 'wp-piwik').':</strong> '.$strMessage.' [<a href="'.(self::$settings->checkNetworkActivation()?'network/settings':'options-general').'.php?page=wp-piwik/wp-piwik.php&tab=support">'.__('Support','wp-piwik').'</a>]';
+		echo '<strong class="wp-piwik-error">'.__('An error occured', 'wp-piwik').':</strong> '.$strMessage.' [<a href="'.(self::$settings->checkNetworkActivation()?'network/settings':'options-general').'.php?page=wp-piwik/classes/WP_Piwik.php&tab=support">'.__('Support','wp-piwik').'</a>]';
 	}
 
 	/**
