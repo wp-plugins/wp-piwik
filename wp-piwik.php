@@ -754,7 +754,7 @@ class wp_piwik {
 		if (file_exists(PIWIK_INCLUDE_PATH . "/core/API/Request.php"))
 			require_once PIWIK_INCLUDE_PATH . "/core/API/Request.php";
 		if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
-			require_once('phpapi.php');
+			$this->includeFile('phpapi.php');
 			return $objRequest->process();		
 		}
 		return;
