@@ -1,7 +1,5 @@
 <?php
 
-chdir('..');
-
 class wp_piwik {
 
 	private static
@@ -864,8 +862,8 @@ class wp_piwik {
 			'id' => $strFile.$strID,
 			'desc' => substr($strDesc, 0, -2)));
 		// Include widget file
-		if (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR.'dashboard/'.$strFile.'.php'))
-			include(dirname(__FILE__).DIRECTORY_SEPARATOR.'dashboard/'.$strFile.'.php');
+		if (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'dashboard/'.$strFile.'.php'))
+			include(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'dashboard/'.$strFile.'.php');
  	}
 
 	/**
@@ -1271,7 +1269,7 @@ class wp_piwik {
 		if (($pagenow == 'options-general.php' || $pagenow == 'settings.php') && $_GET['page'] == 'wp-piwik/wp-piwik.php') {
 			echo '<table class="wp-piwik-form-table form-table">';
 			// Get tab contents
-			require_once('settings/'.$strTab.'.php');				
+			require_once('../settings/'.$strTab.'.php');				
 		// Show submit button
 			if (!in_array($strTab, array('homepage','credits','support','sitebrowser')))
 				echo '<tr><td><p class="submit" style="clear: both;padding:0;margin:0"><input type="submit" name="Submit"  class="button-primary" value="'.__('Save settings', 'wp-piwik').'" /><input type="hidden" name="wp-piwik_settings_submit" value="Y" /></p></td></tr>';
@@ -1316,7 +1314,7 @@ class wp_piwik {
 	 * Execute test script
 	 */
 	private static function loadTestscript() {
-		require_once('debug/testscript.php');
+		require_once('../debug/testscript.php');
 	}
 	
 	/**
@@ -1403,11 +1401,11 @@ class wp_piwik {
 	private function openLogger() {
 		switch (WP_PIWIK_ACTIVATE_LOGGER) {
 			case 2:
-				require_once('classes/WP_Piwik_Logger_File.php');
+				require_once('WP_Piwik_Logger_File.php');
 				self::$logger = new WP_Piwik_Logger_File(__CLASS__);
 			break;
 			default:
-				require_once('classes/WP_Piwik_Logger_Dummy.php');
+				require_once('WP_Piwik_Logger_Dummy.php');
 				self::$logger = new WP_Piwik_Logger_Dummy(__CLASS__);
 		}
 	}
@@ -1431,8 +1429,8 @@ class wp_piwik {
 	
 	private function includeFile($strFile) {
 		self::$logger->log('Include '.$strFile.'.php');
-		if (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR.$strFile.'.php'))
-			include(dirname(__FILE__).DIRECTORY_SEPARATOR.$strFile.'.php');
+		if (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.$strFile.'.php'))
+			include(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.$strFile.'.php');
 	}
 	
 	private function isHiddenUser() {
