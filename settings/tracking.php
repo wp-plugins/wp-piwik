@@ -16,7 +16,7 @@ if (!$bolFOpen && !$bolCURL) {
 </table>
 <?php 
 if (self::$settings->getGlobalOption('add_tracking_code')) {
-	$strJavaScript = self::callPiwikAPI('SitesManager.getJavascriptTag');
+	$strJavaScript = $this->callPiwikAPI('SitesManager.getJavascriptTag');
 	if (is_array($strJavaScript)) {
 		if (isset($strJavaScript['result']) && $strJavaScript['result'] == 'error')
 			self::showErrorMessage(__($strJavaScript['message'],'wp-piwik'));

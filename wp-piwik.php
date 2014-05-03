@@ -54,12 +54,7 @@ class wp_piwik {
 		$aryAttributes = array(),
 		$strResult = '';
 
-	public function phpmsg() {
-		echo '<div class="error"><p>You are using the deprecated PHP version '.PHP_VERSION.'. Please update at least to PHP 5.3 to keep WP-Piwik working.</p></div>';
-	}
-
 	public function __construct() {
-		// PHP version check
 		global $blog_id;
 		self::$blog_id = (isset($blog_id)?$blog_id:'n/a');
 		$this->openLogger();
@@ -88,9 +83,6 @@ class wp_piwik {
 	}
 	
 	private function addActions() {
-		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-			add_action('admin_notices', array($this, 'phpmsg'));
-		}	
 		add_action('admin_menu', array($this, 'buildAdminMenu'));
 		add_action('admin_post_save_wp-piwik_stats', array(&$this, 'onStatsPageSaveChanges'));
 		add_action('load-post.php', array(&$this, 'postMetaboxes'));
@@ -753,11 +745,13 @@ class wp_piwik {
 			require_once PIWIK_INCLUDE_PATH . "/index.php";
 		if (file_exists(PIWIK_INCLUDE_PATH . "/core/API/Request.php"))
 			require_once PIWIK_INCLUDE_PATH . "/core/API/Request.php";
-		if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
-			$this->includeFile('phpapi.php');
-			return $objRequest->process();		
-		}
-		return;
+		if (class_exists('Piwik\FrontController'))
+			Piwik\FrontController::getInstance()->init();
+		else serialize(array('result' => 'error', 'message' => __('Class Piwik\FrontController does not exists.','wp-piwik')));
+		if (class_exists('Piwik\API\Request'))
+			$objRequest = new Piwik\API\Request($strParams);
+		else serialize(array('result' => 'error', 'message' => __('Class Piwik\API\Request does not exists.','wp-piwik')));
+		return $objRequest->process();		
 	}
 
 	/**
