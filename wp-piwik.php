@@ -60,9 +60,6 @@ class wp_piwik {
 
 	public function __construct() {
 		// PHP version check
-		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-			add_action('admin_notices', array($this, 'phpmsg'));
-		}
 		global $blog_id;
 		self::$blog_id = (isset($blog_id)?$blog_id:'n/a');
 		$this->openLogger();
@@ -91,6 +88,9 @@ class wp_piwik {
 	}
 	
 	private function addActions() {
+		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+			add_action('admin_notices', array($this, 'phpmsg'));
+		}	
 		add_action('admin_menu', array($this, 'buildAdminMenu'));
 		add_action('admin_post_save_wp-piwik_stats', array(&$this, 'onStatsPageSaveChanges'));
 		add_action('load-post.php', array(&$this, 'postMetaboxes'));
