@@ -54,15 +54,15 @@ class wp_piwik {
 		$aryAttributes = array(),
 		$strResult = '';
 
-	private function phpmsg() {
+	public function phpmsg() {
 		echo '<div class="error"><p>You are using the deprecated PHP version '.PHP_VERSION.'. Please update at least to PHP 5.3 to keep WP-Piwik working.</p></div>';
 	}
 
 	public function __construct() {
 		// PHP version check
-		if (version_compare(PHP_VERSION, '5.3.0', '<'))
+		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 			add_action('admin_notices', array($this, 'phpmsg'));
-	
+		}
 		global $blog_id;
 		self::$blog_id = (isset($blog_id)?$blog_id:'n/a');
 		$this->openLogger();
