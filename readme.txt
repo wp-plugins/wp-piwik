@@ -3,7 +3,7 @@
 Contributors: Braekling
 Requires at least: 3.8
 Tested up to: 3.9
-Stable tag: 0.9.9.9
+Stable tag: 0.9.9.10
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
@@ -13,7 +13,7 @@ This plugin adds a Piwik stats site to your WordPress or WordPress multisite das
 
 This plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog using wp_footer.
 
-**You need a running Piwik (at least 2.0.2) installation** and at least view access to your stats. Also PHP 5.3 or higher is strictly required.
+You need a running **Piwik 2.0.2 or higher** installation and at least view access to your stats. Also **PHP 5.3 or higher** is strictly required.
 
 Look at the [Piwik website](http://piwik.org/) to get further information about Piwik.
 
