@@ -42,7 +42,7 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 } else {
 	require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'config.php');
 	if (!class_exists('wp_piwik'))
-		require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.'WP-Piwik.php');
+		require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.'WP_Piwik.php');
 	if (class_exists('wp_piwik'))
 		$GLOBALS['wp_piwik'] = new wp_piwik();
 }
