@@ -1269,7 +1269,7 @@ class wp_piwik {
 		if (($pagenow == 'options-general.php' || $pagenow == 'settings.php') && $_GET['page'] == 'wp-piwik/classes/WP_Piwik.php') {
 			echo '<table class="wp-piwik-form-table form-table">';
 			// Get tab contents
-			require_once('../settings/'.$strTab.'.php');				
+			$this->includeFile('settings/'.$strTab);
 		// Show submit button
 			if (!in_array($strTab, array('homepage','credits','support','sitebrowser')))
 				echo '<tr><td><p class="submit" style="clear: both;padding:0;margin:0"><input type="submit" name="Submit"  class="button-primary" value="'.__('Save settings', 'wp-piwik').'" /><input type="hidden" name="wp-piwik_settings_submit" value="Y" /></p></td></tr>';
