@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress header.
 
-Version: 0.9.9.10
+Version: 0.9.9.11
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -40,7 +40,7 @@ class wp_piwik {
 
 	private static
 		$intRevisionId = 92000,
-		$strVersion = '0.9.9.10',
+		$strVersion = '0.9.9.11',
 		$blog_id,
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
@@ -1427,11 +1427,13 @@ class wp_piwik {
 	}
 
 	private static function definePiwikConstants() {
-		define('PIWIK_INCLUDE_PATH', self::$settings->getGlobalOption('piwik_path'));
-		define('PIWIK_USER_PATH', self::$settings->getGlobalOption('piwik_path'));
-		define('PIWIK_ENABLE_DISPATCH', false);
-		define('PIWIK_ENABLE_ERROR_HANDLER', false);
-		define('PIWIK_ENABLE_SESSION_START', false);
+		if (!defined('PIWIK_INCLUDE_PATH')) {
+			define('PIWIK_INCLUDE_PATH', self::$settings->getGlobalOption('piwik_path'));
+			define('PIWIK_USER_PATH', self::$settings->getGlobalOption('piwik_path'));
+			define('PIWIK_ENABLE_DISPATCH', false);
+			define('PIWIK_ENABLE_ERROR_HANDLER', false);
+			define('PIWIK_ENABLE_SESSION_START', false);
+		}
 	}
 	
 	private function openLogger() {
@@ -1490,7 +1492,7 @@ class wp_piwik {
 		$this->addNoscriptCode();
 	}
 	
-	private function onPostStatusTransition($newStatus, $oldStatus = 'false', $post = null) {
+	public function onPostStatusTransition($newStatus, $oldStatus = 'false', $post = null) {
 		if ($newStatus == 'publish' && $oldStatus != 'publish' ) {
 			add_action('publish_post', array($this, 'addPiwikAnnotation'));
 		}
