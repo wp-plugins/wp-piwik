@@ -1,5 +1,5 @@
 <tr>
-	<td><a href="http://wordpress.org/tags/wp-piwik?forum_id=10"><?php _e('WordPress.org forum about WP-Piwik','wp-piwik'); ?></a></td>
+	<td><a href="http://wordpress.org/support/plugin/wp-piwik"><?php _e('WordPress.org forum about WP-Piwik','wp-piwik'); ?></a></td>
 </tr>
 <tr>
 	<td><?php _e('Please don\'t forget to vote the compatibility at the','wp-piwik'); ?> <a href="http://wordpress.org/extend/plugins/wp-piwik/">WordPress.org Plugin Directory</a>.</td>
@@ -29,7 +29,7 @@
 				self::loadTestscript();
 			break;
 			case 'reset':
-				echo '<p class="wp-piwik-eyecatcher"><strong class="wp-piwik-error">'.__('Please confirm your reset request','wp-piwik').':</strong> <a href="?page=wp-piwik/wp-piwik.php&tab=support&mode=resetconfirmed">'.__('YES, please reset <strong>all</strong> WP-Piwik settings <strong>except</strong> auth token and Piwi URL.', 'wp-piwik').'</a></p>';
+				echo '<p class="wp-piwik-eyecatcher"><strong class="wp-piwik-error">'.__('Please confirm your reset request','wp-piwik').':</strong> <a href="?page=wp-piwik/classes/WP_Piwik.php&tab=support&mode=resetconfirmed">'.__('YES, please reset <strong>all</strong> WP-Piwik settings <strong>except</strong> auth token and Piwi URL.', 'wp-piwik').'</a></p>';
 			break;
 			case 'resetconfirmed':
 				// Increase time limit before resetting
@@ -42,9 +42,9 @@
 ?>
 		<p><strong><?php _e('Get more debug information', 'wp-piwik'); ?>:</strong></p>
 		<ol>
-			<li><a href="?page=wp-piwik/wp-piwik.php&tab=support&mode=testscript"><?php _e('Run test script','wp-piwik'); ?></a></li>
-			<li><a href="?page=wp-piwik/wp-piwik.php&tab=sitebrowser"><?php _e('Get site configuration details','wp-piwik'); ?></a></li>
-			<li><a href="?page=wp-piwik/wp-piwik.php&tab=support&mode=reset"><?php _e('Reset WP-Piwik settings except auth token and Piwik URL','wp-piwik'); ?></a> (<?php _e('This will not affect Piwik itself. Resetting large networks may take some minutes.', 'wp-piwik'); ?>)</li>
+			<li><a href="?page=wp-piwik/classes/WP_Piwik.php&tab=support&mode=testscript"><?php _e('Run test script','wp-piwik'); ?></a></li>
+			<li><a href="?page=wp-piwik/classes/WP_Piwik.php&tab=sitebrowser"><?php _e('Get site configuration details','wp-piwik'); ?></a></li>
+			<li><a href="?page=wp-piwik/classes/WP_Piwik.php&tab=support&mode=reset"><?php _e('Reset WP-Piwik settings except auth token and Piwik URL','wp-piwik'); ?></a> (<?php _e('This will not affect Piwik itself. Resetting large networks may take some minutes.', 'wp-piwik'); ?>)</li>
 		</ol>
 <?php } else echo '<p>'.__('You have to enter your auth token and the Piwik URL before you can access more debug functions.', 'wp-piwik').'</p>'; ?>
 	</td>

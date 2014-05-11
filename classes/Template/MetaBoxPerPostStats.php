@@ -1,14 +1,12 @@
 <?php
 
-	require_once('WP_Piwik_Template.php');
-
-	class WP_Piwik_MetaBox_PerPost_Stats extends WP_Piwik_Template {
+	class WP_Piwik_Template_MetaBoxPerPostStats extends WP_Piwik_Template {
 				
 		function addMetabox() {
 			add_meta_box(
 				'wp-piwik_post_perpoststats',
 				__('Piwik Statistics (last 30 days)', 'wp-piwik'),
-				array(&$this, 'showStats'),
+				array($this, 'showStats'),
 				'post',
 				'side',
 				'default'
