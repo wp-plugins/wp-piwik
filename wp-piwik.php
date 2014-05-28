@@ -1428,6 +1428,7 @@ class wp_piwik {
 
 	private static function definePiwikConstants() {
 		if (!defined('PIWIK_INCLUDE_PATH')) {
+			@header('Content-type: text/xml');
 			define('PIWIK_INCLUDE_PATH', self::$settings->getGlobalOption('piwik_path'));
 			define('PIWIK_USER_PATH', self::$settings->getGlobalOption('piwik_path'));
 			define('PIWIK_ENABLE_DISPATCH', false);
