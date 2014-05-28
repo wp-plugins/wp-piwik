@@ -741,6 +741,9 @@ class wp_piwik {
 			return;
 		if (PIWIK_INCLUDE_PATH === FALSE)
 			return serialize(array('result' => 'error', 'message' => __('Could not resolve','wp-piwik').' &quot;'.htmlentities(self::$settings->getGlobalOption('piwik_path')).'&quot;: '.__('realpath() returns false','wp-piwik').'.'));
+		$current = ob_get_contents();
+		ob_end_clean();
+		ob_start();
 		if (file_exists(PIWIK_INCLUDE_PATH . "/index.php"))
 			require_once PIWIK_INCLUDE_PATH . "/index.php";
 		if (file_exists(PIWIK_INCLUDE_PATH . "/core/API/Request.php"))
@@ -751,6 +754,9 @@ class wp_piwik {
 		if (class_exists('Piwik\API\Request'))
 			$objRequest = new Piwik\API\Request($strParams);
 		else serialize(array('result' => 'error', 'message' => __('Class Piwik\API\Request does not exists.','wp-piwik')));
+		ob_end_clean();
+		ob_start;
+		echo $current;
 		return $objRequest->process();		
 	}
 
