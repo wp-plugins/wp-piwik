@@ -155,10 +155,8 @@
 		}
 		
 		public function checkNetworkActivation() {
-			if (!function_exists("is_plugin_active_for_network")) {
+			if (!function_exists("is_plugin_active_for_network"))
 				require_once(ABSPATH.'wp-admin/includes/plugin.php');
-				wp_cookie_constants();
-			}
 			return is_plugin_active_for_network('wp-piwik/wp-piwik.php');
 		}
 	}
