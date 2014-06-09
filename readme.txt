@@ -127,9 +127,9 @@ Please update Piwik if not done yet (Piwik 2.0 or higher is recommended)!
 
 = 0.9.9.12 =
 * Bugfix: Avoid forced relogin on site change (WP network)
+* Bugfix: Avoid multiple annotations on post updates
 * Bugfix: User mergeSubdomains instead of mergeAliasURLs
 * Feature: Added mergeAliasURLs as additional feature
-
 
 = 0.9.9.11 =
 * Bugfix: PHP API causes plain text output issue, see http://wordpress.org/support/topic/bug-cant-access-to-tabs-in-setting-after-configuration

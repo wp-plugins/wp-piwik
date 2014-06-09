@@ -103,7 +103,7 @@ class wp_piwik {
 				add_action('admin_head', array($this, 'addAdminHeaderTracking'));
 		}
 		if (self::$settings->getGlobalOption('add_post_annotations'))
-			add_action('transition_post_status', array($this, 'onPostStatusTransition'));
+			add_action('transition_post_status', array($this, 'onPostStatusTransition'),10,3);
 	}
 
 	private function addFilters() {
