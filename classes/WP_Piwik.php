@@ -331,12 +331,6 @@ class WP_Piwik {
 		}
 	}
 
-	/**
-	 * Add tracking code to admin header
-	 */
-	function addAdminHeaderTracking() {
-		$this->site_header();	
-	}
 
 	/**
 	 * Add tracking image to feeds
@@ -516,10 +510,10 @@ class WP_Piwik {
 		}
 		return array('js' => self::$settings->getOption('tracking_code'), 'id' => self::$settings->getOption('site_id'));
 	}
+	
 	/**
 	 * Shortcode function
-	 **/
-	 
+	 **/ 
 	function shortcode($aryAttributes) {
 		$this->aryAttributes = shortcode_atts(
 			array(
@@ -1263,6 +1257,10 @@ class WP_Piwik {
 		if ($strScreen == $this->intStatsPage)
 			$aryColumns[$this->intStatsPage] = 3;
 		return $aryColumns;
+	}
+	
+	function addAdminHeaderTracking() {
+		$this->site_header();	
 	}
 	
 }
