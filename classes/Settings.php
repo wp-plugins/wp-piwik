@@ -43,6 +43,7 @@
 			'track_codeposition' => 'footer',
 			'track_datacfasync' => false,
 			'track_across' => false,
+			'track_across_alias' => false,
 			'limit_cookies' => false,
 			'limit_cookies_visitor' => 1209600,
 			'limit_cookies_session' => 0,

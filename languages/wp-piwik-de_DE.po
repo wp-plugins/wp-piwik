@@ -759,3 +759,9 @@ msgstr "F&uuml;gt ein *.-Pr&auml;fix zur Cookie Domain hinzu."
 
 msgid "WP-Piwik requires at least PHP 5.3. You are using the deprecated version %s. Please update PHP to use WP-Piwik."
 msgstr "WP-Piwik ben&ouml;tigt zumindest PHP 5.3. Du verwendest die veraltete Version %s. Bitte aktualisiere PHP um WP-Piwik zu nutzen."
+
+msgid "Track visitors across all alias URLs"
+msgstr "Besucher &uuml;ber alle alternative URLs aufzeichnen"
+
+msgid "Adds *.-prefix to tracked domain."
+msgstr "F&uuml;gt ein *.-Pr&auml;fix zur getrackten Domain hinzu."

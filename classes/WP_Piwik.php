@@ -3,7 +3,7 @@
 class WP_Piwik {
 
 	private static
-		$intRevisionId = 92000,
+		$intRevisionId = 94000,
 		$strVersion = '0.10.RC1',
 		$blog_id,
 		$intDashboardID = 30,
@@ -377,7 +377,7 @@ class WP_Piwik {
 			return array_merge(
 				$strLinks,
 				array(
-					sprintf('<a href="'.$this->getSettingsURL().'">%s</a>', __('Settings', 'wp-piwik'))
+					sprintf('<a href="'.(self::$settings->checkNetworkActivation()?'settings':'options-general').'.php?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'))
 				)
 			);
 		// Don't affect other plugins details
@@ -487,6 +487,7 @@ class WP_Piwik {
 	 */
 	function addAdminHeaderSettings() {
 		echo '<script type="text/javascript">var $j = jQuery.noConflict();</script>';
+		echo '<script type="text/javascript">/* <![CDATA[ */(function() {var s = document.createElement(\'script\');var t = document.getElementsByTagName(\'script\')[0];s.type = \'text/javascript\';s.async = true;s.src = \'//api.flattr.com/js/0.6/load.js?mode=auto\';t.parentNode.insertBefore(s, t);})();/* ]]> */</script>';		
 	}
 	
 	/**
@@ -556,17 +557,27 @@ class WP_Piwik {
 			return;
 		if (PIWIK_INCLUDE_PATH === FALSE)
 			return serialize(array('result' => 'error', 'message' => __('Could not resolve','wp-piwik').' &quot;'.htmlentities(self::$settings->getGlobalOption('piwik_path')).'&quot;: '.__('realpath() returns false','wp-piwik').'.'));
-		if (file_exists(PIWIK_INCLUDE_PATH.DIRECTORY_SEPARATOR.'index.php'))
-			require_once PIWIK_INCLUDE_PATH.DIRECTORY_SEPARATOR.'index.php';
-		if (file_exists(PIWIK_INCLUDE_PATH.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'API'.DIRECTORY_SEPARATOR.'Request.php'))
-			require_once PIWIK_INCLUDE_PATH.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'API'.DIRECTORY_SEPARATOR.'Request.php';
+		if (!headers_sent()) {
+			$current = ob_get_contents();
+			ob_end_clean();
+			ob_start();
+		}
+		if (file_exists(PIWIK_INCLUDE_PATH . "/index.php"))
+			require_once PIWIK_INCLUDE_PATH . "/index.php";
+		if (file_exists(PIWIK_INCLUDE_PATH . "/core/API/Request.php"))
+			require_once PIWIK_INCLUDE_PATH . "/core/API/Request.php";
 		if (class_exists('Piwik\FrontController'))
 			Piwik\FrontController::getInstance()->init();
 		else serialize(array('result' => 'error', 'message' => __('Class Piwik\FrontController does not exists.','wp-piwik')));
 		if (class_exists('Piwik\API\Request'))
 			$objRequest = new Piwik\API\Request($strParams);
 		else serialize(array('result' => 'error', 'message' => __('Class Piwik\API\Request does not exists.','wp-piwik')));
-		return $objRequest->process();		
+		if (!headers_sent()) {
+			ob_end_clean();
+			ob_start;
+			echo $current;
+		}
+		return $objRequest->process();	
 	}
 
 	/**
@@ -703,10 +714,6 @@ class WP_Piwik {
 		// Change code if POST is forced to be used
 		if (self::$settings->getGlobalOption('track_post') && self::$settings->getGlobalOption('track_mode') != 2) $strCode = str_replace("_paq.push(['trackPageView']);", "_paq.push(['setRequestMethod', 'POST']);\n_paq.push(['trackPageView']);", $strCode);
 		// Change code if cookies are disabled
-		if (self::$settings->getGlobalOption('track_across')) {
-			$referrerParsed = parse_url(get_bloginfo('url'));
-			$strCode =  str_replace("_paq.push(['trackPageView']);", "_paq.push(['setCookieDomain', '*.".$referrerParsed['host']."']);\n_paq.push(['trackPageView']);", $strCode);
-		}
 		if (self::$settings->getGlobalOption('disable_cookies')) $strCode = str_replace("_paq.push(['trackPageView']);", "_paq.push(['disableCookies']);\n_paq.push(['trackPageView']);", $strCode);
 		if (self::$settings->getGlobalOption('limit_cookies')) $strCode = str_replace("_paq.push(['trackPageView']);", "_paq.push(['setVisitorCookieTimeout', '".self::$settings->getGlobalOption('limit_cookies_visitor')."']);\n_paq.push(['setSessionCookieTimeout', '".self::$settings->getGlobalOption('limit_cookies_session')."']);\n_paq.push(['trackPageView']);", $strCode);
 		// Store <noscript> code
@@ -791,8 +798,14 @@ class WP_Piwik {
 			$strURL .= '&format='.$strFormat;
 			$strURL .= ($strPageURL?'&pageUrl='.urlencode($strPageURL):'');
 			$strURL .= ($strNote?'&note='.urlencode($strNote):'');
+			if (self::$settings->getGlobalOption('track_across') && $strMethod == 'SitesManager.getJavascriptTag') {
+				$strURL .= '&mergeSubdomains=1';
+			}
+			if (self::$settings->getGlobalOption('track_across_alias') && $strMethod == 'SitesManager.getJavascriptTag') {
+				$strURL .= '&mergeAliasUrls=1';
+			}
 			// Fetch data if site exists
-			if (!empty($intSite) || $strMethod='SitesManager.getSitesWithAtLeastViewAccess') {
+			if (!empty($intSite) || $strMethod=='SitesManager.getSitesWithAtLeastViewAccess') {
 				self::$logger->log('API method: '.$strMethod.' API call: '.$strURL);
 				$strResult = (string) $this->getRemoteFile($strURL, get_bloginfo('url'));			
 				$result = ($strFormat == 'PHP'?unserialize($strResult):$strResult);
@@ -1056,6 +1069,7 @@ class WP_Piwik {
 				self::$settings->setGlobalOption('track_feed_addcampaign', (isset($_POST['wp-piwik_trackfeed_addcampaign'])?$_POST['wp-piwik_trackfeed_addcampaign']:false));
 				self::$settings->setGlobalOption('track_datacfasync', (isset($_POST['wp-piwik_datacfasync'])?$_POST['wp-piwik_datacfasync']:false));
 				self::$settings->setGlobalOption('track_across', (isset($_POST['wp-piwik_track_across'])?$_POST['wp-piwik_track_across']:false));
+				self::$settings->setGlobalOption('track_across_alias', (isset($_POST['wp-piwik_track_across_alias'])?$_POST['wp-piwik_track_across_alias']:false));
 				self::$settings->setGlobalOption('add_post_annotations', (isset($_POST['wp-piwik_annotations'])?$_POST['wp-piwik_annotations']:false));
 				self::$settings->setGlobalOption('add_customvars_box', (isset($_POST['wp-piwik_customvars'])?$_POST['wp-piwik_customvars']:false));
 				self::$settings->setGlobalOption('capability_stealth', (isset($_POST['wp-piwik_filter'])?$_POST['wp-piwik_filter']:array()));
@@ -1121,11 +1135,20 @@ class WP_Piwik {
 		<div class="wp-piwik-donate">
 			<p><strong><?php _e('Donate','wp-piwik'); ?></strong></p>
 			<p><?php _e('If you like WP-Piwik, you can support its development by a donation:', 'wp-piwik'); ?></p>
+			<script type="text/javascript">
+			/* <![CDATA[ */
+			window.onload = function() {
+        		FlattrLoader.render({
+            		'uid': 'flattr',
+            		'url': 'http://wp.local',
+            		'title': 'Title of the thing',
+            		'description': 'Description of the thing'
+				}, 'element_id', 'replace');
+			}
+			/* ]]> */
+			</script>
 			<div>
-				<script type="text/javascript">
-					var flattr_url = 'http://www.braekling.de/wp-piwik-wpmu-piwik-wordpress';
-				</script>
-				<script src="http<?php echo (self::isSSL()?'s':''); ?>://api.flattr.com/button/load.js" type="text/javascript"></script>
+				<a class="FlattrButton" style="display:none;" title="WordPress Plugin WP-Piwik" rel="flattr;uid:braekling;category:software;tags:wordpress,piwik,plugin,statistics;" href="https://www.braekling.de/wp-piwik-wpmu-piwik-wordpress">This WordPress plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog using wp_footer. You need a running Piwik installation and at least view access to your stats.</a>
 			</div>
 			<div>Paypal
 				<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -1172,7 +1195,7 @@ class WP_Piwik {
 	 * Show an error message extended by a support site link
 	 */
 	private static function showErrorMessage($strMessage) {
-		echo '<strong class="wp-piwik-error">'.__('An error occured', 'wp-piwik').':</strong> '.$strMessage.' [<a href="'.$this->getSettingsURL().'&tab=support">'.__('Support','wp-piwik').'</a>]';
+		echo '<strong class="wp-piwik-error">'.__('An error occured', 'wp-piwik').':</strong> '.$strMessage.' [<a href="'.(self::$settings->checkNetworkActivation()?'network/settings':'options-general').'.php?page=wp-piwik/wp-piwik.php&tab=support">'.__('Support','wp-piwik').'</a>]';
 	}
 
 	/**
@@ -1273,11 +1296,14 @@ class WP_Piwik {
 	}
 
 	private static function definePiwikConstants() {
-		define('PIWIK_INCLUDE_PATH', self::$settings->getGlobalOption('piwik_path'));
-		define('PIWIK_USER_PATH', self::$settings->getGlobalOption('piwik_path'));
-		define('PIWIK_ENABLE_DISPATCH', false);
-		define('PIWIK_ENABLE_ERROR_HANDLER', false);
-		define('PIWIK_ENABLE_SESSION_START', false);
+	if (!defined('PIWIK_INCLUDE_PATH')) {
+			@header('Content-type: text/xml');
+			define('PIWIK_INCLUDE_PATH', self::$settings->getGlobalOption('piwik_path'));
+			define('PIWIK_USER_PATH', self::$settings->getGlobalOption('piwik_path'));
+			define('PIWIK_ENABLE_DISPATCH', false);
+			define('PIWIK_ENABLE_ERROR_HANDLER', false);
+			define('PIWIK_ENABLE_SESSION_START', false);
+		}
 	}
 	
 	private function openLogger() {
@@ -1336,7 +1362,7 @@ class WP_Piwik {
 		$this->addNoscriptCode();
 	}
 	
-	public function onPostStatusTransition($newStatus, $oldStatus = 'false', $post = null) {
+	public function onPostStatusTransition($newStatus, $oldStatus, $post) {
 		if ($newStatus == 'publish' && $oldStatus != 'publish' ) {
 			add_action('publish_post', array($this, 'addPiwikAnnotation'));
 		}
