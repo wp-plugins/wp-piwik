@@ -13,7 +13,6 @@ class WP_Piwik {
 		$settings;
 				
 	private
-		$intStatsPage = NULL,
 		$bolNetwork = false,
 		$aryAttributes = array(),
 		$strResult = '';
@@ -131,7 +130,7 @@ class WP_Piwik {
 		return (self::$settings->checkNetworkActivation()?'settings':'options-general').'.php?page='.self::$strPluginBasename;
 	}
 
-	private function addJavascriptCode() {
+	public function addJavascriptCode() {
 		if ($this->isHiddenUser()) {
 			self::$logger->log('Do not add tracking code to site (user should not be tracked) Blog ID: '.self::$blog_id.' Site ID: '.self::$settings->getOption('site_id'));
 			return;
@@ -166,97 +165,32 @@ class WP_Piwik {
 		}
 	}
 
-	/* -- </REFACTORED><OLD> -- */
-
-	/**
-	 * Add pages to admin menu
-	 */
-	function buildAdminMenu() {
-		// Show stats dashboard page if WP-Piwik is configured
+	public function buildAdminMenu() {
 		if (self::isConfigured()) {
-			// Add dashboard page
-			$this->intStatsPage = add_dashboard_page(
-				__('Piwik Statistics', 'wp-piwik'), 
-				self::$settings->getGlobalOption('plugin_display_name'), 
-				'wp-piwik_read_stats',
-				'wp-piwik_stats',
-				array($this, 'showStats')
-			);
-			// Add required scripts
-			add_action('admin_print_scripts-'.$this->intStatsPage, array($this, 'loadStatsScripts'));
-			// Add required styles
-			add_action('admin_print_styles-'.$this->intStatsPage, array($this, 'addAdminStyle'));
-			// Add required header tags
-			add_action('admin_head-'.$this->intStatsPage, array($this, 'addAdminHeaderStats'));
-			// Stats page onload callback
-			add_action('load-'.$this->intStatsPage, array(&$this, 'onloadStatsPage'));
+			$statsPage = new WP_Piwik_Admin_Statistics($this->subClassConfig());
+			$pageID = add_dashboard_page(__('Piwik Statistics', 'wp-piwik'), self::$settings->getGlobalOption('plugin_display_name'), 'wp-piwik_read_stats', 'wp-piwik_stats', array($statsPage, 'show'));
+			$statsPage->add($pageID);
 		}
 		if (!self::$settings->checkNetworkActivation()) {
-			// Add options page
-			$intOptionsPage = add_options_page(
-				self::$settings->getGlobalOption('plugin_display_name'),
-				self::$settings->getGlobalOption('plugin_display_name'), 
-				'activate_plugins',
-				__FILE__,
-				array($this, 'showSettings')
-			);
-			// Add required scripts
-			add_action('admin_print_scripts-'.$this->intStatsPage, array($this, 'loadSettingsScripts'));
-			// Add required header tags
-			add_action('admin_head-'.$intOptionsPage, array($this, 'addAdminHeaderSettings'));
-			// Add styles required by options page
-			add_action('admin_print_styles-'.$intOptionsPage, array($this, 'addAdminStyle'));
+			$optionsPage = new WP_Piwik_Admin_Settings($this->subClassConfig());
+			$optionsPageID = add_options_page(self::$settings->getGlobalOption('plugin_display_name'), self::$settings->getGlobalOption('plugin_display_name'), 'activate_plugins', __FILE__, array($optionsPage, 'show'));
+			$optionsPage->add($optionsPageID);
 		}
 	}
 
-	/**
-	 * Add pages to network admin menu
-	 */
-	function buildNetworkAdminMenu() {
+	public function buildNetworkAdminMenu() {
 		// Show stats dashboard page if WP-Piwik is configured
 		if (self::isConfigured()) {
-			// Add dashboard page
-			$this->intStatsPage = add_dashboard_page(
-				__('Piwik Statistics', 'wp-piwik'), 
-				self::$settings->getGlobalOption('plugin_display_name'), 
-				'manage_sites',
-				'wp-piwik_stats',
-				array($this, 'showStatsNetwork')
-			);
-			// Add required scripts
-			add_action('admin_print_scripts-'.$this->intStatsPage, array($this, 'loadStatsScripts'));
-			// Add required styles
-			add_action('admin_print_styles-'.$this->intStatsPage, array($this, 'addAdminStyle'));
-			// Add required header tags
-			add_action('admin_head-'.$this->intStatsPage, array($this, 'addAdminHeaderStats'));
-			// Stats page onload callback
-			add_action('load-'.$this->intStatsPage, array(&$this, 'onloadStatsPage'));
+			$statsPage = new WP_Piwik_Admin_Network($this->subClassConfig());
+			$pageID = add_dashboard_page(__('Piwik Statistics', 'wp-piwik'), self::$settings->getGlobalOption('plugin_display_name'), 'manage_sites', 'wp-piwik_stats', array($statsPage, 'show'));
+			$statsPage->add($pageID);
 		}
-		$intOptionsPage = add_submenu_page(
-			'settings.php',
-			self::$settings->getGlobalOption('plugin_display_name'),
-			self::$settings->getGlobalOption('plugin_display_name'),
-			'manage_sites',
-			__FILE__,
-			array($this, 'showSettings')
-		);
 		
-		// Add styles required by options page
-		add_action('admin_print_styles-'.$intOptionsPage, array($this, 'addAdminStyle'));
-		add_action('admin_head-'.$intOptionsPage, array($this, 'addAdminHeaderSettings'));
+		$optionsPage = new WP_Piwik_Admin_Settings($this->subClassConfig());
+		$optionsPageID = add_submenu_page('settings.php', self::$settings->getGlobalOption('plugin_display_name'), self::$settings->getGlobalOption('plugin_display_name'), 'manage_sites', __FILE__, array($optionsPage, 'show'));
+		$optionsPage->add($optionsPageID);
 	}
-	
-	/**
-	 * Support two columns 
-	 * seen in Heiko Rabe's metabox demo plugin 
-	 * 
-	 * @see http://tinyurl.com/5r5vnzs 
-	 */ 
-	function onScreenLayoutColumns($aryColumns, $strScreen) {		
-		if ($strScreen == $this->intStatsPage)
-			$aryColumns[$this->intStatsPage] = 3;
-		return $aryColumns;
-	}
+	/* -- </REFACTORED><OLD> -- */
 	
 	/**
 	 * Add widgets to WordPress dashboard
@@ -385,16 +319,6 @@ class WP_Piwik {
 	}
 
 	/**
-	 * Load required scripts to stats page
-	 */
-	function loadStatsScripts() {
-		// Load WP-Piwik script
-		wp_enqueue_script('wp-piwik', $this->getPluginURL().'js/wp-piwik.js', array(), self::$strVersion, true);
-		// Load jqPlot
-		wp_enqueue_script('wp-piwik-jqplot',$this->getPluginURL().'js/jqplot/wp-piwik.jqplot.js',array('jquery'));
-	}
-
-	/**
 	 * Load scripts required by Toolbar graphs
 	 */
 	function loadToolbarRequirements() {
@@ -405,21 +329,6 @@ class WP_Piwik {
 			// Load CSS
 			wp_enqueue_style('wp-piwik', $this->getPluginURL().'css/wp-piwik-spark.css');
 		}
-	}
-
-	/**
-	 * Load required scripts to settings page
-	 */
-	function loadSettingsScripts() {
-		wp_enqueue_script('jquery');
-	}
-
-	/**
-	 * Load required styles to admin pages
-	 */
-	function addAdminStyle() {
-		// Load WP-Piwik styles
-		wp_enqueue_style('wp-piwik', $this->getPluginURL().'css/wp-piwik.css',array(),self::$strVersion);
 	}
 
 	/**
@@ -469,33 +378,6 @@ class WP_Piwik {
 
 	function addPiwikAnnotation($postID) {
 		$this->callPiwikAPI('Annotations.add', '', date('Y-m-d'), '', false, false, 'PHP', '', false, 'Published: '.get_post($postID)->post_title.' - URL: '.get_permalink($postID));
-	}
-
-	/**
-	 * Add required header tags to stats page
-	 */
-	function addAdminHeaderStats() {
-		// Load jqPlot IE compatibility script
-		echo '<!--[if IE]><script language="javascript" type="text/javascript" src="'.$this->getPluginURL().'js/jqplot/excanvas.min.js"></script><![endif]-->';
-		// Load jqPlot styles
-		echo '<link rel="stylesheet" href="'.$this->getPluginURL().'js/jqplot/jquery.jqplot.min.css" type="text/css"/>';
-		echo '<script type="text/javascript">var $j = jQuery.noConflict();</script>';
-	}
-
-	/**
-	 * Add required header tags to settings page
-	 */
-	function addAdminHeaderSettings() {
-		echo '<script type="text/javascript">var $j = jQuery.noConflict();</script>';
-		echo '<script type="text/javascript">/* <![CDATA[ */(function() {var s = document.createElement(\'script\');var t = document.getElementsByTagName(\'script\')[0];s.type = \'text/javascript\';s.async = true;s.src = \'//api.flattr.com/js/0.6/load.js?mode=auto\';t.parentNode.insertBefore(s, t);})();/* ]]> */</script>';		
-	}
-	
-	/**
-	 * Get this plugin's URL
-	 */
-	function getPluginURL() {
-		// Return plugins URL + /wp-piwik/
-		return trailingslashit(plugins_url().'/wp-piwik/');
 	}
 
 	/**
@@ -838,7 +720,8 @@ class WP_Piwik {
 	 * }
 	 */
 
-	function onloadStatsPage() {
+	function onloadStatsPage($id) {
+		$this->intStatsPage = $id;
 		wp_enqueue_script('common');
 		wp_enqueue_script('wp-lists');
 		wp_enqueue_script('postbox');
@@ -1348,7 +1231,7 @@ class WP_Piwik {
 		return current_user_can('wp-piwik_stealth');
 	}
 	
-	private function isCurrentTrackingCode() {
+	public function isCurrentTrackingCode() {
 		return (self::$settings->getOption('last_tracking_code_update') > self::$settings->getGlobalOption('last_settings_update'));
 	}
 	
@@ -1366,6 +1249,20 @@ class WP_Piwik {
 		if ($newStatus == 'publish' && $oldStatus != 'publish' ) {
 			add_action('publish_post', array($this, 'addPiwikAnnotation'));
 		}
+	}
+	
+	public function getPluginURL() {
+		return trailingslashit(plugins_url().'/wp-piwik/');
+	}
+
+	public function getPluginVersion() {
+		return self::$strVersion;
+	}
+
+	public function onScreenLayoutColumns($aryColumns, $strScreen) {		
+		if ($strScreen == $this->intStatsPage)
+			$aryColumns[$this->intStatsPage] = 3;
+		return $aryColumns;
 	}
 	
 }

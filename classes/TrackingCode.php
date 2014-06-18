@@ -2,7 +2,8 @@
 
 	class WP_Piwik_TrackingCode {
 		
-		private static $logger, $settings, $wpPiwik, $trackingCode;
+		private static $logger, $settings, $wpPiwik;
+		private $trackingCode;
 		
 		public $is404 = false, $isSearch = false;
 		
@@ -14,9 +15,8 @@
 				self::$wpPiwik->addPiwikSite();
 			if (!self::$wpPiwik->isCurrentTrackingCode()) {
 				self::$settings->setOption('tracking_code', self::$wpPiwik->callPiwikAPI('SitesManager.getJavascriptTag'));
-			self::$settings->save();
-		}
-
+				self::$settings->save();
+			}
 			$this->trackingCode = self::$settings->getOption('tracking_code');
 		}
 
@@ -24,6 +24,7 @@
 			if ($this->is404) $this->apply404Changes();
 			if ($this->isSearch) $this->applySearchChanges();
 			if (is_single()) $this->addCustomValues();
+			return $this->trackingCode;
 		}
 		
 		private function apply404Changes() {
