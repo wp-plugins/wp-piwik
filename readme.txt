@@ -144,7 +144,7 @@ Please update Piwik if not done yet (Piwik 2.0 or higher is recommended)!
 * Feature: Show page views (actions) in "visitors last 30"
 
 = 0.9.9.9 =
-* Update: PHP API will use namespaces (Piwik 2.x compatibility)
+* Update: PHP API will use namespaces (Piwik 2.x compatibility, PHP 5.3+ required)
 * Update: Piwik URL isn't necessary to use PHP API anymore.
 * Feature: Limit cookie lifetime
 * Feature: Track visitors across all subdomains
