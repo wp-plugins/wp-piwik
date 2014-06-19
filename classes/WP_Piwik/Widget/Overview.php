@@ -25,7 +25,7 @@
 				'avg_time_on_site' => 0
 			);
 			$response = self::$wpPiwik->request($this->apiID);
-			if (!empty($response['status']) && $response['result'] ='error')
+			if (!empty($response['result']) && $response['result'] ='error')
 				echo '<strong>'.__('Piwik error', 'wp-piwik').':</strong> '.htmlentities($response['message'], ENT_QUOTES, 'utf-8');
 			else {
 				if ($this->parameter['date'] == 'last30') {

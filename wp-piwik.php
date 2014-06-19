@@ -36,7 +36,7 @@ if (!function_exists ('add_action')) {
 function wp_piwik_autoloader($class) {
 	if (substr($class, 0, 9) == 'WP_Piwik_') {
 		$class = str_replace('.', '', str_replace('_', '/',substr($class, 9)));
-		require_once('classes/'.$class.'.php');
+		require_once('classes/WP_Piwik/'.$class.'.php');
 	}
 }
 

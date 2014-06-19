@@ -351,55 +351,6 @@ class WP_Piwik {
 	}
 
 	/**
-	 * Call REST API
-	 * 
-	 * @param $strURL Remote file URL
-	 */
-	function callREST($strURL) {
-		$strPiwikURL = self::$settings->getGlobalOption('piwik_url');
-		if (substr($strPiwikURL, -1, 1) != '/') $strPiwikURL .= '/';
-		$strURL = $strPiwikURL.'?module=API'.$strURL;
-		// Use cURL if available	
-		if (function_exists('curl_init')) {
-			// Init cURL
-			$c = curl_init($strURL);
-			// Disable SSL peer verification if asked to
-			curl_setopt($c, CURLOPT_SSL_VERIFYPEER, !self::$settings->getGlobalOption('disable_ssl_verify'));
-			// Set user agent
-			curl_setopt($c, CURLOPT_USERAGENT, self::$settings->getGlobalOption('piwik_useragent')=='php'?ini_get('user_agent'):self::$settings->getGlobalOption('piwik_useragent_string'));
-			// Configure cURL CURLOPT_RETURNTRANSFER = 1
-			curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-			// Configure cURL CURLOPT_HEADER = 0 
-			curl_setopt($c, CURLOPT_HEADER, 0);
-			// Set cURL timeout
-			curl_setopt($c, CURLOPT_TIMEOUT, self::$settings->getGlobalOption('connection_timeout'));
-			$httpProxyClass = new WP_HTTP_Proxy();
-			if ($httpProxyClass->is_enabled() && $httpProxyClass->send_through_proxy($strURL)) {
-				curl_setopt($c, CURLOPT_PROXY, $httpProxyClass->host());
-				curl_setopt($c, CURLOPT_PROXYPORT, $httpProxyClass->port());
-				if ($httpProxyClass->use_authentication())
-					curl_setopt($c, CURLOPT_PROXYUSERPWD, $httpProxyClass->username().':'.$httpProxyClass->password());
-			}
-			// Get result
-			$strResult = curl_exec($c);
-			// Close connection			
-			curl_close($c);
-		// cURL not available but url fopen allowed
-		} elseif (ini_get('allow_url_fopen')) {
-			// Set timeout
-			$resContext = stream_context_create(array('http'=>array('timeout' => self::$settings->getGlobalOption('connection_timeout'))));
-			// Get file using file_get_contents
-			$strResult = @file_get_contents($strURL, false, $strContext);
-		// Error: Not possible to get remote file
-		} else $strResult = serialize(array(
-				'result' => 'error',
-				'message' => 'Remote access to Piwik not possible. Enable allow_url_fopen or CURL.'
-			));
-		// Return result
-		return $strResult;
-	}
-	
-	/**
 	 * Call PHP API
 	 * 
 	 * @param $strParams API call params
@@ -430,18 +381,6 @@ class WP_Piwik {
 			echo $current;
 		}
 		return $objRequest->process();	
-	}
-
-	/**
-	 * Get remote file
-	 * 
-	 * @param String $strURL Remote file URL
-	 */
-	function getRemoteFile($strURL, $blogURL = '') {
-		if (self::$settings->getGlobalOption('piwik_mode') == 'php')
-			return $this->callPHP($strURL.($blogURL?'&url='.$blogURL:''));
-		else
-			return $this->callREST($strURL.($blogURL?'&url='.urlencode($blogURL):''));
 	}
 
 	/**
@@ -620,25 +559,29 @@ class WP_Piwik {
 				return $result;
 			}
 			// Build URL			
-			$strURL = '&method='.$strMethod;
-			$strURL .= '&idSite='.(int)$intSite.'&period='.$strPeriod.'&date='.$strDate;
-			$strURL .= '&filter_limit='.$intLimit;
-			$strURL .= '&token_auth='.$strToken;
-			$strURL .= '&expanded='.$bolExpanded;
-			$strURL .= '&format='.$strFormat;
-			$strURL .= ($strPageURL?'&pageUrl='.urlencode($strPageURL):'');
-			$strURL .= ($strNote?'&note='.urlencode($strNote):'');
+			$param['period']=$strPeriod;
+			$param['date']=$strDate;
+			$param['filter_limit']=$intLimit;
+			$param['expanded']=$bolExpanded;
+			
+			if ($strPageURL)
+				$param['pageUrl'] = urlencode($strPageURL);
+			
+			if ($strNote)
+				$param['note'] = urlencode($strNote);
+			
 			if (self::$settings->getGlobalOption('track_across') && $strMethod == 'SitesManager.getJavascriptTag') {
-				$strURL .= '&mergeSubdomains=1';
+				$param['mergeSubdomains']=1;
 			}
 			if (self::$settings->getGlobalOption('track_across_alias') && $strMethod == 'SitesManager.getJavascriptTag') {
-				$strURL .= '&mergeAliasUrls=1';
+				$param['mergeAliasUrls']=1;
 			}
+			
 			// Fetch data if site exists
 			if (!empty($intSite) || $strMethod=='SitesManager.getSitesWithAtLeastViewAccess') {
-				self::$logger->log('API method: '.$strMethod.' API call: '.$strURL);
-				$strResult = (string) $this->getRemoteFile($strURL, get_bloginfo('url'));			
-				$result = ($strFormat == 'PHP'?unserialize($strResult):$strResult);
+				$id = WP_Piwik_Request::register($strMethod, $param);
+				self::$logger->log('API method: '.$strMethod.' API call: '.$id);
+				$result = self::request($id);
 				// Apply tracking code changes if configured
 				if ($strMethod == 'SitesManager.getJavascriptTag' && !empty($result)) {
 					$result = is_string($result)?$this->applyJSCodeChanges($result):'<!-- WP-Piwik ERROR: Tracking code not availbale -->'."\n";
@@ -1211,8 +1154,8 @@ class WP_Piwik {
 	
 	public function request($id) {
 		if (!isset(self::$request))
-			if (self::$settings->getGlobalOption('piwik_mode') == 'http') self::$request = new WP_Piwik_Request_Rest();
-			else self::$request = new WP_Piwik_Request_Php();
+			if (self::$settings->getGlobalOption('piwik_mode') == 'http') self::$request = new WP_Piwik_Request_Rest($this, self::$settings);
+			else self::$request = new WP_Piwik_Request_Php($this, self::$settings);
 		return self::$request->perform($id);
 	}
 	
