@@ -26,7 +26,5 @@
 			$end = time() + $diff;
 			$start = time() - 2592000 + $diff;
 			return date('Y-m-d', $start).','.date('Y-m-d', $end);
-			
 		}
-
 	}
