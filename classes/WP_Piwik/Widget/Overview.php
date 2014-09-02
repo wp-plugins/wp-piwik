@@ -1,6 +1,8 @@
 <?php
 
 	class WP_Piwik_Widget_Overview extends WP_Piwik_Widget {
+	
+		public $className = __CLASS__;
 
 		protected function configure() {
 			$this->title = self::$settings->getGlobalOption('plugin_display_name').' - '.__('Overview', 'wp-piwik').' ('.__(self::$settings->getGlobalOption('dashboard_widget'), 'wp-piwik').')';
@@ -13,7 +15,7 @@
 		}
 		
 		public function show() {
-			$response = self::$wpPiwik->request($this->apiID);
+			$response = self::$wpPiwik->request($this->apiID[$this->method]);
 			if (!empty($response['result']) && $response['result'] ='error')
 				echo '<strong>'.__('Piwik error', 'wp-piwik').':</strong> '.htmlentities($response['message'], ENT_QUOTES, 'utf-8');
 			else {
@@ -32,5 +34,6 @@
 				$tableFoot = (self::$settings->getGlobalOption('piwik_shortcut')?array(__('Shortcut', 'wp-piwik').':', '<a href="'.self::$settings->getGlobalOption('piwik_url').'">Piwik</a>'.(isset($aryConf['inline']) && $aryConf['inline']?' - <a href="?page=wp-piwik_stats">WP-Piwik</a>':'')):null);
 				$this->table($tableHead, $tableBody, $tableFoot);
 			}
-		}		
+		}
+		
 	}

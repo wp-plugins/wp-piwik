@@ -36,7 +36,7 @@
 			}
 			$result = curl_exec($c);
 			curl_close($c);
-			return unserialize($result);				
+			return $this->unserialize($result);				
 		}
 			
 		private function fopen($url, $params) {

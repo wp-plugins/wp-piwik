@@ -180,13 +180,11 @@ class WP_Piwik {
 	}
 
 	public function buildNetworkAdminMenu() {
-		// Show stats dashboard page if WP-Piwik is configured
 		if (self::isConfigured()) {
 			$statsPage = new WP_Piwik_Admin_Network($this);
 			$pageID = add_dashboard_page(__('Piwik Statistics', 'wp-piwik'), self::$settings->getGlobalOption('plugin_display_name'), 'manage_sites', 'wp-piwik_stats', array($statsPage, 'show'));
 			$statsPage->add($pageID);
 		}
-		
 		$optionsPage = new WP_Piwik_Admin_Settings($this);
 		$optionsPageID = add_submenu_page('settings.php', self::$settings->getGlobalOption('plugin_display_name'), self::$settings->getGlobalOption('plugin_display_name'), 'manage_sites', __FILE__, array($optionsPage, 'show'));
 		$optionsPage->add($optionsPageID);
@@ -196,23 +194,14 @@ class WP_Piwik {
 		if (current_user_can('wp-piwik_read_stats')) {
 			if (self::$settings->getGlobalOption('dashboard_widget'))
 				new WP_Piwik_Widget_Overview($this, self::$settings);
-	/* -- </REFACTORED><OLD> -- */
-
-			// Add chart widget if enabled
-			if (self::$settings->getGlobalOption('dashboard_chart')) {				
-				// Add required scripts
-				add_action('admin_print_scripts-index.php', array($this, 'loadStatsScripts'));
-				// Add required styles
-				add_action('admin_print_styles-index.php', array($this, 'addAdminStyle'));
-				// Add required header tags
-				add_action('admin_head-index.php', array($this, 'addAdminHeaderStats'));
-				$this->addWordPressDashboardChart();
-			}
-			// Add SEO widget if enabled
+			if (self::$settings->getGlobalOption('dashboard_chart'))
+				new WP_Piwik_Widget_Chart($this, self::$settings);
 			if (self::$settings->getGlobalOption('dashboard_seo'))
-				$this->addWordPressDashboardSEO();
+				new WP_Piwik_Widget_Seo($this, self::$settings);
 		}
 	}
+	
+	// ------- END OF REFACTORING -------
 	
 	/**
 	 * Add widgets to WordPress Toolbar
@@ -234,26 +223,6 @@ class WP_Piwik {
 		}		
 	}
 	
-	/**
-	 * Add a visitor chart to the WordPress dashboard
-	 */
-	function addWordPressDashboardChart() {
-		$aryConfig = array(
-			'params' => array('period' => 'day','date'  => 'last30','limit' => null),
-			'inline' => true,			
-		);
-		$strFile = 'visitors';
-		add_meta_box(
-				'wp-piwik_stats-dashboard-chart', 
-				self::$settings->getGlobalOption('plugin_display_name').' - '.__('Visitors', 'wp-piwik'), 
-				array(&$this, 'createDashboardWidget'), 
-				'dashboard', 
-				'side', 
-				'high',
-				array('strFile' => $strFile, 'aryConfig' => $aryConfig)
-			);
-	}	
-
 	/**
 	 * Add a SEO widget to the WordPress dashboard
 	 */
@@ -397,7 +366,8 @@ class WP_Piwik {
 		$strURL = '&method=SitesManager.getSitesIdFromSiteUrl';
 		$strURL .= '&format=PHP';
 		$strURL .= '&token_auth='.self::$settings->getGlobalOption('piwik_token');
-		$aryResult = unserialize($this->getRemoteFile($strURL, get_bloginfo('url')));
+		//$aryResult = unserialize($this->getRemoteFile($strURL, get_bloginfo('url')));
+		$aryResult[0]['idsite'] = 2;
 		if (!empty($aryResult) && isset($aryResult[0]['idsite'])) {
 			self::$settings->setOption('site_id', (int) $aryResult[0]['idsite']);
 		// Otherwise create new site
@@ -580,7 +550,7 @@ class WP_Piwik {
 			// Fetch data if site exists
 			if (!empty($intSite) || $strMethod=='SitesManager.getSitesWithAtLeastViewAccess') {
 				$id = WP_Piwik_Request::register($strMethod, $param);
-				self::$logger->log('API method: '.$strMethod.' API call: '.$id);
+				self::log('API method: '.$strMethod.' API call registered: '.$id);
 				$result = self::request($id);
 				// Apply tracking code changes if configured
 				if ($strMethod == 'SitesManager.getJavascriptTag' && !empty($result)) {
@@ -616,6 +586,8 @@ class WP_Piwik {
 		wp_enqueue_script('common');
 		wp_enqueue_script('wp-lists');
 		wp_enqueue_script('postbox');
+		wp_enqueue_script('wp-piwik', $this->getPluginURL().'js/wp-piwik.js', array(), self::$strVersion, true);
+		wp_enqueue_script('wp-piwik-jqplot',$this->getPluginURL().'js/jqplot/wp-piwik.jqplot.js',array('jquery'));
 		$strToken = self::$settings->getGlobalOption('piwik_token');
 		$strPiwikURL = self::$settings->getGlobalOption('piwik_url');
 		$aryDashboard = array();
@@ -1091,6 +1063,10 @@ class WP_Piwik {
 			default:
 				self::$logger = new WP_Piwik_Logger_Dummy(__CLASS__);
 		}
+	}
+	
+	public static function log($message) {
+		self::$logger->log($message);
 	}
 
 	private function closeLogger() {

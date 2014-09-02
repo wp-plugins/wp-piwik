@@ -4,15 +4,23 @@
 		
 		protected static $wpPiwik, $settings;
 		
-		protected $method = '', $title = '', $type = 'dashboard', $context = 'side', $priority = 'high', $parameter = array(), $apiID = null;
+		protected $method = '', $title = '', $type = 'dashboard', $context = 'side', $priority = 'high', $parameter = array(), $apiID = array();
 		
 		public function __construct($wpPiwik, $settings) {
 			self::$wpPiwik = $wpPiwik;
 			self::$settings = $settings;
 			$this->configure();
-			$this->apiID = WP_Piwik_Request::register($this->method, $this->parameter);
+			if (is_array($this->method)) 
+				foreach ($this->method as $method) {
+					$this->apiID[$method] = WP_Piwik_Request::register($method, $this->parameter);
+					self::$wpPiwik->log("Register request: ".$this->apiID[$method]);
+				}
+			else {
+				$this->apiID[$this->method] = WP_Piwik_Request::register($this->method, $this->parameter);
+				self::$wpPiwik->log("Register request: ".$this->apiID[$this->method]);
+			}
 			add_meta_box(
-				__CLASS__,
+				$this->getClass(),
 				$this->title, 
 				array($this, 'show'), 
 				$this->type, 
@@ -24,6 +32,10 @@
 		protected function configure() {}
 		
 		abstract function show();
+		
+		protected function getClass() {
+			return $this->className;
+		}
 		
 		protected function timeFormat($time) {
 			return floor($time/3600).'h '.floor(($time % 3600)/60).'m '.floor(($time % 3600)%60).'s';

@@ -10,7 +10,7 @@
 		}
 		
 		public static function register($method, $parameter) {
-			$id = $method.'?'.self::parameterToString($parameter);
+			$id = 'method='.$method.self::parameterToString($parameter);
 			if (!isset(self::$requests[$id]))
 				self::$requests[$id] = array('method' => $method, 'parameter' => $parameter);
 			return $id;
@@ -25,12 +25,13 @@
 		}
 		
 		public function perform($id) {
+			self::$wpPiwik->log("Perform request: ".$id);
 			if (!isset(self::$requests[$id]))
 				return array('result' => 'error', 'message' => 'Request '.$id.' was not registered.');
 			elseif (!isset(self::$results[$id])) {
 				$this->request($id);
 			}
-			return self::$results[$id];
+			return isset(self::$results[$id])?self::$results[$id]:false;
 		}
 		
 		protected function buildURL($config) {
@@ -38,6 +39,11 @@
 			foreach ($config['parameter'] as $key => $value)
 				$url .= '&'.$key.'='.urlencode($value);
 			return $url;
+		}
+		
+		protected function unserialize($str) {
+			self::$wpPiwik->log("Result string: ".$str);
+		    return ($str == serialize(false) || @unserialize($str) !== false)?unserialize($str):array();
 		}
 		
 		abstract protected function request($id);
