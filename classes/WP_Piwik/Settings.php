@@ -160,4 +160,18 @@
 				require_once(ABSPATH.'wp-admin/includes/plugin.php');
 			return is_plugin_active_for_network('wp-piwik/wp-piwik.php');
 		}
+		
+		private function applyGlobalOption($id, $default = false) {
+			$value = isset($_POST['wp-piwik_'.$id]) && !empty($_POST['wp-piwik_'.$id])?$_POST['wp-piwik_'.$id]:$default;
+			self::$logger->log('Set '.$id.': '.self::$settings->getGlobalOption($id).' &rarr; '.$value);
+			self::$settings->setGlobalOption($id, $value);
+		}
+		
+		public function applyChanges() {
+			self::$logger->log('Apply changed settings:');
+			foreach (self::$defaultSettings as $key => $val)
+				$this->applyGlobalOption($key, $val);
+			self::$settings->setGlobalOption('last_settings_update', time());
+		}
+
 	}

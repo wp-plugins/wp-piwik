@@ -10,22 +10,19 @@ $aryData = $this->callPiwikAPI('VisitsSummary.get',
 
 $this->strResult = '<table><tr><th colspan="2">'.__('Overview', 'wp-piwik').($this->aryAttributes['title']?' '.$this->aryAttributes['title']:'').'</th></tr>';
 
-function summize($aryData) {
-	$aryTmp = array();
-	foreach ($aryData as $aryValues)
-		foreach($aryValues as $strKey => $intValue)
-			if (isset($aryTmp[$strKey])) $aryTmp[$strKey] += $intValue;
-			else $aryTmp[$strKey] = $intValue;
-	$aryTmp['bounce_rate'] = ($aryTmp['nb_uniq_visitors']==0?0:round($aryTmp['bounce_count']/$aryTmp['nb_visits']*100,2)).'%';	
-	
-	return $aryTmp;
-}
-
 if (is_array($aryData)) {
 		if (isset($aryData['result']) && $aryData['result'] == 'error')
 			$this->strResult .= '<tr><td>'.__('Error', 'wp-piwik').':'.'</td><td>'.$aryData['message'].'</td></tr>';
 		else {
-			if (is_array(current($aryData)))
+			if (is_array(current($aryData))) {
+				$aryTmp = array();
+				foreach ($aryData as $aryValues)
+					foreach($aryValues as $strKey => $intValue)
+						if (isset($aryTmp[$strKey])) $aryTmp[$strKey] += $intValue;
+						else $aryTmp[$strKey] = $intValue;
+					$aryTmp['bounce_rate'] = ($aryTmp['nb_uniq_visitors']==0?0:round($aryTmp['bounce_count']/$aryTmp['nb_visits']*100,2)).'%';	
+				$aryData = $aryTmp;
+			}
 				$aryData = summize($aryData);			
 			$strTime = 
 				floor($aryData['sum_visit_length']/3600).'h '.
