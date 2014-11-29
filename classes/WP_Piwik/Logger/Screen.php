@@ -2,7 +2,7 @@
 	
 	namespace WP_Piwik\Logger;
 
-	class Screen extends WP_Piwik\Logger {
+	class Screen extends \WP_Piwik\Logger {
 	
 		private $logs = array();
 		

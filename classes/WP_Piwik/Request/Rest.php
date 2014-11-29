@@ -2,7 +2,7 @@
 
 	namespace WP_Piwik\Request;
 
-	class Rest extends WP_Piwik\Request {
+	class Rest extends \WP_Piwik\Request {
 			
 		protected function request($id) {
 			$count = 0;

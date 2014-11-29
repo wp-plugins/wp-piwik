@@ -2,7 +2,7 @@
 	
 	namespace WP_Piwik\Admin;
 
-	class Statistics extends WP_Piwik\Admin {
+	class Statistics extends \WP_Piwik\Admin {
 
 		public function show() {
 			self::$wpPiwik->showStats();

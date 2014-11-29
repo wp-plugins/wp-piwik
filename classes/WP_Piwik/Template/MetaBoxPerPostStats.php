@@ -2,7 +2,7 @@
 
 	namespace WP_Piwik\Template;
 
-	class MetaBoxPerPostStats extends WP_Piwik\Template {
+	class MetaBoxPerPostStats extends \WP_Piwik\Template {
 				
 		function addMetabox() {
 			add_meta_box(

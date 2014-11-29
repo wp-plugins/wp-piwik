@@ -54,9 +54,9 @@ load_plugin_textdomain('wp-piwik', false, 'wp-piwik'.DIRECTORY_SEPARATOR.'langua
 if (version_compare(PHP_VERSION, '5.3.0', '<')) 
 	add_action('admin_notices', 'wp_piwik_phperror');
 else {
-	define('WP-PIWIK_PATH', dirname(__FILE__).DIRECTORY_SEPARATOR);
-	require_once(WP-PIWIK_PATH.'config.php');
-	require_once(WP-PIWIK_PATH.'classes'.DIRECTORY_SEPARATOR.'WP_Piwik.php');
+	define('WP_PIWIK_PATH', dirname(__FILE__).DIRECTORY_SEPARATOR);
+	require_once(WP_PIWIK_PATH.'config.php');
+	require_once(WP_PIWIK_PATH.'classes'.DIRECTORY_SEPARATOR.'WP_Piwik.php');
 	spl_autoload_register('wp_piwik_autoloader');
 	if (class_exists('WP_Piwik'))
 		$GLOBALS['wp-piwik'] = new WP_Piwik();

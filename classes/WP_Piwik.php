@@ -338,7 +338,7 @@ class WP_Piwik {
 	}
 	
 	private function openLogger() {
-		switch (WP-PIWIK_ACTIVATE_LOGGER) {
+		switch (WP_PIWIK_ACTIVATE_LOGGER) {
 			case 1:
 				self::$logger = new WP_Piwik\Logger\Screen(__CLASS__);
 			break;
@@ -364,8 +364,8 @@ class WP_Piwik {
 	
 	private function includeFile($strFile) {
 		self::$logger->log('Include '.$strFile.'.php');
-		if (WP-PIWIK_PATH.$strFile.'.php')
-			include(WP-PIWIK_PATH.$strFile.'.php');
+		if (WP_PIWIK_PATH.$strFile.'.php')
+			include(WP_PIWIK_PATH.$strFile.'.php');
 	}
 	
 	private function isHiddenUser() {
