@@ -1,6 +1,8 @@
 <?php
 
-	abstract class WP_Piwik_Admin {
+	namespace WP_Piwik;
+	
+	abstract class Admin {
 		
 		protected static $wpPiwik, $pageID;
 		

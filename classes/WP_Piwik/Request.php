@@ -1,6 +1,8 @@
 <?php
 
-	abstract class WP_Piwik_Request {
+	namespace WP_Piwik\Request;
+
+	abstract class Request {
 		
 		protected static $wpPiwik, $settings, $requests = array(), $results = array();
 		

@@ -1,13 +1,15 @@
 <?php
 
-	class WP_Piwik_Template {
+	namespace WP_Piwik;
+
+	class Template {
 		
 		public static $logger, $settings, $wpPiwik;
 		
 		public function __construct($config) {
 			self::$logger = $config['logger'];
 			self::$settings = $config['settings'];
-			self::$wpPiwik = $config['wp_piwik'];
+			self::$wpPiwik = $config['wp-piwik'];
 		}
 
 		public function output($array, $key, $default = '') {

@@ -1,6 +1,8 @@
 <?php
+	
+	namespace WP_Piwik\Admin;
 
-	class WP_Piwik_Admin_Statistics extends WP_Piwik_Admin {
+	class Statistics extends WP_Piwik\Admin {
 
 		public function show() {
 			self::$wpPiwik->showStats();

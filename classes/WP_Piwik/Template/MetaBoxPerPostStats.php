@@ -1,6 +1,8 @@
 <?php
 
-	class WP_Piwik_Template_MetaBoxPerPostStats extends WP_Piwik_Template {
+	namespace WP_Piwik\Template;
+
+	class MetaBoxPerPostStats extends WP_Piwik\Template {
 				
 		function addMetabox() {
 			add_meta_box(

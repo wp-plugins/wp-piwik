@@ -1,6 +1,8 @@
 <?php
 
-	class WP_Piwik_Request_Php extends WP_Piwik_Request {
+	namespace WP_Piwik\Request;
+
+	class Php extends WP_Piwik\Request {
 			
 		protected function request($id) {
 			$count = 0;

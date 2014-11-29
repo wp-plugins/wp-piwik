@@ -46,7 +46,7 @@ class SiteBrowser extends WP_List_Table {
 					'name' => $objBlog->blogname,
 					'id' => $objBlog->blog_id,
 					'siteurl' => $objBlog->siteurl,
-					'piwikid' => WP_Piwik::getSiteID($objBlog->blog_id)
+					'piwikid' => WP-Piwik::getSiteID($objBlog->blog_id)
 				);
 			}
 		} else {
@@ -55,7 +55,7 @@ class SiteBrowser extends WP_List_Table {
 				'name' => get_bloginfo('name'),
 				'id' => '-',
 				'siteurl' => get_bloginfo('url'),
-				'piwikid' => WP_Piwik::getSiteID()
+				'piwikid' => WP-Piwik::getSiteID()
 			);
 			$total_items = 1;
 		}

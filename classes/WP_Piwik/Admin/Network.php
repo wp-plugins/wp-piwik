@@ -1,6 +1,8 @@
 <?php
 
-	class WP_Piwik_Admin_Network extends WP_Piwik_Admin {
+	namespace WP_Piwik\Admin;
+
+	class Network extends WP_Piwik\Admin {
 
 		public function show() {
 			self::$wpPiwik->showStatsNetwork();

@@ -1,6 +1,8 @@
 <?php
 	
-	class WP_Piwik_Logger_File extends WP_Piwik_Logger {
+	namespace WP_Piwik\Logger;
+	
+	class File extends WP_Piwik\Logger {
 	
 		private $loggerFile = null;
 	
@@ -11,7 +13,7 @@
 		}
 		
 		private function setFilename() {
-			$this->loggerFile = WP_PIWIK_PATH.'logs'.DIRECTORY_SEPARATOR.
+			$this->loggerFile = WP-PIWIK_PATH.'logs'.DIRECTORY_SEPARATOR.
 				date('Ymd').'_'.$this->encodeFilename($this->getName()).'.log';
 		}
 		

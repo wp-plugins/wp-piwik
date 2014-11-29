@@ -1,6 +1,8 @@
 <?php
 
-	class WP_Piwik_Widget_Overview extends WP_Piwik_Widget {
+	namespace WP_Piwik\Widget;
+
+	class Overview extends WP_Piwik\Widget {
 	
 		public $className = __CLASS__;
 

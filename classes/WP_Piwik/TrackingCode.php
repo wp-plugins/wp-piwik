@@ -1,6 +1,8 @@
 <?php
 
-	class WP_Piwik_TrackingCode {
+	namespace WP_Piwik;
+
+	class TrackingCode {
 		
 		private static $wpPiwik;
 		private $trackingCode;

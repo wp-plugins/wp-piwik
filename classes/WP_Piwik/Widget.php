@@ -1,6 +1,8 @@
 <?php
 
-	abstract class WP_Piwik_Widget {
+	namespace Widget;
+
+	abstract class Widget {
 		
 		protected static $wpPiwik, $settings;
 		
@@ -12,11 +14,11 @@
 			$this->configure();
 			if (is_array($this->method)) 
 				foreach ($this->method as $method) {
-					$this->apiID[$method] = WP_Piwik_Request::register($method, $this->parameter);
+					$this->apiID[$method] = WP_Piwik\Request::register($method, $this->parameter);
 					self::$wpPiwik->log("Register request: ".$this->apiID[$method]);
 				}
 			else {
-				$this->apiID[$this->method] = WP_Piwik_Request::register($this->method, $this->parameter);
+				$this->apiID[$this->method] = WP_Piwik\Request::register($this->method, $this->parameter);
 				self::$wpPiwik->log("Register request: ".$this->apiID[$this->method]);
 			}
 			add_meta_box(

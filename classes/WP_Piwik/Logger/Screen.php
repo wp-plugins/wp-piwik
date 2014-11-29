@@ -1,6 +1,8 @@
 <?php
 	
-	class WP_Piwik_Logger_Screen extends WP_Piwik_Logger {
+	namespace WP_Piwik\Logger;
+
+	class Screen extends WP_Piwik\Logger {
 	
 		private $logs = array();
 		

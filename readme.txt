@@ -80,7 +80,7 @@ See [Piwik FAQ](http://piwik.org/faq/how-to/#faq_113).
 = Can I also access some Piwik values using a PHP call? =
 
 Yes, you can access also available shortcodes using PHP, too. See this example:
-echo $GLOBALS['wp_piwik']->shortcode(array('module' => 'post', 'range' => 'last300', 'key' => 'sum_daily_nb_uniq_visitors'));
+echo $GLOBALS['wp-piwik']->shortcode(array('module' => 'post', 'range' => 'last300', 'key' => 'sum_daily_nb_uniq_visitors'));
 
 == Installation ==
 

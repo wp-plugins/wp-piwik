@@ -1,6 +1,8 @@
 <?php
 
-	class WP_Piwik_Admin_Settings extends WP_Piwik_Admin {
+	namespace WP_Piwik\Admin;
+	
+	class Settings extends WP_Piwik\Admin {
 
 		public function show() {
 			self::$wpPiwik->showSettings();

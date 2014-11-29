@@ -1,6 +1,8 @@
 <?php
 
-	abstract class WP_Piwik_Logger {
+	namespace WP_Piwik;
+
+	abstract class Logger {
 		
 		private $loggerName = 'unnamed';
 		private $loggerContent = array();
