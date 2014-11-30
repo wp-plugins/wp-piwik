@@ -142,8 +142,7 @@ class WP_Piwik {
 		self::$logger->log('Add tracking code. Blog ID: '.self::$blog_id.' Site ID: '.self::$settings->getOption('site_id'));
 		echo $trackingCode->getTrackingCode();
 		// TODO: Move to a better position
-		$strName = get_bloginfo('name');
-		if (self::$settings->getOption('name') != $strName)
+		if (self::$settings->getOption('name') != get_bloginfo('name'))
 			$this->updatePiwikSite();
 	}
 		
@@ -455,7 +454,6 @@ class WP_Piwik {
 		return (is_int($result)?$result:'n/a');
 	}
 	
-	// ------- END OF REFACTORING -------
 	public function shortcode($attributes) {
 		shortcode_atts(array(
 			'title' => '',
@@ -469,121 +467,76 @@ class WP_Piwik {
 			'range' => false,
 			'key' => 'sum_daily_nb_uniq_visitors'
 		), $attributes);
-		switch ($attributes['module']) {
-			case 'opt-out':
-				return '<iframe frameborder="no" width="'.$attributes['width'].'" height="'.$attributes['height'].'" src="'.self::$settings->getGlobalOption('piwik_url').'index.php?module=CoreAdminHome&action=optOut&language='.$attributes['language'].'"></iframe>';
-			break;
-			case 'post':
-				self::includeFile('shortcodes/post');
-			break;
-			case 'overview':
-			default:
-				self::includeFile('shortcodes/overview');
-		}
+		new \WP_Piwik\Shortcode($attributes);
 	}
 	
-	/**
-	 * Update a site 
-	 */ 
-	function updatePiwikSite() {
-		$strBlogURL = get_bloginfo('url');
-		// Check if blog URL already known
-		$strName = get_bloginfo('name');
-		if (empty($strName)) $strName = $strBlogURL;
-		self::$settings->setOption('name', $strName);
-		$strURL = '&method=SitesManager.updateSite';
-		$strURL .= '&idSite='.self::$settings->getOption('site_id');
-		$strURL .= '&siteName='.urlencode($strName).'&urls='.urlencode($strBlogURL);
-		$strURL .= '&format=PHP';
-		$strURL .= '&token_auth='.self::$settings->getGlobalOption('piwik_token');
-		$strResult = unserialize($this->getRemoteFile($strURL));		
-		// Store new data
-		self::$settings->getOption('tracking_code', $this->callPiwikAPI('SitesManager.getJavascriptTag'));
-		self::$settings->save();
+	private function updatePiwikSite() {
+		$blogURL = get_bloginfo('url');
+		$blogName = (get_bloginfo('name')?get_bloginfo('name'):$blogURL);
+		self::$settings->setOption('name', $blogName);
+		/*
+			TODO: Define update request
+			$url = '&method=SitesManager.updateSite&idSite='.self::$settings->getOption('site_id').'&siteName='.urlencode($strName).'&urls='.urlencode($strBlogURL).'&format=PHP&token_auth='.self::$settings->getGlobalOption('piwik_token');
+		$this->getRemoteFile($url);
+		*/		
+		$this->updateTrackingCode();
 	}
  	
-	function onloadStatsPage($id) {
-		$this->intStatsPage = $id;
+	function onloadStatsPage($statsPageId) {
 		wp_enqueue_script('common');
 		wp_enqueue_script('wp-lists');
 		wp_enqueue_script('postbox');
 		wp_enqueue_script('wp-piwik', $this->getPluginURL().'js/wp-piwik.js', array(), self::$strVersion, true);
-		wp_enqueue_script('wp-piwik-jqplot',$this->getPluginURL().'js/jqplot/wp-piwik.jqplot.js',array('jquery'));
-		$strToken = self::$settings->getGlobalOption('piwik_token');
-		$strPiwikURL = self::$settings->getGlobalOption('piwik_url');
-		$aryDashboard = array();
-		// Set default configuration
-		$arySortOrder = array(
+		wp_enqueue_script('wp-piwik-jqplot',$this->getPluginURL().'js/jqplot/wp-piwik.jqplot.js', array('jquery'), self::$strVersion);
+		$dashboard = array();
+		$defaultOrder = array(
 			'side' => array(
-				'overview' => array(__('Overview', 'wp-piwik'), 'day', 'yesterday'),
-				'seo' => array(__('SEO', 'wp-piwik'), 'day', 'yesterday'),
-				'pages' => array(__('Pages', 'wp-piwik'), 'day', 'yesterday'),
-				'keywords' => array(__('Keywords', 'wp-piwik'), 'day', 'yesterday', 10),
-				'websites' => array(__('Websites', 'wp-piwik'), 'day', 'yesterday', 10),
-				'plugins' => array(__('Plugins', 'wp-piwik'), 'day', 'yesterday'),
-				'search' => array(__('Site Search Keywords', 'wp-piwik'), 'day', 'yesterday', 10),
-				'noresult' => array(__('Site Search without Results', 'wp-piwik'), 'day', 'yesterday', 10),
+				'overview' => array('title' => __('Overview', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
+				'seo' => (self::$settings->getGlobalOption('stats_seo')?array('title' => __('SEO', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'):false),
+				'pages' => array('title' => __('Pages', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
+				'keywords' => array('title' => __('Keywords', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday', 'limit' => 10),
+				'websites' => array('title' => __('Websites', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday', 'limit' => 10),
+				'plugins' => array('title' => __('Plugins', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
+				'search' => array('title' => __('Site Search Keywords', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday', 'limit' => 10),
+				'noresult' => array('title' => __('Site Search without Results', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday', 'limit' => 10),
 			),
 			'normal' => array(
-				'visitors' => array(__('Visitors', 'wp-piwik'), 'day', 'last30'),
-				'browsers' => array(__('Browser', 'wp-piwik'), 'day', 'yesterday'),
-				'browserdetails' => array(__('Browser Details', 'wp-piwik'), 'day', 'yesterday'),
-				'screens' => array(__('Resolution', 'wp-piwik'), 'day', 'yesterday'),
-				'systems' => array(__('Operating System', 'wp-piwik'), 'day', 'yesterday')
+				'visitors' => array('title' => __('Visitors', 'wp-piwik'), 'period' => 'day', 'date' => 'last30'),
+				'browsers' => array('title' => __('Browser', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
+				'browserdetails' => array('title' => __('Browser Details', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
+				'screens' => array('title' => __('Resolution', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
+				'systems' => array('title' => __('Operating System', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday')
 			)
 		);
-		// Don't show SEO stats if disabled
-		if (!self::$settings->getGlobalOption('stats_seo'))
-			unset($arySortOrder['side']['seo']);
-			
-		foreach ($arySortOrder as $strCol => $aryWidgets) {
-			if (is_array($aryWidgets)) foreach ($aryWidgets as $strFile => $aryParams) {
-					$aryDashboard[$strCol][$strFile] = array(
-						'params' => array(
-							'title'	 => (isset($aryParams[0])?$aryParams[0]:$strFile),
-							'period' => (isset($aryParams[1])?$aryParams[1]:''),
-							'date'   => (isset($aryParams[2])?$aryParams[2]:''),
-							'limit'  => (isset($aryParams[3])?$aryParams[3]:'')
-						)
-					);
-					if (isset($_GET['date']) && preg_match('/^[0-9]{8}$/', $_GET['date']) && $strFile != 'visitors')
-						$aryDashboard[$strCol][$strFile]['params']['date'] = $_GET['date'];
-					elseif ($strFile != 'visitors') 
-						$aryDashboard[$strCol][$strFile]['params']['date'] = self::$settings->getGlobalOption('default_date');
+		foreach ($defaultOrder as $column => $widgets) {
+			if (is_array($widgets)) 
+				foreach ($widgets as $class => $params) {
+					if ($params) {
+						$dashboard[$column][$class] = $params;
+						if (isset($_GET['date']) && preg_match('/^[0-9]{8}$/', $_GET['date']))
+							$dashboard[$column][$class]['date'] = $_GET['date'];
+					}
+				}
+		}
+		foreach ($dashboard as $column => $content) {
+			$cnt = 0;
+			foreach ($content as $class => $params) {
+				if (preg_match('/(\d{4})(\d{2})(\d{2})/', $params['date'], $result))
+					$date = $result[1].'-'.$result[2].'-'.$result[3];
+				else $date = $params['date'];
+				add_meta_box(
+					'wp-piwik_stats-'.$column.'-'.$cnt++, 
+					$params['title'].' '.($prams['title']!='SEO'?__($date, 'wp-piwik'):''), 
+					array(&$this, 'createDashboardWidget'), // TODO: Add a valid callback
+					$statsPageId, 
+					$colimn, 
+					'core',
+					array('class' => $class, 'params' => $params)
+				);
 			}
 		}
-		$intSideBoxCnt = $intContentBox = 0;
-		foreach ($aryDashboard['side'] as $strFile => $aryConfig) {
-			$intSideBoxCnt++;
-			if (preg_match('/(\d{4})(\d{2})(\d{2})/', $aryConfig['params']['date'], $aryResult))
-				$strDate = $aryResult[1]."-".$aryResult[2]."-".$aryResult[3];
-			else $strDate = $aryConfig['params']['date'];
-			add_meta_box(
-				'wp-piwik_stats-sidebox-'.$intSideBoxCnt, 
-				$aryConfig['params']['title'].' '.($aryConfig['params']['title']!='SEO'?__($strDate, 'wp-piwik'):''), 
-				array(&$this, 'createDashboardWidget'), 
-				$this->intStatsPage, 
-				'side', 
-				'core',
-				array('strFile' => $strFile, 'aryConfig' => $aryConfig)
-			);
-		}
-		foreach ($aryDashboard['normal'] as $strFile => $aryConfig) {
-			if (preg_match('/(\d{4})(\d{2})(\d{2})/', $aryConfig['params']['date'], $aryResult))
-				$strDate = $aryResult[1]."-".$aryResult[2]."-".$aryResult[3];
-			else $strDate = $aryConfig['params']['date'];
-			$intContentBox++;
-			add_meta_box(
-				'wp-piwik_stats-contentbox-'.$intContentBox, 
-				$aryConfig['params']['title'].' '.($aryConfig['params']['title']!='SEO'?__($strDate, 'wp-piwik'):''),
-				array(&$this, 'createDashboardWidget'), 
-				$this->intStatsPage, 
-				'normal', 
-				'core',
-				array('strFile' => $strFile, 'aryConfig' => $aryConfig)
-			);
-		}
 	}
+	// ------- END OF REFACTORING -------
 	
 	// Open stats page as network admin
 	function showStatsNetwork() {
