@@ -13,11 +13,6 @@ class WP_Piwik {
 		$settings,
 		$request;
 				
-	private
-		$bolNetwork = false,
-		$aryAttributes = array(),
-		$strResult = '';
-
 	public function __construct() {
 		global $blog_id;
 		self::$blog_id = (isset($blog_id)?$blog_id:'n/a');
@@ -424,6 +419,14 @@ class WP_Piwik {
 		// TODO: Add update method
 	}
 	
+	private function loadTestscript() {
+		$this->includeFile('debug'.DIRECTORY_SEPARATOR.'testscript');
+	}
+
+	private static function showErrorMessage($message) {
+		echo '<strong class="wp-piwik-error">'.__('An error occured', 'wp-piwik').':</strong> '.$message.' [<a href="'.(self::$settings->checkNetworkActivation()?'network/settings':'options-general').'.php?page=wp-piwik/classes/WP_Piwik.php&tab=support">'.__('Support','wp-piwik').'</a>]';
+	}
+	
 	public function request($id) {
 		if (!isset(self::$request))
 			if (self::$settings->getGlobalOption('piwik_mode') == 'http') self::$request = new WP_Piwik\Request\Rest($this, self::$settings);
@@ -482,7 +485,7 @@ class WP_Piwik {
 		$this->updateTrackingCode();
 	}
  	
-	function onloadStatsPage($statsPageId) {
+	public function onloadStatsPage($statsPageId) {
 		wp_enqueue_script('common');
 		wp_enqueue_script('wp-lists');
 		wp_enqueue_script('postbox');
@@ -536,75 +539,7 @@ class WP_Piwik {
 			}
 		}
 	}
-	// ------- END OF REFACTORING -------
 	
-	// Open stats page as network admin
-	function showStatsNetwork() {
-		$this->bolNetwork = true;
-		$this->showStats();
-	}	
-	
-	function showStats() {
-		// Disabled time limit if required
-		if (self::$settings->getGlobalOption('disable_timelimit') && self::$settings->getGlobalOption('disable_timelimit')) 
-			set_time_limit(0);
-		//we need the global screen column value to be able to have a sidebar in WordPress 2.8
-		global $screen_layout_columns;
-		if (empty($screen_layout_columns)) $screen_layout_columns = 2;
-/***************************************************************************/ ?>
-<div id="wp-piwik-stats-general" class="wrap">
-	<?php screen_icon('options-general'); ?>
-	<h2><?php echo (self::$settings->getGlobalOption('plugin_display_name') == 'WP_Piwik'?'Piwik '.__('Statistics', 'wp-piwik'):self::$settings->getGlobalOption('plugin_display_name')); ?></h2>
-<?php /************************************************************************/
-		if (self::$settings->checkNetworkActivation() && function_exists('is_super_admin') && is_super_admin() && $this->bolNetwork) {
-			if (isset($_GET['wpmu_show_stats'])) {
-				switch_to_blog((int) $_GET['wpmu_show_stats']);
-				// TODO OPTIMIZE
-			} else {
-				$this->includeFile('settings'.DIRECTORY_SEPARATOR.'sitebrowser');
-				return;
-			}
-			echo '<p>'.__('Currently shown stats:').' <a href="'.get_bloginfo('url').'">'.(int) $_GET['wpmu_show_stats'].' - '.get_bloginfo('name').'</a>.'.' <a href="?page=wp-piwik_stats">Show site overview</a>.</p>'."\n";			
-			echo '</form>'."\n";
-		}
-/***************************************************************************/ ?>
-	<form action="admin-post.php" method="post">
-		<?php wp_nonce_field('wp-piwik_stats-general'); ?>
-		<?php wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false ); ?>
-		<?php wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false ); ?>
-		<input type="hidden" name="action" value="save_wp-piwik_stats_general" />		
-		<div id="dashboard-widgets" class="metabox-holder columns-<?php echo $screen_layout_columns; ?><?php echo 2 <= $screen_layout_columns?' has-right-sidebar':''; ?>">
-				<div id='postbox-container-1' class='postbox-container'>
-					<?php $meta_boxes = do_meta_boxes($this->intStatsPage, 'normal', null); ?>	
-				</div>
-				
-				<div id='postbox-container-2' class='postbox-container'>
-					<?php do_meta_boxes($this->intStatsPage, 'side', null); ?>
-				</div>
-				
-				<div id='postbox-container-3' class='postbox-container'>
-					<?php do_meta_boxes($this->intStatsPage, 'column3', null); ?>
-				</div>
-				
-		</div>
-	</form>
-</div>
-<script type="text/javascript">
-	//<![CDATA[
-	jQuery(document).ready( function($) {
-		// close postboxes that should be closed
-		$('.if-js-closed').removeClass('if-js-closed').addClass('closed');
-		// postboxes setup
-		postboxes.add_postbox_toggles('<?php echo $this->intStatsPage; ?>');
-	});
-	//]]>
-</script>
-<?php /************************************************************************/
-		if (self::$settings->checkNetworkActivation() && function_exists('is_super_admin') && is_super_admin()) {
-			restore_current_blog();
-		}
-	}
-
 	/* Stats page changes by POST submit
 	   seen in Heiko Rabe's metabox demo plugin 
 	   http://tinyurl.com/5r5vnzs */
@@ -714,20 +649,6 @@ class WP_Piwik {
 		}
 		// Close form
 		echo '</form></div>';
-	}
-
-	/**
-	 * Show an error message extended by a support site link
-	 */
-	private static function showErrorMessage($strMessage) {
-		echo '<strong class="wp-piwik-error">'.__('An error occured', 'wp-piwik').':</strong> '.$strMessage.' [<a href="'.(self::$settings->checkNetworkActivation()?'network/settings':'options-general').'.php?page=wp-piwik/wp-piwik.php&tab=support">'.__('Support','wp-piwik').'</a>]';
-	}
-
-	/**
-	 * Execute test script
-	 */
-	private function loadTestscript() {
-		$this->includeFile('debug'.DIRECTORY_SEPARATOR.'testscript');
 	}
 
 	/**
