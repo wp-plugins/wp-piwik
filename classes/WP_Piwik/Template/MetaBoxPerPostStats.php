@@ -4,7 +4,7 @@
 
 	class MetaBoxPerPostStats extends \WP_Piwik\Template {
 				
-		function addMetabox() {
+		public function addMetabox() {
 			add_meta_box(
 				'wp-piwik_post_perpoststats',
 				__('Piwik Statistics (last 30 days)', 'wp-piwik'),
@@ -23,7 +23,7 @@
 			return self::$wpPiwik->callPiwikAPI('Actions.getPageUrl', 'range', $range, null, false, false, 'PHP', $postURL, false);
 		}
 			
-		function showStats() {
+		public function showStats() {
 			$data = $this->getStats();
 			if (!isset($data[0])) return;
 			echo '<table>';
@@ -38,7 +38,7 @@
 			echo '</table>';
 		}
 		
-		function getValue($range, $key) {
+		public function getValue($range, $key) {
 			$data = $this->getStats($range);
 			if (!isset($data[0]) || !isset($data[0][$key])) return '-';
 			else return $data[0][$key]; 

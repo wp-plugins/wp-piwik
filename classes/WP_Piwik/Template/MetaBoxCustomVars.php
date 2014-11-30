@@ -4,7 +4,7 @@
 
 	class MetaBoxCustomVars extends \WP_Piwik\Template {
 				
-		function addMetabox() {
+		public function addMetabox() {
 			add_meta_box(
 				'wp-piwik_post_customvars',
 				__('Piwik Custom Variables', 'wp-piwik'),
@@ -15,7 +15,7 @@
 			);
 		}
 
-		function showCustomvars($objPost, $objBox ) {
+		public function showCustomvars($objPost, $objBox ) {
 			wp_nonce_field(basename( __FILE__ ), 'wp-piwik_post_customvars_nonce'); ?>
 			<table>
 	 			<tr><th></th><th><?php _e('Name', 'wp-piwik'); ?></th><th><?php _e('Value', 'wp-piwik'); ?></th></tr>
@@ -31,7 +31,7 @@
 		 	<?php 
 		}
 		
-		function saveCustomVars($intID, $objPost) {
+		public function saveCustomVars($intID, $objPost) {
 			// Verify the nonce before proceeding.
 			if (!isset( $_POST['wp-piwik_post_customvars_nonce'] ) || !wp_verify_nonce( $_POST['wp-piwik_post_customvars_nonce'], basename( __FILE__ ) ) )
 				return $intID;

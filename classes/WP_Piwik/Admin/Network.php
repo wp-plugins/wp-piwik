@@ -2,10 +2,10 @@
 
 	namespace WP_Piwik\Admin;
 
-	class Network extends \WP_Piwik\Admin {
+	class Network extends \WP_Piwik\Admin\Statistics {
 
 		public function show() {
-			self::$wpPiwik->showStatsNetwork();
+			parent::show(true);
 		}
 		
 		public function printAdminScripts() {

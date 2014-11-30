@@ -6,8 +6,9 @@
 		
 		protected static $wpPiwik, $pageID;
 		
-		public function __construct($wpPiwik) {
+		public function __construct($wpPiwik, $settings) {
 			self::$wpPiwik = $wpPiwik;
+			self::$settings = $settings;
 		}
 
 		public function add($pageID) {
