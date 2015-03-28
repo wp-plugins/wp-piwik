@@ -1,9 +1,9 @@
 === WP-Piwik ===
 
 Contributors: Braekling
-Requires at least: 4.0
-Tested up to: 4.0
-Stable tag: 0.9.9.12
+Requires at least: 3.0
+Tested up to: 4.1.1
+Stable tag: 0.9.9.13
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
@@ -80,7 +80,7 @@ See [Piwik FAQ](http://piwik.org/faq/how-to/#faq_113).
 = Can I also access some Piwik values using a PHP call? =
 
 Yes, you can access also available shortcodes using PHP, too. See this example:
-echo $GLOBALS['wp-piwik']->shortcode(array('module' => 'post', 'range' => 'last300', 'key' => 'sum_daily_nb_uniq_visitors'));
+echo $GLOBALS['wp_piwik']->shortcode(array('module' => 'post', 'range' => 'last300', 'key' => 'sum_daily_nb_uniq_visitors'));
 
 == Installation ==
 
@@ -121,9 +121,15 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 
 == Upgrade Notice ==
 
-Please update Piwik if not done yet (Piwik 2.0 or higher is recommended)!
+Please update Piwik if not done yet (Piwik 2.7 or higher is recommended). If you update Piwik and use the "add tracking code" feature, please also update your WP-Piwik tracking code: Just open the WP-Piwik tracking code settings and save them again.
 
 == Changelog ==
+
+= 0.9.9.13 =
+* Improvement: Only activate/ load admin components if an admin page is actually loaded. Thanks to Michael!
+* Bugfix: Proxy tracking will work again. Piwik 2.7 or higher is recommended.
+* Bugfix: Avoid a PHP notice in dashboard.
+* NOTE: If you update Piwik and use the "add tracking code" feature, please also update your WP-Piwik tracking code: Just open the WP-Piwik tracking code settings and save them again. 
 
 = 0.9.9.12 =
 * Bugfix: Avoid forced relogin on site change (WP network)
