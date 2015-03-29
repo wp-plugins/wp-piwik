@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress header.
 
-Version: 0.9.9.13
+Version: 0.9.9.14
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -176,7 +176,7 @@ class wp_piwik {
 			__('Next you should connect to Piwik','wp-piwik'):
 			__('Please validate your configuration','wp-piwik')
 		);
-		$link = sprintf('<a href="'.getSettingsURL.'?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'));
+		$link = sprintf('<a href="'.$this->getSettingsURL().'?page=%s">%s</a>', self::$strPluginBasename, __('Settings', 'wp-piwik'));
 		printf('<div class="updated fade"><p>%s<strong>%s:</strong> %s: %s</p></div>', $text, __('Important', 'wp-piwik'), $notice, $link);
 	}
 	
