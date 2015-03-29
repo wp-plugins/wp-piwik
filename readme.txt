@@ -3,7 +3,7 @@
 Contributors: Braekling
 Requires at least: 3.0
 Tested up to: 4.1.1
-Stable tag: 0.9.9.13
+Stable tag: 0.9.9.14
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
@@ -124,6 +124,9 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 Please update Piwik if not done yet (Piwik 2.7 or higher is recommended). If you update Piwik and use the "add tracking code" feature, please also update your WP-Piwik tracking code: Just open the WP-Piwik tracking code settings and save them again.
 
 == Changelog ==
+
+= 0.9.9.14 =
+* Fixes some commit errors in 0.9.9.13.
 
 = 0.9.9.13 =
 * Improvement: Only activate/ load admin components if an admin page is actually loaded. Thanks to Michael!
