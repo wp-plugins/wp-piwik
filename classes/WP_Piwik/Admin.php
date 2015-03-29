@@ -4,7 +4,7 @@
 	
 	abstract class Admin {
 		
-		protected static $wpPiwik, $pageID;
+		protected static $wpPiwik, $pageID, $settings;
 		
 		public function __construct($wpPiwik, $settings) {
 			self::$wpPiwik = $wpPiwik;

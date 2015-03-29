@@ -7,7 +7,7 @@
 		private static $logger, $defaultSettings;
 		
 		private $globalSettings = array(
-			'revision' => 90921,
+			'revision' => 0,
 			'plugin_display_name' => 'WP-Piwik',
 			'add_tracking_code' => false,
 			'last_settings_update' => 0,
@@ -74,11 +74,14 @@
 			self::$logger->log('Store default settings');
 			self::$defaultSettings = array('globalSettings' => $this->globalSettings, 'settings' => $this->settings);
 			self::$logger->log('Load settings');
-			$this->globalSettings = ($this->checkNetworkActivation()?
-				get_site_option('wp-piwik_global-settings', $this->globalSettings):
-				get_option('wp-piwik_global-settings', $this->globalSettings)
-			);
-			$this->settings = get_option('wp-piwik_settings',$this->settings);
+			foreach ($this->globalSettings as $key => $default) {
+				$this->globalSettings[$key] = ($this->checkNetworkActivation()?
+					get_site_option('wp-piwik_global-'.$key, $default):
+					get_option('wp-piwik_global-'.$key, $default)
+				);
+			}
+			foreach ($this->settings as $key => $default)
+				$this->settings[$key] = get_option('wp-piwik-'.$key, $default);
 		}
 		
 		public function save() {
@@ -87,11 +90,15 @@
 				return;
 			}
 			self::$logger->log('Save settings');
-			if (is_plugin_active_for_network('wp-piwik/wp-piwik.php'))
-				update_site_option('wp-piwik_global-settings', $this->globalSettings);
-			else 
-				update_option('wp-piwik_global-settings', $this->globalSettings);
-			update_option('wp-piwik_settings', $this->settings);
+			foreach ($this->globalSettings as $key => $value) {
+				if (is_plugin_active_for_network('wp-piwik/wp-piwik.php'))
+					update_site_option('wp-piwik_global-'.$key, $value);
+				else
+					update_option('wp-piwik_global-'.$key, $value);
+			}
+			foreach ($this->settings as $key => $value) {
+				update_option('wp-piwik-'.$key, $value);
+			}
 			global $wp_roles;
 			if (!is_object($wp_roles))
 				$wp_roles = new WP_Roles();
@@ -141,11 +148,14 @@
 				delete_site_option('wp-piwik_global-settings');
 				$aryBlogs = $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id');
 				foreach ($aryBlogs as $aryBlog)
-					delete_blog_option($aryBlog->blog_id, 'wp-piwik_settings');
+					foreach ($this->settings as $key => $value)
+						delete_blog_option($aryBlog->blog_id, 'wp-piwik-'.$key);
 				if (!$bolFull) update_site_option('wp-piwik_global-settings', $keepSettings);
-			} else { 
-				delete_option('wp-piwik_global-settings');
-				delete_option('wp-piwik_settings');
+			} else {
+				foreach ($this->globalSettings as $key => $value)
+					delete_option('wp-piwik_global-'.$key);
+				foreach ($this->settings as $key => $value)
+					delete_option('wp-piwik-'.$key);
 			}
 			$this->globalSettings = self::$defaultSettings['globalSettings'];
 			$this->settings = self::$defaultSettings['settings'];
@@ -176,6 +186,19 @@
 			foreach (self::$defaultSettings['globalSettings'] as $key => $val)
 				$this->applyGlobalOption($key, $val);
 			$this->setGlobalOption('last_settings_update', time());
+		}
+
+		public static function registerSettings() {
+			$class = 'WP_Piwik\Settings';
+			$stringValidator = array($class, 'validateString');
+			$n = 'wp-piwik';
+			$g = 'wp-piwik_global-';
+			register_setting($n, $g.'piwik_token', $stringValidator);
+			register_setting($n, $g.'piwik_url', $stringValidator);
+		}
+		
+		public static function validateString($value) {
+			return $value;
 		}
 
 	}

@@ -3,7 +3,7 @@
 class WP_Piwik {
 
 	private static
-		$intRevisionId = 94000,
+		$intRevisionId = 99904,
 		$strVersion = '0.10.RC1',
 		$blog_id,
 		$intDashboardID = 30,
@@ -31,9 +31,10 @@ class WP_Piwik {
 
 	private function setup() {
 		self::$strPluginBasename = plugin_basename(__FILE__);
-		register_activation_hook(__FILE__, array($this, 'installPlugin'));
-		if ($this->isUpdated())
-			$this->upgradePlugin();
+		if (!$this->isInstalled())
+			$this->installPlugin();		
+		elseif ($this->isUpdated())
+			$this->updatePlugin();
 		if ($this->isConfigSubmitted())
 			$this->applySettings();
 		if ($this->isPHPMode())
@@ -41,6 +42,8 @@ class WP_Piwik {
 	}
 	
 	private function addActions() {
+		add_action('admin_notices', array($this, 'showNotices'));
+		add_action('admin_init', array('WP_Piwik\Settings', 'registerSettings'));
 		add_action('admin_menu', array($this, 'buildAdminMenu'));
 		add_action('admin_post_save_wp-piwik_stats', array(&$this, 'onStatsPageSaveChanges'));
 		add_action('load-post.php', array(&$this, 'addPostMetaboxes'));
@@ -82,10 +85,10 @@ class WP_Piwik {
 			add_shortcode('wp-piwik', array(&$this, 'shortcode'));
 	}
 	
-	private function installPlugin() {
+	private function installPlugin($isUpdate = false) {
 		self::$logger->log('Running WP-Piwik installation');
-		add_action('admin_notices', array($this, 'updateMessage'));
-		self::$bolJustActivated = true;
+		if (!$isUpdate)
+			$this->addNotice('install', sprintf(__('%s %s installed.', 'wp-piwik'), self::$settings->getGlobalOption('plugin_display_name'), self::$strVersion), __('Next you should connect to Piwik','wp-piwik'));			
 		self::$settings->setGlobalOption('revision', self::$intRevisionId);
 		self::$settings->setGlobalOption('last_settings_update', time());
 	}
@@ -94,12 +97,12 @@ class WP_Piwik {
 		self::$logger->log('Running WP-Piwik uninstallation');
 		if (!defined('WP_UNINSTALL_PLUGIN'))
 			exit();
+		delete_option('wp-piwik_notices');
 		self::$settings->resetSettings(true);
 	}
 
-	private function upgradePlugin() {
+	private function updatePlugin() {
 		self::$logger->log('Upgrade WP-Piwik to '.self::$strVersion);
-		add_action('admin_notices', array($this, 'updateMessage'));
 		$patches = glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'update'.DIRECTORY_SEPARATOR.'*.php');
 		if (is_array($patches)) {
 			sort($patches);
@@ -109,18 +112,26 @@ class WP_Piwik {
 					self::includeFile('update'.DIRECTORY_SEPARATOR.$patchVersion);
 			} 
 		}
-		$this->installPlugin();	  
+		$this->addNotice('update', sprintf(__('%s updated to %s.', 'wp-piwik'), self::$settings->getGlobalOption('plugin_display_name'), self::$strVersion), __('Please validate your configuration','wp-piwik'));
+		$this->installPlugin(true);	  
+	}
+	
+	private function addNotice($type, $subject, $text, $stay = false) {
+		$notices = get_option('wp-piwik_notices', array());
+		$notices[$type] = array('subject' => $subject, 'text' => $text, 'stay' => $stay);
+		update_option('wp-piwik_notices', $notices);
 	}
 
-	public function updateMessage() {
-		$text = sprintf(__('%s %s installed.', 'wp-piwik'), self::$settings->getGlobalOption('plugin_display_name'), self::$strVersion);
-		$notice = (!self::isConfigured()?
-			__('Next you should connect to Piwik','wp-piwik'):
-			__('Please validate your configuration','wp-piwik')
-		);
+	public function showNotices() {
 		$link = sprintf('<a href="'.$this->getSettingsURL().'">%s</a>', __('Settings', 'wp-piwik'));
-		printf('<div class="updated fade"><p>%s <strong>%s:</strong> %s: %s</p></div>', $text, __('Important', 'wp-piwik'), $notice, $link);
-	}
+		if ($notices = get_option('wp-piwik_notices')) {
+			foreach ($notices as $type => $notice) {
+				printf('<div class="updated fade"><p>%s <strong>%s:</strong> %s: %s</p></div>', $notice['subject'], __('Important', 'wp-piwik'), $notice['text'], $link);
+				if (!$notice['stay']) unset($notices[$type]);
+			}
+    	}
+    	update_option('wp-piwik_notices', $notices);
+    }
 	
 	private function getSettingsURL() {
 		return (self::$settings->checkNetworkActivation()?'settings':'options-general').'.php?page='.self::$strPluginBasename;
@@ -162,12 +173,12 @@ class WP_Piwik {
 
 	public function buildAdminMenu() {
 		if (self::isConfigured()) {
-			$statsPage = new WP_Piwik\Admin\Statistics($this);
+			$statsPage = new WP_Piwik\Admin\Statistics($this, self::$settings);
 			$pageID = add_dashboard_page(__('Piwik Statistics', 'wp-piwik'), self::$settings->getGlobalOption('plugin_display_name'), 'wp-piwik_read_stats', 'wp-piwik_stats', array($statsPage, 'show'));
 			$statsPage->add($pageID);
 		}
 		if (!self::$settings->checkNetworkActivation()) {
-			$optionsPage = new WP_Piwik\Admin\Settings($this);
+			$optionsPage = new WP_Piwik\Admin\Settings($this, self::$settings);
 			$optionsPageID = add_options_page(self::$settings->getGlobalOption('plugin_display_name'), self::$settings->getGlobalOption('plugin_display_name'), 'activate_plugins', __FILE__, array($optionsPage, 'show'));
 			$optionsPage->add($optionsPageID);
 		}
@@ -274,6 +285,10 @@ class WP_Piwik {
 		
 	private function isUpdated() {
 		return self::$settings->getGlobalOption('revision') && self::$settings->getGlobalOption('revision') < self::$intRevisionId;
+	}
+	
+	private function isInstalled() {
+		return self::$settings->getGlobalOption('revision');
 	}
 	
 	private function isConfigSubmitted() {
@@ -472,7 +487,7 @@ class WP_Piwik {
 		), $attributes);
 		new \WP_Piwik\Shortcode($attributes);
 	}
-	
+		
 	private function updatePiwikSite() {
 		$blogURL = get_bloginfo('url');
 		$blogName = (get_bloginfo('name')?get_bloginfo('name'):$blogURL);
@@ -593,62 +608,9 @@ class WP_Piwik {
 		// Show update message if stats saved
 		if (isset($_POST['wp-piwik_settings_submit']) && $_POST['wp-piwik_settings_submit'] == 'Y')
 			echo '<div id="message" class="updated fade"><p>'.__('Changes saved','wp-piwik').'</p></div>';
-		// Show settings page title
-		echo '<div class="wrap"><h2>'.self::$settings->getGlobalOption('plugin_display_name').' '.__('Settings', 'wp-piwik').'</h2>';
-		// Show tabs
-		$strTab = $this->showSettingsTabs(self::isConfigured(), $strTab);
-		if ($strTab != 'sitebrowser') {
 /***************************************************************************/ ?>
-		<div class="wp-piwik-donate">
-			<p><strong><?php _e('Donate','wp-piwik'); ?></strong></p>
-			<p><?php _e('If you like WP-Piwik, you can support its development by a donation:', 'wp-piwik'); ?></p>
-			<script type="text/javascript">
-			/* <![CDATA[ */
-			window.onload = function() {
-        		FlattrLoader.render({
-            		'uid': 'flattr',
-            		'url': 'http://wp.local',
-            		'title': 'Title of the thing',
-            		'description': 'Description of the thing'
-				}, 'element_id', 'replace');
-			}
-			/* ]]> */
-			</script>
-			<div>
-				<a class="FlattrButton" style="display:none;" title="WordPress Plugin WP-Piwik" rel="flattr;uid:braekling;category:software;tags:wordpress,piwik,plugin,statistics;" href="https://www.braekling.de/wp-piwik-wpmu-piwik-wordpress">This WordPress plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog using wp_footer. You need a running Piwik installation and at least view access to your stats.</a>
-			</div>
-			<div>Paypal
-				<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-					<input type="hidden" name="cmd" value="_s-xclick" />
-					<input type="hidden" name="hosted_button_id" value="6046779" />
-					<input type="image" src="https://www.paypal.com/en_GB/i/btn/btn_donateCC_LG.gif" name="submit" alt="PayPal - The safer, easier way to pay online." />
-					<img alt="" border="0" src="https://www.paypal.com/de_DE/i/scr/pixel.gif" width="1" height="1" />
-				</form>
-			</div>
-			<div>
-				<a href="http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&amp;filter=all&amp;sort=priority&amp;layout=standard&amp;x=12&amp;y=14"><?php _e('My Amazon.de wishlist', 'wp-piwik'); ?></a>
-			</div>
-			<div>
-				<?php _e('Please don\'t forget to vote the compatibility at the','wp-piwik'); ?> <a href="http://wordpress.org/extend/plugins/wp-piwik/">WordPress.org Plugin Directory</a>. 
-			</div>
-		</div>
+		
 <?php /***************************************************************************/
-		}
-		echo '<form class="'.($strTab != 'sitebrowser'?'wp-piwik-settings':'').'" method="post" action="'.admin_url(($pagenow == 'settings.php'?'network/':'').$pagenow.'?page=wp-piwik/classes/WP_Piwik.php&tab='.$strTab).'">';
-		echo '<input type="hidden" name="action" value="save_wp-piwik_settings" />';
-		wp_nonce_field('wp-piwik_settings');
-		// Show settings
-		if (($pagenow == 'options-general.php' || $pagenow == 'settings.php') && $_GET['page'] == 'wp-piwik/classes/WP_Piwik.php') {
-			echo '<table class="wp-piwik-form-table form-table">';
-			// Get tab contents
-			$this->includeFile('settings'.DIRECTORY_SEPARATOR.$strTab);				
-		// Show submit button
-			if (!in_array($strTab, array('homepage','credits','support','sitebrowser')))
-				echo '<tr><td><p class="submit" style="clear: both;padding:0;margin:0"><input type="submit" name="Submit"  class="button-primary" value="'.__('Save settings', 'wp-piwik').'" /><input type="hidden" name="wp-piwik_settings_submit" value="Y" /></p></td></tr>';
-			echo '</table>';
-		}
-		// Close form
-		echo '</form></div>';
 	}
 
 	/**
