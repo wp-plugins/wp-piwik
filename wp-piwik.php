@@ -1325,7 +1325,7 @@ class wp_piwik {
 				</form>
 			</div>
 			<div>
-				<a href="bitcoin:3N8od4UQA3jDpP5KodkxSqENaRSMWEaTHp">Bitcoin
+				<a href="bitcoin:3N8od4UQA3jDpP5KodkxSqENaRSMWEaTHp">Bitcoin<br />
 				<img style="border:none;" src="<?php echo $this->getPluginURL(); ?>bitcoin.png" width="100" height="100" alt="Bitcoin Address" title="3N8od4UQA3jDpP5KodkxSqENaRSMWEaTHp" /></a>
 			</div>
 			<div>

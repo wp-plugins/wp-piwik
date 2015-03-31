@@ -3,7 +3,7 @@
 Contributors: Braekling
 Requires at least: 3.0
 Tested up to: 4.1.1
-Stable tag: 0.9.9.14
+Stable tag: 0.9.9.15
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
@@ -121,18 +121,20 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 
 == Upgrade Notice ==
 
-Please update Piwik if not done yet (Piwik 2.7 or higher is recommended). If you update Piwik and use the "add tracking code" feature, please also update your WP-Piwik tracking code: Just open the WP-Piwik tracking code settings and save them again.
+Please update Piwik if not done yet (Piwik 2.7 or higher is recommended). 
 
 == Changelog ==
 
 = 0.9.9.15 =
-* Fixes one more commit error.
-* Fixes an adding up problem related to the overview widget.
-* Fixes missing brackets on ob_start.
-* Replaced broken support link.
+* Bugfix: One more commit error.
+* Bugfix: Adding up problem related to the overview widget.
+* Bugfix: Fixes missing brackets on ob_start.
+* Hotfix: Adds /0.9.9.15 to js/index.php to force a reload.
+* Bugifx: Replaced broken support link.
+* Added a bitcoin donation link.
 
 = 0.9.9.14 =
-* Fixes some commit errors in 0.9.9.13.
+* Bugfix: Commit errors in 0.9.9.13.
 
 = 0.9.9.13 =
 * Improvement: Only activate/ load admin components if an admin page is actually loaded. Thanks to Michael!
