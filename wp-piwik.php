@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress header.
 
-Version: 0.9.9.14
+Version: 0.9.9.15
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -39,8 +39,8 @@ if (!class_exists('wp_piwik')) {
 class wp_piwik {
 
 	private static
-		$intRevisionId = 94000,
-		$strVersion = '0.9.9.13',
+		$intRevisionId = 95000,
+		$strVersion = '0.9.9.15',
 		$blog_id,
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
@@ -771,7 +771,7 @@ class wp_piwik {
 		else serialize(array('result' => 'error', 'message' => __('Class Piwik\API\Request does not exists.','wp-piwik')));
 		if (!headers_sent()) {
 			ob_end_clean();
-			ob_start;
+			ob_start();
 			echo $current;
 		}
 		return $objRequest->process();		
@@ -861,8 +861,8 @@ class wp_piwik {
 		$strCode = html_entity_decode($strCode);
 		// Change code if js/index.php should be used
 		if (self::$settings->getGlobalOption('track_mode') == 1) {
-			$strCode = str_replace('piwik.js', 'js/index.php', $strCode);
-			$strCode = str_replace('piwik.php', 'js/index.php', $strCode);
+			$strCode = str_replace('piwik.js', 'js/index.php/'.self::$strVersion, $strCode);
+			$strCode = str_replace('piwik.php', 'js/index.php/'.self::$strVersion, $strCode);
 		} elseif (self::$settings->getGlobalOption('track_mode') == 2) {
 			$strCode = str_replace('piwik.js', 'piwik.php', $strCode);
 			$strURL = str_replace('https://', '//', self::$settings->getGlobalOption('piwik_url'));
