@@ -1325,6 +1325,10 @@ class wp_piwik {
 				</form>
 			</div>
 			<div>
+				<img src="" width="125" height="125" alt="Bitcoin Address" title="3N8od4UQA3jDpP5KodkxSqENaRSMWEaTHp" /><br />
+				<small>Bitcoin address: 3N8od4UQA3jDpP5KodkxSqENaRSMWEaTHp</small>
+			</div>
+			<div>
 				<a href="http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&amp;filter=all&amp;sort=priority&amp;layout=standard&amp;x=12&amp;y=14"><?php _e('My Amazon.de wishlist', 'wp-piwik'); ?></a>
 			</div>
 			<div>
