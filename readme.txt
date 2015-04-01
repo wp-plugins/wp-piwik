@@ -125,6 +125,10 @@ Please update Piwik if not done yet (Piwik 2.7 or higher is recommended).
 
 == Changelog ==
 
+= 0.9.9.16 =
+* Bugfix: PHP API causes plain text output issue (see 0.9.9.11)
+* Bugfix: Shortcode output translated
+
 = 0.9.9.15 =
 * Bugfix: One more commit error.
 * Bugfix: Adding up problem related to the overview widget.

@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress header.
 
-Version: 0.9.9.15
+Version: 0.9.9.16
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -39,8 +39,8 @@ if (!class_exists('wp_piwik')) {
 class wp_piwik {
 
 	private static
-		$intRevisionId = 95000,
-		$strVersion = '0.9.9.15',
+		$intRevisionId = 96000,
+		$strVersion = '0.9.9.16',
 		$blog_id,
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
@@ -79,7 +79,7 @@ class wp_piwik {
 			$this->applySettings();
 		if ($this->isPHPMode())
 			self::definePiwikConstants();
-		if (is_admin())
+		if (is_admin() || $this->isAddShortcode())
 			$this->loadLanguage();
 	}
 	
@@ -769,12 +769,14 @@ class wp_piwik {
 		if (class_exists('Piwik\API\Request'))
 			$objRequest = new Piwik\API\Request($strParams);
 		else serialize(array('result' => 'error', 'message' => __('Class Piwik\API\Request does not exists.','wp-piwik')));
+		$result = $objRequest->process();
 		if (!headers_sent()) {
 			ob_end_clean();
+			header("Content-Type: text/html", true);
 			ob_start();
 			echo $current;
 		}
-		return $objRequest->process();		
+		return $result;
 	}
 
 	/**
@@ -1337,7 +1339,7 @@ class wp_piwik {
 		</div>
 <?php /***************************************************************************/
 		}
-		echo '<form class="'.($strTab != 'sitebrowser'?'wp-piwik-settings':'').'" method="post" action="'.admin_url(($pagenow == 'settings.php'?'network/':'').$pagenow.'?page=wp-piwik/wp-piwik.php&tab='.$strTab).'">';
+		echo '<form class="'.($strTab != 'sitebrowser'?'wp-piwik-settings':'').'" method="post">';
 		echo '<input type="hidden" name="action" value="save_wp-piwik_settings" />';
 		wp_nonce_field('wp-piwik_settings');
 		// Show settings
@@ -1467,7 +1469,6 @@ class wp_piwik {
 
 	private static function definePiwikConstants() {
 		if (!defined('PIWIK_INCLUDE_PATH')) {
-			@header('Content-type: text/xml');
 			define('PIWIK_INCLUDE_PATH', self::$settings->getGlobalOption('piwik_path'));
 			define('PIWIK_USER_PATH', self::$settings->getGlobalOption('piwik_path'));
 			define('PIWIK_ENABLE_DISPATCH', false);
