@@ -3,7 +3,7 @@
 Contributors: Braekling
 Requires at least: 3.0
 Tested up to: 4.1.1
-Stable tag: 0.9.9.15
+Stable tag: 0.9.9.16
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
@@ -124,6 +124,10 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 Please update Piwik if not done yet (Piwik 2.7 or higher is recommended). 
 
 == Changelog ==
+
+= 0.9.9.16 =
+* Bugfix: PHP API causes plain text output issue (see 0.9.9.11)
+* Bugfix: Shortcode output translated
 
 = 0.9.9.15 =
 * Bugfix: One more commit error.
