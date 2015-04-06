@@ -1,9 +1,9 @@
 === WP-Piwik ===
 
 Contributors: Braekling
-Requires at least: 3.0
+Requires at least: 4.0
 Tested up to: 4.1.1
-Stable tag: 0.9.9.16
+Stable tag: 0.9.9.17
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
@@ -13,7 +13,9 @@ This plugin adds a Piwik stats site to your WordPress or WordPress multisite das
 
 This plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog using wp_footer.
 
-You need a running **Piwik 2.7.0 or higher** installation and at least view access to your stats. Also **PHP 5.3 or higher** is strictly required.
+You need a running **Piwik 2.7.0 or higher** installation and at least view access to your stats. If you don't like to setup your own Piwik, you can also use the full hosted Piwik Cloud by Piwik Pro. You can get more information at the [Piwik Pro website](http://piwik.pro). 
+
+Also **PHP 5.3 or higher** is strictly required.
 
 Look at the [Piwik website](http://piwik.org/) to get further information about Piwik.
 
@@ -58,9 +60,9 @@ Thank you all!
 
 = Where can I find the Piwik URL and the Piwik auth token? =
 
-WP-Piwik requires Piwik. If you did not install Piwik yet, first get it at the [Piwik website](http://www.piwik.org). 
+WP-Piwik requires Piwik. If you did not install Piwik yet, first get it at the [Piwik website](http://piwik.org).
 
-If Piwik works, you'll be able to configure WP-Piwik: The Piwik URL is the same URL you use to access your Piwik, e.g. for the demo site: http://demo.piwik.org. The auth token is some kind of secret password, which allows WP-Piwik to get the necessary data from Piwik. To get your auth token, log in to Piwik, click at your user name (top right) and click at "API" (left sidebar menu). E.g., on (this demo site)[http://demo.piwik.org/index.php?module=API&action=listAllAPI&idSite=7&period=day&date=yesterday] you can see the auth token "anonymous".
+As soon as Piwik works, you'll be able to configure WP-Piwik: The Piwik URL is the same URL you use to access your Piwik, e.g. for the demo site: http://demo.piwik.org. The auth token is some kind of secret password, which allows WP-Piwik to get the necessary data from Piwik. To get your auth token, log in to Piwik, click at your user name (top right) and click at "API" (left sidebar menu). E.g., on (this demo site)[http://demo.piwik.org/index.php?module=API&action=listAllAPI&idSite=7&period=day&date=yesterday] you can see the auth token "anonymous".
 
 = How to reset/remove all WP-Piwik settings without uninstalling? =
 
@@ -125,25 +127,33 @@ Please update Piwik if not done yet (Piwik 2.7 or higher is recommended).
 
 == Changelog ==
 
+= 0.9.9.17 =
+* Improvement: Updated the Piwik proxy script and added cURL support if url_fopen is not available
+* Bugfix: Setup bug, see https://wordpress.org/support/topic/piwik-urlpath-not-saved
+* Bugfix: CDN URL notice, see https://wordpress.org/support/topic/tracking-cdn-blank-gives-php-notice-which-breaks-the-trackback-js-code
+* Bugfix: Fixed zlib compression notice, see https://wordpress.org/support/topic/v09914-is-bad
+* Bugfix: Proxy script label links to proxy script checkbox
+* Fixed a typo in German language file
+
 = 0.9.9.16 =
 * Bugfix: PHP API causes plain text output issue (see 0.9.9.11)
 * Bugfix: Shortcode output translated
 
 = 0.9.9.15 =
-* Bugfix: One more commit error.
-* Bugfix: Adding up problem related to the overview widget.
-* Bugfix: Fixes missing brackets on ob_start.
-* Hotfix: Adds /0.9.9.15 to js/index.php to force a reload.
-* Bugifx: Replaced broken support link.
-* Added a bitcoin donation link.
+* Bugfix: One more commit error
+* Bugfix: Adding up problem related to the overview widget
+* Bugfix: Fixes missing brackets on ob_start
+* Hotfix: Adds /0.9.9.15 to js/index.php to force a reload
+* Bugifx: Replaced broken support link
+* Added a bitcoin donation link
 
 = 0.9.9.14 =
-* Bugfix: Commit errors in 0.9.9.13.
+* Bugfix: Commit errors in 0.9.9.13
 
 = 0.9.9.13 =
 * Improvement: Only activate/ load admin components if an admin page is actually loaded. Thanks to Michael!
 * Bugfix: Proxy tracking will work again. Piwik 2.7 or higher is recommended.
-* Bugfix: Avoid a PHP notice in dashboard.
+* Bugfix: Avoid a PHP notice in dashboard
 * NOTE: If you update Piwik and use the "add tracking code" feature, please also update your WP-Piwik tracking code: Just open the WP-Piwik tracking code settings and save them again. 
 
 = 0.9.9.12 =
