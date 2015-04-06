@@ -1,126 +1,146 @@
 <?php
-
-	require('../../../wp-load.php');
-	require_once('classes/WP_Piwik_Settings.php');
-	require_once('classes/WP_Piwik_Logger_Dummy.php');
+require('../../../wp-load.php');
+require_once('classes/WP_Piwik_Settings.php');
+require_once('classes/WP_Piwik_Logger_Dummy.php');
 	
-	$logger = new WP_Piwik_Logger_Dummy(__CLASS__);
-	$settings = new WP_Piwik_Settings($logger);
+$logger = new WP_Piwik_Logger_Dummy(__CLASS__);
+$settings = new WP_Piwik_Settings($logger);
 
-/* PIWIK PROXY SCRIPT */
+$PIWIK_URL = $settings->getGlobalOption('piwik_url');
+$TOKEN_AUTH = $settings->getGlobalOption('piwik_token');
+$timeout = $settings->getGlobalOption('connection_timeout');
+ini_set('display_errors',0);
 
-/* == Description ==
- This script allows to track statistics using Piwik, without revealing the
- Piwik Server URL. This is useful for users who track multiple websites 
- in the same Piwik server, but don't want to show in the source code of all tracked 
- websites the Piwik server URL.
- 
- == Requirements ==
- To run this properly you will need
- - Piwik server latest version
- - One or several website(s) to track with this Piwik server, for example http://trackedsite.com
- - The website to track must run on a server with PHP5 support
- - In your php.ini you must check that the following is set: "allow_url_fopen = On"
-
- == How to track trackedsite.com in your Piwik without revealing the Piwik server URL? ==
-
- 1) In your Piwik server, login as Super user
- 2) create a user, set the login for example: "UserTrackingAPI"
- 3) Assign this user "admin" permission on all websites you wish to track without showing the Piwik URL
- 4) Copy the "token_auth" for this user, and paste it below in this file, in $TOKEN_AUTH = "xyz"
- 5) In this file, below this help test, edit $PIWIK_URL variable and change http://piwik-server.com/piwik/ with the URL to your Piwik server.
- 6) Upload this modified piwik.php file in the website root directory, for example at: http://trackedsite.com/piwik.php
-    This file (http://trackedsite.com/piwik.php) will be called by the Piwik Javascript, 
-    instead of calling directly the (secret) Piwik Server URL (http://piwik-server.com/piwik/).
- 7) You now need to add the modified Piwik Javascript Code to the footer of your pages at http://trackedsite.com/ 
-    Go to Piwik > Settings > Websites > Show Javascript Tracking Code.
-    Copy the Javascript snippet. Then, edit this code and change the last lines to the following:
-		[...]
-		(function() {
-          var u=(("https:" == document.location.protocol) ? "https" : "http") + "://trackedsite.com/";
-          _paq.push(["setTrackerUrl", u+"piwik.php"]);
-          var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
-          g.defer=true; g.async=true; g.src=u+"piwik.php"; s.parentNode.insertBefore(g,s);
-        })();
-      </script>
-      <!-- End Piwik Code -->
-
-    What's changed in this code snippet compared to the normal Piwik code?
-	    A) the (secret) Piwik URL is now replaced by your website URL
-	    B) the "piwik.js" becomes "piwik.php" because this piwik.php proxy script will also display and proxy the Javascript file
-	    C) the <noscript> part of the code at the end is removed, 
-	       since it is not currently used by Piwik, and it contains the (secret) Piwik URL which you want to hide.
- 8) Paste the modified Piwik Javascript code in your website "trackedsite.com" pages you wish to track.
-    This modified Javascript Code will then track visits/pages/conversions by calling trackedsite.com/piwik.php
-    which will then automatically call your (hidden) Piwik Server URL.
- 9) Done!
-    At this stage, example.com should be tracked by your Piwik without showing the Piwik server URL.
-    Repeat the steps 6), 7) and 8) for each website you wish to track in Piwik.
-*/
-
-// Edit the line below, and replace http://piwik-server.com/piwik/ 
+/**
+ * Piwik - free/libre analytics platform
+ * Piwik Proxy Hide URL
+ *
+ * @link http://piwik.org/faq/how-to/#faq_132
+ * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
+ */
+if (file_exists('config.php')) {
+    include 'config.php';
+}
+// -----
+// Important: read the instructions in README.md or at:
+// https://github.com/piwik/piwik/tree/master/misc/proxy-hide-piwik-url#piwik-proxy-hide-url
+// -----
+// Edit the line below, and replace http://your-piwik-domain.example.org/piwik/
 // with your Piwik URL ending with a slash.
 // This URL will never be revealed to visitors or search engines.
-$PIWIK_URL = $settings->getGlobalOption('piwik_url');
-
+if (! isset($PIWIK_URL)) {
+    $PIWIK_URL = 'http://your-piwik-domain.example.org/piwik/';
+}
 // Edit the line below, and replace xyz by the token_auth for the user "UserTrackingAPI"
 // which you created when you followed instructions above.
-$TOKEN_AUTH = $settings->getGlobalOption('piwik_token');
-
+if (! isset($TOKEN_AUTH)) {
+    $TOKEN_AUTH = 'xyz';
+}
 // Maximum time, in seconds, to wait for the Piwik server to return the 1*1 GIF
-$timeout = 5;
-
-
-
+if (! isset($timeout)) {
+    $timeout = 5;
+}
+function sendHeader($header, $replace = true)
+{
+    headers_sent() || header($header, $replace);
+}
+function arrayValue($array, $key, $value = null)
+{
+    if (!empty($array[$key])) {
+        $value = $array[$key];
+    }
+    return $value;
+}
+function getContents($url, $options = false)
+{
+	if (ini_get('allow_url_fopen')) {
+		$ctx = ($options?stream_context_create($options):NULL);
+		return file_get_contents($url, 0, $ctx);
+	} elseif (function_exists('curl_version'))
+		return file_get_contents_curl($url, $options);
+	else return 'Neither url_fopen nor cURL is available. Please enable at least one of them.';
+}
+function file_get_contents_curl($url, $options) 
+{
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_HEADER, 0);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_USERAGENT, $options['http']['user_agent']);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, $options['http']['header']);
+	curl_setopt($ch, CURLOPT_TIMEOUT, $options['http']['timeout']);
+	curl_setopt($ch, CURLOPT_URL, $url);
+	$data = curl_exec($ch);
+	curl_close($ch);
+	return $data;
+}
 // DO NOT MODIFY BELOW
 // ---------------------------
 // 1) PIWIK.JS PROXY: No _GET parameter, we serve the JS file
-if(empty($_GET)) 
-{
-	$modifiedSince = false;
-	if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE']))
-	{
-		$modifiedSince = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
-		// strip any trailing data appended to header
-		if (false !== ($semicolon = strpos($modifiedSince, ';')))
-		{
-			$modifiedSince = strtotime(substr($modifiedSince, 0, $semicolon));
-		}
-	}
-	// Re-download the piwik.js once a day maximum
-	$lastModified = time()-86400;
-
-	// set HTTP response headers
-	header('Vary: Accept-Encoding');
-
-	// Returns 304 if not modified since
-	if (!empty($modifiedSince) && $modifiedSince < $lastModified)
-	{
-		header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
-	}
-	else
-	{
-		header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-		@header('Content-Type: application/javascript; charset=UTF-8');
-		if( $piwikJs = file_get_contents($PIWIK_URL.'piwik.js')) {
-			echo $piwikJs;
-		} else {
-			header($_SERVER['SERVER_PROTOCOL'] . '505 Internal server error');
-		}
-	}
-	exit;
+if (empty($_GET)) {
+    $modifiedSince = false;
+    if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+        $modifiedSince = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
+        // strip any trailing data appended to header
+        if (false !== ($semicolon = strpos($modifiedSince, ';'))) {
+            $modifiedSince = substr($modifiedSince, 0, $semicolon);
+        }
+        $modifiedSince = strtotime($modifiedSince);
+    }
+    // Re-download the piwik.js once a day maximum
+    $lastModified = time() - 86400;
+    // set HTTP response headers
+    sendHeader('Vary: Accept-Encoding');
+    // Returns 304 if not modified since
+    if (!empty($modifiedSince) && $modifiedSince > $lastModified) {
+        sendHeader(sprintf("%s 304 Not Modified", $_SERVER['SERVER_PROTOCOL']));
+    } else {
+        sendHeader('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        sendHeader('Content-Type: application/javascript; charset=UTF-8');
+        if ($piwikJs = getContents($PIWIK_URL . 'piwik.js')) {
+            echo $piwikJs;
+        } else {
+            sendHeader($_SERVER['SERVER_PROTOCOL'] . '505 Internal server error');
+        }
+    }
+    exit;
 }
-
+@ini_set('magic_quotes_runtime', 0);
 // 2) PIWIK.PHP PROXY: GET parameters found, this is a tracking request, we redirect it to Piwik
-$url = $PIWIK_URL."piwik.php?cip=".@$_SERVER['REMOTE_ADDR']."&token_auth=".$TOKEN_AUTH.'&';
-foreach($_GET as $key=>$value) { 
-	$url .= $key .'='.urlencode($value).'&'; 
+$url = sprintf("%spiwik.php?cip=%s&token_auth=%s&", $PIWIK_URL, getVisitIp(), $TOKEN_AUTH);
+foreach ($_GET as $key => $value) {
+    $url .= urlencode($key ). '=' . urlencode($value) . '&';
 }
-header("Content-Type: image/gif");
+sendHeader("Content-Type: image/gif");
 $stream_options = array('http' => array(
-	'user_agent' => @$_SERVER['HTTP_USER_AGENT'],
-	'header' => "Accept-Language: " . @str_replace(array("\n","\t","\r"), "", $_SERVER['HTTP_ACCEPT_LANGUAGE']) . "\r\n" ,
-	'timeout' => $timeout
+    'user_agent' => arrayValue($_SERVER, 'HTTP_USER_AGENT', ''),
+    'header'     => sprintf("Accept-Language: %s\r\n", str_replace(array("\n", "\t", "\r"), "", arrayValue($_SERVER, 'HTTP_ACCEPT_LANGUAGE', ''))),
+    'timeout'    => $timeout
 ));
-$ctx = stream_context_create($stream_options);
-echo file_get_contents($url, 0, $ctx);
+if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+    // PHP 5.2 breaks with the new 204 status code so we force returning the image every time
+    echo getContents($url . '&send_image=1', $stream_options);
+} else {
+    // PHP 5.3 and above
+    $content = getContents($url, $stream_options);
+    // Forward the HTTP response code
+    if (!headers_sent() && isset($http_response_header[0])) {
+        header($http_response_header[0]);
+    }
+    echo $content;
+}
+function getVisitIp()
+{
+    $matchIp = '/^([0-9]{1,3}\.){3}[0-9]{1,3}$/';
+    $ipKeys = array(
+        'HTTP_X_FORWARDED_FOR',
+        'HTTP_CLIENT_IP',
+        'HTTP_CF_CONNECTING_IP',
+    );
+    foreach($ipKeys as $ipKey) {
+        if (isset($_SERVER[$ipKey])
+            && preg_match($matchIp, $_SERVER[$ipKey])) {
+            return $_SERVER[$ipKey];
+        }
+    }
+    return arrayValue($_SERVER, 'REMOTE_ADDR');
+}

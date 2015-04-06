@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-piwik/
 
 Description: Adds Piwik stats to your dashboard menu and Piwik code to your wordpress header.
 
-Version: 0.9.9.16
+Version: 0.9.9.17
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
 
@@ -39,8 +39,8 @@ if (!class_exists('wp_piwik')) {
 class wp_piwik {
 
 	private static
-		$intRevisionId = 96000,
-		$strVersion = '0.9.9.16',
+		$intRevisionId = 97000,
+		$strVersion = '0.9.9.17',
 		$blog_id,
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
@@ -754,11 +754,6 @@ class wp_piwik {
 			return;
 		if (PIWIK_INCLUDE_PATH === FALSE)
 			return serialize(array('result' => 'error', 'message' => __('Could not resolve','wp-piwik').' &quot;'.htmlentities(self::$settings->getGlobalOption('piwik_path')).'&quot;: '.__('realpath() returns false','wp-piwik').'.'));
-		if (!headers_sent()) {
-			$current = ob_get_contents();
-			ob_end_clean();
-			ob_start();
-		}
 		if (file_exists(PIWIK_INCLUDE_PATH . "/index.php"))
 			require_once PIWIK_INCLUDE_PATH . "/index.php";
 		if (file_exists(PIWIK_INCLUDE_PATH . "/core/API/Request.php"))
@@ -771,10 +766,7 @@ class wp_piwik {
 		else serialize(array('result' => 'error', 'message' => __('Class Piwik\API\Request does not exists.','wp-piwik')));
 		$result = $objRequest->process();
 		if (!headers_sent()) {
-			ob_end_clean();
 			header("Content-Type: text/html", true);
-			ob_start();
-			echo $current;
 		}
 		return $result;
 	}
@@ -863,8 +855,8 @@ class wp_piwik {
 		$strCode = html_entity_decode($strCode);
 		// Change code if js/index.php should be used
 		if (self::$settings->getGlobalOption('track_mode') == 1) {
-			$strCode = str_replace('piwik.js', 'js/index.php/'.self::$strVersion, $strCode);
-			$strCode = str_replace('piwik.php', 'js/index.php/'.self::$strVersion, $strCode);
+			$strCode = str_replace('piwik.js', 'js/index.php', $strCode);
+			$strCode = str_replace('piwik.php', 'js/index.php', $strCode);
 		} elseif (self::$settings->getGlobalOption('track_mode') == 2) {
 			$strCode = str_replace('piwik.js', 'piwik.php', $strCode);
 			$strURL = str_replace('https://', '//', self::$settings->getGlobalOption('piwik_url'));
@@ -1247,6 +1239,7 @@ class wp_piwik {
 				self::$settings->setGlobalOption('limit_cookies_session', (isset($_POST['wp-piwik_limit_cookies_session'])?(int)$_POST['wp-piwik_limit_cookies_session']:0));
 				self::$settings->setOption('tracking_code', $this->callPiwikAPI('SitesManager.getJavascriptTag'));
 			break;
+			case 'homepage':
 			case 'piwik':
 				self::$settings->setGlobalOption('piwik_token', (isset($_POST['wp-piwik_token'])?$_POST['wp-piwik_token']:''));
 				self::$settings->setGlobalOption('piwik_url', self::checkURL((isset($_POST['wp-piwik_url'])?$_POST['wp-piwik_url']:'')));

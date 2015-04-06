@@ -52,7 +52,7 @@ if (self::$settings->getGlobalOption('add_tracking_code')) {
 
 <tr><th><?php _e('Use proxy script', 'wp-piwik'); ?>:</th><td>
 	<input type="radio" value="2" id="wp-piwik_proxy" name="wp-piwik_trackingmode"<?php echo (self::$settings->getGlobalOption('track_mode')==2?' checked="checked"':''); ?> />
-	<label for="wp-piwik_compress"><?php _e('WP-Piwik will use the piwik.php proxy script. See', 'wp-piwik'); ?> <a href="http://piwik.org/faq/how-to/#faq_132">Piwik FAQ</a>.</label>
+	<label for="wp-piwik_proxy"><?php _e('WP-Piwik will use the piwik.php proxy script. See', 'wp-piwik'); ?> <a href="http://piwik.org/faq/how-to/#faq_132">Piwik FAQ</a>.</label>
 </td></tr>
 
 <tr><th><?php _e('JavaScript code position', 'wp-piwik'); ?>:</th><td>

@@ -698,7 +698,7 @@ msgid "Keyword: post name."
 msgstr "Schl&uuml;sselwort: Name des Beitrags."
 
 msgid "Enable to track posts in feeds via tracking pixel."
-msgstr "Aktivieren, um Beir&auml;ge im Feed via Tracking-Pixel zu z&auml;hlen."
+msgstr "Aktivieren, um Beitr&auml;ge im Feed via Tracking-Pixel zu z&auml;hlen."
 
 msgid "Enable to track users on admin pages (remember to configure the tracking filter appropriately)."
 msgstr "Aktivieren, um Nutzer auf Admin-Seiten zu z&auml;hlen (bitte den Tracking Filter entsprechend konfigurieren)."
