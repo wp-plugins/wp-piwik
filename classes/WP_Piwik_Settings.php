@@ -52,6 +52,8 @@
 			'disable_timelimit' => false,
 			'disable_ssl_verify' => false,
 			'disable_cookies' => false,
+			'add_download_extensions' => '',
+			'force_protocol' => '',
 			'toolbar' => false,
 			'shortcodes' => false,
 			'cache' => true,
