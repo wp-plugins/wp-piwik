@@ -60,5 +60,4 @@ else {
 	spl_autoload_register('wp_piwik_autoloader');
 	if (class_exists('WP_Piwik'))
 		$GLOBALS['wp-piwik'] = new WP_Piwik();
-	//register_activation_hook(__FILE__, array($GLOBALS['wp-piwik'], 'installPlugin'));
 }

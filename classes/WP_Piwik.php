@@ -181,6 +181,7 @@ class WP_Piwik {
 			$optionsPage = new WP_Piwik\Admin\Settings($this, self::$settings);
 			$optionsPageID = add_options_page(self::$settings->getGlobalOption('plugin_display_name'), self::$settings->getGlobalOption('plugin_display_name'), 'activate_plugins', __FILE__, array($optionsPage, 'show'));
 			$optionsPage->add($optionsPageID);
+			add_action('admin_head-'.$optionsPageID, array($optionsPage, 'extendAdminHeader'));
 		}
 	}
 
@@ -272,12 +273,15 @@ class WP_Piwik {
 	
 	public static function isConfigured() {
 		return (
-			self::$settings->getGlobalOption('piwik_token') 
+			self::$settings->getGlobalOption('piwik_token')
+			&& (self::$settings->getGlobalOption('piwik_mode') != 'disabled')
 			&& (
 				(
 					(self::$settings->getGlobalOption('piwik_mode') == 'http') && (self::$settings->getGlobalOption('piwik_url'))
 				) || (
 					(self::$settings->getGlobalOption('piwik_mode') == 'php') && (self::$settings->getGlobalOption('piwik_path'))
+				)|| (
+					(self::$settings->getGlobalOption('piwik_mode') == 'pro') && (self::$settings->getGlobalOption('piwik_user'))
 				)
 			)
 		);
@@ -299,7 +303,7 @@ class WP_Piwik {
 		return self::$settings->getGlobalOption('piwik_mode') && self::$settings->getGlobalOption('piwik_mode') == 'php';
 	}
 	
-	private function isNetworkMode() {
+	public function isNetworkMode() {
 		return self::$settings->checkNetworkActivation();
 	}
 	
@@ -445,7 +449,7 @@ class WP_Piwik {
 	public function request($id) {
 		if (!isset(self::$request))
 			if (self::$settings->getGlobalOption('piwik_mode') == 'http') self::$request = new WP_Piwik\Request\Rest($this, self::$settings);
-			else self::$request = new WP\Piwik\Request\Php($this, self::$settings);
+			else self::$request = new WP_Piwik\Request\Php($this, self::$settings);
 		return self::$request->perform($id);
 	}
 
@@ -544,10 +548,10 @@ class WP_Piwik {
 				else $date = $params['date'];
 				add_meta_box(
 					'wp-piwik_stats-'.$column.'-'.$cnt++, 
-					$params['title'].' '.($prams['title']!='SEO'?__($date, 'wp-piwik'):''), 
+					$params['title'].' '.($params['title']!='SEO'?__($date, 'wp-piwik'):''), 
 					array(&$this, 'createDashboardWidget'), // TODO: Add a valid callback
 					$statsPageId, 
-					$colimn, 
+					$column, 
 					'core',
 					array('class' => $class, 'params' => $params)
 				);
@@ -599,21 +603,6 @@ class WP_Piwik {
 	}
 
 	/**
-	 * Show settings page
-	 */
-	function showSettings() {
-		// Define globals and get request vars
-		global $pagenow;
-		$strTab = (isset($_GET['tab'])?$_GET['tab']:'homepage');
-		// Show update message if stats saved
-		if (isset($_POST['wp-piwik_settings_submit']) && $_POST['wp-piwik_settings_submit'] == 'Y')
-			echo '<div id="message" class="updated fade"><p>'.__('Changes saved','wp-piwik').'</p></div>';
-/***************************************************************************/ ?>
-		
-<?php /***************************************************************************/
-	}
-
-	/**
 	 * Add a new site to Piwik if a new blog was requested,
 	 * or get its ID by URL
 	 */ 
@@ -656,17 +645,5 @@ class WP_Piwik {
 		}
 		return array('js' => self::$settings->getOption('tracking_code'), 'id' => self::$settings->getOption('site_id'));
 	}
-	
-		/* TODO: Add post stats
-	 * function display_post_unique_column($aryCols) {
-	 * 	$aryCols['wp-piwik_unique'] = __('Unique');
-	 *		return $aryCols;
-	 * }
-	 *
-	 * function display_post_unique_content($strCol, $intID) {
-	 *	if( $strCol == 'wp-piwik_unique' ) {
-	 *	}
-	 * }
-	 */
-	
+
 }

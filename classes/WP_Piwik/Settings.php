@@ -6,18 +6,33 @@
 		
 		private static $logger, $defaultSettings;
 		
+		private $checkSettings = array(
+			'piwik_url' => 'checkPiwikUrl',
+			'piwik_token' => 'checkPiwikToken'
+		);
+		
 		private $globalSettings = array(
+			// Plugin settings
 			'revision' => 0,
+			'last_settings_update' => 0,
+			// User settings: Piwik configuration
+			'piwik_mode' => 'http', //OK
+			'piwik_url' => '', //OK
+			'piwik_path' => '', //OK
+			'piwik_user' => '', //OK
+			'piwik_token' => '', //OK
+			'auto_site_config' => true, //OK
+			// User settings: Stats configuration
+			// User settings: Tracking configuration
+			// User settings: Expert configuration
+			'cache' => true, //OK
+			'piwik_useragent' => 'php', //OK
+			'piwik_useragent_string' => 'WP-Piwik', //OK
+			'connection_timeout' => 5, //OK
+			
+			// ---
 			'plugin_display_name' => 'WP-Piwik',
 			'add_tracking_code' => false,
-			'last_settings_update' => 0,
-			'piwik_token' => '',
-			'piwik_url' => '',
-			'piwik_path' => '',
-			'piwik_mode' => 'http',
-			'piwik_useragent' => 'php',
-			'piwik_useragent_string' => 'WP-Piwik',
-			'connection_timeout' => 5,
 			'dashboard_widget' => false,
 			'dashboard_chart' => false,
 			'dashboard_seo' => false,
@@ -26,7 +41,6 @@
 			'capability_read_stats' => array('administrator' => true),
 			'piwik_shortcut' => false,
 			'default_date' => 'yesterday',
-			'auto_site_config' => true,
 			'track_404' => false,
 			'track_search' => false,
 			'track_mode' => 0,
@@ -56,7 +70,6 @@
 			'disable_cookies' => false,
 			'toolbar' => false,
 			'shortcodes' => false,
-			'cache' => true,
 			'perpost_stats' => false
 		),
 		$settings = array(
@@ -173,19 +186,18 @@
 			return is_plugin_active_for_network('wp-piwik/wp-piwik.php');
 		}
 		
-		private function applyGlobalOption($id, $default = false) {
-			$value = isset($_POST['wp-piwik_'.$id]) && !empty($_POST['wp-piwik_'.$id])?$_POST['wp-piwik_'.$id]:$default;
-			echo $id; 
+		private function applyGlobalOption($id, $value) {
 			self::$logger->log('Set '.$id.': '.serialize($this->getGlobalOption($id)).' &rarr; '.serialize($value));
-			echo serialize($this->getGlobalOption($id));
 			$this->setGlobalOption($id, $value);
 		}
 		
-		public function applyChanges() {
+		public function applyChanges($in) {
+			$in = $this->checkSettings($in);
 			self::$logger->log('Apply changed settings:');
 			foreach (self::$defaultSettings['globalSettings'] as $key => $val)
-				$this->applyGlobalOption($key, $val);
+				$this->applyGlobalOption($key, isset($in[$key]) && !empty($in[$key])?$in[$key]:$val);
 			$this->setGlobalOption('last_settings_update', time());
+			$this->save();
 		}
 
 		public static function registerSettings() {
@@ -199,6 +211,21 @@
 		
 		public static function validateString($value) {
 			return $value;
+		}
+		
+		private function checkSettings($in) {
+			foreach ($this->checkSettings as $key => $value)
+				if (isset($in[$key]))
+					$in[$key] = call_user_func_array(array($this, $value), array($in[$key]));
+			return $in;
+		}
+		
+		private function checkPiwikUrl($value) {
+			return substr($value,-1,1) != '/'?$value.'/':$value;			
+		}
+		
+		private function checkPiwikToken($value) {
+			return str_replace('&token_auth=', '', $value);
 		}
 
 	}

@@ -29,7 +29,7 @@
 			curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($c, CURLOPT_HEADER, 0);
 			curl_setopt($c, CURLOPT_TIMEOUT, self::$settings->getGlobalOption('connection_timeout'));
-			$httpProxyClass = new WP_HTTP_Proxy();
+			$httpProxyClass = new \WP_HTTP_Proxy();
 			if ($httpProxyClass->is_enabled() && $httpProxyClass->send_through_proxy($strURL)) {
 				curl_setopt($c, CURLOPT_PROXY, $httpProxyClass->host());
 				curl_setopt($c, CURLOPT_PROXYPORT, $httpProxyClass->port());

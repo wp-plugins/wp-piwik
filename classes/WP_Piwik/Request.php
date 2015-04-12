@@ -1,18 +1,22 @@
 <?php
 
-	namespace WP_Piwik\Request;
+	namespace WP_Piwik;
 
 	abstract class Request {
 		
-		protected static $wpPiwik, $settings, $requests = array(), $results = array();
+		protected static $wpPiwik, $settings, $requests = array(), $results = array(), $piwikVersion;
 		
 		public function __construct($wpPiwik, $settings) {
 			self::$wpPiwik = $wpPiwik;
 			self::$settings = $settings;
+			self::register('API.getPiwikVersion', array());
 		}
 		
 		public static function register($method, $parameter) {
-			$id = 'method='.$method.self::parameterToString($parameter);
+			if ($method == 'API.getPiwikVersion')
+				$id = 'global.getPiwikVersion';
+			else
+				$id = 'method='.$method.self::parameterToString($parameter);
 			if (!isset(self::$requests[$id]))
 				self::$requests[$id] = array('method' => $method, 'parameter' => $parameter);
 			return $id;
