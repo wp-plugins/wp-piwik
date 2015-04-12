@@ -9,7 +9,9 @@
 		protected function configure() {
 			$this->title = self::$settings->getGlobalOption('plugin_display_name').' - '.__('Visitors', 'wp-piwik').' ('.__(self::$settings->getGlobalOption('dashboard_widget'), 'wp-piwik').')';
 			$this->method = array('VisitsSummary.getVisits', 'VisitsSummary.getUniqueVisitors', 'VisitsSummary.getBounceCount', 'VisitsSummary.getActions');
+			$this->context = 'normal';
 			$this->parameter = array(
+				'idSite' => 1,
 				'period' => 'day',
 				'date'  => 'last30',
 				'limit' => null

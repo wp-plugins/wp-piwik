@@ -299,7 +299,7 @@ class WP_Piwik {
 		return isset($_POST['action']) && $_POST['action'] == 'save_wp-piwik_settings';
 	}
 	
-	private function isPHPMode() {
+	public function isPHPMode() {
 		return self::$settings->getGlobalOption('piwik_mode') && self::$settings->getGlobalOption('piwik_mode') == 'php';
 	}
 	
@@ -339,7 +339,7 @@ class WP_Piwik {
 		return self::$settings->getGlobalOption('shortcodes');
 	}
 
-	private static function definePiwikConstants() {
+	public static function definePiwikConstants() {
 	if (!defined('PIWIK_INCLUDE_PATH')) {
 			@header('Content-type: text/xml');
 			define('PIWIK_INCLUDE_PATH', self::$settings->getGlobalOption('piwik_path'));
@@ -510,10 +510,9 @@ class WP_Piwik {
 		wp_enqueue_script('postbox');
 		wp_enqueue_script('wp-piwik', $this->getPluginURL().'js/wp-piwik.js', array(), self::$strVersion, true);
 		wp_enqueue_script('wp-piwik-jqplot',$this->getPluginURL().'js/jqplot/wp-piwik.jqplot.js', array('jquery'), self::$strVersion);
-		$dashboard = array();
-		$defaultOrder = array(
+		/*$defaultOrder = array(
 			'side' => array(
-				'overview' => array('title' => __('Overview', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
+				'overview' => array('class' => new \WP_Piwik\Widget\Overview($this, self::$settings), 'title' => __('Overview', 'wp-piwik'), 'period' => 'day', 'date' => 'last30'),
 				'seo' => (self::$settings->getGlobalOption('stats_seo')?array('title' => __('SEO', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'):false),
 				'pages' => array('title' => __('Pages', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
 				'keywords' => array('title' => __('Keywords', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday', 'limit' => 10),
@@ -530,34 +529,10 @@ class WP_Piwik {
 				'systems' => array('title' => __('Operating System', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday')
 			)
 		);
-		foreach ($defaultOrder as $column => $widgets) {
-			if (is_array($widgets)) 
-				foreach ($widgets as $class => $params) {
-					if ($params) {
-						$dashboard[$column][$class] = $params;
-						if (isset($_GET['date']) && preg_match('/^[0-9]{8}$/', $_GET['date']))
-							$dashboard[$column][$class]['date'] = $_GET['date'];
-					}
-				}
-		}
-		foreach ($dashboard as $column => $content) {
-			$cnt = 0;
-			foreach ($content as $class => $params) {
-				if (preg_match('/(\d{4})(\d{2})(\d{2})/', $params['date'], $result))
-					$date = $result[1].'-'.$result[2].'-'.$result[3];
-				else $date = $params['date'];
-				add_meta_box(
-					'wp-piwik_stats-'.$column.'-'.$cnt++, 
-					$params['title'].' '.($params['title']!='SEO'?__($date, 'wp-piwik'):''), 
-					array(&$this, 'createDashboardWidget'), // TODO: Add a valid callback
-					$statsPageId, 
-					$column, 
-					'core',
-					array('class' => $class, 'params' => $params)
-				);
-			}
-		}
-	}
+		*/
+		new \WP_Piwik\Widget\Chart($this, self::$settings, $statsPageId);
+		new \WP_Piwik\Widget\Overview($this, self::$settings, $statsPageId);
+	}	
 	
 	/* Stats page changes by POST submit
 	   seen in Heiko Rabe's metabox demo plugin 
@@ -571,79 +546,6 @@ class WP_Piwik {
 		//process here your on $_POST validation and / or option saving
 		//lets redirect the post request into get request (you may add additional params at the url, if you need to show save results
 		wp_redirect($_POST['_wp_http_referer']);		
-	}
-
-	/**
-	 * Add tabs to settings page
-	 * See http://wp.smashingmagazine.com/2011/10/20/create-tabs-wordpress-settings-pages/
-	 */
-	function showSettingsTabs($bolFull = true, $strCurr = 'homepage') {
-		$aryTabs = ($bolFull?array(
-			'homepage' => __('Home','wp-piwik'),
-			'piwik' => __('Piwik Settings','wp-piwik'),
-			'tracking' => __('Tracking','wp-piwik'),
-			'views' => __('Statistics','wp-piwik'),
-			'support' => __('Support','wp-piwik'),
-			'credits' => __('Credits','wp-piwik')
-		):array(
-			'piwik' => __('Piwik Settings','wp-piwik'),
-			'support' => __('Support','wp-piwik'),
-			'credits' => __('Credits','wp-piwik')
-		));
-		if (empty($strCurr)) $strCurr = 'homepage';
-		elseif (!isset($aryTabs[$strCurr]) && $strCurr != 'sitebrowser') $strCurr = 'piwik';
-		echo '<div id="icon-themes" class="icon32"><br></div>';
-		echo '<h2 class="nav-tab-wrapper">';
-		foreach($aryTabs as $strTab => $strName) {
-			$strClass = ($strTab == $strCurr?' nav-tab-active':'');
-			echo '<a class="nav-tab'.$strClass.'" href="?page=wp-piwik/classes/WP_Piwik.php&tab='.$strTab.'">'.$strName.'</a>';
-		}
-		echo '</h2>';
-		return $strCurr;
-	}
-
-	/**
-	 * Add a new site to Piwik if a new blog was requested,
-	 * or get its ID by URL
-	 */ 
-	function addPiwikSite() {
-		if (isset($_GET['wpmu_show_stats']) && self::$settings->checkNetworkActivation()) {
-			self::$logger->log('Switch blog ID: '.(int) $_GET['wpmu_show_stats']);
-			switch_to_blog((int) $_GET['wpmu_show_stats']);
-		}
-		self::$logger->log('Get the blog\'s site ID by URL: '.get_bloginfo('url'));
-		// Check if blog URL already known
-		$strURL = '&method=SitesManager.getSitesIdFromSiteUrl';
-		$strURL .= '&format=PHP';
-		$strURL .= '&token_auth='.self::$settings->getGlobalOption('piwik_token');
-		//$aryResult = unserialize($this->getRemoteFile($strURL, get_bloginfo('url')));
-		$aryResult[0]['idsite'] = 2;
-		if (!empty($aryResult) && isset($aryResult[0]['idsite'])) {
-			self::$settings->setOption('site_id', (int) $aryResult[0]['idsite']);
-		// Otherwise create new site
-		} elseif (self::isConfigured() && !empty($strURL)) {
-			self::$logger->log('Blog not known yet - create new site');
-			$strName = get_bloginfo('name');
-			if (empty($strName)) $strName = get_bloginfo('url');
-			self::$settings->setOption('name', $strName);
-			$strURL .= '&method=SitesManager.addSite';
-			$strURL .= '&siteName='.urlencode($strName).'&urls='.urlencode(get_bloginfo('url'));
-			$strURL .= '&format=PHP';
-			$strURL .= '&token_auth='.self::$settings->getGlobalOption('piwik_token');
-			$strResult = unserialize($this->getRemoteFile($strURL, get_bloginfo('url')));
-			if (!empty($strResult)) self::$settings->setOption('site_id', (int) $strResult);
-		}
-		// Store new data if site created
-		if (self::$settings->getOption('site_id')) {
-			self::$logger->log('Get the site\'s tracking code');
-			self::$settings->setOption('tracking_code', $this->callPiwikAPI('SitesManager.getJavascriptTag'));
-		} else self::$settings->getOption('tracking_code', '');
-		self::$settings->save();
-		if (isset($_GET['wpmu_show_stats']) && self::$settings->checkNetworkActivation()) {
-			self::$logger->log('Back to current blog');
-			restore_current_blog();
-		}
-		return array('js' => self::$settings->getOption('tracking_code'), 'id' => self::$settings->getOption('site_id'));
 	}
 
 }

@@ -1,31 +1,31 @@
 <?php
 
-	namespace Widget;
+	namespace WP_Piwik;
 
 	abstract class Widget {
 		
 		protected static $wpPiwik, $settings;
 		
-		protected $method = '', $title = '', $type = 'dashboard', $context = 'side', $priority = 'high', $parameter = array(), $apiID = array();
+		protected $method = '', $title = '', $context = 'side', $priority = 'high', $parameter = array(), $apiID = array();
 		
-		public function __construct($wpPiwik, $settings) {
+		public function __construct($wpPiwik, $settings, $pageId = 'dashboard') {
 			self::$wpPiwik = $wpPiwik;
 			self::$settings = $settings;
 			$this->configure();
 			if (is_array($this->method)) 
 				foreach ($this->method as $method) {
-					$this->apiID[$method] = WP_Piwik\Request::register($method, $this->parameter);
+					$this->apiID[$method] = \WP_Piwik\Request::register($method, $this->parameter);
 					self::$wpPiwik->log("Register request: ".$this->apiID[$method]);
 				}
 			else {
-				$this->apiID[$this->method] = WP_Piwik\Request::register($this->method, $this->parameter);
+				$this->apiID[$this->method] = \WP_Piwik\Request::register($this->method, $this->parameter);
 				self::$wpPiwik->log("Register request: ".$this->apiID[$this->method]);
 			}
 			add_meta_box(
 				$this->getClass(),
-				$this->title, 
+				$this->title,
 				array($this, 'show'), 
-				$this->type, 
+				$pageId, 
 				$this->context, 
 				$this->priority
 			);
@@ -74,6 +74,10 @@
 				
 		private function tabRow($name, $value) {
 			echo '<tr><td>'.$name.'</td><td>'.$value.'</td></tr>';
+		}
+		
+		protected function value($array, $key) {
+			return (isset($array[$key])?$array[$key]:'-');
 		}
 		
 	}

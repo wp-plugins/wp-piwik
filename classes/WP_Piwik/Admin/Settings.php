@@ -5,11 +5,15 @@
 	class Settings extends \WP_Piwik\Admin {
 
 		public function show() {
+			if (isset($_POST) && isset($_POST['wp-piwik'])) {
+				if (!self::$wpPiwik->isPHPMode() && isset($_POST['wp-piwik']['piwik_mode']) && $_POST['wp-piwik']['piwik_mode'] == 'php')
+					\WP_Piwik::definePiwikConstants();
+				$this->saveSettings($_POST['wp-piwik']);
+			}
 			?>
 			<div id="plugin-options-wrap" class="widefat">
 				<form method="post">
 					<input type="hidden" name="wp-piwik[revision]" value="<?php echo self::$settings->getGlobalOption('revision'); ?>" />
-					<?php if (isset($_POST) && isset($_POST['wp-piwik'])) $this->saveSettings($_POST['wp-piwik']); ?>
 					<table class="wp-piwik-form">
 						<tbody>
 							<tr><th width="150px"></th><td></td></tr>
@@ -40,6 +44,9 @@
 				
 				if (!self::$wpPiwik->isConfigured())
 					$this->showBox('updated', 'info', sprintf('%s <a href="%s">%s</a> %s <a href="%s">%s</a>.', __('WP-Piwik is a WordPress plugin to show a selection of Piwik stats in your WordPress admin dashboard and to add and configure your Piwik tracking code. To use this you will need your own Piwik instance. If you do not already have a Piwik setup, you have two simple options: use either', 'wp-piwik'), 'http://piwik.org/', __('Self-hosted', 'wp-piwik'), __('or', 'wp-piwik'), 'http://piwik.org/hosting/', __('Cloud-hosted', 'wp-piwik')));
+
+				if (!function_exists('curl_init') && !ini_get('allow_url_fopen'))
+					$this->showBox('error', 'no', __('Neither cURL nor fopen are available. So WP-Piwik can not use the HTTP API and not connect to Piwik Pro.').' '.sprintf('<a href="%s">%s.</a>', 'https://wordpress.org/plugins/wp-piwik/faq/', __('More information', 'wp-piwik')));
 
 				// Piwik mode
 				$description = sprintf('%s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s',
