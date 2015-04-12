@@ -7,15 +7,15 @@
 		public $className = __CLASS__;
 
 		protected function configure() {
-			$this->title = self::$settings->getGlobalOption('plugin_display_name').' - '.__('SEO', 'wp-piwik').' ('.__(self::$settings->getGlobalOption('dashboard_widget'), 'wp-piwik').')';
-			/*$this->method = 'SEO.getRank';
-			$this->parameter = array(
+			/*$this->parameter = array(
 				'period' => (self::$settings->getGlobalOption('dashboard_widget')=='last30'?'range':'day'),
 				'date'  => self::$settings->getGlobalOption('dashboard_widget'),
 				'limit' => 0,
 				'expanded' => 0,
 				'url' => 'https://www.braekling.de'
 			);*/
+			$this->title = $prefix.__('SEO', 'wp-piwik').' ('.__($this->parameter['date'],'wp-piwik').')';
+			//$this->method = 'SEO.getRank';
 		}
 		
 		public function show() {

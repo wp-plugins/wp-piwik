@@ -16,12 +16,12 @@
 			'revision' => 0,
 			'last_settings_update' => 0,
 			// User settings: Piwik configuration
-			'piwik_mode' => 'http', //OK
-			'piwik_url' => '', //OK
-			'piwik_path' => '', //OK
-			'piwik_user' => '', //OK
-			'piwik_token' => '', //OK
-			'auto_site_config' => true, //OK
+			'piwik_mode' => 'http',
+			'piwik_url' => '',
+			'piwik_path' => '',
+			'piwik_user' => '',
+			'piwik_token' => '',
+			'auto_site_config' => true,
 			// User settings: Stats configuration
 			// User settings: Tracking configuration
 			// User settings: Expert configuration
@@ -29,7 +29,6 @@
 			'piwik_useragent' => 'php', //OK
 			'piwik_useragent_string' => 'WP-Piwik', //OK
 			'connection_timeout' => 5, //OK
-			
 			// ---
 			'plugin_display_name' => 'WP-Piwik',
 			'add_tracking_code' => false,

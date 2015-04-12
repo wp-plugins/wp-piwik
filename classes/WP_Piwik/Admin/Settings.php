@@ -74,6 +74,9 @@
 				
 				// Site configuration
 				$this->showCheckbox('auto_site_config', __('Auto config', 'wp-piwik'), __('Check this to automatically choose your blog from your Piwik sites by URL. If your blog is not added to Piwik yet, WP-Piwik will add a new site.', 'wp-piwik'), self::$wpPiwik->isConfigured());				
+				if (self::$wpPiwik->isConfigured()) {
+					echo '<tr><th scope="row">'.__('Determined site', 'wp-piwik').':</th><td>'.self::$wpPiwik->getSiteID().'</td></tr>';
+				}
 
 				echo $submitButton;
 				

@@ -6,15 +6,15 @@
 	
 		public $className = __CLASS__;
 
-		protected function configure() {
-			$this->title = self::$settings->getGlobalOption('plugin_display_name').' - '.__('Overview', 'wp-piwik').' ('.__(self::$settings->getGlobalOption('dashboard_widget'), 'wp-piwik').')';
-			$this->method = 'VisitsSummary.get';
+		protected function configure($prefix = '') {
 			$this->parameter = array(
 				'idSite' => 1,
 				'period' => 'range', //(self::$settings->getGlobalOption('dashboard_widget')=='last30'?'range':'day'),
 				'date'  => 'last30', //self::$settings->getGlobalOption('dashboard_widget'),
 				'limit' => null
 			);
+			$this->title = $prefix.__('Overview', 'wp-piwik').' ('.__($this->parameter['date'],'wp-piwik').')';
+			$this->method = 'VisitsSummary.get';
 		}
 		
 		public function show() {

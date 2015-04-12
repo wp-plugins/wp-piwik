@@ -6,16 +6,16 @@
 	
 		public $className = __CLASS__;
 
-		protected function configure() {
-			$this->title = self::$settings->getGlobalOption('plugin_display_name').' - '.__('Visitors', 'wp-piwik').' ('.__(self::$settings->getGlobalOption('dashboard_widget'), 'wp-piwik').')';
-			$this->method = array('VisitsSummary.getVisits', 'VisitsSummary.getUniqueVisitors', 'VisitsSummary.getBounceCount', 'VisitsSummary.getActions');
-			$this->context = 'normal';
+		protected function configure($prefix = '') {
 			$this->parameter = array(
 				'idSite' => 1,
 				'period' => 'day',
 				'date'  => 'last30',
 				'limit' => null
 			);
+			$this->title = $prefix.__('Visitor Graph', 'wp-piwik').' ('.__($this->parameter['date'],'wp-piwik').')';
+			$this->method = array('VisitsSummary.getVisits', 'VisitsSummary.getUniqueVisitors', 'VisitsSummary.getBounceCount', 'VisitsSummary.getActions');
+			$this->context = 'normal';
 			wp_enqueue_script('wp-piwik', self::$wpPiwik->getPluginURL().'js/wp-piwik.js', array(), self::$wpPiwik->getPluginVersion(), true);
 			wp_enqueue_script('wp-piwik-jqplot',self::$wpPiwik->getPluginURL().'js/jqplot/wp-piwik.jqplot.js',array('jquery'));
 			wp_enqueue_style('wp-piwik', self::$wpPiwik->getPluginURL().'css/wp-piwik.css',array(),self::$wpPiwik->getPluginVersion());
@@ -65,7 +65,6 @@
 				echo '<script type="text/javascript">';
 				echo '$j.jqplot("wp-piwik_stats_vistors_graph", [['.$values.'],['.$unique.'],['.$bounced.']],{axes:{yaxis:{min:0, tickOptions:{formatString:"%.0f"}},xaxis:{min:1,max:30,ticks:['.$labels.']}},seriesDefaults:{showMarker:false,lineWidth:1,fill:true,fillAndStroke:true,fillAlpha:0.9,trendline:{show:false,color:"#C00",lineWidth:1.5,type:"exp"}},series:[{color:"#90AAD9",fillColor:"#D4E2ED"},{color:"#A3BCEA",fillColor:"#E4F2FD",trendline:{show:true,label:"Unique visitor trend"}},{color:"#E9A0BA",fillColor:"#FDE4F2"}],});';
 				echo '</script>';
-
 			}
 		}
 		

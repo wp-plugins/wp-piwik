@@ -6,12 +6,14 @@
 		
 		protected static $wpPiwik, $settings;
 		
-		protected $method = '', $title = '', $context = 'side', $priority = 'high', $parameter = array(), $apiID = array();
+		protected $method = '', $title = '', $context = 'side', $priority = 'high', $parameter = array(), $apiID = array(), $pageId = 'dashboard';
 		
 		public function __construct($wpPiwik, $settings, $pageId = 'dashboard') {
 			self::$wpPiwik = $wpPiwik;
 			self::$settings = $settings;
-			$this->configure();
+			$this->pageId = $pageId;
+			$prefix = ($this->pageId=='dashboard'?self::$settings->getGlobalOption('plugin_display_name').' - ':'');
+			$this->configure($prefix);
 			if (is_array($this->method)) 
 				foreach ($this->method as $method) {
 					$this->apiID[$method] = \WP_Piwik\Request::register($method, $this->parameter);
@@ -25,13 +27,13 @@
 				$this->getClass(),
 				$this->title,
 				array($this, 'show'), 
-				$pageId, 
+				$pageId,
 				$this->context, 
 				$this->priority
 			);
 		}
 		
-		protected function configure() {}
+		protected function configure($prefix = '') {}
 		
 		abstract function show();
 		
@@ -43,7 +45,7 @@
 			return floor($time/3600).'h '.floor(($time % 3600)/60).'m '.floor(($time % 3600)%60).'s';
 		}
 		
-		protected function table($thead, $tbody, $tfoot) {
+		protected function table($thead, $tbody = array(), $tfoot = array()) {
 			echo '<div class="table"><table class="widefat">';
 			if (!empty($thead)) $this->tabHead($thead);
 			if (!empty($tbody)) $this->tabBody($tbody);
@@ -61,7 +63,7 @@
 		private function tabBody($tbody) {
 			echo '<tbody>';
 			foreach ($tbody as $trow)
-				$this->tabRow($trow[0], $trow[1]);
+				$this->tabRow($trow);
 			echo '</tbody>';
 		}
 		
@@ -72,8 +74,11 @@
 			echo '</tr></tfoot>';
 		}
 				
-		private function tabRow($name, $value) {
-			echo '<tr><td>'.$name.'</td><td>'.$value.'</td></tr>';
+		private function tabRow($trow) {
+			echo '<tr>';
+			foreach ($trow as $tcell)
+				echo '<td>'.$tcell.'</td>';
+			echo '</tr>';
 		}
 		
 		protected function value($array, $key) {
