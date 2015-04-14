@@ -434,10 +434,6 @@ class WP_Piwik {
 		return admin_url().'?page=wp-piwik_stats';
 	}
 	
-	public function updateTrackingCode() {
-		// TODO: Add update method
-	}
-	
 	private function loadTestscript() {
 		$this->includeFile('debug'.DIRECTORY_SEPARATOR.'testscript');
 	}
@@ -467,15 +463,6 @@ class WP_Piwik {
 		return $result;
 	}
 	
-	public static function getSiteID($blogID = null) {
-		$result = self::$settings->getOption('site_id');
-		if (self::$settings->checkNetworkActivation() && !empty($blogID)) {
-			$result = get_blog_option($blogID, 'wp-piwik_settings');
-			$result = $result['site_id'];
-		}
-		return (is_int($result)?$result:'n/a');
-	}
-	
 	public function shortcode($attributes) {
 		shortcode_atts(array(
 			'title' => '',
@@ -492,18 +479,54 @@ class WP_Piwik {
 		new \WP_Piwik\Shortcode($attributes);
 	}
 		
-	private function updatePiwikSite() {
-		$blogURL = get_bloginfo('url');
-		$blogName = (get_bloginfo('name')?get_bloginfo('name'):$blogURL);
-		self::$settings->setOption('name', $blogName);
-		/*
-			TODO: Define update request
-			$url = '&method=SitesManager.updateSite&idSite='.self::$settings->getOption('site_id').'&siteName='.urlencode($strName).'&urls='.urlencode($strBlogURL).'&format=PHP&token_auth='.self::$settings->getGlobalOption('piwik_token');
-		$this->getRemoteFile($url);
-		*/		
-		$this->updateTrackingCode();
+	public function getPiwikSiteId($blogId = null) {
+		$result = self::$settings->getOption('site_id', $blogId);
+		return (!empty($result)?$result:$this->requestPiwikSiteId($blogId));
 	}
- 	
+	
+	private function requestPiwikSiteId($blogId = null) {
+		$isCurrent = !self::$settings->checkNetworkActivation() || empty($blogId);		
+		if (self::$settings->getGlobalOption('auto_site_config')) {
+			$id = WP_Piwik\Request::register('SitesManager.getSitesIdFromSiteUrl', array(
+				'url' => $isCurrent?get_bloginfo('url'):get_blog_details($blogId)->$siteurl
+			));
+			$result = $this->request($id);
+			if (empty($result) || !isset($result[0]))
+				$result = $this->addPiwikSite($blogId);
+			else 
+				$result = $result[0]['idsite'];
+		} else $result = null;
+		self::$logger->log('Get Piwik ID: WordPress site '.($isCurrent?get_bloginfo('url'):get_blog_details($blogId)->$siteurl).' = Piwik ID '.$result);
+		if ($result !== null) {
+			self::$settings->setOption('site_id', $result, $blogId);
+			$this->updateTrackingCode($result, $blogId);
+			$this::$settings->save();
+			return $result;
+		} return 'n/a';
+	}
+
+	private function addPiwikSite($blogId = null) {
+		$isCurrent = !self::$settings->checkNetworkActivation() || empty($blogId);
+		$id = WP_Piwik\Request::register('SitesManager.addSite', array(
+			'siteName' => $isCurrent?get_bloginfo('name'):get_blog_details($blogId)->$blogname,
+			'urls[0]' => $isCurrent?get_bloginfo('url'):get_blog_details($blogId)->$siteurl
+		));
+		$result = $this->request($id);
+		self::$logger->log('Get Piwik ID: WordPress site '.($isCurrent?get_bloginfo('url'):get_blog_details($blogId)->$siteurl).' = Piwik ID '.$result);
+		if (empty($$result) || !isset($result[0]))
+			return null;
+		else 
+			return $result[0]['idsite'];
+	}
+	
+	private function updatePiwikSite($siteId = null, $blogId = null) {
+
+	}
+
+	public function updateTrackingCode() {
+		// TODO: Add update method
+	}
+	 	
 	public function onloadStatsPage($statsPageId) {
 		wp_enqueue_script('common');
 		wp_enqueue_script('wp-lists');
@@ -537,13 +560,9 @@ class WP_Piwik {
 	   seen in Heiko Rabe's metabox demo plugin 
 	   http://tinyurl.com/5r5vnzs */
 	function onStatsPageSaveChanges() {
-		//user permission check
 		if ( !current_user_can('manage_options') )
 			wp_die( __('Cheatin&#8217; uh?') );			
-		//cross check the given referer
 		check_admin_referer('wp-piwik_stats');
-		//process here your on $_POST validation and / or option saving
-		//lets redirect the post request into get request (you may add additional params at the url, if you need to show save results
 		wp_redirect($_POST['_wp_http_referer']);		
 	}
 

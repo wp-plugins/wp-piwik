@@ -44,7 +44,7 @@
 					);
 				$this->table(
 					array(__('Date', 'wp-piwik'), __('Visits', 'wp-piwik'), __('Unique', 'wp-piwik'), __('Bounced', 'wp-piwik'), __('Page Views', 'wp-piwik')),
-					$data
+					array_reverse($data)
 				);
 			}
 			

@@ -9,9 +9,12 @@ Description: Adds Piwik stats to your dashboard menu and Piwik code to your word
 Version: 0.10.RC1
 Author: Andr&eacute; Br&auml;kling
 Author URI: http://www.braekling.de
+Text Domain: wp-piwik
+Domain Path: /languages/
+License: GPL3
 
 ****************************************************************************************** 
-	Copyright (C) 2009-2014 Andre Braekling (email: webmaster@braekling.de)
+	Copyright (C) 2009-2015 Andre Braekling (email: webmaster@braekling.de)
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by

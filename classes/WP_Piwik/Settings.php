@@ -131,7 +131,10 @@
 			return isset($this->globalSettings[$key])?$this->globalSettings[$key]:self::$defaultSettings['globalSettings'][$key];
 		}	
 
-		public function getOption($key) {
+		public function getOption($key, $blogID = null) {
+			if ($this->checkNetworkActivation() && !empty($blogID)) {
+				return get_blog_option($blogID, $key);
+			}
 			return isset($this->settings[$key])?$this->settings[$key]:self::$defaultSettings['settings'][$key];
 		}	
 
@@ -141,10 +144,13 @@
 			$this->globalSettings[$key] = $value;
 		}	
 
-		public function setOption($key, $value) {
+		public function setOption($key, $value, $blogID = null) {
 			$this->settingsChanged = true;
-			self::$logger->log('Changed option '.$key.': '.$value);		
-			$this->settings[$key] = $value;
+			self::$logger->log('Changed option '.$key.': '.$value);
+			if ($this->checkNetworkActivation() && !empty($blogID)) {
+				add_blog_option($blogID, $key, $value);
+			}
+			else $this->settings[$key] = $value;
 		}
 		
 		public function resetSettings($bolFull = false) {
@@ -194,7 +200,7 @@
 			$in = $this->checkSettings($in);
 			self::$logger->log('Apply changed settings:');
 			foreach (self::$defaultSettings['globalSettings'] as $key => $val)
-				$this->applyGlobalOption($key, isset($in[$key]) && !empty($in[$key])?$in[$key]:$val);
+				$this->applyGlobalOption($key, isset($in[$key]) ? $in[$key]:$val);
 			$this->setGlobalOption('last_settings_update', time());
 			$this->save();
 		}

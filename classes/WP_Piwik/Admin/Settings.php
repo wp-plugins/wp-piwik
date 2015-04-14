@@ -73,9 +73,9 @@
 				$this->showInput('piwik_token', __('Auth token', 'wp-piwik'), 'TODO Token description', false, '', '', self::$wpPiwik->isConfigured());
 				
 				// Site configuration
-				$this->showCheckbox('auto_site_config', __('Auto config', 'wp-piwik'), __('Check this to automatically choose your blog from your Piwik sites by URL. If your blog is not added to Piwik yet, WP-Piwik will add a new site.', 'wp-piwik'), self::$wpPiwik->isConfigured());				
+				$this->showCheckbox('auto_site_config', __('Auto config', 'wp-piwik'), __('Check this to automatically choose your blog from your Piwik sites by URL. If your blog is not added to Piwik yet, WP-Piwik will add a new site.', 'wp-piwik'), self::$wpPiwik->isConfigured());
 				if (self::$wpPiwik->isConfigured()) {
-					echo '<tr><th scope="row">'.__('Determined site', 'wp-piwik').':</th><td>'.self::$wpPiwik->getSiteID().'</td></tr>';
+					echo '<tr><th scope="row">'.__('Determined site', 'wp-piwik').':</th><td>'.self::$wpPiwik->getPiwikSiteId().'</td></tr>';
 				}
 
 				echo $submitButton;
@@ -123,7 +123,7 @@
 		}
 		
 		private function showCheckbox($id, $name, $description, $hideDescription = true) {
-			printf('<tr><th scope="row"><label for="%2$s">%s</label>:</th><td><input type="checkbox" id="%s" name="wp-piwik[%2$s]" value="1"'.(self::$settings->getGlobalOption($id)?' checked="checked"':'').' /> %s</td></tr>', $name, $id, $this->getDescription($id, $description, $hideDescription));
+			printf('<tr><th scope="row"><label for="%2$s">%s</label>:</th><td><input type="checkbox" value="1"'.(self::$settings->getGlobalOption($id)?' checked="checked"':'').' onchange="$j(\'#%s\').val(this.checked?1:0);" /><input id="%2$s" type="hidden" name="wp-piwik[%2$s]" value="'.(int)self::$settings->getGlobalOption($id).'" /> %s</td></tr>', $name, $id, $this->getDescription($id, $description, $hideDescription));
 		}
 		
 		private function showText($text) {
