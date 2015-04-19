@@ -48,8 +48,14 @@ class WP_Piwik {
 		add_action('admin_post_save_wp-piwik_stats', array(&$this, 'onStatsPageSaveChanges'));
 		add_action('load-post.php', array(&$this, 'addPostMetaboxes'));
 		add_action('load-post-new.php', array(&$this, 'addPostMetaboxes'));
-		if ($this->isNetworkMode())
+		if ($this->isNetworkMode()) {
 			add_action('network_admin_menu', array($this, 'buildNetworkAdminMenu'));
+			add_action('update_site_option_blogname', array(&$this, 'onBlogNameChange'));
+			add_action('update_site_option_siteurl', array(&$this, 'onSiteUrlChange'));
+		} else {
+			add_action('update_option_blogname', array(&$this, 'onBlogNameChange'));
+			add_action('update_option_siteurl', array(&$this, 'onSiteUrlChange'));
+		}
 		if ($this->isDashboardActive())
 			add_action('wp_dashboard_setup', array($this, 'extendWordPressDashboard'));
 		if ($this->isToolbarActive()) {
@@ -147,9 +153,6 @@ class WP_Piwik {
 		$trackingCode->isSearch = (is_search() && self::$settings->getGlobalOption('track_search'));
 		self::$logger->log('Add tracking code. Blog ID: '.self::$blog_id.' Site ID: '.self::$settings->getOption('site_id'));
 		echo $trackingCode->getTrackingCode();
-		// TODO: Move to a better position
-		if (self::$settings->getOption('name') != get_bloginfo('name'))
-			$this->updatePiwikSite();
 	}
 		
 	private function addNoscriptCode() {
@@ -316,7 +319,7 @@ class WP_Piwik {
 	}
 	
 	private function isTrackingActive() {
-		return self::$settings->getGlobalOption('add_tracking_code');
+		return self::$settings->getGlobalOption('track_mode') != 'disabled';
 	}
 	
 	private function isAdminTrackingActive() {
@@ -444,8 +447,11 @@ class WP_Piwik {
 	
 	public function request($id) {
 		if (!isset(self::$request))
-			if (self::$settings->getGlobalOption('piwik_mode') == 'http') self::$request = new WP_Piwik\Request\Rest($this, self::$settings);
-			else self::$request = new WP_Piwik\Request\Php($this, self::$settings);
+			self::$request = (
+				self::$settings->getGlobalOption('piwik_mode') == 'http' || self::$settings->getGlobalOption('piwik_mode') == 'pro'?
+				new WP_Piwik\Request\Rest($this, self::$settings):
+				new WP_Piwik\Request\Php($this, self::$settings)
+			);
 		return self::$request->perform($id);
 	}
 
@@ -481,20 +487,26 @@ class WP_Piwik {
 		
 	public function getPiwikSiteId($blogId = null) {
 		$result = self::$settings->getOption('site_id', $blogId);
-		return (!empty($result)?$result:$this->requestPiwikSiteId($blogId));
+		return (!empty($result) && !self::$settings->getGlobalOption('auto_site_config')?$result:$this->requestPiwikSiteId($blogId));
+	}
+	
+	public function getPiwikSiteDetails() {
+		$id = WP_Piwik\Request::register('SitesManager.getAllSites', array());			
+		$piwikSiteDetails = $this->request($id);
+		return $piwikSiteDetails;
 	}
 	
 	private function requestPiwikSiteId($blogId = null) {
 		$isCurrent = !self::$settings->checkNetworkActivation() || empty($blogId);		
 		if (self::$settings->getGlobalOption('auto_site_config')) {
 			$id = WP_Piwik\Request::register('SitesManager.getSitesIdFromSiteUrl', array(
-				'url' => $isCurrent?get_bloginfo('url'):get_blog_details($blogId)->$siteurl
-			));
+				'url' => $isCurrent?get_bloginfo('url'):get_blog_details($blogId)->siteurl
+			));			
 			$result = $this->request($id);
 			if (empty($result) || !isset($result[0]))
-				$result = $this->addPiwikSite($blogId);
+				$result = null; //$this->addPiwikSite($blogId);
 			else 
-				$result = $result[0]['idsite'];
+				$result = $result[0]['idsite'];			
 		} else $result = null;
 		self::$logger->log('Get Piwik ID: WordPress site '.($isCurrent?get_bloginfo('url'):get_blog_details($blogId)->$siteurl).' = Piwik ID '.$result);
 		if ($result !== null) {
@@ -508,23 +520,38 @@ class WP_Piwik {
 	private function addPiwikSite($blogId = null) {
 		$isCurrent = !self::$settings->checkNetworkActivation() || empty($blogId);
 		$id = WP_Piwik\Request::register('SitesManager.addSite', array(
-			'siteName' => $isCurrent?get_bloginfo('name'):get_blog_details($blogId)->$blogname,
-			'urls[0]' => $isCurrent?get_bloginfo('url'):get_blog_details($blogId)->$siteurl
+			'urls' => $isCurrent?get_bloginfo('url'):get_blog_details($blogId)->$siteurl,
+			'siteName' => $isCurrent?get_bloginfo('name'):get_blog_details($blogId)->$blogname
 		));
 		$result = $this->request($id);
 		self::$logger->log('Get Piwik ID: WordPress site '.($isCurrent?get_bloginfo('url'):get_blog_details($blogId)->$siteurl).' = Piwik ID '.$result);
-		if (empty($$result) || !isset($result[0]))
+		if (empty($result) || !isset($result[0]))
 			return null;
 		else 
 			return $result[0]['idsite'];
 	}
 	
-	private function updatePiwikSite($siteId = null, $blogId = null) {
-
+	private function updatePiwikSite($siteId, $blogId = null) {
+		$isCurrent = !self::$settings->checkNetworkActivation() || empty($blogId);
+		$id = WP_Piwik\Request::register('SitesManager.updateSite', array(
+			'idSite' => $siteId,
+			'urls' => $isCurrent?get_bloginfo('url'):get_blog_details($blogId)->$siteurl,
+			'siteName' => $isCurrent?get_bloginfo('name'):get_blog_details($blogId)->$blogname
+		));
+		$result = $this->request($id);
+		self::$logger->log('Update Piwik site: WordPress site '.($isCurrent?get_bloginfo('url'):get_blog_details($blogId)->$siteurl));
 	}
 
 	public function updateTrackingCode() {
 		// TODO: Add update method
+	}
+
+	public function onBlogNameChange($oldValue, $newValue) {
+		$this->updatePiwikSite(self::$settings->getOption('site_id'));
+	}
+
+	public function onSiteUrlChange($oldValue, $newValue) {
+		$this->updatePiwikSite(self::$settings->getOption('site_id'));
 	}
 	 	
 	public function onloadStatsPage($statsPageId) {

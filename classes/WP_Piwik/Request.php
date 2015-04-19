@@ -40,10 +40,10 @@
 			return isset(self::$results[$id])?self::$results[$id]:false;
 		}
 		
-		protected function buildURL($config) {
-			$url = 'method='.urlencode($config['method']).'&idSite='.self::$settings->getOption('site_id');
+		protected function buildURL($config, $urlDecode = false) {
+			$url = 'method='.($config['method']).'&idSite='.self::$settings->getOption('site_id');
 			foreach ($config['parameter'] as $key => $value)
-				$url .= '&'.$key.'='.urlencode($value);
+				$url .= '&'.$key.'='.($urlDecode?urldecode($value):$value);
 			return $url;
 		}
 		

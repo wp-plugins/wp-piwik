@@ -64,7 +64,7 @@
 						'http' => __('Self-hosted (HTTP API, default)', 'wp-piwik'), 
 						'php' => __('Self-hosted (PHP API)', 'wp-piwik'),
 						'pro' => __('Cloud-hosted (Piwik Pro)', 'wp-piwik')
-					), $description, '$j(\'tr.wp-piwik-mode-option\').addClass(\'hidden\'); $j(\'#wp-piwik-mode-option-\' + $j(\'#piwik_mode\').val()).removeClass(\'hidden\');', self::$wpPiwik->isConfigured());
+					), $description, '$j(\'tr.wp-piwik-mode-option\').addClass(\'hidden\'); $j(\'#wp-piwik-mode-option-\' + $j(\'#piwik_mode\').val()).removeClass(\'hidden\');', false, '', self::$wpPiwik->isConfigured());
 									
 				// URL/Path/User + Token
 				$this->showInput('piwik_url', __('Piwik URL', 'wp-piwik'), 'TODO URL description', self::$settings->getGlobalOption('piwik_mode') != 'http', 'wp-piwik-mode-option', 'http', self::$wpPiwik->isConfigured());
@@ -73,9 +73,21 @@
 				$this->showInput('piwik_token', __('Auth token', 'wp-piwik'), 'TODO Token description', false, '', '', self::$wpPiwik->isConfigured());
 				
 				// Site configuration
-				$this->showCheckbox('auto_site_config', __('Auto config', 'wp-piwik'), __('Check this to automatically choose your blog from your Piwik sites by URL. If your blog is not added to Piwik yet, WP-Piwik will add a new site.', 'wp-piwik'), self::$wpPiwik->isConfigured());
+				$piwikSiteId = self::$wpPiwik->isConfigured()?self::$wpPiwik->getPiwikSiteId():false;
+				$this->showCheckbox('auto_site_config', __('Auto config', 'wp-piwik'), __('Check this to automatically choose your blog from your Piwik sites by URL. If your blog is not added to Piwik yet, WP-Piwik will add a new site.', 'wp-piwik'), self::$wpPiwik->isConfigured(), '$j(\'tr.wp-piwik-auto-option\').toggle(\'hidden\');'.($piwikSiteId?'$j(\'#site_id\').val('.$piwikSiteId.');':''));
 				if (self::$wpPiwik->isConfigured()) {
-					echo '<tr><th scope="row">'.__('Determined site', 'wp-piwik').':</th><td>'.self::$wpPiwik->getPiwikSiteId().'</td></tr>';
+					$piwikSiteDetails = self::$wpPiwik->getPiwikSiteDetails();
+					if (($piwikSiteId == 'n/a'))
+						$piwikSiteDescription = 'n/a';
+					elseif (!self::$settings->getGlobalOption('auto_site_config'))
+						$piwikSiteDescription = __('Save settings to start estimation.', 'wp-piwik');
+					else
+						$piwikSiteDescription = $piwikSiteDetails[$piwikSiteId]['name'].' ('.$piwikSiteDetails[$piwikSiteId]['main_url'].')';
+					echo '<tr class="wp-piwik-auto-option'.(!self::$settings->getGlobalOption('auto_site_config')?' hidden':'').'"><th scope="row">'.__('Determined site', 'wp-piwik').':</th><td>'.$piwikSiteDescription.'</td></tr>';
+					if (is_array($piwikSiteDetails))
+						foreach ($piwikSiteDetails as $key => $siteData)
+							$siteList[$key] = $siteData['name'].' ('.$siteData['main_url'].')';
+					$this->showSelect('site_id', __('Select site', 'wp-piwik'), $siteList, 'TODO Choose description', '', self::$settings->getGlobalOption('auto_site_config'), 'wp-piwik-auto-option', true, false);
 				}
 
 				echo $submitButton;
@@ -85,8 +97,36 @@
 					echo $submitButton;	
 				}
 
+				// Tracking Configuration
 				if (self::$wpPiwik->isConfigured()) {
 					$this->showHeadline(2, 'location-alt', 'Enable Tracking');
+
+					$description = sprintf('%s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s',
+						__('You can choose between four tracking code modes:', 'wp-piwik'),
+						__('Disabled', 'wp-piwik'),
+						__('WP-Piwik will not add the tracking code. Use this, if you want to add the tracking code to your template files or you use another plugin to add the tracking code.', 'wp-piwik'),
+						__('Default tracking', 'wp-piwik'),
+						__('TODO', 'wp-piwik'),
+						__('Use js/index.php', 'wp-piwik'),
+						__('TODO', 'wp-piwik'),
+						__('Use proxy script', 'wp-piwik'),
+						__('TODO', 'wp-piwik'),
+						__('Enter manually', 'wp-piwik'),
+						__('TODO', 'wp-piwik')
+					);
+					$this->showSelect('track_mode', __('Add tracking code', 'wp-piwik'),
+						array(
+							'disabled' => __('Disabled', 'wp-piwik'),
+							'default' => __('Default tracking', 'wp-piwik'), 
+							'js' => __('Use js/index.php', 'wp-piwik'), 
+							'proxy' => __('Use proxy script', 'wp-piwik'),
+							'manually' => __('Enter manually', 'wp-piwik')
+						), $description, '$j(\'tr.wp-piwik-track-option\').addClass(\'hidden\'); $j(\'tr.wp-piwik-track-option-\' + $j(\'#track_mode\').val()).removeClass(\'hidden\'); $j(\'#tracking_code, #noscript_code\').prop(\'readonly\', $j(\'#track_mode\').val() != \'manually\');');
+					
+					$this->showTextarea('tracking_code', __('Tracking code', 'wp-piwik'), 10, 'TODO tracking code desc', (self::$settings->getGlobalOption('track_mode') == 'disabled'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-track-option-manually', true, '', (self::$settings->getGlobalOption('track_mode') != 'manually'), false);
+
+					$this->showTextarea('noscript_code', __('Noscript code', 'wp-piwik'), 2, 'TODO noscript code desc', (self::$settings->getGlobalOption('track_mode') == 'disabled'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-track-option-manually', true, '', (self::$settings->getGlobalOption('track_mode') != 'manually'), false);
+					
 					echo $submitButton;	
 				}
 				
@@ -107,9 +147,7 @@
 				
 				// Timeout
 				$this->showInput('connection_timeout', __('Connection timeout', 'wp-piwik'), 'TODO Connection timeout description');
-				
 
-				
 				echo $submitButton;
 			?>			</tbody>
 					</table>
@@ -122,8 +160,12 @@
 			return sprintf('<span class="dashicons dashicons-editor-help" onclick="$j(\'#%s-desc\').toggleClass(\'hidden\');"></span> <p class="description'.($hideDescription?' hidden':'').'" id="%1$s-desc">%s</p>', $id, $description);
 		}
 		
-		private function showCheckbox($id, $name, $description, $hideDescription = true) {
-			printf('<tr><th scope="row"><label for="%2$s">%s</label>:</th><td><input type="checkbox" value="1"'.(self::$settings->getGlobalOption($id)?' checked="checked"':'').' onchange="$j(\'#%s\').val(this.checked?1:0);" /><input id="%2$s" type="hidden" name="wp-piwik[%2$s]" value="'.(int)self::$settings->getGlobalOption($id).'" /> %s</td></tr>', $name, $id, $this->getDescription($id, $description, $hideDescription));
+		private function showCheckbox($id, $name, $description, $hideDescription = true, $onChange = '') {
+			printf('<tr><th scope="row"><label for="%2$s">%s</label>:</th><td><input type="checkbox" value="1"'.(self::$settings->getGlobalOption($id)?' checked="checked"':'').' onchange="$j(\'#%s\').val(this.checked?1:0);%s" /><input id="%2$s" type="hidden" name="wp-piwik[%2$s]" value="'.(int)self::$settings->getGlobalOption($id).'" /> %s</td></tr>', $name, $id, $onChange ,$this->getDescription($id, $description, $hideDescription));
+		}
+
+		private function showTextarea($id, $name, $rows, $description, $isHidden, $groupName, $hideDescription = true, $onChange = '', $isReadonly = false, $global = true) {
+			printf('<tr class="'.$groupName.($isHidden?' hidden':'').'"><th scope="row"><label for="%2$s">%s</label>:</th><td><textarea cols="80" rows="'.$rows.'" id="%s" onchange="%s"'.($isReadonly?' readonly="readonly"':'').'>'.($global?self::$settings->getGlobalOption($id):self::$settings->getOption($id)).'</textarea> %s</td></tr>', $name, $id, $onChange ,$this->getDescription($id, $description, $hideDescription));
 		}
 		
 		private function showText($text) {
@@ -134,12 +176,13 @@
 			printf('<tr class="%s%s"%s><th scope="row"><label for="%5$s">%s:</label></th><td><input name="wp-piwik[%s]" id="%5$s" value="%s" /> %s</td></tr>', $isHidden?'hidden ':'', $groupName?$groupName:'', $rowName?' id="'.$groupName.'-'.$rowName.'"':'', $name, $id, self::$settings->getGlobalOption($id), $this->getDescription($id, $description, $hideDescription));
 		}
 		
-		private function showSelect($id, $name, $options = array(), $description = '', $onChange = '', $hideDescription = true) {
+		private function showSelect($id, $name, $options = array(), $description = '', $onChange = '', $isHidden = false, $groupName = '', $hideDescription = true, $global = true) {
 			$optionList = '';
+			$default = $global?self::$settings->getGlobalOption($id):self::$settings->getOption($id);
 			if (is_array($options))
 				foreach ($options as $key => $value)
-					$optionList .= sprintf('<option value="%s"'.($key == self::$settings->getGlobalOption($id)?' selected="selected"':'').'>%s</option>', $key, $value);
-			printf ('<tr><th scope="row"><label for="%2$s">%s:</label></th><td><select name="wp-piwik[%s]" id="%2$s" onchange="%s">%s</select> %s</td></tr>', $name, $id, $onChange, $optionList, $this->getDescription($id, $description, $hideDescription));
+					$optionList .= sprintf('<option value="%s"'.($key == $default?' selected="selected"':'').'>%s</option>', $key, $value);
+			printf ('<tr class="'.$groupName.($isHidden?' hidden':'').'"><th scope="row"><label for="%2$s">%s:</label></th><td><select name="wp-piwik[%s]" id="%2$s" onchange="%s">%s</select> %s</td></tr>', $name, $id, $onChange, $optionList, $this->getDescription($id, $description, $hideDescription));
 		}
 
 		private function showBox($type, $icon, $content) {

@@ -24,14 +24,14 @@
 			'auto_site_config' => true,
 			// User settings: Stats configuration
 			// User settings: Tracking configuration
+			'track_mode' => 'disabled',
 			// User settings: Expert configuration
 			'cache' => true, //OK
-			'piwik_useragent' => 'php', //OK
-			'piwik_useragent_string' => 'WP-Piwik', //OK
-			'connection_timeout' => 5, //OK
+			'piwik_useragent' => 'php',
+			'piwik_useragent_string' => 'WP-Piwik',
+			'connection_timeout' => 5,
 			// ---
 			'plugin_display_name' => 'WP-Piwik',
-			'add_tracking_code' => false,
 			'dashboard_widget' => false,
 			'dashboard_chart' => false,
 			'dashboard_seo' => false,
@@ -42,7 +42,6 @@
 			'default_date' => 'yesterday',
 			'track_404' => false,
 			'track_search' => false,
-			'track_mode' => 0,
 			'track_post' => false,
 			'track_proxy' => false,
 			'track_admin' => false,
@@ -75,9 +74,9 @@
 			'name' => '',
 			'tracking_code' => '',
 			'site_id' => NULL,
+			'noscript_code' => '',
 			'last_tracking_code_update' => 0,
-			'dashboard_revision' => 0,
-			'noscript_code' => ''
+			'dashboard_revision' => 0
 		),
 		$settingsChanged = false;
 	
@@ -192,8 +191,13 @@
 		}
 		
 		private function applyGlobalOption($id, $value) {
-			self::$logger->log('Set '.$id.': '.serialize($this->getGlobalOption($id)).' &rarr; '.serialize($value));
+			self::$logger->log('Set '.$id.': '.serialize($this->getGlobalOption($id)).' - '.serialize($value));
 			$this->setGlobalOption($id, $value);
+		}
+
+		private function applyOption($id, $value) {
+			self::$logger->log('Set '.$id.': '.serialize($this->getOption($id)).' - '.serialize($value));
+			$this->setOption($id, $value);
 		}
 		
 		public function applyChanges($in) {
@@ -201,6 +205,8 @@
 			self::$logger->log('Apply changed settings:');
 			foreach (self::$defaultSettings['globalSettings'] as $key => $val)
 				$this->applyGlobalOption($key, isset($in[$key]) ? $in[$key]:$val);
+			foreach (self::$defaultSettings['settings'] as $key => $val)
+				$this->applyOption($key, isset($in[$key]) ? $in[$key]:$val);
 			$this->setGlobalOption('last_settings_update', time());
 			$this->save();
 		}
@@ -232,5 +238,5 @@
 		private function checkPiwikToken($value) {
 			return str_replace('&token_auth=', '', $value);
 		}
-
+		
 	}

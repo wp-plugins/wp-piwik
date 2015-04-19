@@ -7,10 +7,9 @@
 		protected function request($id) {
 			$count = 0;
 			$url = self::$settings->getGlobalOption('piwik_url');
-			$params = 'module=API&method=API.getBulkRequest&format=php';
 			foreach (self::$requests as $requestID => $config) {
 				if (!isset(self::$results[$requestID])) {
-					$params = 'module=API&format=php&'.$this->buildURL($config);
+					$params = 'module=API&format=php&'.$this->buildURL($config, true);
 					$map[$count] = $requestID;
 					$result = $this->call($url, $params);
 					self::$results[$map[$count]] = $result;

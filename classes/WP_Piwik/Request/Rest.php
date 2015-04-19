@@ -6,7 +6,9 @@
 			
 		protected function request($id) {
 			$count = 0;
-			$url = self::$settings->getGlobalOption('piwik_url');
+			$url = self::$settings->getGlobalOption('piwik_mode') == 'http'?
+				self::$settings->getGlobalOption('piwik_url'):
+				'https://'.self::$settings->getGlobalOption('piwik_user').'.piwik.pro/';
 			$params = 'module=API&method=API.getBulkRequest&format=php';
 			foreach (self::$requests as $requestID => $config) {
 				if (!isset(self::$results[$requestID])) {
