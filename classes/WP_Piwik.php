@@ -4,7 +4,7 @@ class WP_Piwik {
 
 	private static
 		$intRevisionId = 99904,
-		$strVersion = '0.10.RC1',
+		$strVersion = '0.10.beta.1',
 		$blog_id,
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
@@ -155,7 +155,9 @@ class WP_Piwik {
 		echo $trackingCode->getTrackingCode();
 	}
 		
-	private function addNoscriptCode() {
+	public function addNoscriptCode() {
+		if (self::$settings->getGlobalOption('track_mode') == 'proxy')
+			return;
 		if ($this->isHiddenUser()) {
 			self::$logger->log('Do not add noscript code to site (user should not be tracked) Blog ID: '.self::$blog_id.' Site ID: '.self::$settings->getOption('site_id'));
 			return;
@@ -375,7 +377,7 @@ class WP_Piwik {
 	}
 
 	private function openSettings() {
-		self::$settings = new WP_Piwik\Settings(self::$logger);
+		self::$settings = new WP_Piwik\Settings($this, self::$logger);
 	}
 	
 	private function includeFile($strFile) {
@@ -511,7 +513,11 @@ class WP_Piwik {
 		self::$logger->log('Get Piwik ID: WordPress site '.($isCurrent?get_bloginfo('url'):get_blog_details($blogId)->$siteurl).' = Piwik ID '.$result);
 		if ($result !== null) {
 			self::$settings->setOption('site_id', $result, $blogId);
-			$this->updateTrackingCode($result, $blogId);
+			if (self::$settings->getGlobalOption('track_mode') != 'disabled' && self::$settings->getGlobalOption('track_mode') != 'manually') {
+				$code = $this->updateTrackingCode($result, $blogId);			
+				self::$settings->setOption('tracking_code', $code['script'], $blogId);
+				self::$settings->setOption('noscript_code', $code['noscript'], $blogId);
+			}
 			$this::$settings->save();
 			return $result;
 		} return 'n/a';
@@ -542,8 +548,16 @@ class WP_Piwik {
 		self::$logger->log('Update Piwik site: WordPress site '.($isCurrent?get_bloginfo('url'):get_blog_details($blogId)->$siteurl));
 	}
 
-	public function updateTrackingCode() {
-		// TODO: Add update method
+	public function updateTrackingCode($siteId = false, $blogId = null) {
+		if (!$siteId)
+			$siteId = $this->getPiwikSiteId();
+		$id = WP_Piwik\Request::register('SitesManager.getJavascriptTag', array(
+			'idSite' => $siteId,
+		));
+		$result = html_entity_decode($this->request($id));
+		self::$logger->log('Delivered tracking code: '.$result);
+		$result = WP_Piwik\TrackingCode::prepareTrackingCode($result, self::$settings, self::$logger);
+		return $result;
 	}
 
 	public function onBlogNameChange($oldValue, $newValue) {

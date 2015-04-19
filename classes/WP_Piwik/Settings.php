@@ -4,11 +4,13 @@
 
 	class Settings {
 		
-		private static $logger, $defaultSettings;
+		private static $wpPiwik, $logger, $defaultSettings;
 		
 		private $checkSettings = array(
 			'piwik_url' => 'checkPiwikUrl',
-			'piwik_token' => 'checkPiwikToken'
+			'piwik_token' => 'checkPiwikToken',
+			'tracking_code' => 'prepareTrackingCode',
+			'noscript_code' => 'prepareNocscriptCode',
 		);
 		
 		private $globalSettings = array(
@@ -25,6 +27,13 @@
 			// User settings: Stats configuration
 			// User settings: Tracking configuration
 			'track_mode' => 'disabled',
+			'track_codeposition' => 'footer',			
+			'track_noscript' => false,
+			'track_nojavascript' => false,
+			'disable_cookies' => false,
+			'limit_cookies' => false,
+			'limit_cookies_visitor' => 1209600,
+			'limit_cookies_session' => 0,
 			// User settings: Expert configuration
 			'cache' => true, //OK
 			'piwik_useragent' => 'php',
@@ -52,36 +61,30 @@
 			'track_feed_addcampaign' => 'false',
 			'track_cdnurl' => '',
 			'track_cdnurlssl' => '',
-			'track_noscript' => false,
-			'track_nojavascript' => false,
-			'track_codeposition' => 'footer',
 			'track_datacfasync' => false,
 			'track_across' => false,
 			'track_across_alias' => false,
-			'limit_cookies' => false,
-			'limit_cookies_visitor' => 1209600,
-			'limit_cookies_session' => 0,
 			'add_post_annotations' => false,
 			'add_customvars_box' => true,
 			'disable_timelimit' => false,
 			'disable_ssl_verify' => false,
-			'disable_cookies' => false,
 			'toolbar' => false,
 			'shortcodes' => false,
 			'perpost_stats' => false
 		),
 		$settings = array(
 			'name' => '',
-			'tracking_code' => '',
 			'site_id' => NULL,
 			'noscript_code' => '',
+			'tracking_code' => '',
 			'last_tracking_code_update' => 0,
 			'dashboard_revision' => 0
 		),
 		$settingsChanged = false;
 	
-		public function __construct($objLogger) {
-			self::$logger = $objLogger;
+		public function __construct($wpPiwik, $logger) {
+			self::$wpPiwik = $wpPiwik;
+			self::$logger = $logger;
 			self::$logger->log('Store default settings');
 			self::$defaultSettings = array('globalSettings' => $this->globalSettings, 'settings' => $this->settings);
 			self::$logger->log('Load settings');
@@ -227,16 +230,32 @@
 		private function checkSettings($in) {
 			foreach ($this->checkSettings as $key => $value)
 				if (isset($in[$key]))
-					$in[$key] = call_user_func_array(array($this, $value), array($in[$key]));
+					$in[$key] = call_user_func_array(array($this, $value), array($in[$key], $in));
 			return $in;
 		}
 		
-		private function checkPiwikUrl($value) {
+		private function checkPiwikUrl($value, $in) {
 			return substr($value,-1,1) != '/'?$value.'/':$value;			
 		}
 		
-		private function checkPiwikToken($value) {
+		private function checkPiwikToken($value, $in) {
 			return str_replace('&token_auth=', '', $value);
+		}
+		
+		private function prepareTrackingCode($value, $in) {
+			if ($in['track_mode'] == 'manually' || $in['track_mode'] == 'disabled') {
+				$value = stripslashes($value);
+				return $value;
+			}
+			$result = self::$wpPiwik->updateTrackingCode();
+			$this->setOption('noscript_code', $result['noscript']);
+			return $result['script'];
+		}
+		
+		private function prepareNocscriptCode($value, $in) {
+			if ($in['track_mode'] == 'manually')
+				return stripslashes($value);
+			return $value;
 		}
 		
 	}

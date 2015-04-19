@@ -26,41 +26,43 @@
 			return $this->trackingCode;
 		}
 		
-		private function prepareTrackingCode() {
-			self::$logger->log('Apply tracking code changes.');
-			self::$settings->setOption('last_tracking_code_update', time());
-			$strCode = html_entity_decode($strCode);
-			if (self::$settings->getGlobalOption('track_mode') == 1) {
-				$strCode = str_replace('piwik.js', 'js/', $strCode);
-				$strCode = str_replace('piwik.php', 'js/', $strCode);
-			} elseif (self::$settings->getGlobalOption('track_mode') == 2) {
-				$strCode = str_replace('piwik.js', 'piwik.php', $strCode);
-				$strURL = str_replace('https://', '://', self::$settings->getGlobalOption('piwik_url'));
-				$strURL = str_replace('http://', '://', $strURL);
-				$strProxy = str_replace('https://', '://', plugins_url('wp-piwik'));
-				$strProxy = str_replace('http://', '://', $strProxy);
-				$strProxy .= '/';
-				$strCode = str_replace($strURL, $strProxy, $strCode);
+		public static function prepareTrackingCode($code, $settings, $logger) {
+			$logger->log('Apply tracking code changes:');
+			$settings->setOption('last_tracking_code_update', time());
+			// Change code if js/index.php should be used
+			if ($settings->getGlobalOption('track_mode') == 'js')
+				$code = str_replace(array('piwik.js', 'piwik.php'), 'js/index.php', $code);
+			elseif ($settings->getGlobalOption('track_mode') == 'proxy') {
+				$code = str_replace('piwik.js', 'piwik.php', $code);
+				$url = str_replace(array('https://', 'http://'), '//', $settings->getGlobalOption('piwik_url'));
+				$proxy = str_replace(array('https://', 'http://'), '//', plugins_url('wp-piwik').'/proxy').'/';
+				$code = str_replace($url, $proxy, $code);
 			}
-			$strCode = str_replace('//";','/"',$strCode);
+			/*$strCode = str_replace('//";','/"',$strCode);
 			if (self::$settings->getGlobalOption('track_cdnurl')||self::$settings->getGlobalOption('track_cdnurlssl')) {
 				$strCode = str_replace("var d=doc", "var ucdn=(('https:' == document.location.protocol) ? 'https://".(self::$settings->getGlobalOption('track_cdnurlssl')?self::$settings->getGlobalOption('track_cdnurlssl'):self::$settings->getGlobalOption('track_cdnurl'))."/' : 'http://".(self::$settings->getGlobalOption('track_cdnurl')?self::$settings->getGlobalOption('track_cdnurl'):self::$settings->getGlobalOption('track_cdnurlssl'))."/');\nvar d=doc", $strCode);
 				$strCode = str_replace("g.src=u+", "g.src=ucdn+", $strCode);
 			}
 			if (self::$settings->getGlobalOption('track_post') && self::$settings->getGlobalOption('track_mode') != 2) $strCode = str_replace("_paq.push(['trackPageView']);", "_paq.push(['setRequestMethod', 'POST']);\n_paq.push(['trackPageView']);", $strCode);
-			if (self::$settings->getGlobalOption('disable_cookies')) $strCode = str_replace("_paq.push(['trackPageView']);", "_paq.push(['disableCookies']);\n_paq.push(['trackPageView']);", $strCode);
-			if (self::$settings->getGlobalOption('limit_cookies')) $strCode = str_replace("_paq.push(['trackPageView']);", "_paq.push(['setVisitorCookieTimeout', '".self::$settings->getGlobalOption('limit_cookies_visitor')."']);\n_paq.push(['setSessionCookieTimeout', '".self::$settings->getGlobalOption('limit_cookies_session')."']);\n_paq.push(['trackPageView']);", $strCode);
-			$aryNoscript = array();
-			preg_match('/<noscript>(.*)<\/noscript>/', $strCode, $aryNoscript);
-			if (isset($aryNoscript[0])) {
-				if (self::$settings->getGlobalOption('track_nojavascript'))
-					$aryNoscript[0] = str_replace('?idsite', '?rec=1&idsite', $aryNoscript[0]);
-				self::$settings->setOption('noscript_code', $aryNoscript[0]);
-			}
-			if (self::$settings->getGlobalOption('track_datacfasync'))
-				$strCode = str_replace('<script type', '<script data-cfasync="false" type', $strCode);
-			$strCode = preg_replace('/<noscript>(.*)<\/noscript>/', '', $strCode);
-			return preg_replace('/\s+(\r\n|\r|\n)/', '$1', $strCode);
+			
+			/*if (self::$settings->getGlobalOption('track_datacfasync'))
+				$strCode = str_replace('<script type', '<script data-cfasync="false" type', $strCode);*/
+			if ($settings->getGlobalOption('disable_cookies')) 
+				$code = str_replace("_paq.push(['trackPageView']);", "_paq.push(['disableCookies']);\n_paq.push(['trackPageView']);", $code);
+			if ($settings->getGlobalOption('limit_cookies'))
+				$code = str_replace("_paq.push(['trackPageView']);", "_paq.push(['setVisitorCookieTimeout', '".$settings->getGlobalOption('limit_cookies_visitor')."']);\n_paq.push(['setSessionCookieTimeout', '".$settings->getGlobalOption('limit_cookies_session')."']);\n_paq.push(['trackPageView']);", $code);
+			$noScript = array();
+			preg_match('/<noscript>(.*)<\/noscript>/', $code, $noScript);
+			if (isset($noScript[0])) {
+				if ($settings->getGlobalOption('track_nojavascript'))
+					$noScript[0] = str_replace('?idsite', '?rec=1&idsite', $noScript[0]);
+				$noScript = $noScript[0];
+			} else $noScript = '';
+			$script = preg_replace('/<noscript>(.*)<\/noscript>/', '', $code);
+			$script = preg_replace('/\s+(\r\n|\r|\n)/', '$1', $script);
+			$logger->log('Finished tracking code: '.$script);
+			$logger->log('Finished noscript code: '.$noScript);
+			return array('script' => $script, 'noscript' => $noScript);
 		}
 		
 		private function apply404Changes() {

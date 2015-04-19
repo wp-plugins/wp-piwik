@@ -123,10 +123,29 @@
 							'manually' => __('Enter manually', 'wp-piwik')
 						), $description, '$j(\'tr.wp-piwik-track-option\').addClass(\'hidden\'); $j(\'tr.wp-piwik-track-option-\' + $j(\'#track_mode\').val()).removeClass(\'hidden\'); $j(\'#tracking_code, #noscript_code\').prop(\'readonly\', $j(\'#track_mode\').val() != \'manually\');');
 					
-					$this->showTextarea('tracking_code', __('Tracking code', 'wp-piwik'), 10, 'TODO tracking code desc', (self::$settings->getGlobalOption('track_mode') == 'disabled'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-track-option-manually', true, '', (self::$settings->getGlobalOption('track_mode') != 'manually'), false);
+					$this->showTextarea('tracking_code', __('Tracking code', 'wp-piwik'), 15, 'TODO tracking code desc', (self::$settings->getGlobalOption('track_mode') == 'disabled'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-track-option-manually', true, '', (self::$settings->getGlobalOption('track_mode') != 'manually'), false);
 
+					$this->showSelect('track_codeposition', __('JavaScript code position', 'wp-piwik'),
+						array(
+							'footer' => __('Footer', 'wp-piwik'),
+							'header' => __('Header', 'wp-piwik')
+						), __('Choose whether the JavaScript code is added to the footer or the header.', 'wp-piwik'), '', (self::$settings->getGlobalOption('track_mode') == 'disabled'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-track-option-manually');
+						
 					$this->showTextarea('noscript_code', __('Noscript code', 'wp-piwik'), 2, 'TODO noscript code desc', (self::$settings->getGlobalOption('track_mode') == 'disabled'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-track-option-manually', true, '', (self::$settings->getGlobalOption('track_mode') != 'manually'), false);
 					
+					$this->showCheckbox('track_noscript', __('Add &lt;noscript&gt;', 'wp-piwik'), __('Adds the &lt;noscript&gt; code to your footer.', 'wp-piwik').' '.__('Disabled in proxy mode.', 'wp-piwik'), (self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'proxy'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-manually');
+
+					$this->showCheckbox('track_nojavascript', __('Add rec parameter to noscript code', 'wp-piwik'), __('Enable tracking for visitors without JavaScript (not recommended).', 'wp-piwik').' '.sprintf(__('See %sPiwik FAQ%s.', 'wp-piwik'),'<a href="http://piwik.org/faq/how-to/#faq_176">','</a>').' '.__('Disabled in proxy mode.', 'wp-piwik'), (self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'proxy' || self::$settings->getGlobalOption('track_mode') == 'manually'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js');
+
+					$this->showCheckbox('disable_cookies', __('Disable cookies', 'wp-piwik'), __('Disable all tracking cookies for a visitor.', 'wp-piwik'), (self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'manually'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy');
+					
+					$this->showCheckbox('limit_cookies', __('Limit cookie lifetime', 'wp-piwik'), __('TODO cookie lifetime desc', 'wp-piwik'), (self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'manually'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy', true, '$j(\'tr.wp-piwik-cookielifetime-option\').toggle(\'hidden\');');
+					
+					$this->showInput('limit_cookies_visitor', __('Visitor timeout (seconds)', 'wp-piwik'), false, self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'manually' || !self::$settings->getGlobalOption('limit_cookies'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-cookielifetime-option');
+					
+					$this->showInput('limit_cookies_session', __('Session timeout (seconds)', 'wp-piwik'), false, self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'manually' || !self::$settings->getGlobalOption('limit_cookies'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-cookielifetime-option');
+					
+
 					echo $submitButton;	
 				}
 				
@@ -160,12 +179,12 @@
 			return sprintf('<span class="dashicons dashicons-editor-help" onclick="$j(\'#%s-desc\').toggleClass(\'hidden\');"></span> <p class="description'.($hideDescription?' hidden':'').'" id="%1$s-desc">%s</p>', $id, $description);
 		}
 		
-		private function showCheckbox($id, $name, $description, $hideDescription = true, $onChange = '') {
-			printf('<tr><th scope="row"><label for="%2$s">%s</label>:</th><td><input type="checkbox" value="1"'.(self::$settings->getGlobalOption($id)?' checked="checked"':'').' onchange="$j(\'#%s\').val(this.checked?1:0);%s" /><input id="%2$s" type="hidden" name="wp-piwik[%2$s]" value="'.(int)self::$settings->getGlobalOption($id).'" /> %s</td></tr>', $name, $id, $onChange ,$this->getDescription($id, $description, $hideDescription));
+		private function showCheckbox($id, $name, $description, $isHidden = false, $groupName = '', $hideDescription = true, $onChange = '') {
+			printf('<tr class="'.$groupName.($isHidden?' hidden':'').'"><th scope="row"><label for="%2$s">%s</label>:</th><td><input type="checkbox" value="1"'.(self::$settings->getGlobalOption($id)?' checked="checked"':'').' onchange="$j(\'#%s\').val(this.checked?1:0);%s" /><input id="%2$s" type="hidden" name="wp-piwik[%2$s]" value="'.(int)self::$settings->getGlobalOption($id).'" /> %s</td></tr>', $name, $id, $onChange ,$this->getDescription($id, $description, $hideDescription));
 		}
 
 		private function showTextarea($id, $name, $rows, $description, $isHidden, $groupName, $hideDescription = true, $onChange = '', $isReadonly = false, $global = true) {
-			printf('<tr class="'.$groupName.($isHidden?' hidden':'').'"><th scope="row"><label for="%2$s">%s</label>:</th><td><textarea cols="80" rows="'.$rows.'" id="%s" onchange="%s"'.($isReadonly?' readonly="readonly"':'').'>'.($global?self::$settings->getGlobalOption($id):self::$settings->getOption($id)).'</textarea> %s</td></tr>', $name, $id, $onChange ,$this->getDescription($id, $description, $hideDescription));
+			printf('<tr class="'.$groupName.($isHidden?' hidden':'').'"><th scope="row"><label for="%2$s">%s</label>:</th><td><textarea cols="80" rows="'.$rows.'" id="%s" name="wp-piwik[%2$s]" onchange="%s"'.($isReadonly?' readonly="readonly"':'').'>'.($global?self::$settings->getGlobalOption($id):self::$settings->getOption($id)).'</textarea> %s</td></tr>', $name, $id, $onChange ,$this->getDescription($id, $description, $hideDescription));
 		}
 		
 		private function showText($text) {
