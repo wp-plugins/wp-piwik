@@ -553,6 +553,9 @@ class WP_Piwik {
 			$siteId = $this->getPiwikSiteId();
 		$id = WP_Piwik\Request::register('SitesManager.getJavascriptTag', array(
 			'idSite' => $siteId,
+			'mergeSubdomains' => self::$settings->getGlobalOption('track_across')?1:0,
+			'mergeAliasUrls' => self::$settings->getGlobalOption('track_across_alias')?1:0,
+			'disableCookies' => self::$settings->getGlobalOption('disable_cookies')?1:0
 		));
 		$result = html_entity_decode($this->request($id));
 		self::$logger->log('Delivered tracking code: '.$result);

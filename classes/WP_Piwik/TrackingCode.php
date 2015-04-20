@@ -47,8 +47,6 @@
 			
 			/*if (self::$settings->getGlobalOption('track_datacfasync'))
 				$strCode = str_replace('<script type', '<script data-cfasync="false" type', $strCode);*/
-			if ($settings->getGlobalOption('disable_cookies')) 
-				$code = str_replace("_paq.push(['trackPageView']);", "_paq.push(['disableCookies']);\n_paq.push(['trackPageView']);", $code);
 			if ($settings->getGlobalOption('limit_cookies'))
 				$code = str_replace("_paq.push(['trackPageView']);", "_paq.push(['setVisitorCookieTimeout', '".$settings->getGlobalOption('limit_cookies_visitor')."']);\n_paq.push(['setSessionCookieTimeout', '".$settings->getGlobalOption('limit_cookies_session')."']);\n_paq.push(['trackPageView']);", $code);
 			$noScript = array();
@@ -66,7 +64,7 @@
 		}
 		
 		private function apply404Changes() {
-			$wpPiwik->log('Apply 404 changes. Blog ID: '.self::$blog_id.' Site ID: '.self::$wpPiwik->getOption('site_id'));
+			self::$wpPiwik->log('Apply 404 changes. Blog ID: '.get_current_blog_id().' Site ID: '.self::$wpPiwik->getOption('site_id'));
 			$this->trackingCode = str_replace(
 				"_paq.push(['trackPageView']);",
 				"_paq.push(['setDocumentTitle', '404/URL = '+String(document.location.pathname+document.location.search).replace(/\//g,'%2f') + '/From = ' + String(document.referrer).replace(/\//g,'%2f')]);\n_paq.push(['trackPageView']);",
@@ -74,9 +72,9 @@
 			);
 		}
 	
-		private function applySearchChanges($strTrackingCode) {
-			$wpPiwik->log('Apply search tracking changes. Blog ID: '.self::$blog_id.' Site ID: '.self::$wpPiwik->getOption('site_id'));
-			$objSearch = new WP_Query("s=" . get_search_query() . '&showposts=-1'); 
+		private function applySearchChanges() {
+			self::$wpPiwik->log('Apply search tracking changes. Blog ID: '.get_current_blog_id().' Site ID: '.self::$wpPiwik->getOption('site_id'));
+			$objSearch = new \WP_Query("s=" . get_search_query() . '&showposts=-1'); 
 			$intResultCount = $objSearch->post_count;
 			$this->trackingCode = str_replace(
 				"_paq.push(['trackPageView']);",
