@@ -172,6 +172,12 @@
 
 					$this->showCheckbox('track_across_alias', __('Track visitors across all alias URLs', 'wp-piwik'), __('Adds *.-prefix to tracked domain.', 'wp-piwik'), $isNotGeneratedTracking, $fullGeneratedTrackingGroup);
 					
+					$this->showCheckbox('track_feed', __('Track RSS feeds', 'wp-piwik'), __('Enable to track posts in feeds via tracking pixel.', 'wp-piwik'), $isNotTracking, $fullGeneratedTrackingGroup.' wp-piwik-track-option-manually');
+
+					$this->showCheckbox('track_feed_addcampaign', __('Track RSS feed links as campaign', 'wp-piwik'), __('This will add Piwik campaign parameters to the RSS feed links.'.' '.sprintf(__('See %sPiwik documentation%s.', 'wp-piwik'),'<a href="http://piwik.org/docs/tracking-campaigns/">','</a>'), 'wp-piwik'), $isNotTracking, $fullGeneratedTrackingGroup.' wp-piwik-track-option-manually', true, '$j(\'tr.wp-piwik-feed_campaign-option\').toggle(\'hidden\');');
+
+					$this->showInput('track_feed_campaign', __('RSS feed campaign', 'wp-piwik'), __('Keyword: post name.', 'wp-piwik'), $isNotGeneratedTracking || !self::$settings->getGlobalOption('track_feed_addcampaign'), $fullGeneratedTrackingGroup.' wp-piwik-feed_campaign-option');
+					
 					echo $submitButton;	
 				}
 				

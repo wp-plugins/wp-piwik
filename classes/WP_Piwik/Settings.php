@@ -43,6 +43,9 @@
 			'capability_stealth' => array(),
 			'track_across' => false,
 			'track_across_alias' => false,
+			'track_feed' => false,
+			'track_feed_addcampaign' => false,
+			'track_feed_campaign' => 'feed',
 			// User settings: Expert configuration
 			'cache' => true, //OK
 			'piwik_useragent' => 'php',
@@ -62,11 +65,6 @@
 			'piwik_shortcut' => false,
 			'default_date' => 'yesterday',
 			'track_proxy' => false,
-			'track_feed' => false,
-			'track_feed_goal' => '',
-			'track_feed_revenue' => '',
-			'track_feed_campaign' => 'feed',
-			'track_feed_addcampaign' => 'false',
 			'disable_timelimit' => false,
 			'disable_ssl_verify' => false,
 			'toolbar' => false,
