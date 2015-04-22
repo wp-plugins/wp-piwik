@@ -48,7 +48,6 @@
 				if (!function_exists('curl_init') && !ini_get('allow_url_fopen'))
 					$this->showBox('error', 'no', __('Neither cURL nor fopen are available. So WP-Piwik can not use the HTTP API and not connect to Piwik Pro.').' '.sprintf('<a href="%s">%s.</a>', 'https://wordpress.org/plugins/wp-piwik/faq/', __('More information', 'wp-piwik')));
 
-				// Piwik mode
 				$description = sprintf('%s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s',
 					__('You can choose between three connection methods:', 'wp-piwik'),
 					__('Self-hosted (HTTP API, default)', 'wp-piwik'),
@@ -66,7 +65,6 @@
 						'pro' => __('Cloud-hosted (Piwik Pro)', 'wp-piwik')
 					), $description, '$j(\'tr.wp-piwik-mode-option\').addClass(\'hidden\'); $j(\'#wp-piwik-mode-option-\' + $j(\'#piwik_mode\').val()).removeClass(\'hidden\');', false, '', self::$wpPiwik->isConfigured());
 									
-				// URL/Path/User + Token
 				$this->showInput('piwik_url', __('Piwik URL', 'wp-piwik'), 'TODO URL description', self::$settings->getGlobalOption('piwik_mode') != 'http', 'wp-piwik-mode-option', 'http', self::$wpPiwik->isConfigured());
 				$this->showInput('piwik_path', __('Piwik path', 'wp-piwik'), 'TODO Path description', self::$settings->getGlobalOption('piwik_mode') != 'php', 'wp-piwik-mode-option', 'php', self::$wpPiwik->isConfigured());
 				$this->showInput('piwik_user', __('Piwik user', 'wp-piwik'), 'TODO User description', self::$settings->getGlobalOption('piwik_mode') != 'pro', 'wp-piwik-mode-option', 'pro', self::$wpPiwik->isConfigured());	
@@ -99,6 +97,11 @@
 
 				// Tracking Configuration
 				if (self::$wpPiwik->isConfigured()) {
+					
+					$isNotTracking = self::$settings->getGlobalOption('track_mode') == 'disabled';
+					$isNotGeneratedTracking = $isNotTracking || self::$settings->getGlobalOption('track_mode') == 'manually';
+					$fullGeneratedTrackingGroup = 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy';
+					
 					$this->showHeadline(2, 'location-alt', 'Enable Tracking');
 
 					$description = sprintf('%s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s',
@@ -123,35 +126,51 @@
 							'manually' => __('Enter manually', 'wp-piwik')
 						), $description, '$j(\'tr.wp-piwik-track-option\').addClass(\'hidden\'); $j(\'tr.wp-piwik-track-option-\' + $j(\'#track_mode\').val()).removeClass(\'hidden\'); $j(\'#tracking_code, #noscript_code\').prop(\'readonly\', $j(\'#track_mode\').val() != \'manually\');');
 					
-					$this->showTextarea('tracking_code', __('Tracking code', 'wp-piwik'), 15, 'TODO tracking code desc', (self::$settings->getGlobalOption('track_mode') == 'disabled'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-track-option-manually', true, '', (self::$settings->getGlobalOption('track_mode') != 'manually'), false);
+					$this->showTextarea('tracking_code', __('Tracking code', 'wp-piwik'), 15, 'TODO tracking code desc', $isNotTracking, 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-track-option-manually', true, '', (self::$settings->getGlobalOption('track_mode') != 'manually'), false);
 
 					$this->showSelect('track_codeposition', __('JavaScript code position', 'wp-piwik'),
 						array(
 							'footer' => __('Footer', 'wp-piwik'),
 							'header' => __('Header', 'wp-piwik')
-						), __('Choose whether the JavaScript code is added to the footer or the header.', 'wp-piwik'), '', (self::$settings->getGlobalOption('track_mode') == 'disabled'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-track-option-manually');
+						), __('Choose whether the JavaScript code is added to the footer or the header.', 'wp-piwik'), '', $isNotTracking, 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-track-option-manually');
 						
-					$this->showTextarea('noscript_code', __('Noscript code', 'wp-piwik'), 2, 'TODO noscript code desc', (self::$settings->getGlobalOption('track_mode') == 'disabled'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-track-option-manually', true, '', (self::$settings->getGlobalOption('track_mode') != 'manually'), false);
+					$this->showTextarea('noscript_code', __('Noscript code', 'wp-piwik'), 2, 'TODO noscript code desc', $isNotTracking, 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-track-option-manually', true, '', (self::$settings->getGlobalOption('track_mode') != 'manually'), false);
 					
-					$this->showCheckbox('track_noscript', __('Add &lt;noscript&gt;', 'wp-piwik'), __('Adds the &lt;noscript&gt; code to your footer.', 'wp-piwik').' '.__('Disabled in proxy mode.', 'wp-piwik'), (self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'proxy'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-manually');
+					$this->showCheckbox('track_noscript', __('Add &lt;noscript&gt;', 'wp-piwik'), __('Adds the &lt;noscript&gt; code to your footer.', 'wp-piwik').' '.__('Disabled in proxy mode.', 'wp-piwik'), $isNotGeneratedTracking || self::$settings->getGlobalOption('track_mode') == 'proxy', 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-manually');
 
-					$this->showCheckbox('track_nojavascript', __('Add rec parameter to noscript code', 'wp-piwik'), __('Enable tracking for visitors without JavaScript (not recommended).', 'wp-piwik').' '.sprintf(__('See %sPiwik FAQ%s.', 'wp-piwik'),'<a href="http://piwik.org/faq/how-to/#faq_176">','</a>').' '.__('Disabled in proxy mode.', 'wp-piwik'), (self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'proxy' || self::$settings->getGlobalOption('track_mode') == 'manually'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js');
+					$this->showCheckbox('track_nojavascript', __('Add rec parameter to noscript code', 'wp-piwik'), __('Enable tracking for visitors without JavaScript (not recommended).', 'wp-piwik').' '.sprintf(__('See %sPiwik FAQ%s.', 'wp-piwik'),'<a href="http://piwik.org/faq/how-to/#faq_176">','</a>').' '.__('Disabled in proxy mode.', 'wp-piwik'), $isNotGeneratedTracking || self::$settings->getGlobalOption('track_mode') == 'proxy', 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js');
 
-					$this->showCheckbox('track_404', __('Track 404', 'wp-piwik'), __('WP-Piwik can automatically add a 404-category to track 404-page-visits.', 'wp-piwik'), (self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'manually'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy');
+					$this->showCheckbox('track_search', __('Track search', 'wp-piwik'), __('Use Piwik\'s advanced Site Search Analytics feature.').' '.sprintf(__('See %sPiwik documentation%s.', 'wp-piwik'),'<a href="http://piwik.org/docs/site-search/#track-site-search-using-the-tracking-api-advanced-users-only">','</a>'), $isNotTracking, $fullGeneratedTrackingGroup.' wp-piwik-track-option-manually');
 
-					$this->showCheckbox('track_search', __('Track search', 'wp-piwik'), __('Use Piwik\'s advanced Site Search Analytics feature.').' '.sprintf(__('See %sPiwik documentation%s.', 'wp-piwik'),'<a href="http://piwik.org/docs/site-search/#track-site-search-using-the-tracking-api-advanced-users-only">','</a>'), (self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'manually'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy');
+					$this->showCheckbox('track_404', __('Track 404', 'wp-piwik'), __('WP-Piwik can automatically add a 404-category to track 404-page-visits.', 'wp-piwik'), $isNotTracking, $fullGeneratedTrackingGroup.' wp-piwik-track-option-manually');
+										
+					$this->showCheckbox('add_post_annotations', __('Add annotation on new post', 'wp-piwik'), __('Add a Piwik annotation on each new post.', 'wp-piwik').' '.sprintf(__('See %sPiwik documentation%s.', 'wp-piwik'),'<a href="http://piwik.org/docs/annotations/">','</a>'), $isNotTracking, $fullGeneratedTrackingGroup.' wp-piwik-track-option-manually');
 
-					$this->showCheckbox('disable_cookies', __('Disable cookies', 'wp-piwik'), __('Disable all tracking cookies for a visitor.', 'wp-piwik'), (self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'manually'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy');
+					$this->showCheckbox('add_customvars_box', __('Show custom variables box', 'wp-piwik'), __(' Show a &quot;custom variables&quot; edit box on post edit page.', 'wp-piwik').' '.sprintf(__('See %sPiwik documentation%s.', 'wp-piwik'),'<a href="http://piwik.org/docs/custom-variables/">','</a>'), $isNotGeneratedTracking, $fullGeneratedTrackingGroup.' wp-piwik-track-option-manually');
+
+					$this->showInput('add_download_extensions', __('Add new file types for download tracking', 'wp-piwik'), __('Add file extensions for download tracking, divided by a vertical bar (&#124;).', 'wp-piwik').' '.sprintf(__('See %sPiwik documentation%s.', 'wp-piwik'),'<a href="https://developer.piwik.org/guides/tracking-javascript-guide#file-extensions-for-tracking-downloads">','</a>'), $isNotGeneratedTracking, $fullGeneratedTrackingGroup);
+
+					$this->showCheckbox('disable_cookies', __('Disable cookies', 'wp-piwik'), __('Disable all tracking cookies for a visitor.', 'wp-piwik'), $isNotGeneratedTracking, $fullGeneratedTrackingGroup);
 					
-					$this->showCheckbox('limit_cookies', __('Limit cookie lifetime', 'wp-piwik'), __('TODO cookie lifetime desc', 'wp-piwik'), (self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'manually'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy', true, '$j(\'tr.wp-piwik-cookielifetime-option\').toggle(\'hidden\');');
+					$this->showCheckbox('limit_cookies', __('Limit cookie lifetime', 'wp-piwik'), __('TODO cookie lifetime desc', 'wp-piwik'), $isNotGeneratedTracking, $fullGeneratedTrackingGroup, true, '$j(\'tr.wp-piwik-cookielifetime-option\').toggle(\'hidden\');');
 					
-					$this->showInput('limit_cookies_visitor', __('Visitor timeout (seconds)', 'wp-piwik'), false, self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'manually' || !self::$settings->getGlobalOption('limit_cookies'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-cookielifetime-option');
+					$this->showInput('limit_cookies_visitor', __('Visitor timeout (seconds)', 'wp-piwik'), false, $isNotGeneratedTracking || !self::$settings->getGlobalOption('limit_cookies'), $fullGeneratedTrackingGroup.' wp-piwik-cookielifetime-option');
 					
-					$this->showInput('limit_cookies_session', __('Session timeout (seconds)', 'wp-piwik'), false, self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'manually' || !self::$settings->getGlobalOption('limit_cookies'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-cookielifetime-option');
+					$this->showInput('limit_cookies_session', __('Session timeout (seconds)', 'wp-piwik'), false, $isNotGeneratedTracking || !self::$settings->getGlobalOption('limit_cookies'), $fullGeneratedTrackingGroup.' wp-piwik-cookielifetime-option');
 					
-					$this->showCheckbox('track_across', __('Track visitors across all subdomains', 'wp-piwik'), __('Adds *.-prefix to cookie domain.', 'wp-piwik'), (self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'manually'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy');
+					$this->showCheckbox('track_admin', __('Track admin pages', 'wp-piwik'), __('Enable to track users on admin pages (remember to configure the tracking filter appropriately).', 'wp-piwik'), $isNotTracking, $fullGeneratedTrackingGroup.' wp-piwik-track-option-manually');
+					
+					echo '<tr class="'.$fullGeneratedTrackingGroup.' wp-piwik-track-option-manually'.($isNotTracking?' hidden':'').'">';
+					echo '<th scope="row"><label for="capability_stealth">'.__('Tracking filter', 'wp-piwik').'</label>:</th><td>';
+					global $wp_roles;
+					$filter = self::$settings->getGlobalOption('capability_stealth');
+					foreach($wp_roles->role_names as $key => $name)
+						echo '<input type="checkbox" '.(isset($filter[$key]) && $filter[$key]?'checked="checked" ':'').'value="1" name="wp-piwik[capability_stealth]['.$key.']" /> '.$name.' &nbsp; ';
+					echo '<span class="dashicons dashicons-editor-help" onclick="$j(\'#track_across-desc\').toggleClass(\'hidden\');"></span> <p class="description hidden" id="track_across-desc">'.__('Choose users by user role you do <strong>not</strong> want to track.', 'wp-piwik').'</p></td></tr>';
 
-					$this->showCheckbox('track_across_alias', __('Track visitors across all alias URLs', 'wp-piwik'), __('Adds *.-prefix to tracked domain.', 'wp-piwik'), (self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'manually'), 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy');
+					$this->showCheckbox('track_across', __('Track visitors across all subdomains', 'wp-piwik'), __('Adds *.-prefix to cookie domain.', 'wp-piwik'), $isNotGeneratedTracking, $fullGeneratedTrackingGroup);
+
+					$this->showCheckbox('track_across_alias', __('Track visitors across all alias URLs', 'wp-piwik'), __('Adds *.-prefix to tracked domain.', 'wp-piwik'), $isNotGeneratedTracking, $fullGeneratedTrackingGroup);
 					
 					echo $submitButton;	
 				}
@@ -159,10 +178,8 @@
 				$this->showHeadline(2, 'shield', 'Expert Settings');
 				$this->showText(__('Usually, you do not need to change these settings. If you want to do so, you should know what you do or you got an expert\'s advice.', 'wp-piwik'));
 								
-				// Cache
 				$this->showCheckbox('cache', __('Enable cache', 'wp-piwik'), __('Cache API calls, which not contain today\'s values, for a week.', 'wp-piwik'));
 
-				// User agent configuration
 				$this->showSelect('piwik_useragent', __('User agent', 'wp-piwik'),
 					array(
 						'php' => __('Use the PHP default user agent', 'wp-piwik').(ini_get('user_agent')?'('.ini_get('user_agent').')':' ('.__('empty', 'wp-piwik').')'),
@@ -171,8 +188,21 @@
 				);
 				$this->showInput('piwik_useragent_string', __('Specific user agent', 'wp-piwik'), 'TODO Specific user agent description', self::$settings->getGlobalOption('piwik_useragent') != 'own', 'wp-piwik-useragent-option');
 				
-				// Timeout
 				$this->showInput('connection_timeout', __('Connection timeout', 'wp-piwik'), 'TODO Connection timeout description');
+
+				$this->showCheckbox('track_datacfasync', __('Add data-cfasync=false', 'wp-piwik'), __('Adds data-cfasync=false to the script tag, e.g., to ask Rocket Loader to ignore the script.'.' '.sprintf(__('See %sCloudFlare Knowledge Base%s.', 'wp-piwik'),'<a href="https://support.cloudflare.com/hc/en-us/articles/200169436-How-can-I-have-Rocket-Loader-ignore-my-script-s-in-Automatic-Mode-">','</a>'), 'wp-piwik'));
+
+				$this->showInput('track_cdnurl', __('CDN URL', 'wp-piwik'), 'Enter URL if you want to load the tracking code via CDN.');
+
+				$this->showInput('track_cdnurlssl', __('CDN URL (SSL)', 'wp-piwik'), 'Enter URL if you want to load the tracking code via a separate SSL CDN.');
+				
+				$this->showSelect('force_protocol', __('Force Piwik to use a specific protocol', 'wp-piwik'),
+					array(
+						'disabled' => __('Disabled (default)', 'wp-piwik'),
+						'http' => __('http', 'wp-piwik'),
+						'https' => __('https (SSL)', 'wp-piwik')
+					), __('Choose if you want to explicitly force Piwik to use HTTP or HTTPS. Does not work with a CDN URL.', 'wp-piwik')
+				);
 
 				echo $submitButton;
 			?>			</tbody>

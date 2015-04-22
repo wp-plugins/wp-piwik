@@ -67,7 +67,7 @@ class WP_Piwik {
 			if ($this->isAddNoScriptCode())
 				add_action('wp_footer', array($this, 'addNoscriptCode'));
 			if ($this->isAdminTrackingActive())
-				add_action(self::$settings->getGlobalOption('track_codeposition') == 'footer'?'admin_footer':'admin_head', array($this, 'addAdminHeaderTracking'));
+				add_action(self::$settings->getGlobalOption('track_codeposition') == 'footer'?'admin_footer':'admin_head', array($this, 'addJavascriptCode'));
 		}
 		if (self::$settings->getGlobalOption('add_post_annotations'))
 			add_action('transition_post_status', array($this, 'onPostStatusTransition'),10, 3);
@@ -168,8 +168,8 @@ class WP_Piwik {
 	
 	public function addPostMetaboxes() {
 		if (self::$settings->getGlobalOption('add_customvars_box')) {
-			add_action('add_meta_boxes', array(new WP_Piwik\Template\MetaBoxCustomVars($this), 'addMetabox'));
-			add_action('save_post', array(new WP_Piwik\Template\MetaBoxCustomVars($this), 'saveCustomVars'), 10, 2);
+			add_action('add_meta_boxes', array(new WP_Piwik\Template\MetaBoxCustomVars($this, self::$settings), 'addMetabox'));
+			add_action('save_post', array(new WP_Piwik\Template\MetaBoxCustomVars($this, self::$settings), 'saveCustomVars'), 10, 2);
 		}
 		if (self::$settings->getGlobalOption('perpost_stats')) {
 			add_action('add_meta_boxes', array(new WP_Piwik\Template\MetaBoxPerPostStats($this), 'addMetabox'));
@@ -262,7 +262,14 @@ class WP_Piwik {
 	}
 
 	public function addPiwikAnnotation($postID) {
-		$this->callPiwikAPI('Annotations.add', '', date('Y-m-d'), '', false, false, 'PHP', '', false, 'Published: '.get_post($postID)->post_title.' - URL: '.get_permalink($postID));
+		$note = 'Published: '.get_post($postID)->post_title.' - URL: '.get_permalink($postID);
+		$id = WP_Piwik\Request::register('Annotations.add', array(
+			'idSite' => $this->getPiwikSiteId(),
+			'date' => date('Y-m-d'),
+			'note' => $note
+		));
+		$result = $this->request($id);
+		self::$logger->log('Add post annotation. '.$note.' - '.serialize($result));
 	}
 
 	private function applySettings() {

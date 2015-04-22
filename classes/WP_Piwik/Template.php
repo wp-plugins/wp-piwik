@@ -6,10 +6,9 @@
 		
 		public static $logger, $settings, $wpPiwik;
 		
-		public function __construct($config) {
-			self::$logger = $config['logger'];
-			self::$settings = $config['settings'];
-			self::$wpPiwik = $config['wp-piwik'];
+		public function __construct($wpPiwik, $settings) {
+			self::$settings = $settings;
+			self::$wpPiwik = $wpPiwik;
 		}
 
 		public function output($array, $key, $default = '') {

@@ -29,7 +29,7 @@
 		public static function prepareTrackingCode($code, $settings, $logger) {
 			$logger->log('Apply tracking code changes:');
 			$settings->setOption('last_tracking_code_update', time());
-			// Change code if js/index.php should be used
+
 			if ($settings->getGlobalOption('track_mode') == 'js')
 				$code = str_replace(array('piwik.js', 'piwik.php'), 'js/index.php', $code);
 			elseif ($settings->getGlobalOption('track_mode') == 'proxy') {
@@ -38,17 +38,21 @@
 				$proxy = str_replace(array('https://', 'http://'), '//', plugins_url('wp-piwik').'/proxy').'/';
 				$code = str_replace($url, $proxy, $code);
 			}
-			/*$strCode = str_replace('//";','/"',$strCode);
-			if (self::$settings->getGlobalOption('track_cdnurl')||self::$settings->getGlobalOption('track_cdnurlssl')) {
-				$strCode = str_replace("var d=doc", "var ucdn=(('https:' == document.location.protocol) ? 'https://".(self::$settings->getGlobalOption('track_cdnurlssl')?self::$settings->getGlobalOption('track_cdnurlssl'):self::$settings->getGlobalOption('track_cdnurl'))."/' : 'http://".(self::$settings->getGlobalOption('track_cdnurl')?self::$settings->getGlobalOption('track_cdnurl'):self::$settings->getGlobalOption('track_cdnurlssl'))."/');\nvar d=doc", $strCode);
-				$strCode = str_replace("g.src=u+", "g.src=ucdn+", $strCode);
-			}
-			if (self::$settings->getGlobalOption('track_post') && self::$settings->getGlobalOption('track_mode') != 2) $strCode = str_replace("_paq.push(['trackPageView']);", "_paq.push(['setRequestMethod', 'POST']);\n_paq.push(['trackPageView']);", $strCode);
+
+			/*$strCode = str_replace('//";','/"',$strCode);*/
+
+			if ($settings->getGlobalOption('track_cdnurl') || $settings->getGlobalOption('track_cdnurlssl'))
+				$code = str_replace(array("var d=doc","g.src=u+"), array("var ucdn=(('https:' == document.location.protocol) ? 'https://".($settings->getGlobalOption('track_cdnurlssl')?$settings->getGlobalOption('track_cdnurlssl'):$settings->getGlobalOption('track_cdnurl'))."/' : 'http://".($settings->getGlobalOption('track_cdnurl')?$settings->getGlobalOption('track_cdnurl'):$settings->getGlobalOption('track_cdnurlssl'))."/');\nvar d=doc", "g.src=ucdn+"), $code);
 			
-			/*if (self::$settings->getGlobalOption('track_datacfasync'))
-				$strCode = str_replace('<script type', '<script data-cfasync="false" type', $strCode);*/
+			if ($settings->getGlobalOption('track_datacfasync'))
+				$code = str_replace('<script type', '<script data-cfasync="false" type', $code);
+			if ($settings->getGlobalOption('add_download_extensions'))
+				$code = str_replace("_paq.push(['trackPageView']);", "_paq.push(['addDownloadExtensions', '".($settings->getGlobalOption('add_download_extensions'))."']);\n_paq.push(['trackPageView']);", $code);
 			if ($settings->getGlobalOption('limit_cookies'))
 				$code = str_replace("_paq.push(['trackPageView']);", "_paq.push(['setVisitorCookieTimeout', '".$settings->getGlobalOption('limit_cookies_visitor')."']);\n_paq.push(['setSessionCookieTimeout', '".$settings->getGlobalOption('limit_cookies_session')."']);\n_paq.push(['trackPageView']);", $code);
+			if ($settings->getGlobalOption('force_protocol') != 'disabled')
+				$code = str_replace('"//', '"'.$settings->getGlobalOption('force_protocol').'://', $code);
+
 			$noScript = array();
 			preg_match('/<noscript>(.*)<\/noscript>/', $code, $noScript);
 			if (isset($noScript[0])) {
@@ -84,18 +88,18 @@
 		}
 
 		private function addCustomValues() {
-			$strCustomVars = '';
+			$customVars = '';
 			for ($i = 1; $i <= 5; $i++) {
-				$intID = get_the_ID();
-				$strMetaKey = get_post_meta($intID, 'wp-piwik_custom_cat'.$i, true);
-				$strMetaVal = get_post_meta($intID, 'wp-piwik_custom_val'.$i, true);
-				if (!empty($strMetaKey) && !empty($strMetaVal))
-					$strCustomVars .= "_paq.push(['setCustomVariable',".$i.", '".$strMetaKey."', '".$strMetaVal."', 'page']);\n";
+				$postId = get_the_ID();
+				$metaKey = get_post_meta($postId, 'wp-piwik_custom_cat'.$i, true);
+				$metaVal = get_post_meta($postId, 'wp-piwik_custom_val'.$i, true);
+				if (!empty($metaKey) && !empty($metaVal))
+					$customVars .= "_paq.push(['setCustomVariable',".$i.", '".$metaKey."', '".$metaVal."', 'page']);\n";
 			}
-			if (!empty($strCustomVars)) 
+			if (!empty($customVars)) 
 				$this->trackingCode = str_replace(
 					"_paq.push(['trackPageView']);",
-					$strCustomVars."_paq.push(['trackPageView']);",
+					$customVars."_paq.push(['trackPageView']);",
 					$this->trackingCode
 				);
 		}
