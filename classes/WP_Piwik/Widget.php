@@ -8,12 +8,14 @@
 		
 		protected $method = '', $title = '', $context = 'side', $priority = 'high', $parameter = array(), $apiID = array(), $pageId = 'dashboard';
 		
-		public function __construct($wpPiwik, $settings, $pageId = 'dashboard') {
+		public function __construct($wpPiwik, $settings, $pageId = 'dashboard', $context = 'side', $priority = 'default', $params = array()) {
 			self::$wpPiwik = $wpPiwik;
 			self::$settings = $settings;
 			$this->pageId = $pageId;
+			$this->context = $context;
+			$this->priority = $priority;
 			$prefix = ($this->pageId=='dashboard'?self::$settings->getGlobalOption('plugin_display_name').' - ':'');
-			$this->configure($prefix);
+			$this->configure($prefix, $params);
 			if (is_array($this->method)) 
 				foreach ($this->method as $method) {
 					$this->apiID[$method] = \WP_Piwik\Request::register($method, $this->parameter);

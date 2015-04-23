@@ -6,16 +6,12 @@
 	
 		public $className = __CLASS__;
 
-		protected function configure() {
-			/*$this->parameter = array(
-				'period' => (self::$settings->getGlobalOption('dashboard_widget')=='last30'?'range':'day'),
-				'date'  => self::$settings->getGlobalOption('dashboard_widget'),
-				'limit' => 0,
-				'expanded' => 0,
-				'url' => 'https://www.braekling.de'
-			);*/
-			$this->title = $prefix.__('SEO', 'wp-piwik').' ('.__($this->parameter['date'],'wp-piwik').')';
-			//$this->method = 'SEO.getRank';
+		protected function configure($prefix = '') {
+			$this->parameter = array(
+				'url' => get_bloginfo('url')
+			);
+			$this->title = $prefix.__('SEO', 'wp-piwik');
+			$this->method = 'SEO.getRank';
 		}
 		
 		public function show() {

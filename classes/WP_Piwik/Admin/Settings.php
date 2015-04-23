@@ -5,15 +5,14 @@
 	class Settings extends \WP_Piwik\Admin {
 
 		public function show() {
-			if (isset($_POST) && isset($_POST['wp-piwik'])) {
-				if (!self::$wpPiwik->isPHPMode() && isset($_POST['wp-piwik']['piwik_mode']) && $_POST['wp-piwik']['piwik_mode'] == 'php')
-					\WP_Piwik::definePiwikConstants();
-				$this->saveSettings($_POST['wp-piwik']);
-			}
+			global $wp_roles;
+			if (isset($_POST) && isset($_POST['wp-piwik']))
+				$this->showBox('updated', 'yes', __('Changes saved.'));
 			?>
 			<div id="plugin-options-wrap" class="widefat">
 				<form method="post">
 					<input type="hidden" name="wp-piwik[revision]" value="<?php echo self::$settings->getGlobalOption('revision'); ?>" />
+					<?php wp_nonce_field('wp-piwik_settings'); ?>
 					<table class="wp-piwik-form">
 						<tbody>
 							<tr><th width="150px"></th><td></td></tr>
@@ -23,8 +22,6 @@
 				
 				printf('<tr><td colspan="2">%s</td></tr>', __('Thanks for using WP-Piwik!', 'wp-piwik'));
 				//$this->showDonation();
-				wp_nonce_field('wp-piwik_settings');
-				$this->showHeadline(2, 'dashboard', 'Overview');
 				if (self::$wpPiwik->isConfigured()) {
 					$piwikVersion = self::$wpPiwik->request('global.getPiwikVersion');
 					if (!empty($piwikVersion) && !is_array($piwikVersion))
@@ -90,8 +87,53 @@
 
 				echo $submitButton;
 				
+				// Stats configuration
 				if (self::$wpPiwik->isConfigured()) {
 					$this->showHeadline(2, 'chart-pie', 'Show Statistics');
+					
+					$this->showSelect('default_date', __('Piwik default date', 'wp-piwik'),
+						array(
+							'today' => __('Today', 'wp-piwik'),
+							'yesterday' => __('Yesterday', 'wp-piwik'),
+							'current_month' => __('Current month', 'wp-piwik'),
+							'last_month' => __('Last month', 'wp-piwik')							
+						), __('Default date shown on statistics page.', 'wp-piwik')
+					);
+
+					$this->showCheckbox('stats_seo', __('Show SEO data', 'wp-piwik'), __('Display SEO ranking data on statistics page.', 'wp-piwik').' ('.__('Slow!', 'wp-piwik').')');					
+
+					$this->showSelect('dashboard_widget', __('Dashboard overview', 'wp-piwik'),
+						array(
+							'disabled' => __('Disabled', 'wp-piwik'),
+							'yesterday' => __('Yesterday', 'wp-piwik'),
+							'today' => __('Today', 'wp-piwik'),
+							'last30' => __('Last 30 days', 'wp-piwik')							
+						), __('Enable WP-Piwik dashboard widget &quot;Overview&quot;.', 'wp-piwik')
+					);
+
+					$this->showCheckbox('dashboard_chart', __('Dashboard graph', 'wp-piwik'), __('Enable WP-Piwik dashboard widget &quot;Graph&quot;.', 'wp-piwik'));
+					
+					$this->showCheckbox('dashboard_seo', __('Dashboard SEO', 'wp-piwik'), __('Enable WP-Piwik dashboard widget &quot;SEO&quot;.', 'wp-piwik').' ('.__('Slow!', 'wp-piwik').')');
+
+					$this->showCheckbox('toolbar', __('Show graph on WordPress Toolbar', 'wp-piwik'), __('Display a last 30 days visitor graph on WordPress\' toolbar.', 'wp-piwik'));
+					
+					echo '<tr><th scope="row"><label for="capability_read_stats">'.__('Display stats to', 'wp-piwik').'</label>:</th><td>';
+					$filter = self::$settings->getGlobalOption('capability_read_stats');
+					foreach($wp_roles->role_names as $key => $name) {
+						echo '<input type="checkbox" '.(isset($filter[$key]) && $filter[$key]?'checked="checked" ':'').'value="1" onchange="$j(\'#capability_read_stats-'.$key.'-input\').val(this.checked?1:0);" />';
+						echo '<input id="capability_read_stats-'.$key.'-input" type="hidden" name="wp-piwik[capability_read_stats]['.$key.']" value="'.(int)(isset($filter[$key]) && $filter[$key]).'" />';
+						echo $name.' &nbsp; ';
+					}
+					echo '<span class="dashicons dashicons-editor-help" onclick="$j(\'#capability_read_stats-desc\').toggleClass(\'hidden\');"></span> <p class="description hidden" id="capability_read_stats-desc">'.__('Choose user roles allowed to see the statistics page.', 'wp-piwik').'</p></td></tr>';
+					
+					$this->showCheckbox('perpost_stats', __('Show per post stats', 'wp-piwik'), __('Show stats about single posts at the post edit admin page.', 'wp-piwik'));
+					
+					$this->showCheckbox('piwik_shortcut', __('Piwik shortcut', 'wp-piwik'), __('Display a shortcut to Piwik itself.', 'wp-piwik'));
+
+					$this->showInput('plugin_display_name', __('WP-Piwik display name', 'wp-piwik'), __('Plugin name shown in WordPress.', 'wp-piwik'));
+
+					$this->showCheckbox('shortcodes', __('Enable shortcodes', 'wp-piwik'), __('Enable shortcodes in post or page content.', 'wp-piwik'));
+
 					echo $submitButton;	
 				}
 
@@ -162,11 +204,10 @@
 					
 					echo '<tr class="'.$fullGeneratedTrackingGroup.' wp-piwik-track-option-manually'.($isNotTracking?' hidden':'').'">';
 					echo '<th scope="row"><label for="capability_stealth">'.__('Tracking filter', 'wp-piwik').'</label>:</th><td>';
-					global $wp_roles;
 					$filter = self::$settings->getGlobalOption('capability_stealth');
 					foreach($wp_roles->role_names as $key => $name)
 						echo '<input type="checkbox" '.(isset($filter[$key]) && $filter[$key]?'checked="checked" ':'').'value="1" name="wp-piwik[capability_stealth]['.$key.']" /> '.$name.' &nbsp; ';
-					echo '<span class="dashicons dashicons-editor-help" onclick="$j(\'#track_across-desc\').toggleClass(\'hidden\');"></span> <p class="description hidden" id="track_across-desc">'.__('Choose users by user role you do <strong>not</strong> want to track.', 'wp-piwik').'</p></td></tr>';
+					echo '<span class="dashicons dashicons-editor-help" onclick="$j(\'#capability_stealth-desc\').toggleClass(\'hidden\');"></span> <p class="description hidden" id="capability_stealth-desc">'.__('Choose users by user role you do <strong>not</strong> want to track.', 'wp-piwik').'</p></td></tr>';
 
 					$this->showCheckbox('track_across', __('Track visitors across all subdomains', 'wp-piwik'), __('Adds *.-prefix to cookie domain.', 'wp-piwik'), $isNotGeneratedTracking, $fullGeneratedTrackingGroup);
 
@@ -186,6 +227,12 @@
 								
 				$this->showCheckbox('cache', __('Enable cache', 'wp-piwik'), __('Cache API calls, which not contain today\'s values, for a week.', 'wp-piwik'));
 
+				$this->showCheckbox('disable_timelimit', __('Disable time limit', 'wp-piwik'), __('Use set_time_limit(0) if stats page causes a time out.', 'wp-piwik'));
+
+				$this->showInput('connection_timeout', __('Connection timeout', 'wp-piwik'), 'TODO Connection timeout description');
+
+				$this->showCheckbox('disable_ssl_verify', __('Disable SSL peer verification', 'wp-piwik'), '('.__('not recommended', 'wp-piwik').')');
+
 				$this->showSelect('piwik_useragent', __('User agent', 'wp-piwik'),
 					array(
 						'php' => __('Use the PHP default user agent', 'wp-piwik').(ini_get('user_agent')?'('.ini_get('user_agent').')':' ('.__('empty', 'wp-piwik').')'),
@@ -194,8 +241,6 @@
 				);
 				$this->showInput('piwik_useragent_string', __('Specific user agent', 'wp-piwik'), 'TODO Specific user agent description', self::$settings->getGlobalOption('piwik_useragent') != 'own', 'wp-piwik-useragent-option');
 				
-				$this->showInput('connection_timeout', __('Connection timeout', 'wp-piwik'), 'TODO Connection timeout description');
-
 				$this->showCheckbox('track_datacfasync', __('Add data-cfasync=false', 'wp-piwik'), __('Adds data-cfasync=false to the script tag, e.g., to ask Rocket Loader to ignore the script.'.' '.sprintf(__('See %sCloudFlare Knowledge Base%s.', 'wp-piwik'),'<a href="https://support.cloudflare.com/hc/en-us/articles/200169436-How-can-I-have-Rocket-Loader-ignore-my-script-s-in-Automatic-Mode-">','</a>'), 'wp-piwik'));
 
 				$this->showInput('track_cdnurl', __('CDN URL', 'wp-piwik'), 'Enter URL if you want to load the tracking code via CDN.');
@@ -295,11 +340,6 @@
 		</div><?php
 		}
 		
-		private function saveSettings($in) {
-			self::$settings->applyChanges($in);
-			$this->showBox('updated', 'yes', __('Changes saved.'));
-		}
-
 		public function printAdminScripts() {
 			wp_enqueue_script('jquery');
 		}

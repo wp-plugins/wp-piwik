@@ -22,6 +22,11 @@ class WP_Piwik {
 		$this->addFilters();
 		$this->addActions();
 		$this->addShortcodes();
+		if (isset($_POST) && isset($_POST['wp-piwik'])) {
+			if (!$this->isPHPMode() && isset($_POST['wp-piwik']['piwik_mode']) && $_POST['wp-piwik']['piwik_mode'] == 'php')
+				self::definePiwikConstants();
+				self::$settings->applyChanges($_POST['wp-piwik']);
+		}
 		self::$settings->save();
 	}
 
@@ -172,7 +177,7 @@ class WP_Piwik {
 			add_action('save_post', array(new WP_Piwik\Template\MetaBoxCustomVars($this, self::$settings), 'saveCustomVars'), 10, 2);
 		}
 		if (self::$settings->getGlobalOption('perpost_stats')) {
-			add_action('add_meta_boxes', array(new WP_Piwik\Template\MetaBoxPerPostStats($this), 'addMetabox'));
+			add_action('add_meta_boxes', array($this, 'onloadPostPage'));
 		}
 	}
 
@@ -203,7 +208,7 @@ class WP_Piwik {
 	
 	public function extendWordPressDashboard() {
 		if (current_user_can('wp-piwik_read_stats')) {
-			if (self::$settings->getGlobalOption('dashboard_widget'))
+			if (self::$settings->getGlobalOption('dashboard_widget') != 'disabled')
 				new WP_Piwik\Widget\Overview($this, self::$settings);
 			if (self::$settings->getGlobalOption('dashboard_chart'))
 				new WP_Piwik\Widget\Chart($this, self::$settings);
@@ -579,6 +584,8 @@ class WP_Piwik {
 	}
 	 	
 	public function onloadStatsPage($statsPageId) {
+		if (self::$settings->getGlobalOption('disable_timelimit'))
+			set_time_limit(0);
 		wp_enqueue_script('common');
 		wp_enqueue_script('wp-lists');
 		wp_enqueue_script('postbox');
@@ -605,7 +612,16 @@ class WP_Piwik {
 		new \WP_Piwik\Widget\Chart($this, self::$settings, $statsPageId);
 		new \WP_Piwik\Widget\Visitors($this, self::$settings, $statsPageId);
 		new \WP_Piwik\Widget\Overview($this, self::$settings, $statsPageId);
-	}	
+		if (self::$settings->getGlobalOption('stats_seo'))
+			new \WP_Piwik\Widget\Seo($this, self::$settings, $statsPageId);		
+	}
+	
+	public function onloadPostPage($postPageId) {
+		global $post;
+		$postUrl = get_permalink($post->ID);
+		$this->log('Load per post statistics: '.$postUrl);
+		array(new \WP_Piwik\Widget\Post($this, self::$settings, 'post', 'side', 'default', array('url' => $postUrl)), 'show');
+	}
 	
 	/* Stats page changes by POST submit
 	   seen in Heiko Rabe's metabox demo plugin 

@@ -13,7 +13,13 @@
 				'date'  => 'last30', //self::$settings->getGlobalOption('dashboard_widget'),
 				'limit' => null
 			);
-			$this->title = $prefix.__('Overview', 'wp-piwik').' ('.__($this->parameter['date'],'wp-piwik').')';
+			$this->title = $prefix.__('Overview', 'wp-piwik').' ('.__($this->parameter['date'],'wp-piwik').')'.
+				(self::$settings->getGlobalOption('piwik_shortcut')?' '.
+					sprintf('<a href="%s">Piwik</a>', (self::$settings->getGlobalOption('piwik_mode') == 'pro'?
+						'https://'.self::$settings->getGlobalOption('piwik_user').'.piwik.pro/':
+						self::$settings->getGlobalOption('piwik_url'))
+					):''
+				);
 			$this->method = 'VisitsSummary.get';
 		}
 		

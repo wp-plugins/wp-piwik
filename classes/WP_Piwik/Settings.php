@@ -25,6 +25,17 @@
 			'piwik_token' => '',
 			'auto_site_config' => true,
 			// User settings: Stats configuration
+			'default_date' => 'yesterday',
+			'stats_seo' => false,			
+			'dashboard_widget' => false,
+			'dashboard_chart' => false,
+			'dashboard_seo' => false,
+			'toolbar' => false,
+			'capability_read_stats' => array('administrator' => true),
+			'perpost_stats' => false,
+			'plugin_display_name' => 'WP-Piwik',
+			'piwik_shortcut' => false,
+			'shortcodes' => false,
 			// User settings: Tracking configuration
 			'track_mode' => 'disabled',
 			'track_codeposition' => 'footer',			
@@ -48,28 +59,15 @@
 			'track_feed_campaign' => 'feed',
 			// User settings: Expert configuration
 			'cache' => true, //OK
+			'disable_timelimit' => false,
+			'connection_timeout' => 5,
+			'disable_ssl_verify' => false,
 			'piwik_useragent' => 'php',
 			'piwik_useragent_string' => 'WP-Piwik',
-			'connection_timeout' => 5,
 			'track_datacfasync' => false,
 			'track_cdnurl' => '',
 			'track_cdnurlssl' => '',
 			'force_protocol' => 'disabled',
-			// ---
-			'plugin_display_name' => 'WP-Piwik',
-			'dashboard_widget' => false,
-			'dashboard_chart' => false,
-			'dashboard_seo' => false,
-			'stats_seo' => false,
-			'capability_read_stats' => array('administrator' => true),
-			'piwik_shortcut' => false,
-			'default_date' => 'yesterday',
-			'track_proxy' => false,
-			'disable_timelimit' => false,
-			'disable_ssl_verify' => false,
-			'toolbar' => false,
-			'shortcodes' => false,
-			'perpost_stats' => false
 		),
 		$settings = array(
 			'name' => '',
@@ -114,7 +112,7 @@
 			}
 			global $wp_roles;
 			if (!is_object($wp_roles))
-				$wp_roles = new WP_Roles();
+				$wp_roles = new \WP_Roles();
 			if (!is_object($wp_roles)) die("STILL NO OBJECT");
 			foreach($wp_roles->role_names as $strKey => $strName)  {
 				$objRole = get_role($strKey);
