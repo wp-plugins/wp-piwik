@@ -8,7 +8,7 @@
 
 		protected function configure($prefix = '', $params = array()) {
 			$this->parameter = array(
-				'idSite' => 1,
+				'idSite' => self::$settings->getOption('site_id'),
 				'period' => 'range', //(self::$settings->getGlobalOption('dashboard_widget')=='last30'?'range':'day'),
 				'date'  => 'last30', //self::$settings->getGlobalOption('dashboard_widget'),
 				'limit' => null,

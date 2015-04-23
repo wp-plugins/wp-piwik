@@ -7,19 +7,13 @@
 		public $className = __CLASS__;
 
 		protected function configure($prefix = '') {
+			$timeSettings = $this->getTimeSettings();			
 			$this->parameter = array(
-				'idSite' => 1,
-				'period' => 'range', //(self::$settings->getGlobalOption('dashboard_widget')=='last30'?'range':'day'),
-				'date'  => 'last30', //self::$settings->getGlobalOption('dashboard_widget'),
-				'limit' => null
+				'idSite' => self::$settings->getOption('site_id'),
+				'period' => $timeSettings['period'],
+				'date'  => $timeSettings['date'],
 			);
-			$this->title = $prefix.__('Overview', 'wp-piwik').' ('.__($this->parameter['date'],'wp-piwik').')'.
-				(self::$settings->getGlobalOption('piwik_shortcut')?' '.
-					sprintf('<a href="%s">Piwik</a>', (self::$settings->getGlobalOption('piwik_mode') == 'pro'?
-						'https://'.self::$settings->getGlobalOption('piwik_user').'.piwik.pro/':
-						self::$settings->getGlobalOption('piwik_url'))
-					):''
-				);
+			$this->title = $prefix.__('Overview', 'wp-piwik').' ('.__($timeSettings['description'],'wp-piwik').')';
 			$this->method = 'VisitsSummary.get';
 		}
 		

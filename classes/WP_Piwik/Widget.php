@@ -83,6 +83,44 @@
 			echo '</tr>';
 		}
 		
+		protected function getTimeSettings() {
+			switch (self::$settings->getGlobalOption('default_date')) {
+				case 'today':
+					$period = 'day';
+					$date = 'today';
+					$description = 'today';
+				break;
+				case 'current_month':
+					$period = 'month';
+					$date = 'today';
+					$description = 'current month';
+				break;
+				case 'last_month':
+					$period = 'month';
+					$date = date("Y-m-d", strtotime("last day of previous month"));
+					$description = 'last month';
+				break;
+				case 'current_week':
+					$period = 'week';
+					$date = 'today';
+					$description = 'current week';
+				break;
+				case 'last_week':
+					$period = 'week';
+					$date = date("Y-m-d", strtotime("-1 week"));
+					$description = 'last week';
+				break;
+				case 'yesterday':
+					$period = 'day';
+					$date = 'yesterday';
+					$description = 'yesterday';					
+				break;
+				default:
+				break;
+			}
+			return array('period' => $period, 'date' => $date, 'description' => $description);
+		}
+		
 		protected function value($array, $key) {
 			return (isset($array[$key])?$array[$key]:'-');
 		}

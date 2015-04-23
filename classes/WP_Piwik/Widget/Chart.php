@@ -8,7 +8,7 @@
 
 		protected function configure($prefix = '') {
 			$this->parameter = array(
-				'idSite' => 1,
+				'idSite' => self::$settings->getOption('site_id'),
 				'period' => 'day',
 				'date'  => 'last30',
 				'limit' => null

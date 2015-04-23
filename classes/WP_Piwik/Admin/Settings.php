@@ -96,7 +96,9 @@
 							'today' => __('Today', 'wp-piwik'),
 							'yesterday' => __('Yesterday', 'wp-piwik'),
 							'current_month' => __('Current month', 'wp-piwik'),
-							'last_month' => __('Last month', 'wp-piwik')							
+							'last_month' => __('Last month', 'wp-piwik'),
+							'current_week' => __('Current week', 'wp-piwik'),
+							'last_week' => __('Last week', 'wp-piwik'),
 						), __('Default date shown on statistics page.', 'wp-piwik')
 					);
 

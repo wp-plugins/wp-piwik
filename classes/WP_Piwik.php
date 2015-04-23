@@ -592,15 +592,6 @@ class WP_Piwik {
 		wp_enqueue_script('wp-piwik', $this->getPluginURL().'js/wp-piwik.js', array(), self::$strVersion, true);
 		wp_enqueue_script('wp-piwik-jqplot',$this->getPluginURL().'js/jqplot/wp-piwik.jqplot.js', array('jquery'), self::$strVersion);
 		/*$defaultOrder = array(
-			'side' => array(				
-				'seo' => (self::$settings->getGlobalOption('stats_seo')?array('title' => __('SEO', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'):false),
-				'pages' => array('title' => __('Pages', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
-				'keywords' => array('title' => __('Keywords', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday', 'limit' => 10),
-				'websites' => array('title' => __('Websites', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday', 'limit' => 10),
-				'plugins' => array('title' => __('Plugins', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
-				'search' => array('title' => __('Site Search Keywords', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday', 'limit' => 10),
-				'noresult' => array('title' => __('Site Search without Results', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday', 'limit' => 10),
-			),
 			'normal' => array(
 				'browsers' => array('title' => __('Browser', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
 				'browserdetails' => array('title' => __('Browser Details', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
@@ -611,9 +602,16 @@ class WP_Piwik {
 		*/
 		new \WP_Piwik\Widget\Chart($this, self::$settings, $statsPageId);
 		new \WP_Piwik\Widget\Visitors($this, self::$settings, $statsPageId);
+
 		new \WP_Piwik\Widget\Overview($this, self::$settings, $statsPageId);
 		if (self::$settings->getGlobalOption('stats_seo'))
 			new \WP_Piwik\Widget\Seo($this, self::$settings, $statsPageId);		
+		new \WP_Piwik\Widget\Pages($this, self::$settings, $statsPageId);
+		new \WP_Piwik\Widget\Keywords($this, self::$settings, $statsPageId);
+		new \WP_Piwik\Widget\Referrers($this, self::$settings, $statsPageId);
+		new \WP_Piwik\Widget\Plugins($this, self::$settings, $statsPageId);
+		new \WP_Piwik\Widget\Search($this, self::$settings, $statsPageId);
+		new \WP_Piwik\Widget\Noresult($this, self::$settings, $statsPageId);
 	}
 	
 	public function onloadPostPage($postPageId) {
