@@ -4,7 +4,7 @@ class WP_Piwik {
 
 	private static
 		$intRevisionId = 99904,
-		$strVersion = '0.10.beta.1',
+		$strVersion = '0.10.0.0',
 		$blog_id,
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
@@ -591,15 +591,7 @@ class WP_Piwik {
 		wp_enqueue_script('postbox');
 		wp_enqueue_script('wp-piwik', $this->getPluginURL().'js/wp-piwik.js', array(), self::$strVersion, true);
 		wp_enqueue_script('wp-piwik-jqplot',$this->getPluginURL().'js/jqplot/wp-piwik.jqplot.js', array('jquery'), self::$strVersion);
-		/*$defaultOrder = array(
-			'normal' => array(
-				'browsers' => array('title' => __('Browser', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
-				'browserdetails' => array('title' => __('Browser Details', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
-				'screens' => array('title' => __('Resolution', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday'),
-				'systems' => array('title' => __('Operating System', 'wp-piwik'), 'period' => 'day', 'date' => 'yesterday')
-			)
-		);
-		*/
+
 		new \WP_Piwik\Widget\Chart($this, self::$settings, $statsPageId);
 		new \WP_Piwik\Widget\Visitors($this, self::$settings, $statsPageId);
 
@@ -612,6 +604,10 @@ class WP_Piwik {
 		new \WP_Piwik\Widget\Plugins($this, self::$settings, $statsPageId);
 		new \WP_Piwik\Widget\Search($this, self::$settings, $statsPageId);
 		new \WP_Piwik\Widget\Noresult($this, self::$settings, $statsPageId);
+		new \WP_Piwik\Widget\Browsers($this, self::$settings, $statsPageId);
+		new \WP_Piwik\Widget\BrowserDetails($this, self::$settings, $statsPageId);
+		new \WP_Piwik\Widget\Screens($this, self::$settings, $statsPageId);
+		new \WP_Piwik\Widget\Systems($this, self::$settings, $statsPageId);
 	}
 	
 	public function onloadPostPage($postPageId) {

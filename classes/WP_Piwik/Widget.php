@@ -6,7 +6,7 @@
 		
 		protected static $wpPiwik, $settings;
 		
-		protected $method = '', $title = '', $context = 'side', $priority = 'high', $parameter = array(), $apiID = array(), $pageId = 'dashboard';
+		protected $method = '', $title = '', $context = 'side', $priority = 'high', $parameter = array(), $apiID = array(), $pageId = 'dashboard', $name = 'Value', $limit = 10;
 		
 		public function __construct($wpPiwik, $settings, $pageId = 'dashboard', $context = 'side', $priority = 'default', $params = array()) {
 			self::$wpPiwik = $wpPiwik;
@@ -26,7 +26,7 @@
 				self::$wpPiwik->log("Register request: ".$this->apiID[$this->method]);
 			}
 			add_meta_box(
-				$this->getClass(),
+				get_called_class(),
 				$this->title,
 				array($this, 'show'), 
 				$pageId,
@@ -37,10 +37,32 @@
 		
 		protected function configure($prefix = '') {}
 		
-		abstract function show();
-		
-		protected function getClass() {
-			return $this->className;
+		public function show() {
+			$response = self::$wpPiwik->request($this->apiID[$this->method]);
+			if (!empty($response['result']) && $response['result'] ='error')
+				echo '<strong>'.__('Piwik error', 'wp-piwik').':</strong> '.htmlentities($response['message'], ENT_QUOTES, 'utf-8');
+			else {
+				if (isset($response[0]['nb_uniq_visitors'])) $unique = 'nb_uniq_visitors';
+				else $unique = 'sum_daily_nb_uniq_visitors';
+				$tableHead = array('label' => __($this->name, 'wp-piwik'));
+				$tableHead[$unique] = __('Unique', 'wp-piwik');
+				if (isset($response[0]['nb_visits']))
+					$tableHead['nb_visits'] = __('Visits', 'wp-piwik');
+				if (isset($response[0]['nb_hits']))
+					$tableHead['nb_hits'] = __('Hits', 'wp-piwik');
+				if (isset($response[0]['nb_actions']))
+					$tableHead['nb_actions'] = __('Actions', 'wp-piwik');
+				$tableBody = array();
+				$count = 0;
+				foreach ($response as $rowKey => $row) {
+					$count++;
+					$tableBody[$rowKey] = array();
+					foreach ($tableHead as $key => $value)
+						$tableBody[$rowKey][] = isset($row[$key])?$row[$key]:'-';
+					if ($count == 10) break;
+				}
+				$this->table($tableHead, $tableBody, null);
+			}			
 		}
 		
 		protected function timeFormat($time) {
@@ -57,8 +79,9 @@
 
 		private function tabHead($thead) {
 			echo '<thead><tr>';
+			$count = 0;
 			foreach ($thead as $value)
-				echo '<th>'.$value.'</th>';
+				echo '<th'.($count++?' style="text-align:right"':'').'>'.$value.'</th>';
 			echo '</tr></thead>';
 		}
 		
@@ -78,8 +101,9 @@
 				
 		private function tabRow($trow) {
 			echo '<tr>';
+			$count = 0;
 			foreach ($trow as $tcell)
-				echo '<td>'.$tcell.'</td>';
+				echo '<td'.($count++?' style="text-align:right"':'').'>'.$tcell.'</td>';
 			echo '</tr>';
 		}
 		
@@ -119,6 +143,17 @@
 				break;
 			}
 			return array('period' => $period, 'date' => $date, 'description' => $description);
+		}
+
+		public function pieChart($data) {
+			$name = str_replace('\\', '', get_called_class());
+			echo '<div id="wp-piwik_stats_'.$name.'_graph" style="height:310px;width:100%"></div>';
+			echo '<script type="text/javascript">$plotBrowsers = $j.jqplot("wp-piwik_stats_'.$name.'_graph", [[';
+			$list = '';
+			foreach ($data as $dataSet)
+				$list .= '["'.$dataSet[0].'", '.$dataSet[1].'],';
+			echo substr($list, 0, -1);
+			echo ']], {seriesDefaults:{renderer:$j.jqplot.PieRenderer, rendererOptions:{sliceMargin:8}},legend:{show:true}});</script>';
 		}
 		
 		protected function value($array, $key) {

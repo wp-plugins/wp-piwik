@@ -32,7 +32,7 @@
 				$tableHead = null;
 				$tableBody = array(
 					array(__('Visitors', 'wp-piwik').':', $this->value($response, 'nb_visits')),
-					array(__('Unique visitors', 'wp-piwik').':', $this->value($response, 'sum_daily_nb_uniq_visitorss')),
+					array(__('Unique visitors', 'wp-piwik').':', $this->value($response, 'sum_daily_nb_uniq_visitors')),
 					array(__('Page views', 'wp-piwik').':', $this->value($response, 'nb_hits').' (&#216; '.$this->value($response, 'entry_nb_actions').')'),
 					array(__('Total time spent', 'wp-piwik').':', $time),
 					array(__('Time/visit', 'wp-piwik').':', $avgTime),
