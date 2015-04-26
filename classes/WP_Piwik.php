@@ -50,22 +50,22 @@ class WP_Piwik {
 		add_action('admin_notices', array($this, 'showNotices'));
 		add_action('admin_init', array('WP_Piwik\Settings', 'registerSettings'));
 		add_action('admin_menu', array($this, 'buildAdminMenu'));
-		add_action('admin_post_save_wp-piwik_stats', array(&$this, 'onStatsPageSaveChanges'));
-		add_action('load-post.php', array(&$this, 'addPostMetaboxes'));
-		add_action('load-post-new.php', array(&$this, 'addPostMetaboxes'));
+		add_action('admin_post_save_wp-piwik_stats', array($this, 'onStatsPageSaveChanges'));
+		add_action('load-post.php', array($this, 'addPostMetaboxes'));
+		add_action('load-post-new.php', array($this, 'addPostMetaboxes'));
 		if ($this->isNetworkMode()) {
 			add_action('network_admin_menu', array($this, 'buildNetworkAdminMenu'));
-			add_action('update_site_option_blogname', array(&$this, 'onBlogNameChange'));
-			add_action('update_site_option_siteurl', array(&$this, 'onSiteUrlChange'));
+			add_action('update_site_option_blogname', array($this, 'onBlogNameChange'));
+			add_action('update_site_option_siteurl', array($this, 'onSiteUrlChange'));
 		} else {
-			add_action('update_option_blogname', array(&$this, 'onBlogNameChange'));
-			add_action('update_option_siteurl', array(&$this, 'onSiteUrlChange'));
+			add_action('update_option_blogname', array($this, 'onBlogNameChange'));
+			add_action('update_option_siteurl', array($this, 'onSiteUrlChange'));
 		}
 		if ($this->isDashboardActive())
 			add_action('wp_dashboard_setup', array($this, 'extendWordPressDashboard'));
 		if ($this->isToolbarActive()) {
 			add_action(is_admin()?'admin_head':'wp_head', array($this, 'loadToolbarRequirements'));
-			add_action('admin_bar_menu', array(&$this, 'extendWordPressToolbar'), 1000);
+			add_action('admin_bar_menu', array($this, 'extendWordPressToolbar'), 1000);
 		}
 		if ($this->isTrackingActive()) {
 			add_action(self::$settings->getGlobalOption('track_codeposition') == 'footer'?'wp_footer':'wp_head', array($this, 'addJavascriptCode'));
@@ -80,20 +80,20 @@ class WP_Piwik {
 
 	private function addFilters() {
 		add_filter('plugin_row_meta', array($this, 'setPluginMeta'), 10, 2);
-		add_filter('screen_layout_columns', array(&$this, 'onScreenLayoutColumns'), 10, 2);
+		add_filter('screen_layout_columns', array($this, 'onScreenLayoutColumns'), 10, 2);
 		if ($this->isTrackingActive()) {
 			if ($this->isTrackFeed()) {
-				add_filter('the_excerpt_rss', array(&$this, 'addFeedTracking'));
-				add_filter('the_content', array(&$this, 'addFeedTracking'));
+				add_filter('the_excerpt_rss', array($this, 'addFeedTracking'));
+				add_filter('the_content', array($this, 'addFeedTracking'));
 			}
 			if ($this->isAddFeedCampaign())
-				add_filter('post_link', array(&$this, 'addFeedCampaign'));
+				add_filter('post_link', array($this, 'addFeedCampaign'));
 		}
 	}
 		
 	private function addShortcodes() {
 		if ($this->isAddShortcode())
-			add_shortcode('wp-piwik', array(&$this, 'shortcode'));
+			add_shortcode('wp-piwik', array($this, 'shortcode'));
 	}
 	
 	private function installPlugin($isUpdate = false) {
@@ -184,13 +184,16 @@ class WP_Piwik {
 	public function buildAdminMenu() {
 		if (self::isConfigured()) {
 			$statsPage = new WP_Piwik\Admin\Statistics($this, self::$settings);
-			$pageID = add_dashboard_page(__('Piwik Statistics', 'wp-piwik'), self::$settings->getGlobalOption('plugin_display_name'), 'wp-piwik_read_stats', 'wp-piwik_stats', array($statsPage, 'show'));
-			$statsPage->add($pageID);
+			$this->statsPageId = add_dashboard_page(__('Piwik Statistics', 'wp-piwik'), self::$settings->getGlobalOption('plugin_display_name'), 'wp-piwik_read_stats', 'wp-piwik_stats', array($statsPage, 'show'));
+			
+			add_action('admin_print_scripts-'.$this->statsPageId, array($statsPage, 'printAdminScripts'));
+			add_action('admin_print_styles-'.$this->statsPageId, array($statsPage, 'printAdminStyles'));
+			add_action('admin_head-'.$this->statsPageId, array($statsPage, 'extendAdminHeader'));
+			add_action('load-'.$this->statsPageId, array($this, 'onloadStatsPage'));
 		}
 		if (!self::$settings->checkNetworkActivation()) {
 			$optionsPage = new WP_Piwik\Admin\Settings($this, self::$settings);
 			$optionsPageID = add_options_page(self::$settings->getGlobalOption('plugin_display_name'), self::$settings->getGlobalOption('plugin_display_name'), 'activate_plugins', __FILE__, array($optionsPage, 'show'));
-			$optionsPage->add($optionsPageID);
 			add_action('admin_head-'.$optionsPageID, array($optionsPage, 'extendAdminHeader'));
 		}
 	}
@@ -434,8 +437,8 @@ class WP_Piwik {
 	}
 
 	public function onScreenLayoutColumns($aryColumns, $strScreen) {		
-		if ($strScreen == $this->intStatsPage)
-			$aryColumns[$this->intStatsPage] = 3;
+		if ($strScreen == $this->statsPageId)
+			$aryColumns[$this->statsPageId] = 3;
 		return $aryColumns;
 	}
 	
@@ -592,22 +595,22 @@ class WP_Piwik {
 		wp_enqueue_script('wp-piwik', $this->getPluginURL().'js/wp-piwik.js', array(), self::$strVersion, true);
 		wp_enqueue_script('wp-piwik-jqplot',$this->getPluginURL().'js/jqplot/wp-piwik.jqplot.js', array('jquery'), self::$strVersion);
 
-		new \WP_Piwik\Widget\Chart($this, self::$settings, $statsPageId);
-		new \WP_Piwik\Widget\Visitors($this, self::$settings, $statsPageId);
+		new \WP_Piwik\Widget\Chart($this, self::$settings, $this->statsPageId);
+		new \WP_Piwik\Widget\Visitors($this, self::$settings, $this->statsPageId);
 
-		new \WP_Piwik\Widget\Overview($this, self::$settings, $statsPageId);
+		new \WP_Piwik\Widget\Overview($this, self::$settings, $this->statsPageId);
 		if (self::$settings->getGlobalOption('stats_seo'))
-			new \WP_Piwik\Widget\Seo($this, self::$settings, $statsPageId);		
-		new \WP_Piwik\Widget\Pages($this, self::$settings, $statsPageId);
-		new \WP_Piwik\Widget\Keywords($this, self::$settings, $statsPageId);
-		new \WP_Piwik\Widget\Referrers($this, self::$settings, $statsPageId);
-		new \WP_Piwik\Widget\Plugins($this, self::$settings, $statsPageId);
-		new \WP_Piwik\Widget\Search($this, self::$settings, $statsPageId);
-		new \WP_Piwik\Widget\Noresult($this, self::$settings, $statsPageId);
-		new \WP_Piwik\Widget\Browsers($this, self::$settings, $statsPageId);
-		new \WP_Piwik\Widget\BrowserDetails($this, self::$settings, $statsPageId);
-		new \WP_Piwik\Widget\Screens($this, self::$settings, $statsPageId);
-		new \WP_Piwik\Widget\Systems($this, self::$settings, $statsPageId);
+			new \WP_Piwik\Widget\Seo($this, self::$settings, $this->statsPageId);		
+		new \WP_Piwik\Widget\Pages($this, self::$settings, $this->statsPageId);
+		new \WP_Piwik\Widget\Keywords($this, self::$settings, $this->statsPageId);
+		new \WP_Piwik\Widget\Referrers($this, self::$settings, $this->statsPageId);
+		new \WP_Piwik\Widget\Plugins($this, self::$settings, $this->statsPageId);
+		new \WP_Piwik\Widget\Search($this, self::$settings, $this->statsPageId);
+		new \WP_Piwik\Widget\Noresult($this, self::$settings, $this->statsPageId);
+		new \WP_Piwik\Widget\Browsers($this, self::$settings, $this->statsPageId);
+		new \WP_Piwik\Widget\BrowserDetails($this, self::$settings, $this->statsPageId);
+		new \WP_Piwik\Widget\Screens($this, self::$settings, $this->statsPageId);
+		new \WP_Piwik\Widget\Systems($this, self::$settings, $this->statsPageId);
 	}
 	
 	public function onloadPostPage($postPageId) {
@@ -622,7 +625,7 @@ class WP_Piwik {
 	   http://tinyurl.com/5r5vnzs */
 	function onStatsPageSaveChanges() {
 		if ( !current_user_can('manage_options') )
-			wp_die( __('Cheatin&#8217; uh?') );			
+			wp_die( __('Cheatin&#8217; uh?') );
 		check_admin_referer('wp-piwik_stats');
 		wp_redirect($_POST['_wp_http_referer']);		
 	}

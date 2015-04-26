@@ -6,7 +6,7 @@
 		
 		protected static $wpPiwik, $settings;
 		
-		protected $method = '', $title = '', $context = 'side', $priority = 'high', $parameter = array(), $apiID = array(), $pageId = 'dashboard', $name = 'Value', $limit = 10;
+		protected $method = '', $title = '', $context = 'side', $priority = 'core', $parameter = array(), $apiID = array(), $pageId = 'dashboard', $name = 'Value', $limit = 10;
 		
 		public function __construct($wpPiwik, $settings, $pageId = 'dashboard', $context = 'side', $priority = 'default', $params = array()) {
 			self::$wpPiwik = $wpPiwik;
@@ -26,7 +26,7 @@
 				self::$wpPiwik->log("Register request: ".$this->apiID[$this->method]);
 			}
 			add_meta_box(
-				get_called_class(),
+				$this->getName(),
 				$this->title,
 				array($this, 'show'), 
 				$pageId,
@@ -70,7 +70,7 @@
 		}
 		
 		protected function table($thead, $tbody = array(), $tfoot = array()) {
-			echo '<div class="table"><table class="widefat">';
+			echo '<div class="table"><table class="widefat wp-piwik-table">';
 			if (!empty($thead)) $this->tabHead($thead);
 			if (!empty($tbody)) $this->tabBody($tbody);
 			if (!empty($tfoot)) $this->tabFoot($tfoot);
@@ -94,8 +94,9 @@
 		
 		private function tabFoot($tfoot) {
 			echo '<tfoot><tr>';
+			$count = 0;
 			foreach ($tfoot as $value)
-				echo '<td>'.$value.'</td>';
+				echo '<td'.($count++?' style="text-align:right"':'').'>'.$value.'</td>';
 			echo '</tr></tfoot>';
 		}
 				
@@ -145,10 +146,13 @@
 			return array('period' => $period, 'date' => $date, 'description' => $description);
 		}
 
+		public function getName() {
+			return str_replace('\\', '-', get_called_class());;
+		}
+		
 		public function pieChart($data) {
-			$name = str_replace('\\', '', get_called_class());
-			echo '<div id="wp-piwik_stats_'.$name.'_graph" style="height:310px;width:100%"></div>';
-			echo '<script type="text/javascript">$plotBrowsers = $j.jqplot("wp-piwik_stats_'.$name.'_graph", [[';
+			echo '<div id="wp-piwik_stats_'.$this->getName().'_graph" style="height:310px;width:100%"></div>';
+			echo '<script type="text/javascript">$plotBrowsers = $j.jqplot("wp-piwik_stats_'.$this->getName().'_graph", [[';
 			$list = '';
 			foreach ($data as $dataSet)
 				$list .= '["'.$dataSet[0].'", '.$dataSet[1].'],';

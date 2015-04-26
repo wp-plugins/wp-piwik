@@ -9,7 +9,6 @@
 			if (empty($screen_layout_columns)) $screen_layout_columns = 2;
 			if (self::$settings->getGlobalOption('disable_timelimit')) set_time_limit(0);
 			echo '<div id="wp-piwik-stats-general" class="wrap">';
-			screen_icon('options-general');
 			echo '<h2>'.(self::$settings->getGlobalOption('plugin_display_name') == 'WP-Piwik'?'Piwik '.__('Statistics', 'wp-piwik'):self::$settings->getGlobalOption('plugin_display_name')).'</h2>';
 			if (self::$settings->checkNetworkActivation() && function_exists('is_super_admin') && is_super_admin() && $isNetwork) {
 				if (isset($_GET['wpmu_show_stats'])) {
@@ -25,16 +24,16 @@
 			wp_nonce_field('wp-piwik_stats-general');
 			wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false);
 			wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false);
-			$columns = array('normal', 'side', 'column-3');
+			$columns = array('normal', 'side', 'column3');
 			for ($i = 0; $i < 3; $i++) {
 				echo '<div id="postbox-container-'.($i+1).'" class="postbox-container">';
-				do_meta_boxes(self::$pageID, $columns[$i], null);
+				do_meta_boxes(self::$wpPiwik->statsPageId, $columns[$i], null);
 				echo '</div>';
 			}
 			echo '</div></form></div>';
-			echo '<script type="text/javascript">//<![CDATA[';
-			echo 'jQuery(document).ready(function($) {$(".if-js-closed").removeClass("if-js-closed").addClass("closed"); postboxes.add_postbox_toggles("'.self::$pageID.'");});';
-			echo '//]]></script>';
+			echo '<script type="text/javascript">//<![CDATA['."\n";
+			echo 'jQuery(document).ready(function($) {$(".if-js-closed").removeClass("if-js-closed").addClass("closed"); postboxes.add_postbox_toggles("wp-piwik_stats");});'."\n";
+			echo '//]]></script>'."\n";
 			if (self::$settings->checkNetworkActivation() && function_exists('is_super_admin') && is_super_admin()) {
 				restore_current_blog();
 			}
@@ -49,10 +48,6 @@
 			echo '<!--[if IE]><script language="javascript" type="text/javascript" src="'.(self::$wpPiwik->getPluginURL()).'js/jqplot/excanvas.min.js"></script><![endif]-->';
 			echo '<link rel="stylesheet" href="'.(self::$wpPiwik->getPluginURL()).'js/jqplot/jquery.jqplot.min.css" type="text/css"/>';
 			echo '<script type="text/javascript">var $j = jQuery.noConflict();</script>';		
-		}
-		
-		public function onLoad() {
-			self::$wpPiwik->onloadStatsPage(self::$pageID);
 		}
 		
 	}
