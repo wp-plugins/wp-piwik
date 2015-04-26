@@ -4,7 +4,7 @@
 
 	class Systems extends \WP_Piwik\Widget {
 	
-		protected function configure($prefix = '') {
+		protected function configure($prefix = '', $params = array()) {
 			$timeSettings = $this->getTimeSettings();			
 			$this->parameter = array(
 				'idSite' => self::$settings->getOption('site_id'),

@@ -53,6 +53,9 @@
 			if ($settings->getGlobalOption('force_protocol') != 'disabled')
 				$code = str_replace('"//', '"'.$settings->getGlobalOption('force_protocol').'://', $code);
 
+			if ($settings->getGlobalOption('piwik_mode') == 'pro')
+				$code = str_replace('.piwik.pro', '.piwikpro.com', $code);
+
 			$noScript = array();
 			preg_match('/<noscript>(.*)<\/noscript>/', $code, $noScript);
 			if (isset($noScript[0])) {

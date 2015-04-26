@@ -3,7 +3,7 @@
 class WP_Piwik {
 
 	private static
-		$intRevisionId = 99904,
+		$intRevisionId = 99914,
 		$strVersion = '0.10.0.0',
 		$blog_id,
 		$intDashboardID = 30,
@@ -499,7 +499,7 @@ class WP_Piwik {
 			'range' => false,
 			'key' => 'sum_daily_nb_uniq_visitors'
 		), $attributes);
-		new \WP_Piwik\Shortcode($attributes);
+		new \WP_Piwik\Shortcode($attributes, $this, self::$settings);
 	}
 		
 	public function getPiwikSiteId($blogId = null) {
@@ -594,10 +594,8 @@ class WP_Piwik {
 		wp_enqueue_script('postbox');
 		wp_enqueue_script('wp-piwik', $this->getPluginURL().'js/wp-piwik.js', array(), self::$strVersion, true);
 		wp_enqueue_script('wp-piwik-jqplot',$this->getPluginURL().'js/jqplot/wp-piwik.jqplot.js', array('jquery'), self::$strVersion);
-
 		new \WP_Piwik\Widget\Chart($this, self::$settings, $this->statsPageId);
 		new \WP_Piwik\Widget\Visitors($this, self::$settings, $this->statsPageId);
-
 		new \WP_Piwik\Widget\Overview($this, self::$settings, $this->statsPageId);
 		if (self::$settings->getGlobalOption('stats_seo'))
 			new \WP_Piwik\Widget\Seo($this, self::$settings, $this->statsPageId);		

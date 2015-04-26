@@ -6,14 +6,15 @@
 		
 		protected static $wpPiwik, $settings;
 		
-		protected $method = '', $title = '', $context = 'side', $priority = 'core', $parameter = array(), $apiID = array(), $pageId = 'dashboard', $name = 'Value', $limit = 10;
+		protected $isShortcode = false, $method = '', $title = '', $context = 'side', $priority = 'core', $parameter = array(), $apiID = array(), $pageId = 'dashboard', $name = 'Value', $limit = 10;
 		
-		public function __construct($wpPiwik, $settings, $pageId = 'dashboard', $context = 'side', $priority = 'default', $params = array()) {
+		public function __construct($wpPiwik, $settings, $pageId = 'dashboard', $context = 'side', $priority = 'default', $params = array(), $isShortcode = false) {
 			self::$wpPiwik = $wpPiwik;
 			self::$settings = $settings;
 			$this->pageId = $pageId;
 			$this->context = $context;
 			$this->priority = $priority;
+			$this->isShortcode = $isShortcode;
 			$prefix = ($this->pageId=='dashboard'?self::$settings->getGlobalOption('plugin_display_name').' - ':'');
 			$this->configure($prefix, $params);
 			if (is_array($this->method)) 
@@ -25,6 +26,8 @@
 				$this->apiID[$this->method] = \WP_Piwik\Request::register($this->method, $this->parameter);
 				self::$wpPiwik->log("Register request: ".$this->apiID[$this->method]);
 			}
+			if ($this->isShortcode)
+				return;
 			add_meta_box(
 				$this->getName(),
 				$this->title,
@@ -35,7 +38,7 @@
 			);
 		}
 		
-		protected function configure($prefix = '') {}
+		protected function configure($prefix = '', $params = array()) {}
 		
 		public function show() {
 			$response = self::$wpPiwik->request($this->apiID[$this->method]);
@@ -71,6 +74,8 @@
 		
 		protected function table($thead, $tbody = array(), $tfoot = array()) {
 			echo '<div class="table"><table class="widefat wp-piwik-table">';
+			if ($this->isShortcode && $this->title)
+				echo '<tr><th colspan="10">'.$this->title.'</th></tr>';
 			if (!empty($thead)) $this->tabHead($thead);
 			if (!empty($tbody)) $this->tabBody($tbody);
 			if (!empty($tfoot)) $this->tabFoot($tfoot);

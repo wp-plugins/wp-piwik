@@ -6,7 +6,7 @@
 	
 		public $className = __CLASS__;
 
-		protected function configure($prefix = '') {
+		protected function configure($prefix = '', $params = array()) {
 			$timeSettings = $this->getTimeSettings();
 			$this->parameter = array(
 				'idSite' => self::$settings->getOption('site_id'),

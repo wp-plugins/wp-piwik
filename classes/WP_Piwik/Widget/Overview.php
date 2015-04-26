@@ -6,14 +6,14 @@
 	
 		public $className = __CLASS__;
 
-		protected function configure($prefix = '') {
+		protected function configure($prefix = '', $params = array()) {
 			$timeSettings = $this->getTimeSettings();			
 			$this->parameter = array(
 				'idSite' => self::$settings->getOption('site_id'),
-				'period' => $timeSettings['period'],
-				'date'  => $timeSettings['date'],
+				'period' => isset($params['period'])?$params['period']:$timeSettings['period'],
+				'date'  => isset($params['date'])?$params['date']: $timeSettings['date'],
 			);
-			$this->title = $prefix.__('Overview', 'wp-piwik').' ('.__($timeSettings['description'],'wp-piwik').')';
+			$this->title = !$this->isShortcode?$prefix.__('Overview', 'wp-piwik').' ('.__($timeSettings['description'],'wp-piwik').')':($params['title']?$params['title']:'');
 			$this->method = 'VisitsSummary.get';
 		}
 		

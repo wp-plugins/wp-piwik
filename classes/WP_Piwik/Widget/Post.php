@@ -7,12 +7,13 @@
 		public $className = __CLASS__;
 
 		protected function configure($prefix = '', $params = array()) {
+			global $post;
 			$this->parameter = array(
 				'idSite' => self::$settings->getOption('site_id'),
-				'period' => 'range', //(self::$settings->getGlobalOption('dashboard_widget')=='last30'?'range':'day'),
-				'date'  => 'last30', //self::$settings->getGlobalOption('dashboard_widget'),
-				'limit' => null,
-				'pageUrl' => isset($params['url'])?$params['url']:null
+				'period' => 'range',
+				'date'  => isset($params['range'])?$params['range']:'last30',
+				'key' => isset($params['key'])?$params['key']:null,
+				'pageUrl' => isset($params['url'])?$params['url']:urlencode(get_permalink($post->ID)),
 			);
 			$this->title = $prefix.__('Overview', 'wp-piwik').' ('.__($this->parameter['date'],'wp-piwik').')';
 			$this->method = 'Actions.getPageUrl';
@@ -23,10 +24,13 @@
 			if (!empty($response['result']) && $response['result'] ='error')
 				echo '<strong>'.__('Piwik error', 'wp-piwik').':</strong> '.htmlentities($response['message'], ENT_QUOTES, 'utf-8');
 			else {
-				$response = $response[0];
-				echo '<pre>';
-				print_r($response);
-				echo '</pre>';
+				if (isset($response[0]))
+					$response = $response[0];
+				if ($this->parameter['key']) {
+					print_r($response);
+					echo isset($response[$this->parameter['key']])?$response[$this->parameter['key']]:'<em>not defined</em>';
+					return;
+				}
 				$time = isset($response['entry_sum_visit_length'])?$this->timeFormat($response['entry_sum_visit_length']):'-';
 				$avgTime = isset($response['avg_time_on_page'])?$this->timeFormat($response['avg_time_on_page']):'-';
 				$tableHead = null;

@@ -6,7 +6,7 @@
 	
 		public $className = __CLASS__;
 
-		protected function configure($prefix = '') {
+		protected function configure($prefix = '', $params = array()) {
 			$this->parameter = array(
 				'url' => get_bloginfo('url')
 			);
