@@ -4,7 +4,7 @@ class WP_Piwik {
 
 	private static
 		$intRevisionId = 99914,
-		$strVersion = '0.10.0.0',
+		$strVersion = '0.10.1.0',
 		$blog_id,
 		$intDashboardID = 30,
 		$strPluginBasename = NULL,
@@ -19,14 +19,14 @@ class WP_Piwik {
 		$this->openLogger();
 		$this->openSettings();
 		$this->setup();
+		if (isset($_POST) && isset($_POST['wp-piwik'])) {
+			self::$settings->applyChanges($_POST['wp-piwik']);
+			if (isset($_POST['wp-piwik']['piwik_mode']) && $_POST['wp-piwik']['piwik_mode'] == 'php' && $_POST['wp-piwik']['piwik_path'])
+				self::definePiwikConstants();
+		} elseif ($this->isPHPMode()) self::definePiwikConstants();
 		$this->addFilters();
 		$this->addActions();
 		$this->addShortcodes();
-		if (isset($_POST) && isset($_POST['wp-piwik'])) {
-			if (!$this->isPHPMode() && isset($_POST['wp-piwik']['piwik_mode']) && $_POST['wp-piwik']['piwik_mode'] == 'php')
-				self::definePiwikConstants();
-				self::$settings->applyChanges($_POST['wp-piwik']);
-		}
 		self::$settings->save();
 	}
 
@@ -42,8 +42,6 @@ class WP_Piwik {
 			$this->updatePlugin();
 		if ($this->isConfigSubmitted())
 			$this->applySettings();
-		if ($this->isPHPMode())
-			self::definePiwikConstants();
 	}
 	
 	private function addActions() {

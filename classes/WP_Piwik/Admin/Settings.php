@@ -17,7 +17,7 @@
 						<tbody>
 							<tr><th width="150px"></th><td></td></tr>
 			<?php
-				$this->showHeadline(1, 'admin-generic', 'Settings', true);
+				echo '<tr><td colspan="2">'.$this->getHeadline(1, 'admin-generic', 'Settings', true).'</td></tr>';
 				$submitButton = '<tr><td colspan="2"><p class="submit"><input name="Submit" type="submit" class="button-primary" value="'.esc_attr__('Save Changes').'" /></p></td></tr>';
 				
 				printf('<tr><td colspan="2">%s</td></tr>', __('Thanks for using WP-Piwik!', 'wp-piwik'));
@@ -37,8 +37,22 @@
 					}
 				} else $this->showBox('error', 'no', sprintf(__('WP-Piwik %s has to be connected to Piwik first. Check the &raquo;Connect to Piwik&laquo; section below.', 'wp-piwik'), self::$wpPiwik->getPluginVersion()));
 
-				$this->showHeadline(2, 'admin-plugins', 'Connect to Piwik');
-				
+				$tabs['connect'] = array('icon' => 'admin-plugins', 'name' => 'Connect to Piwik');
+				if (self::$wpPiwik->isConfigured()) {
+					$tabs['statistics'] = array('icon' => 'chart-pie', 'name' => 'Show Statistics');
+					$tabs['tracking'] = array('icon' => 'location-alt', 'name' => 'Enable Tracking');
+				}
+				$tabs['expert'] = array('icon' => 'shield', 'name' => 'Expert Settings');
+
+				echo '<tr><td colspan="2"><h2 class="nav-tab-wrapper">';
+				foreach( $tabs as $tab => $details ){
+					$class = ( $tab == 'connect' ) ? ' nav-tab-active' : '';
+					echo "<a class='nav-tab$class' href='#".$tab."'>";
+					$this->showHeadline(0, $details['icon'], $details['name']);
+					echo "</a>";
+    			}
+				echo '</h2></td></tr>';
+
 				if (!self::$wpPiwik->isConfigured())
 					$this->showBox('updated', 'info', sprintf('%s <a href="%s">%s</a> %s <a href="%s">%s</a>.', __('WP-Piwik is a WordPress plugin to show a selection of Piwik stats in your WordPress admin dashboard and to add and configure your Piwik tracking code. To use this you will need your own Piwik instance. If you do not already have a Piwik setup, you have two simple options: use either', 'wp-piwik'), 'http://piwik.org/', __('Self-hosted', 'wp-piwik'), __('or', 'wp-piwik'), 'http://piwik.org/hosting/', __('Cloud-hosted', 'wp-piwik')));
 
@@ -88,10 +102,7 @@
 
 				echo $submitButton;
 				
-				// Stats configuration
-				if (self::$wpPiwik->isConfigured()) {
-					$this->showHeadline(2, 'chart-pie', 'Show Statistics');
-					
+				// Stats configuration					
 					$this->showSelect('default_date', __('Piwik default date', 'wp-piwik'),
 						array(
 							'today' => __('Today', 'wp-piwik'),
@@ -138,17 +149,12 @@
 					$this->showCheckbox('shortcodes', __('Enable shortcodes', 'wp-piwik'), __('Enable shortcodes in post or page content.', 'wp-piwik'));
 
 					echo $submitButton;	
-				}
 
 				// Tracking Configuration
-				if (self::$wpPiwik->isConfigured()) {
-					
 					$isNotTracking = self::$settings->getGlobalOption('track_mode') == 'disabled';
 					$isNotGeneratedTracking = $isNotTracking || self::$settings->getGlobalOption('track_mode') == 'manually';
 					$fullGeneratedTrackingGroup = 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy';
 					
-					$this->showHeadline(2, 'location-alt', 'Enable Tracking');
-
 					$description = sprintf('%s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s',
 						__('You can choose between four tracking code modes:', 'wp-piwik'),
 						__('Disabled', 'wp-piwik'),
@@ -223,9 +229,7 @@
 					$this->showInput('track_feed_campaign', __('RSS feed campaign', 'wp-piwik'), __('Keyword: post name.', 'wp-piwik'), $isNotGeneratedTracking || !self::$settings->getGlobalOption('track_feed_addcampaign'), $fullGeneratedTrackingGroup.' wp-piwik-feed_campaign-option');
 					
 					echo $submitButton;	
-				}
 				
-				$this->showHeadline(2, 'shield', 'Expert Settings');
 				$this->showText(__('Usually, you do not need to change these settings. If you want to do so, you should know what you do or you got an expert\'s advice.', 'wp-piwik'));
 								
 				$this->showCheckbox('cache', __('Enable cache', 'wp-piwik'), __('Cache API calls, which not contain today\'s values, for a week.', 'wp-piwik'));
@@ -303,8 +307,8 @@
 			echo $this->getHeadline($order, $icon, $headline, $addPluginName = false);
 		}
 		
-		private function getHeadline($order, $icon, $headline, $addPluginName = false) {
-			printf('<tr><td colspan="2"><h%d><span class="dashicons dashicons-%s"></span> %s%s</h%1$d></td></tr>', $order, $icon, ($addPluginName?self::$settings->getGlobalOption('plugin_display_name').' ':''), __($headline, 'wp-piwik'));
+		private function getHeadline($order, $icon, $headline, $addPluginName = false) {			
+			echo ($order > 0?"<h$order>":'').sprintf('<span class="dashicons dashicons-%s"></span> %s%s', $icon, ($addPluginName?self::$settings->getGlobalOption('plugin_display_name').' ':''), __($headline, 'wp-piwik')).($order > 0?"</h$order>":'');
 		}
 		
 		private function showDonation() {?>
