@@ -27,7 +27,6 @@
 				if (isset($response[0]))
 					$response = $response[0];
 				if ($this->parameter['key']) {
-					print_r($response);
 					echo isset($response[$this->parameter['key']])?$response[$this->parameter['key']]:'<em>not defined</em>';
 					return;
 				}
