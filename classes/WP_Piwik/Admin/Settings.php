@@ -83,6 +83,7 @@
 						foreach ($piwikSiteDetails as $key => $siteData)
 							$siteList[$key] = $siteData['name'].' ('.$siteData['main_url'].')';
 					$this->showSelect('site_id', __('Select site', 'wp-piwik'), $siteList, 'TODO Choose description', '', self::$settings->getGlobalOption('auto_site_config'), 'wp-piwik-auto-option', true, false);
+
 				}
 
 				echo $submitButton;

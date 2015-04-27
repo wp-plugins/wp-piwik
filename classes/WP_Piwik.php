@@ -224,8 +224,10 @@ class WP_Piwik {
 		if (current_user_can('wp-piwik_read_stats') && is_admin_bar_showing()) {
 			$id = WP_Piwik\Request::register('VisitsSummary.getUniqueVisitors', array('period' => 'day', 'date' => 'last30'));
 			$unique = $this->request($id);
-			$graph = "<script type='text/javascript'>var \$jSpark = jQuery.noConflict();\$jSpark(function() {var piwikSparkVals=[".implode(',',$unique)."];\$jSpark('.wp-piwik_dynbar').sparkline(piwikSparkVals, {type: 'bar', barColor: '#ccc', barWidth:2});});</script><span class='wp-piwik_dynbar'>Loading...</span>";
-			$toolbar->add_menu(array('id' => 'wp-piwik_stats', 'title' => $graph, 'href' => $this->getStatsURL()));
+			if (is_array($unique)) {
+				$graph = "<script type='text/javascript'>var \$jSpark = jQuery.noConflict();\$jSpark(function() {var piwikSparkVals=[".implode(',',$unique)."];\$jSpark('.wp-piwik_dynbar').sparkline(piwikSparkVals, {type: 'bar', barColor: '#ccc', barWidth:2});});</script><span class='wp-piwik_dynbar'>Loading...</span>";
+				$toolbar->add_menu(array('id' => 'wp-piwik_stats', 'title' => $graph, 'href' => $this->getStatsURL()));
+			}
 		}
 	}
 
@@ -538,7 +540,7 @@ class WP_Piwik {
 		} return 'n/a';
 	}
 
-	private function addPiwikSite($blogId = null) {
+	public function addPiwikSite($blogId = null) {
 		$isCurrent = !self::$settings->checkNetworkActivation() || empty($blogId);
 		$id = WP_Piwik\Request::register('SitesManager.addSite', array(
 			'urls' => $isCurrent?get_bloginfo('url'):get_blog_details($blogId)->$siteurl,

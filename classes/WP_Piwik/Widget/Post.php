@@ -13,7 +13,7 @@
 				'period' => 'range',
 				'date'  => isset($params['range'])?$params['range']:'last30',
 				'key' => isset($params['key'])?$params['key']:null,
-				'pageUrl' => urlencode(isset($params['url'])?$params['url']:(get_permalink($post->ID))),
+				'pageUrl' => isset($params['url'])?$params['url']:(get_permalink($post->ID)),
 			);
 			$this->title = $prefix.__('Overview', 'wp-piwik').' ('.__($this->parameter['date'],'wp-piwik').')';
 			$this->method = 'Actions.getPageUrl';
@@ -26,6 +26,7 @@
 			else {
 				if (isset($response[0]))
 					$response = $response[0];
+				print_r($response);
 				if ($this->parameter['key']) {
 					echo isset($response[$this->parameter['key']])?$response[$this->parameter['key']]:'<em>not defined</em>';
 					return;

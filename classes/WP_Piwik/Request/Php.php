@@ -33,7 +33,8 @@
 			if (class_exists('Piwik\API\Request'))
 				$request = new \Piwik\API\Request($params.'&token_auth='.self::$settings->getGlobalOption('piwik_token'));
 			else serialize(array('result' => 'error', 'message' => __('Class Piwik\API\Request does not exists.','wp-piwik')));
-			$result = $request->process();
+			if (isset($request))
+				$result = $request->process();
 			if (!headers_sent())
 				header("Content-Type: text/html", true);
 			return $this->unserialize($result);				
