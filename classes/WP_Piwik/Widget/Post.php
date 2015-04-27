@@ -13,7 +13,7 @@
 				'period' => 'range',
 				'date'  => isset($params['range'])?$params['range']:'last30',
 				'key' => isset($params['key'])?$params['key']:null,
-				'pageUrl' => isset($params['url'])?$params['url']:urlencode(get_permalink($post->ID)),
+				'pageUrl' => urlencode(isset($params['url'])?$params['url']:(get_permalink($post->ID))),
 			);
 			$this->title = $prefix.__('Overview', 'wp-piwik').' ('.__($this->parameter['date'],'wp-piwik').')';
 			$this->method = 'Actions.getPageUrl';
