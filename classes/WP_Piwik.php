@@ -1,7 +1,15 @@
 <?php
 
+/**
+ * The main WP-Piwik class configures, registers and manages the plugin
+ * 
+ * @author Andr&eacute; Br&auml;kling <webmaster@braekling.de>
+ */
 class WP_Piwik {
 
+	/**
+	 * Runtime environment variables
+	 */
 	private static
 		$intRevisionId = 99914,
 		$strVersion = '0.10.1.0',
@@ -12,7 +20,10 @@ class WP_Piwik {
 		$logger,
 		$settings,
 		$request;
-				
+
+	/**
+	 * Constructor class to configure and register all WP-Piwik components
+	 */
 	public function __construct() {
 		global $blog_id;
 		self::$blog_id = (isset($blog_id)?$blog_id:'n/a');
@@ -30,10 +41,16 @@ class WP_Piwik {
 		self::$settings->save();
 	}
 
+	/**
+	 * Destructor class to finish logging
+	 */
 	public function __destruct() {
 		$this->closeLogger();
 	}
 
+	/**
+	 * Setup class to prepare settings and check for installation and update
+	 */
 	private function setup() {
 		self::$strPluginBasename = plugin_basename(__FILE__);
 		if (!$this->isInstalled())
@@ -44,6 +61,9 @@ class WP_Piwik {
 			$this->applySettings();
 	}
 	
+	/**
+	 * Register WordPress actions
+	 */
 	private function addActions() {
 		add_action('admin_notices', array($this, 'showNotices'));
 		add_action('admin_init', array('WP_Piwik\Settings', 'registerSettings'));
@@ -76,6 +96,9 @@ class WP_Piwik {
 			add_action('transition_post_status', array($this, 'onPostStatusTransition'),10, 3);
 	}
 
+	/**
+	 * Register WordPress filters
+	 */
 	private function addFilters() {
 		add_filter('plugin_row_meta', array($this, 'setPluginMeta'), 10, 2);
 		add_filter('screen_layout_columns', array($this, 'onScreenLayoutColumns'), 10, 2);
@@ -88,12 +111,18 @@ class WP_Piwik {
 				add_filter('post_link', array($this, 'addFeedCampaign'));
 		}
 	}
-		
+	
+	/**
+	 * Register WordPress shortcodes
+	 */
 	private function addShortcodes() {
 		if ($this->isAddShortcode())
 			add_shortcode('wp-piwik', array($this, 'shortcode'));
 	}
 	
+	/**
+	 * Install WP-Piwik for the first time
+	 */
 	private function installPlugin($isUpdate = false) {
 		self::$logger->log('Running WP-Piwik installation');
 		if (!$isUpdate)
@@ -102,6 +131,9 @@ class WP_Piwik {
 		self::$settings->setGlobalOption('last_settings_update', time());
 	}
 
+	/**
+	 * Uninstall WP-Piwik
+	 */
 	public static function uninstallPlugin() {
 		self::$logger->log('Running WP-Piwik uninstallation');
 		if (!defined('WP_UNINSTALL_PLUGIN'))
@@ -110,6 +142,9 @@ class WP_Piwik {
 		self::$settings->resetSettings(true);
 	}
 
+	/**
+	 * Update WP-Piwik
+	 */
 	private function updatePlugin() {
 		self::$logger->log('Upgrade WP-Piwik to '.self::$strVersion);
 		$patches = glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'update'.DIRECTORY_SEPARATOR.'*.php');
@@ -125,12 +160,25 @@ class WP_Piwik {
 		$this->installPlugin(true);	  
 	}
 	
+	/**
+	 * Define a notice
+	 * 
+	 * @param string $type identifier
+	 * @param string $subject notice headline
+	 * @param string $text notice content
+	 * @param boolean $stay set to true if the message should persist (default: false)
+	 */
 	private function addNotice($type, $subject, $text, $stay = false) {
 		$notices = get_option('wp-piwik_notices', array());
 		$notices[$type] = array('subject' => $subject, 'text' => $text, 'stay' => $stay);
 		update_option('wp-piwik_notices', $notices);
 	}
 
+	/**
+	 * Show all notices defined previously
+	 * 
+	 * @see addNotice() 
+	 */
 	public function showNotices() {
 		$link = sprintf('<a href="'.$this->getSettingsURL().'">%s</a>', __('Settings', 'wp-piwik'));
 		if ($notices = get_option('wp-piwik_notices')) {
@@ -142,10 +190,17 @@ class WP_Piwik {
     	update_option('wp-piwik_notices', $notices);
     }
 	
+	/**
+	 * Get the settings page URL
+	 * @return string settings page URL 
+	 */
 	private function getSettingsURL() {
 		return (self::$settings->checkNetworkActivation()?'settings':'options-general').'.php?page='.self::$strPluginBasename;
 	}
 
+	/**
+	 * Echo javascript tracking code
+	 */
 	public function addJavascriptCode() {
 		if ($this->isHiddenUser()) {
 			self::$logger->log('Do not add tracking code to site (user should not be tracked) Blog ID: '.self::$blog_id.' Site ID: '.self::$settings->getOption('site_id'));
@@ -157,7 +212,10 @@ class WP_Piwik {
 		self::$logger->log('Add tracking code. Blog ID: '.self::$blog_id.' Site ID: '.self::$settings->getOption('site_id'));
 		echo $trackingCode->getTrackingCode();
 	}
-		
+	
+	/**
+	 * Echo noscript tracking code
+	 */
 	public function addNoscriptCode() {
 		if (self::$settings->getGlobalOption('track_mode') == 'proxy')
 			return;
@@ -169,6 +227,9 @@ class WP_Piwik {
 		echo self::$settings->getOption('noscript_code')."\n";
 	}
 	
+	/**
+	 * Register post view meta boxes
+	 */
 	public function addPostMetaboxes() {
 		if (self::$settings->getGlobalOption('add_customvars_box')) {
 			add_action('add_meta_boxes', array(new WP_Piwik\Template\MetaBoxCustomVars($this, self::$settings), 'addMetabox'));
@@ -179,6 +240,9 @@ class WP_Piwik {
 		}
 	}
 
+	/**
+	 * Register admin menu components
+	 */
 	public function buildAdminMenu() {
 		if (self::isConfigured()) {
 			$statsPage = new WP_Piwik\Admin\Statistics($this, self::$settings);
@@ -196,6 +260,9 @@ class WP_Piwik {
 		}
 	}
 
+	/**
+	 * Register network admin menu components
+	 */
 	public function buildNetworkAdminMenu() {
 		if (self::isConfigured()) {
 			$statsPage = new WP_Piwik\Admin\Network($this);
@@ -207,6 +274,9 @@ class WP_Piwik {
 		$optionsPage->add($optionsPageID);
 	}
 	
+	/**
+	 * Register WordPress dashboard widgets
+	 */
 	public function extendWordPressDashboard() {
 		if (current_user_can('wp-piwik_read_stats')) {
 			if (self::$settings->getGlobalOption('dashboard_widget') != 'disabled')
@@ -218,6 +288,9 @@ class WP_Piwik {
 		}
 	}
 	
+	/**
+	 * Register WordPress toolbar components
+	 */
 	public function extendWordPressToolbar($toolbar) {
 		if (current_user_can('wp-piwik_read_stats') && is_admin_bar_showing()) {
 			$id = WP_Piwik\Request::register('VisitsSummary.getUniqueVisitors', array('period' => 'day', 'date' => 'last30'));
@@ -229,12 +302,22 @@ class WP_Piwik {
 		}
 	}
 
+	/**
+	 * Add plugin meta data
+	 * 
+	 * @param array $links list of already defined plugin meta data
+	 * @param string $file handled file
+	 * @return array complete list of plugin meta data 
+	 */
 	public function setPluginMeta($links, $file) {
 		if ($file == 'wp-piwik/wp-piwik.php') 
 			return array_merge($links,array(sprintf('<a href="%s">%s</a>', self::getSettingsURL(), __('Settings', 'wp-piwik'))));
 		return $links;
 	}
 
+	/**
+	 * Prepare toolbar widget requirements
+	 */
 	public function loadToolbarRequirements() {
 		if (current_user_can('wp-piwik_read_stats') && is_admin_bar_showing()) {
 			wp_enqueue_script('wp-piwik-sparkline', $this->getPluginURL().'js/sparkline/jquery.sparkline.min.js', array('jquery'), self::$strVersion);

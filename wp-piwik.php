@@ -39,6 +39,11 @@ if (!function_exists ('add_action')) {
 if (!defined('NAMESPACE_SEPARATOR'))
 	define('NAMESPACE_SEPARATOR', '\\');
 
+/**
+  * Define WP-Piwik autoloader
+  * 
+  * @param string $class class name
+  */
 function wp_piwik_autoloader($class) {
 	if (substr($class, 0, 9) == 'WP_Piwik'.NAMESPACE_SEPARATOR) {
 		$class = str_replace('.', '', str_replace(NAMESPACE_SEPARATOR, DIRECTORY_SEPARATOR, substr($class, 9)));
@@ -46,7 +51,10 @@ function wp_piwik_autoloader($class) {
 	}
 }
 
-function wp_piwik_phperror($class) {
+/**
+ * Show notice about outdated PHP version
+ */
+function wp_piwik_phperror() {
 	echo '<div class="error"><p>';
 	printf(__('WP-Piwik requires at least PHP 5.3. You are using the deprecated version %s. Please update PHP to use WP-Piwik.', 'wp-piwik'), PHP_VERSION);
 	echo '</p></div>';
