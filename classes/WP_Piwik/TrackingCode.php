@@ -4,7 +4,7 @@
 
 	class TrackingCode {
 		
-		private static $wpPiwik;
+		private static $wpPiwik, $piwikUrl = false;
 		private $trackingCode;
 		
 		public $is404 = false, $isSearch = false;
@@ -29,18 +29,17 @@
 		public static function prepareTrackingCode($code, $settings, $logger) {
 			$logger->log('Apply tracking code changes:');
 			$settings->setOption('last_tracking_code_update', time());
-
 			if ($settings->getGlobalOption('track_mode') == 'js')
 				$code = str_replace(array('piwik.js', 'piwik.php'), 'js/index.php', $code);
 			elseif ($settings->getGlobalOption('track_mode') == 'proxy') {
 				$code = str_replace('piwik.js', 'piwik.php', $code);
-				$url = str_replace(array('https://', 'http://'), '//', $settings->getGlobalOption('piwik_url'));
 				$proxy = str_replace(array('https://', 'http://'), '//', plugins_url('wp-piwik').'/proxy').'/';
-				$code = str_replace($url, $proxy, $code);
+				if ( preg_match('/var u="([^"]*)";/', $code, $hits) ) {
+					$settings->setGlobalOption('proxy_url', $hits[1]);
+				}
+				$code = preg_replace('/var u="([^"]*)";/','var u="'.$proxy.'"',$code);
+				$code = preg_replace('/img src="([^"]*)piwik.php/','img src="'.$proxy.'piwik.php',$code);
 			}
-
-			/*$strCode = str_replace('//";','/"',$strCode);*/
-
 			if ($settings->getGlobalOption('track_cdnurl') || $settings->getGlobalOption('track_cdnurlssl'))
 				$code = str_replace(array("var d=doc","g.src=u+"), array("var ucdn=(('https:' == document.location.protocol) ? 'https://".($settings->getGlobalOption('track_cdnurlssl')?$settings->getGlobalOption('track_cdnurlssl'):$settings->getGlobalOption('track_cdnurl'))."/' : 'http://".($settings->getGlobalOption('track_cdnurl')?$settings->getGlobalOption('track_cdnurl'):$settings->getGlobalOption('track_cdnurlssl'))."/');\nvar d=doc", "g.src=ucdn+"), $code);
 			

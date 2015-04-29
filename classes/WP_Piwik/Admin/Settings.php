@@ -47,11 +47,11 @@
 				echo '<tr><td colspan="2"><h2 class="nav-tab-wrapper">';
 				foreach( $tabs as $tab => $details ){
 					$class = ( $tab == 'connect' ) ? ' nav-tab-active' : '';
-					echo "<a class='nav-tab$class' href='#".$tab."'>";
+					echo '<a style="cursor:pointer;" id="tab-'.$tab.'" class="nav-tab'.$class.'" onclick="javascript:$j(\'table.wp-piwik_menu-tab\').addClass(\'hidden\');$j(\'#'.$tab.'\').removeClass(\'hidden\');$j(\'a.nav-tab\').removeClass(\'nav-tab-active\');$j(\'#tab-'.$tab.'\').addClass(\'nav-tab-active\');">';
 					$this->showHeadline(0, $details['icon'], $details['name']);
 					echo "</a>";
     			}
-				echo '</h2></td></tr>';
+				echo '</h2></td></tr></tbody></table><table id="connect" class="wp-piwik_menu-tab"><tbody>';
 
 				if (!self::$wpPiwik->isConfigured())
 					$this->showBox('updated', 'info', sprintf('%s <a href="%s">%s</a> %s <a href="%s">%s</a>.', __('WP-Piwik is a WordPress plugin to show a selection of Piwik stats in your WordPress admin dashboard and to add and configure your Piwik tracking code. To use this you will need your own Piwik instance. If you do not already have a Piwik setup, you have two simple options: use either', 'wp-piwik'), 'http://piwik.org/', __('Self-hosted', 'wp-piwik'), __('or', 'wp-piwik'), 'http://piwik.org/hosting/', __('Cloud-hosted', 'wp-piwik')));
@@ -102,6 +102,7 @@
 
 				echo $submitButton;
 				
+				echo '</tbody></table><table id="statistics" class="wp-piwik_menu-tab hidden"><tbody>';
 				// Stats configuration					
 					$this->showSelect('default_date', __('Piwik default date', 'wp-piwik'),
 						array(
@@ -149,6 +150,8 @@
 					$this->showCheckbox('shortcodes', __('Enable shortcodes', 'wp-piwik'), __('Enable shortcodes in post or page content.', 'wp-piwik'));
 
 					echo $submitButton;	
+
+				echo '</tbody></table><table id="tracking" class="wp-piwik_menu-tab hidden"><tbody>';
 
 				// Tracking Configuration
 					$isNotTracking = self::$settings->getGlobalOption('track_mode') == 'disabled';
@@ -229,6 +232,7 @@
 					$this->showInput('track_feed_campaign', __('RSS feed campaign', 'wp-piwik'), __('Keyword: post name.', 'wp-piwik'), $isNotGeneratedTracking || !self::$settings->getGlobalOption('track_feed_addcampaign'), $fullGeneratedTrackingGroup.' wp-piwik-feed_campaign-option');
 					
 					echo $submitButton;	
+				echo '</tbody></table><table id="expert" class="wp-piwik_menu-tab hidden"><tbody>';
 				
 				$this->showText(__('Usually, you do not need to change these settings. If you want to do so, you should know what you do or you got an expert\'s advice.', 'wp-piwik'));
 								
@@ -265,6 +269,7 @@
 				echo $submitButton;
 			?>			</tbody>
 					</table>
+					<input type="hidden" name="wp-piwik[proxy_url]" value="<?php echo self::$settings->getGlobalOption('proxy_url'); ?>" />
 				</form>
 			</div>
 		<?php

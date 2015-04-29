@@ -61,6 +61,7 @@ class Settings {
 			'track_codeposition' => 'footer',
 			'track_noscript' => false,
 			'track_nojavascript' => false,
+			'proxy_url' => '',
 			'track_search' => false,
 			'track_404' => false,
 			'add_post_annotations' => false,
@@ -293,7 +294,7 @@ class Settings {
 	 */
 	private function checkSettings($in) {
 		foreach ( $this->checkSettings as $key => $value )
-			if (isset ( $in [$key] ))
+			if (isset ( $in [$key] ) )
 				$in [$key] = call_user_func_array ( array (
 						$this,
 						$value 
