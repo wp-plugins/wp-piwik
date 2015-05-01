@@ -13,3 +13,7 @@ table.wp-piwik-table tr:hover {
 table.wp-piwik-table tbody.clickable {
 	cursor: pointer;
 }
+
+#wp-piwik_stats_vistors_graph {
+	overflow:hidden;
+}
