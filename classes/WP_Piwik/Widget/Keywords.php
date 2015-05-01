@@ -9,7 +9,7 @@
 		protected function configure($prefix = '', $params = array()) {
 			$timeSettings = $this->getTimeSettings();
 			$this->parameter = array(
-				'idSite' => self::$settings->getOption('site_id'),
+				'idSite' => self::$wpPiwik->getPiwikSiteId($this->blogId),
 				'period' => $timeSettings['period'],
 				'date'  => $timeSettings['date']
 			);

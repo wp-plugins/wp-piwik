@@ -11,9 +11,8 @@
 		
 		public function __construct($wpPiwik) {
 			self::$wpPiwik = $wpPiwik;
-			if (!self::$wpPiwik->getOption('site_id') || !self::$wpPiwik->getOption('tracking_code'))
-				self::$wpPiwik->addPiwikSite();
 			if (!self::$wpPiwik->isCurrentTrackingCode()) {
+				self::$wpPiwik->getPiwikSiteId();
 				self::$wpPiwik->updateTrackingCode();
 			}
 			$this->trackingCode = self::$wpPiwik->getOption('tracking_code');

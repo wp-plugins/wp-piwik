@@ -7,9 +7,9 @@
 		public $className = __CLASS__;
 
 		protected function configure($prefix = '', $params = array()) {
-			$timeSettings = $this->getTimeSettings();			
+			$timeSettings = $this->getTimeSettings();		
 			$this->parameter = array(
-				'idSite' => self::$settings->getOption('site_id'),
+				'idSite' => self::$wpPiwik->getPiwikSiteId($this->blogId),
 				'period' => isset($params['period'])?$params['period']:$timeSettings['period'],
 				'date'  => isset($params['date'])?$params['date']: $timeSettings['date'],
 				'description' => $timeSettings['description']

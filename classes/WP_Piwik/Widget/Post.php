@@ -9,7 +9,7 @@
 		protected function configure($prefix = '', $params = array()) {
 			global $post;
 			$this->parameter = array(
-				'idSite' => self::$settings->getOption('site_id'),
+				'idSite' => self::$wpPiwik->getPiwikSiteId($this->blogId),
 				'period' => 'range',
 				'date'  => isset($params['range'])?$params['range']:'last30',
 				'key' => isset($params['key'])?$params['key']:null,

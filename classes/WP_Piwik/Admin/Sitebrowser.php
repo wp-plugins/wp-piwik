@@ -2,30 +2,27 @@
 	
 	namespace WP_Piwik\Admin;
 
-	class Sitebrowser extends WP_List_Table {
+	if (!class_exists('WP_List_Table'))
+		require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	
+	class Sitebrowser extends \WP_List_Table {
 
-		private $data = array();
+		private $data = array(), $wpPiwik;
 		
-		public function __construct($wpPiwik, $isNetwork = false) {
-			$bolCURL = function_exists('curl_init');
-			$bolFOpen = ini_get('allow_url_fopen');
-			if (!$bolFOpen && !$bolCURL) {
-				echo '<table><tr><td colspan="2"><strong>';
-				_e('Error: cURL is not enabled and fopen is not allowed to open URLs. WP-Piwik won\'t be able to connect to Piwik.');
-				echo '</strong></td></tr></table>';
-			} else {
-				if (!class_exists('WP_List_Table'))
-				require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
-				if (isset($_GET['wpmu_show_stats']) && ($_GET['wpmu_show_stats'] == (int) $_GET['wpmu_show_stats'])) {
-					$this->addPiwikSite();
-				}
-				$cnt = $this->prepare_items($isNetwork);
-				if ($cnt > 0) $this->display();
-				else echo '<p>No site configured yet.</p>';
-			}
+		public function __construct($wpPiwik) {
+			$this->wpPiwik = $wpPiwik;
+			$cnt = $this->prepare_items();
+			global $status, $page;
+	        parent::__construct( array(
+	            'singular'  => __('site', 'wp-piwik'),
+	            'plural'    => __('sites', 'wp-piwik'),
+	            'ajax'      => false
+	        ) );			
+			if ($cnt > 0) $this->display();
+			else echo '<p>'.__('No site configured yet.', 'wp-piwik').'</p>';
 		}
 
-		private function get_columns(){
+		public function get_columns(){
   			$columns = array(
 				'id'    	=> __('ID','wp-piwik'),
 				'name' 		=> __('Title','wp-piwik'),
@@ -35,7 +32,7 @@
 			return $columns;
 		}
 	
-		private function prepare_items($bolNetwork = false) {
+		public function prepare_items() {
   			$current_page = $this->get_pagenum();
   			$per_page = 10;
   			global $blog_id;
@@ -50,7 +47,7 @@
 						'name' => $blogDetails->blogname,
 						'id' => $blogDetails->blog_id,
 						'siteurl' => $blogDetails->siteurl,
-						'piwikid' => WP-Piwik::getSiteID($blogDetails->blog_id)
+						'piwikid' => $this->wpPiwik->getPiwikSiteId($blogDetails->blog_id)
 					);
 				}
 			} else {
@@ -59,7 +56,7 @@
 					'name' => get_bloginfo('name'),
 					'id' => '-',
 					'siteurl' => get_bloginfo('url'),
-					'piwikid' => WP-Piwik::getSiteID()
+					'piwikid' => $this->wpPiwik->getPiwikSiteId()
 				);
 				$total_items = 1;
 			}
@@ -71,11 +68,10 @@
     			'total_items' => $total_items,
 				'per_page'    => $per_page
 			));
-			if ($isNetwork) $pagenow = 'settings.php';
 			foreach ($this->data as $key => $dataset) {
-				if (empty($dataset['piwikid']) || !is_int($dataset['piwikid']))
-					$this->data[$key]['piwikid'] = '<a href="'.admin_url(($pagenow == 'settings.php'?'network/':'')).$pagenow.'?page=wp-piwik/wp-piwik.php&tab=sitebrowser'.($dataset['id'] != '-'?'&wpmu_show_stats='.$dataset['id']:'').'">Create Piwik site</a>';
-				if ($isNetwork)
+				if (empty($dataset['piwikid']) || $dataset['piwikid'] == 'n/a')
+					$this->data[$key]['piwikid'] = __('Site not created yet.', 'wp-piwik');
+				if ($this->wpPiwik->isNetworkMode())
 					$this->data[$key]['name'] = '<a href="?page=wp-piwik_stats&wpmu_show_stats='.$dataset['id'].'">'.$dataset['name'].'</a>';	
 			}
 			$this->items = $this->data;
@@ -93,4 +89,5 @@
       				return print_r($item,true);
 			}
 		}
+		
 	}

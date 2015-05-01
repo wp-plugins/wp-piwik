@@ -6,7 +6,7 @@
 		
 		protected static $wpPiwik, $settings;
 		
-		protected $isShortcode = false, $method = '', $title = '', $context = 'side', $priority = 'core', $parameter = array(), $apiID = array(), $pageId = 'dashboard', $name = 'Value', $limit = 10;
+		protected $isShortcode = false, $method = '', $title = '', $context = 'side', $priority = 'core', $parameter = array(), $apiID = array(), $pageId = 'dashboard', $blogId = null, $name = 'Value', $limit = 10;
 		
 		public function __construct($wpPiwik, $settings, $pageId = 'dashboard', $context = 'side', $priority = 'default', $params = array(), $isShortcode = false) {
 			self::$wpPiwik = $wpPiwik;
@@ -14,6 +14,11 @@
 			$this->pageId = $pageId;
 			$this->context = $context;
 			$this->priority = $priority;
+			if (self::$settings->checkNetworkActivation() && function_exists('is_super_admin') && is_super_admin() && isset($_GET['wpmu_show_stats'])) {
+				switch_to_blog((int) $_GET['wpmu_show_stats']);
+				$this->blogId = get_current_blog_id();
+				restore_current_blog();
+			}
 			$this->isShortcode = $isShortcode;
 			$prefix = ($this->pageId=='dashboard'?self::$settings->getGlobalOption('plugin_display_name').' - ':'');
 			$this->configure($prefix, $params);

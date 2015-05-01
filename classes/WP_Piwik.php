@@ -325,38 +325,15 @@ class WP_Piwik {
 					$statsPage,
 					'show' 
 			) );
-			
-			add_action ( 'admin_print_scripts-' . $this->statsPageId, array (
-					$statsPage,
-					'printAdminScripts' 
-			) );
-			add_action ( 'admin_print_styles-' . $this->statsPageId, array (
-					$statsPage,
-					'printAdminStyles' 
-			) );
-			add_action ( 'admin_head-' . $this->statsPageId, array (
-					$statsPage,
-					'extendAdminHeader' 
-			) );
-			add_action ( 'load-' . $this->statsPageId, array (
-					$this,
-					'onloadStatsPage' 
-			) );
+			$this->loadAdminStatsHeader($this->statsPageId, $statsPage);
 		}
 		if (! self::$settings->checkNetworkActivation ()) {
 			$optionsPage = new WP_Piwik\Admin\Settings ( $this, self::$settings );
-			$optionsPageID = add_options_page ( self::$settings->getGlobalOption ( 'plugin_display_name' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), 'activate_plugins', __FILE__, array (
+			$optionsPageId = add_options_page ( self::$settings->getGlobalOption ( 'plugin_display_name' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), 'activate_plugins', __FILE__, array (
 					$optionsPage,
 					'show' 
 			) );
-			add_action ( 'admin_head-' . $optionsPageID, array (
-					$optionsPage,
-					'extendAdminHeader' 
-			) );
-			add_action ( 'admin_print_styles-' . $optionsPageID, array (
-					$optionsPage,
-					'printAdminStyles' 
-			) );
+			$this->loadAdminSettingsHeader($optionsPageId, $optionsPage);
 		}
 	}
 	
@@ -365,21 +342,64 @@ class WP_Piwik {
 	 */
 	public function buildNetworkAdminMenu() {
 		if (self::isConfigured ()) {
-			$statsPage = new WP_Piwik\Admin\Network ( $this );
-			$pageID = add_dashboard_page ( __ ( 'Piwik Statistics', 'wp-piwik' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), 'manage_sites', 'wp-piwik_stats', array (
+			$statsPage = new WP_Piwik\Admin\Network ( $this, self::$settings );
+			$this->statsPageId = add_dashboard_page ( __ ( 'Piwik Statistics', 'wp-piwik' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), 'manage_sites', 'wp-piwik_stats', array (
 					$statsPage,
 					'show' 
 			) );
-			$statsPage->add ( $pageID );
+			$this->loadAdminStatsHeader($this->statsPageId, $statsPage);
 		}
-		$optionsPage = new WP_Piwik\Admin\Settings ( $this );
-		$optionsPageID = add_submenu_page ( 'settings.php', self::$settings->getGlobalOption ( 'plugin_display_name' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), 'manage_sites', __FILE__, array (
+		$optionsPage = new WP_Piwik\Admin\Settings ( $this, self::$settings );
+		$optionsPageId = add_submenu_page ( 'settings.php', self::$settings->getGlobalOption ( 'plugin_display_name' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), 'manage_sites', __FILE__, array (
 				$optionsPage,
 				'show' 
 		) );
-		$optionsPage->add ( $optionsPageID );
+		$this->loadAdminSettingsHeader($optionsPageId, $optionsPage);
+	}
+
+
+	/**
+	 * Register admin header extensions for stats page
+	 *
+	 * @param $optionsPageId options page id
+	 * @param $optionsPage options page object
+	 */
+	public function loadAdminStatsHeader($statsPageId, $statsPage) {
+		add_action ( 'admin_print_scripts-' . $statsPageId, array (
+				$statsPage,
+				'printAdminScripts' 
+		) );
+		add_action ( 'admin_print_styles-' . $statsPageId, array (
+				$statsPage,
+				'printAdminStyles' 
+		) );
+		add_action ( 'admin_head-' . $statsPageId, array (
+				$statsPage,
+				'extendAdminHeader' 
+		) );
+		add_action ( 'load-' . $statsPageId, array (
+				$this,
+				'onloadStatsPage' 
+		) );
 	}
 	
+	/**
+	 * Register admin header extensions for settings page
+	 *
+	 * @param $optionsPageId options page id
+	 * @param $optionsPage options page object
+	 */
+	public function loadAdminSettingsHeader($optionsPageId, $optionsPage) {
+		add_action ( 'admin_head-' . $optionsPageId, array (
+				$optionsPage,
+				'extendAdminHeader' 
+		) );
+		add_action ( 'admin_print_styles-' . $optionsPageId, array (
+				$optionsPage,
+				'printAdminStyles' 
+		) );		
+	}
+	 	
 	/**
 	 * Register WordPress dashboard widgets
 	 */
@@ -741,7 +761,7 @@ class WP_Piwik {
 	 * @return boolean Is tracking code up to date?
 	 */
 	public function isCurrentTrackingCode() {
-		return (self::$settings->getOption ( 'last_tracking_code_update' ) > self::$settings->getGlobalOption ( 'last_settings_update' ));
+		return (self::$settings->getOption ( 'last_tracking_code_update' ) && self::$settings->getOption ( 'last_tracking_code_update' ) > self::$settings->getGlobalOption ( 'last_settings_update' ));
 	}
 	
 	/**
@@ -901,8 +921,10 @@ class WP_Piwik {
 	 * @return mixed Piwik site ID or n/a
 	 */
 	public function getPiwikSiteId($blogId = null) {
+		if ( !$blogId && $this->isNetworkMode() )
+			$blogId = get_current_blog_id();
 		$result = self::$settings->getOption ( 'site_id', $blogId );
-		return (! empty ( $result ) && ! self::$settings->getGlobalOption ( 'auto_site_config' ) ? $result : $this->requestPiwikSiteId ( $blogId ));
+		return (! empty ( $result ) ? $result : $this->requestPiwikSiteId ( $blogId ));
 	}
 	
 	/**
@@ -937,7 +959,7 @@ class WP_Piwik {
 				$result = $result [0] ['idsite'];
 		} else
 			$result = null;
-		self::$logger->log ( 'Get Piwik ID: WordPress site ' . ($isCurrent ? get_bloginfo ( 'url' ) : get_blog_details ( $blogId )->$siteurl) . ' = Piwik ID ' . $result );
+		self::$logger->log ( 'Get Piwik ID: WordPress site ' . ($isCurrent ? get_bloginfo ( 'url' ) : get_blog_details ( $blogId )->siteurl) . ' = Piwik ID ' . $result );
 		if ($result !== null) {
 			self::$settings->setOption ( 'site_id', $result, $blogId );
 			if (self::$settings->getGlobalOption ( 'track_mode' ) != 'disabled' && self::$settings->getGlobalOption ( 'track_mode' ) != 'manually') {
@@ -964,11 +986,11 @@ class WP_Piwik {
 		if (!$this->request ( 'global.getPiwikVersion' ))
 			return null;
 		$id = WP_Piwik\Request::register ( 'SitesManager.addSite', array (
-				'urls' => $isCurrent ? get_bloginfo ( 'url' ) : get_blog_details ( $blogId )->$siteurl,
-				'siteName' => $isCurrent ? get_bloginfo ( 'name' ) : get_blog_details ( $blogId )->$blogname 
+				'urls' => $isCurrent ? get_bloginfo ( 'url' ) : get_blog_details ( $blogId )->siteurl,
+				'siteName' => $isCurrent ? get_bloginfo ( 'name' ) : get_blog_details ( $blogId )->blogname 
 		) );
 		$result = $this->request ( $id );
-		self::$logger->log ( 'Get Piwik ID: WordPress site ' . ($isCurrent ? get_bloginfo ( 'url' ) : get_blog_details ( $blogId )->$siteurl) . ' = Piwik ID ' . (int) $result );
+		self::$logger->log ( 'Get Piwik ID: WordPress site ' . ($isCurrent ? get_bloginfo ( 'url' ) : get_blog_details ( $blogId )->siteurl) . ' = Piwik ID ' . (int) $result );
 		if (empty ( $result ) || ! isset ( $result [0] ))
 			return null;
 		else
