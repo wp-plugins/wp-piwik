@@ -18,8 +18,9 @@
 				}
 			}
 			$results = (function_exists('curl_init')?$this->curl($url, $params):$this->fopen($url, $params));
-			foreach ($results as $num => $result)
-				self::$results[$map[$num]] = $result;
+			if (is_array($results))
+				foreach ($results as $num => $result)
+					self::$results[$map[$num]] = $result;
 		}
 			
 		private function curl($url, $params) {

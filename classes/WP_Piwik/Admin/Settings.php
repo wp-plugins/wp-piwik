@@ -19,20 +19,14 @@ class Settings extends \WP_Piwik\Admin {
 			$this->showBox ( 'updated', 'yes', __ ( 'Changes saved.' ) );
 		?>
 <div id="plugin-options-wrap" class="widefat">
+	<?php echo $this->getHeadline ( 1, 'admin-generic', 'Settings', true ); ?>
 	<form method="post">
-		<input type="hidden" name="wp-piwik[revision]"
-			value="<?php echo self::$settings->getGlobalOption('revision'); ?>" />
-					<?php wp_nonce_field('wp-piwik_settings'); ?>
-					<table class="wp-piwik-form">
+		<input type="hidden" name="wp-piwik[revision]" value="<?php echo self::$settings->getGlobalOption('revision'); ?>" />
+		<?php wp_nonce_field('wp-piwik_settings'); ?>
+		<table class="wp-piwik-form">
 			<tbody>
-				<tr>
-					<th width="150px"></th>
-					<td></td>
-				</tr>
 			<?php
-		echo '<tr><td colspan="2">' . $this->getHeadline ( 1, 'admin-generic', 'Settings', true ) . '</td></tr>';
 		$submitButton = '<tr><td colspan="2"><p class="submit"><input name="Submit" type="submit" class="button-primary" value="' . esc_attr__ ( 'Save Changes' ) . '" /></p></td></tr>';
-		
 		printf ( '<tr><td colspan="2">%s</td></tr>', __ ( 'Thanks for using WP-Piwik!', 'wp-piwik' ) );
 		// $this->showDonation();
 		if (self::$wpPiwik->isConfigured ()) {
@@ -62,6 +56,14 @@ class Settings extends \WP_Piwik\Admin {
 		$tabs ['expert'] = array (
 				'icon' => 'shield',
 				'name' => 'Expert Settings' 
+		);
+		$tabs ['support'] = array (
+				'icon' => 'lightbulb',
+				'name' => 'Support'
+		);
+		$tabs ['credits'] = array (
+				'icon' => 'groups',
+				'name' => 'Credits'
 		);
 		
 		echo '<tr><td colspan="2"><h2 class="nav-tab-wrapper">';
@@ -94,7 +96,7 @@ class Settings extends \WP_Piwik\Admin {
 		
 		// Site configuration
 		$piwikSiteId = self::$wpPiwik->isConfigured () ? self::$wpPiwik->getPiwikSiteId () : false;
-		$this->showCheckbox ( 'auto_site_config', __ ( 'Auto config', 'wp-piwik' ), __ ( 'Check this to automatically choose your blog from your Piwik sites by URL. If your blog is not added to Piwik yet, WP-Piwik will add a new site.', 'wp-piwik' ), self::$wpPiwik->isConfigured (), '$j(\'tr.wp-piwik-auto-option\').toggle(\'hidden\');' . ($piwikSiteId ? '$j(\'#site_id\').val(' . $piwikSiteId . ');' : '') );
+		$this->showCheckbox ( 'auto_site_config', __ ( 'Auto config', 'wp-piwik' ), __ ( 'Check this to automatically choose your blog from your Piwik sites by URL. If your blog is not added to Piwik yet, WP-Piwik will add a new site.', 'wp-piwik' ), false, '$j(\'tr.wp-piwik-auto-option\').toggle(\'hidden\');' . ($piwikSiteId ? '$j(\'#site_id\').val(' . $piwikSiteId . ');' : '') );
 		if (self::$wpPiwik->isConfigured ()) {
 			$piwikSiteDetails = self::$wpPiwik->getPiwikSiteDetails ();
 			if (($piwikSiteId == 'n/a'))
@@ -107,7 +109,9 @@ class Settings extends \WP_Piwik\Admin {
 			if (is_array ( $piwikSiteDetails ))
 				foreach ( $piwikSiteDetails as $key => $siteData )
 					$siteList [$key] = $siteData ['name'] . ' (' . $siteData ['main_url'] . ')';
-			$this->showSelect ( 'site_id', __ ( 'Select site', 'wp-piwik' ), $siteList, 'TODO Choose description', '', self::$settings->getGlobalOption ( 'auto_site_config' ), 'wp-piwik-auto-option', true, false );
+			if (isset($siteList))
+				$this->showSelect ( 'site_id', __ ( 'Select site', 'wp-piwik' ), $siteList, 'TODO Choose description', '', self::$settings->getGlobalOption ( 'auto_site_config' ), 'wp-piwik-auto-option', true, false );
+			// else $this->showBox('error', 'no', __('Piwik did not deliver a site list. Is at least one site configured?', 'wp-piwik'));
 		}
 		
 		echo $submitButton;
@@ -198,11 +202,11 @@ class Settings extends \WP_Piwik\Admin {
 		
 		$this->showCheckbox ( 'disable_cookies', __ ( 'Disable cookies', 'wp-piwik' ), __ ( 'Disable all tracking cookies for a visitor.', 'wp-piwik' ), $isNotGeneratedTracking, $fullGeneratedTrackingGroup );
 		
-		$this->showCheckbox ( 'limit_cookies', __ ( 'Limit cookie lifetime', 'wp-piwik' ), __ ( 'TODO cookie lifetime desc', 'wp-piwik' ), $isNotGeneratedTracking, $fullGeneratedTrackingGroup, true, '$j(\'tr.wp-piwik-cookielifetime-option\').toggle(\'hidden\');' );
+		$this->showCheckbox ( 'limit_cookies', __ ( 'Limit cookie lifetime', 'wp-piwik' ), __ ( 'TODO cookie lifetime desc', 'wp-piwik' ), $isNotGeneratedTracking, $fullGeneratedTrackingGroup, true, '$j(\'tr.wp-piwik-cookielifetime-option\').toggle(\'wp-piwik-hidden\');' );
 		
-		$this->showInput ( 'limit_cookies_visitor', __ ( 'Visitor timeout (seconds)', 'wp-piwik' ), false, $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'limit_cookies' ), $fullGeneratedTrackingGroup . ' wp-piwik-cookielifetime-option' );
-		
-		$this->showInput ( 'limit_cookies_session', __ ( 'Session timeout (seconds)', 'wp-piwik' ), false, $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'limit_cookies' ), $fullGeneratedTrackingGroup . ' wp-piwik-cookielifetime-option' );
+		$this->showInput ( 'limit_cookies_visitor', __ ( 'Visitor timeout (seconds)', 'wp-piwik' ), false, $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'limit_cookies' ), $fullGeneratedTrackingGroup.' wp-piwik-hidden wp-piwik-cookielifetime-option' );
+
+		$this->showInput ( 'limit_cookies_session', __ ( 'Session timeout (seconds)', 'wp-piwik' ), false, $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'limit_cookies' ), $fullGeneratedTrackingGroup . ' wp-piwik-hidden wp-piwik-cookielifetime-option' );
 		
 		$this->showCheckbox ( 'track_admin', __ ( 'Track admin pages', 'wp-piwik' ), __ ( 'Enable to track users on admin pages (remember to configure the tracking filter appropriately).', 'wp-piwik' ), $isNotTracking, $fullGeneratedTrackingGroup . ' wp-piwik-track-option-manually' );
 		
@@ -255,7 +259,22 @@ class Settings extends \WP_Piwik\Admin {
 		), __ ( 'Choose if you want to explicitly force Piwik to use HTTP or HTTPS. Does not work with a CDN URL.', 'wp-piwik' ) );
 		
 		echo $submitButton;
-		?>			</tbody>
+		?>
+			</tbody>
+		</table>
+		<table id="support" class="wp-piwik_menu-tab hidden">
+			<tbody>
+				<tr><td colspan="2"><?php
+					echo $this->showSupport();
+				?></td></tr>
+			</tbody>
+		</table>
+		<table id="credits" class="wp-piwik_menu-tab hidden">
+			<tbody>
+				<tr><td colspan="2"><?php
+					echo $this->showCredits();
+				?></td></tr>
+			</tbody>
 		</table>
 		<input type="hidden" name="wp-piwik[proxy_url]"
 			value="<?php echo self::$settings->getGlobalOption('proxy_url'); ?>" />
@@ -464,5 +483,85 @@ class Settings extends \WP_Piwik\Admin {
 		echo '<script type="text/javascript">var $j = jQuery.noConflict();</script>';
 		echo '<script type="text/javascript">/* <![CDATA[ */(function() {var s = document.createElement(\'script\');var t = document.getElementsByTagName(\'script\')[0];s.type = \'text/javascript\';s.async = true;s.src = \'//api.flattr.com/js/0.6/load.js?mode=auto\';t.parentNode.insertBefore(s, t);})();/* ]]> */</script>';
 	}
+	
+	/**
+	 * Show credits
+	 */
+	public function showCredits() {
+		?>
+		<p><strong><?php _e('Thank you very much for your donation', 'wp-piwik'); ?>:</strong> Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S., Thomas M., John C., Andreas G., Ben M., Myra R. I., Carlos U. R.-S., Oleg I., M. N., Daniel K., James L., Jochen K., Cyril P., Thomas K., <?php _e('the Piwik team itself','wp-piwik');?><?php _e(', and all people flattering this','wp-piwik'); ?>!</p>
+		<p><?php _e('Graphs powered by <a href="http://www.jqplot.com/">jqPlot</a> (License: GPL 2.0 and MIT) and <a href="http://omnipotent.net/jquery.sparkline/">jQuery Sparklines</a> (License: New BSD License).','wp-piwik'); ?></p>
+		<p><?php _e('Metabox support inspired by', 'wp-piwik'); echo ' <a href="http://www.code-styling.de/english/how-to-use-wordpress-metaboxes-at-own-plugins">Heiko Rabe\'s metabox demo plugin</a>.';?></p>
+		<p><?php _e('Tabbed settings page suggested by the', 'wp-piwik'); echo' <a href="http://wp.smashingmagazine.com/2011/10/20/create-tabs-wordpress-settings-pages/">Smashing Magazine</a>.';?></p>
+		<p><?php _e('Thank you very much','wp-piwik'); ?>, Besnik Bleta, FatCow, Rene, Fab, EzBizNiz, Gormer, Natalya, AggelioPolis, Web Hosting Geeks, Web Hosting Rating, Nata Strazda (Web Hosting Hub), Hossein (LibreOffice localization team), Ste &amp; Chris <?php _e('for your translation work','wp-piwik'); ?>!</p>
+		<p><?php _e('Thank you very much, all users who send me mails containing criticism, commendation, feature requests and bug reports! You help me to make WP-Piwik much better.','wp-piwik'); ?></p>
+		<p><?php _e('Thank <strong>you</strong> for using my plugin. It is the best commendation if my piece of code is really used!','wp-piwik'); ?></p>
+		<?php
+	}
+
+	/**
+	 * Show support information
+	 */
+	public function showSupport() {
+		?><ul>
+			<li>The best place to get help: <a href="https://wordpress.org/support/plugin/wp-piwik"><?php _e('WP-Piwik support forum','wp-piwik'); ?></a></li>
+			<li><?php _e('Please don\'t forget to vote the compatibility at the','wp-piwik'); ?> <a href="http://wordpress.org/extend/plugins/wp-piwik/">WordPress.org Plugin Directory</a>.</li>
+		</ul>
+		<h3><?php _e('Debugging', 'wp-piwik'); ?></h3>
+		<p><?php _e('Either allow_url_fopen has to be enabled <em>or</em> cURL has to be available:', 'wp-piwik'); ?></p>
+		<ol>
+			<li><?php 
+				_e('cURL is','wp-piwik');
+				echo ' <strong>'.(function_exists('curl_init')?'':__('not','wp-piwik')).' ';
+				_e('available','wp-piwik');
+			?></strong>.</li>
+			<li><?php 
+				_e('allow_url_fopen is','wp-piwik');
+				echo ' <strong>'.(ini_get('allow_url_fopen')?'':__('not','wp-piwik')).' ';
+				_e('enabled','wp-piwik');
+			?></strong>.</li>
+		</ol>
+		<h3><?php _e('Latest support threads on WordPress.org', 'wp-piwik'); ?></h3><?php 
+		$supportThreads = $this->readRSSFeed('http://wordpress.org/support/rss/plugin/wp-piwik');
+		if (!empty($supportThreads)) {
+			echo '<ol>';
+			foreach ($supportThreads as $supportThread) 
+				echo '<li><a href="'.$supportThread['url'].'">'.$supportThread['title'].'</a></li>';
+			echo '</ol>';
+		}
+	}
+	
+	/**
+	 * Read RSS feed
+	 *
+	 * @param string $feed
+	 *        	feed URL
+	 * @param int $cnt
+	 *        	item limit
+	 * @return array feed items array[](title, url)
+	 *        
+	 */
+	private function readRSSFeed($feed, $cnt = 5) {
+		$result = array ();
+		if (function_exists ( 'simplexml_load_file' ) && ! empty ( $feed )) {
+			$xml = @simplexml_load_file ( $feed );
+			if (! $xml || ! isset ( $xml->channel [0]->item ))
+				return array (
+						array (
+								'title' => 'Can\'t read RSS feed.',
+								'url' => $xml 
+						) 
+				);
+			foreach ( $xml->channel [0]->item as $item ) {
+				if ($cnt -- == 0)
+					break;
+				$result [] = array (
+						'title' => $item->title [0],
+						'url' => $item->link [0] 
+				);
+			}
+		}
+		return $result;
+	}	
 	
 }

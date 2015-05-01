@@ -30,6 +30,7 @@
 		
 		public function show() {
 			$response = self::$wpPiwik->request($this->apiID[$this->method]);
+			$tableBody = array();
 			if (!empty($response['result']) && $response['result'] ='error')
 				echo '<strong>'.__('Piwik error', 'wp-piwik').':</strong> '.htmlentities($response['message'], ENT_QUOTES, 'utf-8');
 			else {
@@ -54,7 +55,7 @@
 				foreach ($tableBody as $key => $row)
 					$tableBody[$key][2] = number_format($row[1]/$sum*100, 2).'%';
 				
-				$this->pieChart($tableBody);
+				if (!empty($tableBody)) $this->pieChart($tableBody);
 				$this->table($tableHead, $tableBody, null);
 			}
 		}
