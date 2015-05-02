@@ -4,7 +4,7 @@
 
 	abstract class Request {
 		
-		protected static $wpPiwik, $settings, $requests = array(), $results = array(), $piwikVersion;
+		protected static $wpPiwik, $settings, $requests = array(), $results = array(), $isCacheable = array(), $piwikVersion;
 		
 		public function __construct($wpPiwik, $settings) {
 			self::$wpPiwik = $wpPiwik;
@@ -17,11 +17,19 @@
 				$id = 'global.getPiwikVersion';
 			else
 				$id = 'method='.$method.self::parameterToString($parameter);
+			if ( 
+				in_array( $method, array( 'API.getPiwikVersion', 'SitesManager.getJavascriptTag', 'SitesManager.getAllSites', 'SitesManager.getSitesIdFromSiteUrl', 'SitesManager.addSite', 'SitesManager.updateSite' ) ) ||
+				substr($parameter['date'], 0, 4) == 'last' ||
+				$parameter['date'] == 'today' ||
+				( $parameter['period'] == 'day' && $parameter['date'] == date('Ymd') ) ||
+				( $parameter['period'] == 'month' && $parameter['date'] == date('Ym') ) ||
+				( $parameter['period'] == 'week' && $parameter['date'] == date( 'Ymd', strtotime( "last Monday" ) ) ) 
+			) self::$isCacheable[$id] = false;
+			else self::$isCacheable[$id] = $method.'-'.$parameter['period'].'-'.$parameter['date'];
 			if (!isset(self::$requests[$id]))
 				self::$requests[$id] = array('method' => $method, 'parameter' => $parameter);
 			return $id;
 		}
-		
 		private static function parameterToString($parameter) {
 			$return = '';
 			if (is_array($parameter))
@@ -31,13 +39,22 @@
 		}
 		
 		public function perform($id) {
+			if ( self::$settings->getGlobalOption('cache') && false !== ( $cached = get_transient( 'wp-piwik_c_'.md5(self::$isCacheable[$id] ) ) ) ) {
+				self::$wpPiwik->log("Deliver cached data: ".$id);
+				return $cached;
+			}
 			self::$wpPiwik->log("Perform request: ".$id);
 			if (!isset(self::$requests[$id]))
 				return array('result' => 'error', 'message' => 'Request '.$id.' was not registered.');
 			elseif (!isset(self::$results[$id])) {
 				$this->request($id);
 			}
-			return isset(self::$results[$id])?self::$results[$id]:false;
+			if ( isset ( self::$results[$id] )) {
+				if ( self::$settings->getGlobalOption('cache') && self::$isCacheable[$id] ) {
+					set_transient( 'wp-piwik_c_'.md5(self::$isCacheable[$id]) , self::$results[$id], WEEK_IN_SECONDS );
+				}
+				return self::$results[$id];
+			} else return false;
 		}
 		
 		protected function buildURL($config, $urlDecode = false) {
