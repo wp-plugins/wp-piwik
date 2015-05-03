@@ -276,8 +276,12 @@ class WP_Piwik {
 		$trackingCode->is404 = (is_404 () && self::$settings->getGlobalOption ( 'track_404' ));
 		$trackingCode->isSearch = (is_search () && self::$settings->getGlobalOption ( 'track_search' ));
 		self::$logger->log ( 'Add tracking code. Blog ID: ' . self::$blog_id . ' Site ID: ' . self::$settings->getOption ( 'site_id' ) );
-		if ( $this->isNetworkMode() && self::$settings->getGlobalOption ( 'track_mode' ) == 'manually' )
-			echo str_replace( '{ID}', $this->getPiwikSiteId(), $trackingCode->getTrackingCode () );
+		if ( $this->isNetworkMode() && self::$settings->getGlobalOption ( 'track_mode' ) == 'manually' ) {
+			$siteId = $this->getPiwikSiteId();
+			if ($siteId != 'n/a')
+				echo str_replace( '{ID}', $siteId, $trackingCode->getTrackingCode () );
+			else echo '<!-- Site will be created and tracking code added on next request -->';
+		}
 		else echo $trackingCode->getTrackingCode ();
 	}
 	
