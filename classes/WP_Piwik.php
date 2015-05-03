@@ -194,7 +194,7 @@ class WP_Piwik {
 		self::$logger->log ( 'Running WP-Piwik uninstallation' );
 		if (! defined ( 'WP_UNINSTALL_PLUGIN' ))
 			exit ();
-		delete_option ( 'wp-piwik_notices' );
+		delete_option ( 'wp-piwik-notices' );
 		self::$settings->resetSettings ( true );
 	}
 	
@@ -229,13 +229,13 @@ class WP_Piwik {
 	 *        	set to true if the message should persist (default: false)
 	 */
 	private function addNotice($type, $subject, $text, $stay = false) {
-		$notices = get_option ( 'wp-piwik_notices', array () );
+		$notices = get_option ( 'wp-piwik-notices', array () );
 		$notices [$type] = array (
 				'subject' => $subject,
 				'text' => $text,
 				'stay' => $stay 
 		);
-		update_option ( 'wp-piwik_notices', $notices );
+		update_option ( 'wp-piwik-notices', $notices );
 	}
 	
 	/**
@@ -245,14 +245,14 @@ class WP_Piwik {
 	 */
 	public function showNotices() {
 		$link = sprintf ( '<a href="' . $this->getSettingsURL () . '">%s</a>', __ ( 'Settings', 'wp-piwik' ) );
-		if ($notices = get_option ( 'wp-piwik_notices' )) {
+		if ($notices = get_option ( 'wp-piwik-notices' )) {
 			foreach ( $notices as $type => $notice ) {
 				printf ( '<div class="updated fade"><p>%s <strong>%s:</strong> %s: %s</p></div>', $notice ['subject'], __ ( 'Important', 'wp-piwik' ), $notice ['text'], $link );
 				if (! $notice ['stay'])
 					unset ( $notices [$type] );
 			}
 		}
-		update_option ( 'wp-piwik_notices', $notices );
+		update_option ( 'wp-piwik-notices', $notices );
 	}
 	
 	/**

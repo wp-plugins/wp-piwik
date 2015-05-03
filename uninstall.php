@@ -76,7 +76,7 @@ if (function_exists('is_multisite') && is_multisite()) {
 				delete_blog_option($aryBlog->blog_id, 'wp-piwik-'.$key);
 			}
 			switch_to_blog($aryBlog->blog_id);
-			$wpdb->query("DELETE FROM $wpdb->postmeta WHERE meta_key LIKE 'wp-piwik-%'");
+			$wpdb->query("DELETE FROM $wpdb->postmeta WHERE meta_key LIKE 'wp-piwik_%'");
 			$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '_transient_wp-piwik_%'");
 			$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '_transient_timeout_wp-piwik_%'");
 			restore_current_blog();
@@ -94,6 +94,7 @@ foreach ($globalSettings as $key)
 	delete_option('wp-piwik_global-'.$key);
 
 delete_option('wp-piwik-manually');
+delete_option('wp-piwik-notices');
 
 $wpdb->query("DELETE FROM $wpdb->postmeta WHERE meta_key LIKE 'wp-piwik-%'");
 $wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '_transient_wp-piwik_%'");
