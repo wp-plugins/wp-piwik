@@ -72,17 +72,18 @@ if (function_exists('is_multisite') && is_multisite()) {
 	$aryBlogs = $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id');
 	if (is_array($aryBlogs))
 		foreach ($aryBlogs as $aryBlog)
-			foreach ($settings as $key)
+			foreach ($settings as $key) {
 				delete_blog_option($aryBlog->blog_id, 'wp-piwik-'.$key);
+			}
 	foreach ($globalSettings as $key)
-		delete_site_option($aryBlog->blog_id, 'wp-piwik_global-'.$key);
+		delete_site_option('wp-piwik_global-'.$key);
 	delete_site_option('wp-piwik-manually');
 }
 
 foreach ($settings as $key)
-	delete_option($aryBlog->blog_id, 'wp-piwik_global-'.$key);
+	delete_option('wp-piwik_global-'.$key);
 	
 foreach ($globalSettings as $key)
-	delete_option($aryBlog->blog_id, 'wp-piwik-'.$key);
+	delete_option('wp-piwik-'.$key);
 
 delete_option('wp-piwik-manually');
