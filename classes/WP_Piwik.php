@@ -12,7 +12,7 @@ class WP_Piwik {
 	 *
 	 * @var Runtime environment variables
 	 */
-	private static $intRevisionId = 99914, $strVersion = '0.10.0.1', $blog_id, $intDashboardID = 30, $strPluginBasename = NULL, $bolJustActivated = false, $logger, $settings, $request;
+	private static $intRevisionId = 100000, $strVersion = '0.10.0.2', $blog_id, $intDashboardID = 30, $strPluginBasename = NULL, $bolJustActivated = false, $logger, $settings, $request;
 	
 	/**
 	 * Constructor class to configure and register all WP-Piwik components
@@ -276,7 +276,9 @@ class WP_Piwik {
 		$trackingCode->is404 = (is_404 () && self::$settings->getGlobalOption ( 'track_404' ));
 		$trackingCode->isSearch = (is_search () && self::$settings->getGlobalOption ( 'track_search' ));
 		self::$logger->log ( 'Add tracking code. Blog ID: ' . self::$blog_id . ' Site ID: ' . self::$settings->getOption ( 'site_id' ) );
-		echo $trackingCode->getTrackingCode ();
+		if ( $this->isNetworkMode() && self::$settings->getGlobalOption ( 'track_mode' ) == 'manually' )
+			echo str_replace( '{ID}', $this->getPiwikSiteId(), $trackingCode->getTrackingCode () );
+		else echo $trackingCode->getTrackingCode ();
 	}
 	
 	/**
@@ -543,7 +545,6 @@ class WP_Piwik {
 					self::definePiwikConstants ();
 				$siteId = $this->requestPiwikSiteId ();
 				$trackingCode = $this->updateTrackingCode( $siteId );
-				self::$settings->getOption ( 'tracking_code', $trackingCode );
 				self::$settings->getOption ( 'site_id', $siteId );
 			}
 			return true;
@@ -853,6 +854,17 @@ class WP_Piwik {
 	}
 	
 	/**
+	 * Get global option value
+	 *
+	 * @param string $key
+	 *        	global option key
+	 * @return mixed global option value
+	 */
+	public function getGlobalOption($key) {
+		return self::$settings->getGlobalOption ( $key );
+	}
+	
+	/**
 	 * Get stats page URL
 	 *
 	 * @return string stats page URL
@@ -964,8 +976,6 @@ class WP_Piwik {
 			self::$settings->setOption ( 'site_id', $result, $blogId );
 			if (self::$settings->getGlobalOption ( 'track_mode' ) != 'disabled' && self::$settings->getGlobalOption ( 'track_mode' ) != 'manually') {
 				$code = $this->updateTrackingCode ( $result, $blogId );
-				self::$settings->setOption ( 'tracking_code', $code ['script'], $blogId );
-				self::$settings->setOption ( 'noscript_code', $code ['noscript'], $blogId );
 			}
 			$this::$settings->save ();
 			return $result;
@@ -1026,8 +1036,10 @@ class WP_Piwik {
 	 * @return string tracking code
 	 */
 	public function updateTrackingCode($siteId = false, $blogId = null) {
-		if (! $siteId)
+		if ( ! $siteId )
 			$siteId = $this->getPiwikSiteId ();
+		if ( self::$settings->getGlobalOption('track_mode') == 'disabled' || self::$settings->getGlobalOption('track_mode') == 'manually' )
+			return false;
 		$id = WP_Piwik\Request::register ( 'SitesManager.getJavascriptTag', array (
 				'idSite' => $siteId,
 				'mergeSubdomains' => self::$settings->getGlobalOption ( 'track_across' ) ? 1 : 0,
@@ -1037,6 +1049,8 @@ class WP_Piwik {
 		$result = html_entity_decode ( $this->request ( $id ) );
 		self::$logger->log ( 'Delivered tracking code: ' . $result );
 		$result = WP_Piwik\TrackingCode::prepareTrackingCode ( $result, self::$settings, self::$logger );
+		self::$settings->setOption ( 'tracking_code', $result ['script'], $blogId );
+		self::$settings->setOption ( 'noscript_code', $result ['noscript'], $blogId );
 		return $result;
 	}
 	

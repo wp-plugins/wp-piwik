@@ -11,11 +11,9 @@
 		
 		public function __construct($wpPiwik) {
 			self::$wpPiwik = $wpPiwik;
-			if (!self::$wpPiwik->isCurrentTrackingCode()) {
-				self::$wpPiwik->getPiwikSiteId();
+			if ( !self::$wpPiwik->isCurrentTrackingCode() || !self::$wpPiwik->getOption('tracking_code') )
 				self::$wpPiwik->updateTrackingCode();
-			}
-			$this->trackingCode = self::$wpPiwik->getOption('tracking_code');
+			$this->trackingCode = ( self::$wpPiwik->isNetworkMode() && self::$wpPiwik->getGlobalOption('track_mode') == 'manually' ) ? get_site_option( 'wp-piwik-manually' ) : self::$wpPiwik->getOption('tracking_code');
 		}
 
 		public function getTrackingCode() {

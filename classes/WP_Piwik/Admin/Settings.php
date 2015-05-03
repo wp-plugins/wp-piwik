@@ -96,23 +96,24 @@ class Settings extends \WP_Piwik\Admin {
 		
 		// Site configuration
 		$piwikSiteId = self::$wpPiwik->isConfigured () ? self::$wpPiwik->getPiwikSiteId () : false;
-		$this->showCheckbox ( 'auto_site_config', __ ( 'Auto config', 'wp-piwik' ), __ ( 'Check this to automatically choose your blog from your Piwik sites by URL. If your blog is not added to Piwik yet, WP-Piwik will add a new site.', 'wp-piwik' ), false, '$j(\'tr.wp-piwik-auto-option\').toggle(\'hidden\');' . ($piwikSiteId ? '$j(\'#site_id\').val(' . $piwikSiteId . ');' : '') );
-		if (self::$wpPiwik->isConfigured ()) {
-			$piwikSiteDetails = self::$wpPiwik->getPiwikSiteDetails ();
-			if (($piwikSiteId == 'n/a'))
-				$piwikSiteDescription = 'n/a';
-			elseif (! self::$settings->getGlobalOption ( 'auto_site_config' ))
-				$piwikSiteDescription = __ ( 'Save settings to start estimation.', 'wp-piwik' );
-			else
-				$piwikSiteDescription = $piwikSiteDetails [$piwikSiteId] ['name'] . ' (' . $piwikSiteDetails [$piwikSiteId] ['main_url'] . ')';
-			echo '<tr class="wp-piwik-auto-option' . (! self::$settings->getGlobalOption ( 'auto_site_config' ) ? ' hidden' : '') . '"><th scope="row">' . __ ( 'Determined site', 'wp-piwik' ) . ':</th><td>' . $piwikSiteDescription . '</td></tr>';
-			if (is_array ( $piwikSiteDetails ))
-				foreach ( $piwikSiteDetails as $key => $siteData )
-					$siteList [$key] = $siteData ['name'] . ' (' . $siteData ['main_url'] . ')';
-			if (isset($siteList))
-				$this->showSelect ( 'site_id', __ ( 'Select site', 'wp-piwik' ), $siteList, 'TODO Choose description', '', self::$settings->getGlobalOption ( 'auto_site_config' ), 'wp-piwik-auto-option', true, false );
-			// else $this->showBox('error', 'no', __('Piwik did not deliver a site list. Is at least one site configured?', 'wp-piwik'));
-		}
+		if (! self::$wpPiwik->isNetworkMode() ) {
+			$this->showCheckbox ( 'auto_site_config', __ ( 'Auto config', 'wp-piwik' ), __ ( 'Check this to automatically choose your blog from your Piwik sites by URL. If your blog is not added to Piwik yet, WP-Piwik will add a new site.', 'wp-piwik' ), false, '$j(\'tr.wp-piwik-auto-option\').toggle(\'hidden\');' . ($piwikSiteId ? '$j(\'#site_id\').val(' . $piwikSiteId . ');' : '') );
+			if (self::$wpPiwik->isConfigured ()) {
+				$piwikSiteDetails = self::$wpPiwik->getPiwikSiteDetails ();
+				if (($piwikSiteId == 'n/a'))
+					$piwikSiteDescription = 'n/a';
+				elseif (! self::$settings->getGlobalOption ( 'auto_site_config' ))
+					$piwikSiteDescription = __ ( 'Save settings to start estimation.', 'wp-piwik' );
+				else
+					$piwikSiteDescription = $piwikSiteDetails [$piwikSiteId] ['name'] . ' (' . $piwikSiteDetails [$piwikSiteId] ['main_url'] . ')';
+				echo '<tr class="wp-piwik-auto-option' . (! self::$settings->getGlobalOption ( 'auto_site_config' ) ? ' hidden' : '') . '"><th scope="row">' . __ ( 'Determined site', 'wp-piwik' ) . ':</th><td>' . $piwikSiteDescription . '</td></tr>';
+				if (is_array ( $piwikSiteDetails ))
+					foreach ( $piwikSiteDetails as $key => $siteData )
+						$siteList [$key] = $siteData ['name'] . ' (' . $siteData ['main_url'] . ')';
+					if (isset($siteList))
+						$this->showSelect ( 'site_id', __ ( 'Select site', 'wp-piwik' ), $siteList, 'TODO Choose description', '', self::$settings->getGlobalOption ( 'auto_site_config' ), 'wp-piwik-auto-option', true, false );
+			}
+		} else echo '<tr class="hidden"><td colspan="2"><input type="hidden" name="wp-piwik[auto_site_config]" value="1" /></td></tr>';
 		
 		echo $submitButton;
 		
@@ -168,7 +169,7 @@ class Settings extends \WP_Piwik\Admin {
 		$isNotGeneratedTracking = $isNotTracking || self::$settings->getGlobalOption ( 'track_mode' ) == 'manually';
 		$fullGeneratedTrackingGroup = 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy';
 		
-		$description = sprintf ( '%s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s', __ ( 'You can choose between four tracking code modes:', 'wp-piwik' ), __ ( 'Disabled', 'wp-piwik' ), __ ( 'WP-Piwik will not add the tracking code. Use this, if you want to add the tracking code to your template files or you use another plugin to add the tracking code.', 'wp-piwik' ), __ ( 'Default tracking', 'wp-piwik' ), __ ( 'TODO', 'wp-piwik' ), __ ( 'Use js/index.php', 'wp-piwik' ), __ ( 'TODO', 'wp-piwik' ), __ ( 'Use proxy script', 'wp-piwik' ), __ ( 'TODO', 'wp-piwik' ), __ ( 'Enter manually', 'wp-piwik' ), __ ( 'TODO', 'wp-piwik' ) );
+		$description = sprintf ( '%s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s<br /><strong>%s:</strong> %s', __ ( 'You can choose between four tracking code modes:', 'wp-piwik' ), __ ( 'Disabled', 'wp-piwik' ), __ ( 'WP-Piwik will not add the tracking code. Use this, if you want to add the tracking code to your template files or you use another plugin to add the tracking code.', 'wp-piwik' ), __ ( 'Default tracking', 'wp-piwik' ), __ ( 'TODO', 'wp-piwik' ), __ ( 'Use js/index.php', 'wp-piwik' ), __ ( 'TODO', 'wp-piwik' ), __ ( 'Use proxy script', 'wp-piwik' ), __ ( 'TODO', 'wp-piwik' ), __ ( 'Enter manually', 'wp-piwik' ), __ ( 'TODO', 'wp-piwik' ).( self::$wpPiwik->isNetworkMode() ? ' '.__ ( 'Use the placeholder {ID} to add the Piwik site ID.', 'wp-piwik' ) : '' ) );
 		$this->showSelect ( 'track_mode', __ ( 'Add tracking code', 'wp-piwik' ), array (
 				'disabled' => __ ( 'Disabled', 'wp-piwik' ),
 				'default' => __ ( 'Default tracking', 'wp-piwik' ),
@@ -184,9 +185,9 @@ class Settings extends \WP_Piwik\Admin {
 				'header' => __ ( 'Header', 'wp-piwik' ) 
 		), __ ( 'Choose whether the JavaScript code is added to the footer or the header.', 'wp-piwik' ), '', $isNotTracking, 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-track-option-manually' );
 		
-		$this->showTextarea ( 'noscript_code', __ ( 'Noscript code', 'wp-piwik' ), 2, 'TODO noscript code desc', $isNotTracking, 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-proxy wp-piwik-track-option-manually', true, '', (self::$settings->getGlobalOption ( 'track_mode' ) != 'manually'), false );
+		$this->showTextarea ( 'noscript_code', __ ( 'Noscript code', 'wp-piwik' ), 2, 'TODO noscript code desc', $isNotGeneratedTracking || self::$settings->getGlobalOption ( 'track_mode' ) == 'proxy', 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js', true, '', true, false );
 		
-		$this->showCheckbox ( 'track_noscript', __ ( 'Add &lt;noscript&gt;', 'wp-piwik' ), __ ( 'Adds the &lt;noscript&gt; code to your footer.', 'wp-piwik' ) . ' ' . __ ( 'Disabled in proxy mode.', 'wp-piwik' ), $isNotGeneratedTracking || self::$settings->getGlobalOption ( 'track_mode' ) == 'proxy', 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js wp-piwik-track-option-manually' );
+		$this->showCheckbox ( 'track_noscript', __ ( 'Add &lt;noscript&gt;', 'wp-piwik' ), __ ( 'Adds the &lt;noscript&gt; code to your footer.', 'wp-piwik' ) . ' ' . __ ( 'Disabled in proxy mode.', 'wp-piwik' ), $isNotGeneratedTracking || self::$settings->getGlobalOption ( 'track_mode' ) == 'proxy', 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js' );
 		
 		$this->showCheckbox ( 'track_nojavascript', __ ( 'Add rec parameter to noscript code', 'wp-piwik' ), __ ( 'Enable tracking for visitors without JavaScript (not recommended).', 'wp-piwik' ) . ' ' . sprintf ( __ ( 'See %sPiwik FAQ%s.', 'wp-piwik' ), '<a href="http://piwik.org/faq/how-to/#faq_176">', '</a>' ) . ' ' . __ ( 'Disabled in proxy mode.', 'wp-piwik' ), $isNotGeneratedTracking || self::$settings->getGlobalOption ( 'track_mode' ) == 'proxy', 'wp-piwik-track-option wp-piwik-track-option-default wp-piwik-track-option-js' );
 		
