@@ -1,5 +1,9 @@
 <?php
 
+// Check if uninstall call is valid
+if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) 
+    exit();
+    
 $globalSettings = array(
 	'revision',
 	'last_settings_update',
@@ -62,9 +66,6 @@ $settings = array (
 	'dashboard_revision'
 );
 
-// Check if uninstall call is valid
-if (!defined('WP_UNINSTALL_PLUGIN')) exit();
-
 global $wpdb;
 
 if (function_exists('is_multisite') && is_multisite()) {
@@ -72,14 +73,16 @@ if (function_exists('is_multisite') && is_multisite()) {
 	if (is_array($aryBlogs))
 		foreach ($aryBlogs as $aryBlog)
 			foreach ($settings as $key)
-				delete_blog_option($aryBlog->blog_id, 'wp-piwik_global-'.$key);
+				delete_blog_option($aryBlog->blog_id, 'wp-piwik-'.$key);
 	foreach ($globalSettings as $key)
-		delete_site_option($aryBlog->blog_id, 'wp-piwik-'.$key);
+		delete_site_option($aryBlog->blog_id, 'wp-piwik_global-'.$key);
 	delete_site_option('wp-piwik-manually');
 }
 
 foreach ($settings as $key)
 	delete_option($aryBlog->blog_id, 'wp-piwik_global-'.$key);
+	
 foreach ($globalSettings as $key)
 	delete_option($aryBlog->blog_id, 'wp-piwik-'.$key);
+
 delete_option('wp-piwik-manually');
