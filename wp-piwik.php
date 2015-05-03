@@ -272,7 +272,7 @@ class wp_piwik {
 			), $aryAttributes);
 		switch ($this->aryAttributes['module']) {
 			case 'opt-out':
-				$this->strResult = '';
+				$this->strResult = '<iframe frameborder="no" width="'.$this->aryAttributes['width'].'" height="'.$this->aryAttributes['height'].'" src="'.self::$settings->getGlobalOption('piwik_url').'index.php?module=CoreAdminHome&action=optOut&language='.$this->aryAttributes['language'].'"></iframe>';
 			break;
 			case 'post':
 				self::includeFile('shortcodes/post');
