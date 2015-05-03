@@ -85,6 +85,7 @@ if (function_exists('is_multisite') && is_multisite()) {
 	foreach ($globalSettings as $key)
 		delete_site_option('wp-piwik_global-'.$key);
 	delete_site_option('wp-piwik-manually');
+	delete_site_option('wp-piwik-notices');
 }
 
 foreach ($settings as $key)
