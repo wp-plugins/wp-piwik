@@ -462,11 +462,11 @@ class WP_Piwik {
 	 * Prepare toolbar widget requirements
 	 */
 	public function loadToolbarRequirements() {
-		if (current_user_can ( 'wp-piwik_read_stats' ) && is_admin_bar_showing ()) {
+		if ( is_admin_bar_showing () ) {
 			wp_enqueue_script ( 'wp-piwik-sparkline', $this->getPluginURL () . 'js/sparkline/jquery.sparkline.min.js', array (
 					'jquery' 
 			), self::$strVersion );
-			wp_enqueue_style ( 'wp-piwik', $this->getPluginURL () . 'css/wp-piwik-spark.css', array (), self::$strVersion );
+			wp_enqueue_style ( 'wp-piwik', $this->getPluginURL () . 'css/wp-piwik-spark.css', array (), $this->getPluginVersion() );
 		}
 	}
 	
