@@ -155,7 +155,7 @@ class Settings {
 					$objRole->remove_cap ( 'wp-piwik_' . $strCap );
 			}
 		}
-		$this->settingsChanges = false;
+		$this->settingsChanged = false;
 	}
 	
 	/**
