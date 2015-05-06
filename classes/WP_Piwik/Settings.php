@@ -270,7 +270,7 @@ class Settings {
 	
 	/**
 	 * Apply new configuration
-	 * 
+	 *
 	 * @param array $in
 	 *        	new configuration set
 	 */
@@ -294,7 +294,7 @@ class Settings {
 	 */
 	private function checkSettings($in) {
 		foreach ( $this->checkSettings as $key => $value )
-			if (isset ( $in [$key] ) )
+			if (isset ( $in [$key] ))
 				$in [$key] = call_user_func_array ( array (
 						$this,
 						$value 
@@ -343,8 +343,8 @@ class Settings {
 	private function prepareTrackingCode($value, $in) {
 		if ($in ['track_mode'] == 'manually' || $in ['track_mode'] == 'disabled') {
 			$value = stripslashes ( $value );
-			if ( $this->checkNetworkActivation() )
-				add_site_option( 'wp-piwik-manually', $value );
+			if ($this->checkNetworkActivation ())
+				add_site_option ( 'wp-piwik-manually', $value );
 			return $value;
 		}
 		$result = self::$wpPiwik->updateTrackingCode ();

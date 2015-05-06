@@ -30,24 +30,25 @@ License: GPL3
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************************/
 
-if (!function_exists ('add_action')) {
-	header('Status: 403 Forbidden');
-	header('HTTP/1.1 403 Forbidden');
-	exit();
+if (! function_exists ( 'add_action' )) {
+	header ( 'Status: 403 Forbidden' );
+	header ( 'HTTP/1.1 403 Forbidden' );
+	exit ();
 }
 
-if (!defined('NAMESPACE_SEPARATOR'))
-	define('NAMESPACE_SEPARATOR', '\\');
+if (! defined ( 'NAMESPACE_SEPARATOR' ))
+	define ( 'NAMESPACE_SEPARATOR', '\\' );
 
 /**
-  * Define WP-Piwik autoloader
-  * 
-  * @param string $class class name
-  */
+ * Define WP-Piwik autoloader
+ *
+ * @param string $class
+ *        	class name
+ */
 function wp_piwik_autoloader($class) {
-	if (substr($class, 0, 9) == 'WP_Piwik'.NAMESPACE_SEPARATOR) {
-		$class = str_replace('.', '', str_replace(NAMESPACE_SEPARATOR, DIRECTORY_SEPARATOR, substr($class, 9)));
-		require_once('classes'.DIRECTORY_SEPARATOR.'WP_Piwik'.DIRECTORY_SEPARATOR.$class.'.php');
+	if (substr ( $class, 0, 9 ) == 'WP_Piwik' . NAMESPACE_SEPARATOR) {
+		$class = str_replace ( '.', '', str_replace ( NAMESPACE_SEPARATOR, DIRECTORY_SEPARATOR, substr ( $class, 9 ) ) );
+		require_once ('classes' . DIRECTORY_SEPARATOR . 'WP_Piwik' . DIRECTORY_SEPARATOR . $class . '.php');
 	}
 }
 
@@ -56,19 +57,19 @@ function wp_piwik_autoloader($class) {
  */
 function wp_piwik_phperror() {
 	echo '<div class="error"><p>';
-	printf(__('WP-Piwik requires at least PHP 5.3. You are using the deprecated version %s. Please update PHP to use WP-Piwik.', 'wp-piwik'), PHP_VERSION);
+	printf ( __ ( 'WP-Piwik requires at least PHP 5.3. You are using the deprecated version %s. Please update PHP to use WP-Piwik.', 'wp-piwik' ), PHP_VERSION );
 	echo '</p></div>';
 }
 
-load_plugin_textdomain('wp-piwik', false, 'wp-piwik'.DIRECTORY_SEPARATOR.'languages'.DIRECTORY_SEPARATOR);
+load_plugin_textdomain ( 'wp-piwik', false, 'wp-piwik' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR );
 
-if (version_compare(PHP_VERSION, '5.3.0', '<')) 
-	add_action('admin_notices', 'wp_piwik_phperror');
+if (version_compare ( PHP_VERSION, '5.3.0', '<' ))
+	add_action ( 'admin_notices', 'wp_piwik_phperror' );
 else {
-	define('WP_PIWIK_PATH', dirname(__FILE__).DIRECTORY_SEPARATOR);
-	require_once(WP_PIWIK_PATH.'config.php');
-	require_once(WP_PIWIK_PATH.'classes'.DIRECTORY_SEPARATOR.'WP_Piwik.php');
-	spl_autoload_register('wp_piwik_autoloader');
-	if (class_exists('WP_Piwik'))
-		$GLOBALS['wp-piwik'] = new WP_Piwik();
+	define ( 'WP_PIWIK_PATH', dirname ( __FILE__ ) . DIRECTORY_SEPARATOR );
+	require_once (WP_PIWIK_PATH . 'config.php');
+	require_once (WP_PIWIK_PATH . 'classes' . DIRECTORY_SEPARATOR . 'WP_Piwik.php');
+	spl_autoload_register ( 'wp_piwik_autoloader' );
+	if (class_exists ( 'WP_Piwik' ))
+		$GLOBALS ['wp-piwik'] = new WP_Piwik ();
 }

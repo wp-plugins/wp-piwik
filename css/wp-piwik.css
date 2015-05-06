@@ -1,5 +1,5 @@
 .wp-piwik-hidden {
-	display:none;
+	display: none;
 }
 
 table.wp-piwik-table th.right, td.right {
@@ -7,7 +7,7 @@ table.wp-piwik-table th.right, td.right {
 }
 
 table.wp-piwik-table tr:hover {
-	background-color:#ccc;
+	background-color: #ccc;
 }
 
 table.wp-piwik-table tbody.clickable {
@@ -15,9 +15,9 @@ table.wp-piwik-table tbody.clickable {
 }
 
 #wp-piwik_stats_vistors_graph {
-	overflow:hidden;
+	overflow: hidden;
 }
 
 .wp-piwik_dynbar canvas {
-	padding-top:5px !important
+	padding-top: 5px !important
 }
