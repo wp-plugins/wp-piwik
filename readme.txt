@@ -123,7 +123,7 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 
 == Upgrade Notice ==
 
-Please update Piwik if not done yet (Piwik 2.7 or higher is recommended). 
+This is a full refactored version of WP-Piwik. Please check your settings after updating and make sure everything is working as expected.
 
 == Changelog ==
 
