@@ -205,9 +205,9 @@ class Settings extends \WP_Piwik\Admin {
 		
 		$this->showCheckbox ( 'limit_cookies', __ ( 'Limit cookie lifetime', 'wp-piwik' ), __ ( 'TODO cookie lifetime desc', 'wp-piwik' ), $isNotGeneratedTracking, $fullGeneratedTrackingGroup, true, '$j(\'tr.wp-piwik-cookielifetime-option\').toggle(\'wp-piwik-hidden\');' );
 		
-		$this->showInput ( 'limit_cookies_visitor', __ ( 'Visitor timeout (seconds)', 'wp-piwik' ), false, $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'limit_cookies' ), $fullGeneratedTrackingGroup.' wp-piwik-hidden wp-piwik-cookielifetime-option' );
+		$this->showInput ( 'limit_cookies_visitor', __ ( 'Visitor timeout (seconds)', 'wp-piwik' ), false, $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'limit_cookies' ), $fullGeneratedTrackingGroup.' wp-piwik-cookielifetime-option' );
 
-		$this->showInput ( 'limit_cookies_session', __ ( 'Session timeout (seconds)', 'wp-piwik' ), false, $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'limit_cookies' ), $fullGeneratedTrackingGroup . ' wp-piwik-hidden wp-piwik-cookielifetime-option' );
+		$this->showInput ( 'limit_cookies_session', __ ( 'Session timeout (seconds)', 'wp-piwik' ), false, $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'limit_cookies' ), $fullGeneratedTrackingGroup . ' wp-piwik-cookielifetime-option' );
 		
 		$this->showCheckbox ( 'track_admin', __ ( 'Track admin pages', 'wp-piwik' ), __ ( 'Enable to track users on admin pages (remember to configure the tracking filter appropriately).', 'wp-piwik' ), $isNotTracking, $fullGeneratedTrackingGroup . ' wp-piwik-track-option-manually' );
 		

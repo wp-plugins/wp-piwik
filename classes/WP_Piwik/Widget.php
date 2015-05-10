@@ -176,7 +176,7 @@ abstract class Widget {
 	private function tabBody($tbody, $class = false, $javaScript = array()) {
 		echo '<tbody' . ($class ? ' class="' . $class . '"' : '') . '>';
 		foreach ( $tbody as $key => $trow )
-			$this->tabRow ( $trow, $javaScript [$key] );
+			$this->tabRow ( $trow, isset( $javaScript [$key] ) ?$javaScript [$key] : '');
 		echo '</tbody>';
 	}
 	

@@ -12,7 +12,7 @@ class WP_Piwik {
 	 *
 	 * @var Runtime environment variables
 	 */
-	private static $intRevisionId = 100000, $strVersion = '0.10.0.2', $blog_id, $intDashboardID = 30, $strPluginBasename = NULL, $bolJustActivated = false, $logger, $settings, $request;
+	private static $intRevisionId = 100000, $version = '0.10.0.3', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
 	
 	/**
 	 * Constructor class to configure and register all WP-Piwik components
@@ -40,7 +40,7 @@ class WP_Piwik {
 	 * Setup class to prepare settings and check for installation and update
 	 */
 	private function setup() {
-		self::$strPluginBasename = plugin_basename ( __FILE__ );
+		self::$pluginBasename = plugin_basename ( __FILE__ );
 		if (! $this->isInstalled ())
 			$this->installPlugin ();
 		elseif ($this->isUpdated ())
@@ -182,7 +182,7 @@ class WP_Piwik {
 	private function installPlugin($isUpdate = false) {
 		self::$logger->log ( 'Running WP-Piwik installation' );
 		if (! $isUpdate)
-			$this->addNotice ( 'install', sprintf ( __ ( '%s %s installed.', 'wp-piwik' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), self::$strVersion ), __ ( 'Next you should connect to Piwik', 'wp-piwik' ) );
+			$this->addNotice ( 'install', sprintf ( __ ( '%s %s installed.', 'wp-piwik' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), self::$version ), __ ( 'Next you should connect to Piwik', 'wp-piwik' ) );
 		self::$settings->setGlobalOption ( 'revision', self::$intRevisionId );
 		self::$settings->setGlobalOption ( 'last_settings_update', time () );
 	}
@@ -202,7 +202,7 @@ class WP_Piwik {
 	 * Update WP-Piwik
 	 */
 	private function updatePlugin() {
-		self::$logger->log ( 'Upgrade WP-Piwik to ' . self::$strVersion );
+		self::$logger->log ( 'Upgrade WP-Piwik to ' . self::$version );
 		$patches = glob ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . 'update' . DIRECTORY_SEPARATOR . '*.php' );
 		if (is_array ( $patches )) {
 			sort ( $patches );
@@ -212,7 +212,7 @@ class WP_Piwik {
 					self::includeFile ( 'update' . DIRECTORY_SEPARATOR . $patchVersion );
 			}
 		}
-		$this->addNotice ( 'update', sprintf ( __ ( '%s updated to %s.', 'wp-piwik' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), self::$strVersion ), __ ( 'Please validate your configuration', 'wp-piwik' ) );
+		$this->addNotice ( 'update', sprintf ( __ ( '%s updated to %s.', 'wp-piwik' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), self::$version ), __ ( 'Please validate your configuration', 'wp-piwik' ) );
 		$this->installPlugin ( true );
 	}
 	
@@ -261,7 +261,7 @@ class WP_Piwik {
 	 * @return string settings page URL
 	 */
 	private function getSettingsURL() {
-		return (self::$settings->checkNetworkActivation () ? 'settings' : 'options-general') . '.php?page=' . self::$strPluginBasename;
+		return (self::$settings->checkNetworkActivation () ? 'settings' : 'options-general') . '.php?page=' . self::$pluginBasename;
 	}
 	
 	/**
@@ -472,7 +472,7 @@ class WP_Piwik {
 		if (is_admin_bar_showing ()) {
 			wp_enqueue_script ( 'wp-piwik-sparkline', $this->getPluginURL () . 'js/sparkline/jquery.sparkline.min.js', array (
 					'jquery' 
-			), self::$strVersion );
+			), self::$version );
 			wp_enqueue_style ( 'wp-piwik', $this->getPluginURL () . 'css/wp-piwik-spark.css', array (), $this->getPluginVersion () );
 		}
 	}
@@ -828,7 +828,7 @@ class WP_Piwik {
 	 * Get WP-Piwik's version
 	 */
 	public function getPluginVersion() {
-		return self::$strVersion;
+		return self::$version;
 	}
 	
 	/**
@@ -1101,10 +1101,10 @@ class WP_Piwik {
 		wp_enqueue_script ( 'common' );
 		wp_enqueue_script ( 'wp-lists' );
 		wp_enqueue_script ( 'postbox' );
-		wp_enqueue_script ( 'wp-piwik', $this->getPluginURL () . 'js/wp-piwik.js', array (), self::$strVersion, true );
+		wp_enqueue_script ( 'wp-piwik', $this->getPluginURL () . 'js/wp-piwik.js', array (), self::$version, true );
 		wp_enqueue_script ( 'wp-piwik-jqplot', $this->getPluginURL () . 'js/jqplot/wp-piwik.jqplot.js', array (
 				'jquery' 
-		), self::$strVersion );
+		), self::$version );
 		new \WP_Piwik\Widget\Chart ( $this, self::$settings, $this->statsPageId );
 		new \WP_Piwik\Widget\Visitors ( $this, self::$settings, $this->statsPageId );
 		new \WP_Piwik\Widget\Overview ( $this, self::$settings, $this->statsPageId );
