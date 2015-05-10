@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WP-Piwik\n"
-"POT-Creation-Date: 2015-05-10 15:16+0100\n"
-"PO-Revision-Date: 2015-05-10 14:18+0000\n"
+"POT-Creation-Date: 2015-05-10 16:33+0100\n"
+"PO-Revision-Date: 2015-05-10 14:45+0000\n"
 "Last-Translator: André Bräkling <andre@braekling.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/wp-piwik/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -54,7 +54,7 @@ msgstr "Piwik Statistiken"
 msgid "An error occured"
 msgstr "Ein Fehler ist aufgetreten"
 
-#: classes/WP_Piwik.php:901
+#: classes/WP_Piwik.php:901 classes/WP_Piwik/Admin/Settings.php:62
 msgid "Support"
 msgstr "Support"
 
@@ -100,6 +100,26 @@ msgid ""
 "WP-Piwik %s has to be connected to Piwik first. Check the &raquo;Connect to "
 "Piwik&laquo; section below."
 msgstr "WP-Piwik %s muss zun&auml;chst mit Piwik verbunden werden. Bitte &uuml;berprf&uuml;fe die &raquo;Mit Piwik verbinden&laquo;-Sektion unten."
+
+#: classes/WP_Piwik/Admin/Settings.php:44
+msgid "Connect to Piwik"
+msgstr "Mit Piwik verbinden"
+
+#: classes/WP_Piwik/Admin/Settings.php:49
+msgid "Show Statistics"
+msgstr "Zeige Statistiken"
+
+#: classes/WP_Piwik/Admin/Settings.php:53
+msgid "Enable Tracking"
+msgstr "Aktiviere Tracking"
+
+#: classes/WP_Piwik/Admin/Settings.php:58
+msgid "Expert Settings"
+msgstr "Expertenkonfiguration"
+
+#: classes/WP_Piwik/Admin/Settings.php:66
+msgid "Credits"
+msgstr "Danksagungen"
 
 #: classes/WP_Piwik/Admin/Settings.php:79
 msgid ""
@@ -815,6 +835,10 @@ msgid ""
 "Thank <strong>you</strong> for using my plugin. It is the best commendation "
 "if my piece of code is really used!"
 msgstr "Vielen Dank an <strong>Dich</strong> f&uuml;r die Nutzung meines Plugins. Es ist das gr&ouml;&szlig;te Lob, wenn mein Code tats&auml;chlich benutzt wird!"
+
+#: classes/WP_Piwik/Admin/Settings.php:516
+msgid "The best place to get help:"
+msgstr "Der beste Platz, um Hilfe zu bekommen:"
 
 #: classes/WP_Piwik/Admin/Settings.php:516
 msgid "WP-Piwik support forum"
