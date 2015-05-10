@@ -62,6 +62,7 @@ class Settings {
 			'track_noscript' => false,
 			'track_nojavascript' => false,
 			'proxy_url' => '',
+			'track_content' => 'disabled',
 			'track_search' => false,
 			'track_404' => false,
 			'add_post_annotations' => false,
@@ -69,8 +70,9 @@ class Settings {
 			'add_download_extensions' => '',
 			'disable_cookies' => false,
 			'limit_cookies' => false,
-			'limit_cookies_visitor' => 1209600,
-			'limit_cookies_session' => 0,
+			'limit_cookies_visitor' => 34186669, // Piwik default 13 months
+			'limit_cookies_session' => 1800, // Piwik default 30 minutes
+			'limit_cookies_referral' => 15778463, // Piwik default 6 months
 			'track_admin' => false,
 			'capability_stealth' => array (),
 			'track_across' => false,

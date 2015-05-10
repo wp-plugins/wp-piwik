@@ -45,9 +45,13 @@
 			if ($settings->getGlobalOption('add_download_extensions'))
 				$code = str_replace("_paq.push(['trackPageView']);", "_paq.push(['addDownloadExtensions', '".($settings->getGlobalOption('add_download_extensions'))."']);\n_paq.push(['trackPageView']);", $code);
 			if ($settings->getGlobalOption('limit_cookies'))
-				$code = str_replace("_paq.push(['trackPageView']);", "_paq.push(['setVisitorCookieTimeout', '".$settings->getGlobalOption('limit_cookies_visitor')."']);\n_paq.push(['setSessionCookieTimeout', '".$settings->getGlobalOption('limit_cookies_session')."']);\n_paq.push(['trackPageView']);", $code);
+				$code = str_replace("_paq.push(['trackPageView']);", "_paq.push(['setVisitorCookieTimeout', '".$settings->getGlobalOption('limit_cookies_visitor')."']);\n_paq.push(['setSessionCookieTimeout', '".$settings->getGlobalOption('limit_cookies_session')."']);\n_paq.push(['setReferralCookieTimeout', '".$settings->getGlobalOption('limit_cookies_referral')."']);\n_paq.push(['trackPageView']);", $code);
 			if ($settings->getGlobalOption('force_protocol') != 'disabled')
 				$code = str_replace('"//', '"'.$settings->getGlobalOption('force_protocol').'://', $code);
+			if ($settings->getGlobalOption('track_content') == 'all')
+				$code = str_replace("_paq.push(['trackPageView']);", "_paq.push(['trackPageView']);\n_paq.push(['trackAllContentImpressions']);", $code);
+			elseif ($settings->getGlobalOption('track_content') == 'visible')
+				$code = str_replace("_paq.push(['trackPageView']);", "_paq.push(['trackPageView']);\n_paq.push(['trackVisibleContentImpressions']);", $code);
 
 			if ($settings->getGlobalOption('piwik_mode') == 'pro')
 				$code = str_replace('.piwik.pro', '.piwikpro.com', $code);

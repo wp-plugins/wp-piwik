@@ -125,6 +125,12 @@ Please update Piwik if not done yet (Piwik 2.7 or higher is recommended).
 
 == Changelog ==
 
+= 0.10.0.3 =
+* Public beta of WP-Piwik 1.0
+* Full refactored code
+* Feature: Limit referral cookie lifetime
+* Feature: Enable content tracking
+
 = 0.9.9.18 =
 * Improvement: Define additional file extensions for tracking downloads
 * Improvement: Added a POT file to support translators (Note: 1.0 will change a lot, so please don't spend too much time in translating the current version, e.g., by creating an all new translation. With 1.0 I will also offer a translation platform to support your work.)
