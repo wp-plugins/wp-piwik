@@ -41,7 +41,7 @@ class Settings extends \WP_Piwik\Admin {
 		
 		$tabs ['connect'] = array (
 				'icon' => 'admin-plugins',
-				'name' => 'Connect to Piwik' 
+				'name' => __('Connect to Piwik', 'wp-piwik')
 		);
 		if (self::$wpPiwik->isConfigured ()) {
 			$tabs ['statistics'] = array (
