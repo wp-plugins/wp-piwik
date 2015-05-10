@@ -97,6 +97,10 @@ msgid ""
 "Piwik&laquo; section below."
 msgstr ""
 
+#: classes/WP_Piwik/Admin/Settings.php:44
+msgid "Connect to Piwik"
+msgstr ""
+
 #: classes/WP_Piwik/Admin/Settings.php:49
 msgid "Show Statistics"
 msgstr ""
