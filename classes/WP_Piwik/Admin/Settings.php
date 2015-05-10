@@ -46,24 +46,24 @@ class Settings extends \WP_Piwik\Admin {
 		if (self::$wpPiwik->isConfigured ()) {
 			$tabs ['statistics'] = array (
 					'icon' => 'chart-pie',
-					'name' => 'Show Statistics' 
+					'name' => __('Show Statistics', 'wp-piwik')
 			);
 			$tabs ['tracking'] = array (
 					'icon' => 'location-alt',
-					'name' => 'Enable Tracking' 
+					'name' => __('Enable Tracking', 'wp-piwik')
 			);
 		}
 		$tabs ['expert'] = array (
 				'icon' => 'shield',
-				'name' => 'Expert Settings' 
+				'name' => __('Expert Settings', 'wp-piwik')
 		);
 		$tabs ['support'] = array (
 				'icon' => 'lightbulb',
-				'name' => 'Support'
+				'name' => __('Support', 'wp-piwik')
 		);
 		$tabs ['credits'] = array (
 				'icon' => 'groups',
-				'name' => 'Credits'
+				'name' => __('Credits', 'wp-piwik')
 		);
 		
 		echo '<tr><td colspan="2"><h2 class="nav-tab-wrapper">';
@@ -513,7 +513,7 @@ class Settings extends \WP_Piwik\Admin {
 	 */
 	public function showSupport() {
 		?><ul>
-			<li>The best place to get help: <a href="https://wordpress.org/support/plugin/wp-piwik"><?php _e('WP-Piwik support forum','wp-piwik'); ?></a></li>
+			<li><?php _e('The best place to get help:', 'wp-piwik'); ?> <a href="https://wordpress.org/support/plugin/wp-piwik"><?php _e('WP-Piwik support forum','wp-piwik'); ?></a></li>
 			<li><?php _e('Please don\'t forget to vote the compatibility at the','wp-piwik'); ?> <a href="http://wordpress.org/extend/plugins/wp-piwik/">WordPress.org Plugin Directory</a>.</li>
 		</ul>
 		<h3><?php _e('Debugging', 'wp-piwik'); ?></h3>

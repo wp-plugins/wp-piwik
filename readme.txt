@@ -60,11 +60,17 @@ Thank you all!
 
 To use this plugin you will need your own Piwik instance. If you do not already have a Piwik setup, you have two simple options: use either [Self-hosted](http://piwik.org/) or [Cloud-hosted](http://piwik.org/hosting/). 
 
-As soon as Piwik works, you'll be able to configure WP-Piwik: The Piwik URL is the same URL you use to access your Piwik, e.g. for the demo site: http://demo.piwik.org. The auth token is some kind of secret password, which allows WP-Piwik to get the necessary data from Piwik. To get your auth token, log in to Piwik, click at your user name (top right) and click at "API" (left sidebar menu). E.g., on (this demo site)[http://demo.piwik.org/index.php?module=API&action=listAllAPI&idSite=7&period=day&date=yesterday] you can see the auth token "anonymous".
+As soon as Piwik works, you'll be able to configure WP-Piwik: The Piwik URL is the same URL you use to access your Piwik, e.g. for the demo site: http://demo.piwik.org. The auth token is some kind of secret password, which allows WP-Piwik to get the necessary data from Piwik. To get your auth token, log in to Piwik, click at your user name (top right) and click at "API" (left sidebar menu).
 
-= How to reset/remove all WP-Piwik settings without uninstalling? =
+= Can I contribute to WP-Piwik as translator? =
 
-Login to your admin dashboard and open http://YOUR_BLOG_URL/wp-admin/options-general.php?page=wp-piwik/wp-piwik.php&tab=support&mode=resetconfirmed&full=1
+You like to contribute to WP-Piwik translations? Please use the [Transifex translation community](https://www.transifex.com/projects/p/wp-piwik/).
+
+Of course, I will add missing languages if requested, and I will also upload the existing language files of older WP-Piwik releases.
+
+If you can't (or don not want to) use transifex, you can also translate languages/wp-piwik.pot delivered with WP-Piwik.
+
+Thank you very much! :-)
 
 = Tracking does not work on HostGator! / The test script shows an empty response. =
 
@@ -75,12 +81,8 @@ Try to enable the "avoid mod_security" option (WP-Piwik settings, Tracking tab) 
 See [this support thread](http://wordpress.org/support/topic/plugin-wp-piwik-https-ssl-support?replies=3).
 
 = Overview shortcode shows no unique visitors using a yearly range. =
+
 See [Piwik FAQ](http://piwik.org/faq/how-to/#faq_113).
-
-= Can I also access some Piwik values using a PHP call? =
-
-Yes, you can access also available shortcodes using PHP, too. See this example:
-echo $GLOBALS['wp_piwik']->shortcode(array('module' => 'post', 'range' => 'last300', 'key' => 'sum_daily_nb_uniq_visitors'));
 
 == Installation ==
 
