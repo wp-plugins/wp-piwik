@@ -4,7 +4,7 @@
 
 	abstract class Request {
 		
-		protected static $wpPiwik, $settings, $requests = array(), $results = array(), $isCacheable = array(), $piwikVersion;
+		protected static $wpPiwik, $settings, $debug, $requests = array(), $results = array(), $isCacheable = array(), $piwikVersion;
 		
 		public function __construct($wpPiwik, $settings) {
 			self::$wpPiwik = $wpPiwik;
@@ -18,7 +18,7 @@
 			else
 				$id = 'method='.$method.self::parameterToString($parameter);
 			if ( 
-				in_array( $method, array( 'API.getPiwikVersion', 'SitesManager.getJavascriptTag', 'SitesManager.getAllSites', 'SitesManager.getSitesIdFromSiteUrl', 'SitesManager.addSite', 'SitesManager.updateSite' ) ) ||
+				in_array( $method, array( 'API.getPiwikVersion', 'SitesManager.getJavascriptTag', 'SitesManager.getAllSites', 'SitesManager.getSitesIdFromSiteUrl', 'SitesManager.addSite', 'SitesManager.updateSite', 'SitesManager.getSitesWithAtLeastViewAccess' ) ) ||
 				substr($parameter['date'], 0, 4) == 'last' ||
 				$parameter['date'] == 'today' ||
 				( $parameter['period'] == 'day' && $parameter['date'] == date('Ymd') ) ||

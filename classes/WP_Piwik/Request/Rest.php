@@ -30,7 +30,7 @@
 			curl_setopt($c, CURLOPT_SSL_VERIFYPEER, !self::$settings->getGlobalOption('disable_ssl_verify'));
 			curl_setopt($c, CURLOPT_USERAGENT, self::$settings->getGlobalOption('piwik_useragent')=='php'?ini_get('user_agent'):self::$settings->getGlobalOption('piwik_useragent_string'));
 			curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($c, CURLOPT_HEADER, 0);
+			curl_setopt($c, CURLOPT_HEADER, $GLOBALS ['wp-piwik_debug'] );
 			curl_setopt($c, CURLOPT_TIMEOUT, self::$settings->getGlobalOption('connection_timeout'));
 			$httpProxyClass = new \WP_HTTP_Proxy();
 			if ($httpProxyClass->is_enabled() && $httpProxyClass->send_through_proxy($strURL)) {
@@ -40,13 +40,27 @@
 					curl_setopt($c, CURLOPT_PROXYUSERPWD, $httpProxyClass->username().':'.$httpProxyClass->password());
 			}
 			$result = curl_exec($c);
+			if ($GLOBALS ['wp-piwik_debug']) {
+				$header_size = curl_getinfo($c, CURLINFO_HEADER_SIZE);
+				$header = substr($result, 0, $header_size);
+				$body = substr($result, $header_size);
+				$result = $this->unserialize($body);
+				array_unshift($result[0], $header);
+				array_unshift($result[0], $url.'?'.$params.'&token_auth=...');
+			} else $result = $this->unserialize($result);
 			curl_close($c);
-			return $this->unserialize($result);				
+			return $result;
 		}
-			
+
 		private function fopen($url, $params) {
-			$context = stream_context_create(array('http'=>array('timeout' => self::$settings->getGlobalOption('connection_timeout'))));
-			$result = @file_get_contents($url.'?'.$params.'&token_auth='.self::$settings->getGlobalOption('piwik_token'), false, $context);
-			return unserialize($result);
+			$context = stream_context_create(array('http'=>array('timeout' => self::$settings->getGlobalOption('connection_timeout'))));		
+			$fullUrl = $url.'?'.$params.'&token_auth='.self::$settings->getGlobalOption('piwik_token');	
+			$result = $this->unserialize(@file_get_contents($fullUrl, false, $context));
+			if ($GLOBALS ['wp-piwik_debug']) {
+				$header = get_headers($fullUrl, 1);
+				array_unshift($result[0], $header);
+				array_unshift($result[0], $url.'?'.$params.'&token_auth=...');
+			}
+			return $result;
 		}
 	}

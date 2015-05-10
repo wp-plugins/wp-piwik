@@ -37,6 +37,9 @@
 				$result = $request->process();
 			if (!headers_sent())
 				header("Content-Type: text/html", true);
-			return $this->unserialize($result);				
+			$result = $this->unserialize($result);
+			if ($GLOBALS ['wp-piwik_debug'])
+				array_unshift($result, $params.'&token_auth=...');
+			return $result;
 		}
 	}

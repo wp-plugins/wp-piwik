@@ -14,12 +14,20 @@ class Settings extends \WP_Piwik\Admin {
 	 * Builds and displays the settings page
 	 */
 	public function show() {
+		if (isset($_GET['sitebrowser']) && $_GET['sitebrowser']) {
+			new \WP_Piwik\Admin\Sitebrowser(self::$wpPiwik);
+			return;
+		}
 		global $wp_roles;
 		if (isset ( $_POST ) && isset ( $_POST ['wp-piwik'] ))
 			$this->showBox ( 'updated', 'yes', __ ( 'Changes saved.' ) );
 		?>
 <div id="plugin-options-wrap" class="widefat">
-	<?php echo $this->getHeadline ( 1, 'admin-generic', 'Settings', true ); ?>
+	<?php 
+		echo $this->getHeadline ( 1, 'admin-generic', 'Settings', true );
+		if (isset($_GET['testscript']) && $_GET['testscript'])
+			$this->runTestscript();
+	?>
 	<form method="post">
 		<input type="hidden" name="wp-piwik[revision]" value="<?php echo self::$settings->getGlobalOption('revision'); ?>" />
 		<?php wp_nonce_field('wp-piwik_settings'); ?>
@@ -530,6 +538,7 @@ class Settings extends \WP_Piwik\Admin {
 				_e('enabled','wp-piwik');
 			?></strong>.</li>
 		</ol>
+		<p><a href="<?php echo admin_url( 'options-general.php?page='.$_GET['page'].'&testscript=1' ); ?>">Run testscript</a>. <a href="<?php echo admin_url( 'options-general.php?page='.$_GET['page'].'&sitebrowser=1' ); ?>">Sitebrowser</a>.</p>
 		<h3><?php _e('Latest support threads on WordPress.org', 'wp-piwik'); ?></h3><?php 
 		$supportThreads = $this->readRSSFeed('http://wordpress.org/support/rss/plugin/wp-piwik');
 		if (!empty($supportThreads)) {
@@ -571,6 +580,37 @@ class Settings extends \WP_Piwik\Admin {
 			}
 		}
 		return $result;
-	}	
+	}
+	
+	/**
+	 * Execute test script and display results
+	 */
+	private function runTestscript() { ?>
+		<div class="wp-piwik-debug">
+		<h2>Testscript Result</h2>
+		<?php if (self::$wpPiwik->isConfigured()) { ?>
+		<textarea cols="80" rows="10"><?php 
+			echo '`WP-Piwik '.self::$wpPiwik->getPluginVersion()."\nMode: ".self::$settings->getGlobalOption('piwik_mode')."\n\n";
+		?>Test 1/3: global.getPiwikVersion<?php 
+			$GLOBALS ['wp-piwik_debug'] = true;
+			$id = \WP_Piwik\Request::register ( 'API.getPiwikVersion' );
+			echo "\n\n"; var_dump( self::$wpPiwik->request( $id ) ); echo "\n";
+			$GLOBALS ['wp-piwik_debug'] = false;
+		?>Test 2/3: SitesManager.getSitesWithAtLeastViewAccess<?php 
+			$GLOBALS ['wp-piwik_debug'] = true;
+			$id = \WP_Piwik\Request::register ( 'SitesManager.getSitesWithAtLeastViewAccess' );
+			echo "\n\n"; var_dump( self::$wpPiwik->request( $id ) ); echo "\n"; 
+			$GLOBALS ['wp-piwik_debug'] = false;
+		?>Test 3/3: SitesManager.getSitesWithAtLeastViewAccess<?php 
+			$GLOBALS ['wp-piwik_debug'] = true;
+			$id = \WP_Piwik\Request::register ( 'SitesManager.getSitesIdFromSiteUrl', array (
+				'url' => get_bloginfo ( 'url' )
+			) );
+			echo "\n\n";  var_dump( self::$wpPiwik->request( $id ) ); echo "`";
+			$GLOBALS ['wp-piwik_debug'] = false;
+		?></textarea>
+		<?php } else echo '<p>Please configure WP-Piwik first.</p>'; ?>
+		</div>	
+	<?php }
 	
 }

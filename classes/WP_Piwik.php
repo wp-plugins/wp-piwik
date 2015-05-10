@@ -53,54 +53,61 @@ class WP_Piwik {
 	 * Register WordPress actions
 	 */
 	private function addActions() {
-		add_action ( 'admin_notices', array (
-				$this,
-				'showNotices' 
-		) );
-		add_action ( 'admin_menu', array (
-				$this,
-				'buildAdminMenu' 
-		) );
-		add_action ( 'admin_post_save_wp-piwik_stats', array (
-				$this,
-				'onStatsPageSaveChanges' 
-		) );
-		add_action ( 'load-post.php', array (
-				$this,
-				'addPostMetaboxes' 
-		) );
-		add_action ( 'load-post-new.php', array (
-				$this,
-				'addPostMetaboxes' 
-		) );
-		if ($this->isNetworkMode ()) {
-			add_action ( 'network_admin_menu', array (
+		if ( is_admin () ) {
+			add_action ( 'admin_notices', array (
 					$this,
-					'buildNetworkAdminMenu' 
+					'showNotices' 
 			) );
-			add_action ( 'update_site_option_blogname', array (
+			add_action ( 'admin_menu', array (
 					$this,
-					'onBlogNameChange' 
+					'buildAdminMenu' 
 			) );
-			add_action ( 'update_site_option_siteurl', array (
+			add_action ( 'admin_post_save_wp-piwik_stats', array (
 					$this,
-					'onSiteUrlChange' 
+					'onStatsPageSaveChanges' 
 			) );
-		} else {
-			add_action ( 'update_option_blogname', array (
+			add_action ( 'load-post.php', array (
 					$this,
-					'onBlogNameChange' 
+					'addPostMetaboxes' 
 			) );
-			add_action ( 'update_option_siteurl', array (
+			add_action ( 'load-post-new.php', array (
 					$this,
-					'onSiteUrlChange' 
+					'addPostMetaboxes' 
 			) );
+			if ($this->isNetworkMode ()) {
+				add_action ( 'network_admin_menu', array (
+						$this,
+						'buildNetworkAdminMenu' 
+				) );
+				add_action ( 'update_site_option_blogname', array (
+						$this,
+						'onBlogNameChange' 
+				) );
+				add_action ( 'update_site_option_siteurl', array (
+						$this,
+						'onSiteUrlChange' 
+				) );
+			} else {
+				add_action ( 'update_option_blogname', array (
+						$this,
+						'onBlogNameChange' 
+				) );
+				add_action ( 'update_option_siteurl', array (
+						$this,
+						'onSiteUrlChange' 
+				) );
+			}
+			if ($this->isDashboardActive ())
+				add_action ( 'wp_dashboard_setup', array (
+						$this,
+						'extendWordPressDashboard' 
+				) );
+			if (self::$settings->getGlobalOption ( 'add_post_annotations' ))
+				add_action ( 'transition_post_status', array (
+						$this,
+						'onPostStatusTransition' 
+				), 10, 3 );
 		}
-		if ($this->isDashboardActive ())
-			add_action ( 'wp_dashboard_setup', array (
-					$this,
-					'extendWordPressDashboard' 
-			) );
 		if ($this->isToolbarActive ()) {
 			add_action ( is_admin () ? 'admin_head' : 'wp_head', array (
 					$this,
@@ -112,41 +119,38 @@ class WP_Piwik {
 			), 1000 );
 		}
 		if ($this->isTrackingActive ()) {
-			add_action ( self::$settings->getGlobalOption ( 'track_codeposition' ) == 'footer' ? 'wp_footer' : 'wp_head', array (
-					$this,
-					'addJavascriptCode' 
-			) );
-			if ($this->isAddNoScriptCode ())
-				add_action ( 'wp_footer', array (
+			if ( !is_admin () ) {
+				add_action ( self::$settings->getGlobalOption ( 'track_codeposition' ) == 'footer' ? 'wp_footer' : 'wp_head', array (
 						$this,
-						'addNoscriptCode' 
-				) );
-			if ($this->isAdminTrackingActive ())
+						'addJavascriptCode' 
+					) );
+				if ($this->isAddNoScriptCode ())
+					add_action ( 'wp_footer', array (
+							$this,
+							'addNoscriptCode' 
+					) );
+			} else if ($this->isAdminTrackingActive ())
 				add_action ( self::$settings->getGlobalOption ( 'track_codeposition' ) == 'footer' ? 'admin_footer' : 'admin_head', array (
 						$this,
 						'addJavascriptCode' 
 				) );
 		}
-		if (self::$settings->getGlobalOption ( 'add_post_annotations' ))
-			add_action ( 'transition_post_status', array (
-					$this,
-					'onPostStatusTransition' 
-			), 10, 3 );
 	}
 	
 	/**
 	 * Register WordPress filters
 	 */
 	private function addFilters() {
-		add_filter ( 'plugin_row_meta', array (
-				$this,
-				'setPluginMeta' 
-		), 10, 2 );
-		add_filter ( 'screen_layout_columns', array (
-				$this,
-				'onScreenLayoutColumns' 
-		), 10, 2 );
-		if ($this->isTrackingActive ()) {
+		if (is_admin()) {
+			add_filter ( 'plugin_row_meta', array (
+					$this,
+					'setPluginMeta' 
+			), 10, 2 );
+			add_filter ( 'screen_layout_columns', array (
+					$this,
+					'onScreenLayoutColumns' 
+			), 10, 2 );
+		} elseif ($this->isTrackingActive ()) {
 			if ($this->isTrackFeed ()) {
 				add_filter ( 'the_excerpt_rss', array (
 						$this,
@@ -921,6 +925,7 @@ class WP_Piwik {
 	 *        	attribute list
 	 */
 	public function shortcode($attributes) {
+		load_plugin_textdomain ( 'wp-piwik', false, 'wp-piwik' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR );
 		shortcode_atts ( array (
 				'title' => '',
 				'module' => 'overview',

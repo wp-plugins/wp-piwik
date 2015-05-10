@@ -25,3 +25,7 @@ table.wp-piwik-table tbody.clickable {
 table.wp-piwik_menu-tab th {
 	vertical-align: top;
 }
+
+div.wp-piwik-debug {
+	padding:10px;
+}

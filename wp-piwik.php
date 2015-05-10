@@ -61,7 +61,8 @@ function wp_piwik_phperror() {
 	echo '</p></div>';
 }
 
-load_plugin_textdomain ( 'wp-piwik', false, 'wp-piwik' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR );
+if (is_admin())
+	load_plugin_textdomain ( 'wp-piwik', false, 'wp-piwik' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR );
 
 if (version_compare ( PHP_VERSION, '5.3.0', '<' ))
 	add_action ( 'admin_notices', 'wp_piwik_phperror' );
@@ -70,6 +71,7 @@ else {
 	require_once (WP_PIWIK_PATH . 'config.php');
 	require_once (WP_PIWIK_PATH . 'classes' . DIRECTORY_SEPARATOR . 'WP_Piwik.php');
 	spl_autoload_register ( 'wp_piwik_autoloader' );
+	$GLOBALS ['wp-piwik_debug'] = false;
 	if (class_exists ( 'WP_Piwik' ))
 		$GLOBALS ['wp-piwik'] = new WP_Piwik ();
 }
