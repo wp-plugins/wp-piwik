@@ -8,7 +8,7 @@
 			'opt-out' => 'OptOut',
 			'post' => 'Post',
 			'overview' => 'Overview'
-		);
+		), $content;
 		
 		public function __construct($attributes, $wpPiwik, $settings) {
 			$wpPiwik->log('Check requested shortcode widget '.$attributes['module']);
@@ -17,7 +17,12 @@
 				$class = '\\WP_Piwik\\Widget\\'.$this->available[$attributes['module']];
 				$widget = new $class($wpPiwik, $settings, null, null, null, $attributes, true);
 				$widget->show();
+				$this->content = $widget->get();
 			}
+		}
+		
+		public function get() {
+			return $this->content;
 		}
 		
 	}

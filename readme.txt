@@ -127,6 +127,12 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 
 == Changelog ==
 
+= 0.10.0.4 =
+* Bugfix: Settings link in admin notices fixed
+* Bugfix: Shortcode result will appear where expected
+* Bugfix: 0.9.9.18 settings will be kept (if WP-Piwik was not reconfigured after updating to 0.10.0.3, yet)
+* Feature: If Piwik returns an error instead of a tracking code, this error will be visible
+
 = 0.10.0.3 =
 * Public beta of WP-Piwik 1.0
 * Full refactored code

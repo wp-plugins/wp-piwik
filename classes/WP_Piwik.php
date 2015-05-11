@@ -54,10 +54,6 @@ class WP_Piwik {
 	 */
 	private function addActions() {
 		if ( is_admin () ) {
-			add_action ( 'admin_notices', array (
-					$this,
-					'showNotices' 
-			) );
 			add_action ( 'admin_menu', array (
 					$this,
 					'buildAdminMenu' 
@@ -75,6 +71,10 @@ class WP_Piwik {
 					'addPostMetaboxes' 
 			) );
 			if ($this->isNetworkMode ()) {
+				add_action ( 'network_admin_notices', array (
+						$this,
+						'showNotices' 
+				) );
 				add_action ( 'network_admin_menu', array (
 						$this,
 						'buildNetworkAdminMenu' 
@@ -86,8 +86,12 @@ class WP_Piwik {
 				add_action ( 'update_site_option_siteurl', array (
 						$this,
 						'onSiteUrlChange' 
-				) );
+				) );				
 			} else {
+				add_action ( 'admin_notices', array (
+						$this,
+						'showNotices' 
+				) );
 				add_action ( 'update_option_blogname', array (
 						$this,
 						'onBlogNameChange' 
@@ -848,7 +852,7 @@ class WP_Piwik {
 	 * @return array updated list of column settings
 	 */
 	public function onScreenLayoutColumns($columns, $screen) {
-		if ($screen == $this->statsPageId)
+		if (isset( $this->statsPageId ) && $screen == $this->statsPageId)
 			$columns [$this->statsPageId] = 3;
 		return $columns;
 	}
@@ -941,7 +945,8 @@ class WP_Piwik {
 				'range' => false,
 				'key' => 'sum_daily_nb_uniq_visitors' 
 		), $attributes );
-		new \WP_Piwik\Shortcode ( $attributes, $this, self::$settings );
+		$shortcodeObject = new \WP_Piwik\Shortcode ( $attributes, $this, self::$settings );
+		return $shortcodeObject->get();
 	}
 	
 	/**
@@ -1065,7 +1070,8 @@ class WP_Piwik {
 				'mergeAliasUrls' => self::$settings->getGlobalOption ( 'track_across_alias' ) ? 1 : 0,
 				'disableCookies' => self::$settings->getGlobalOption ( 'disable_cookies' ) ? 1 : 0 
 		) );
-		$result = html_entity_decode ( $this->request ( $id ) );
+		$code = $this->request ( $id );
+		$result = !is_array( $code ) ? html_entity_decode ( $code ) : '<!-- '.serialize($code).' -->';
 		self::$logger->log ( 'Delivered tracking code: ' . $result );
 		$result = WP_Piwik\TrackingCode::prepareTrackingCode ( $result, self::$settings, self::$logger );
 		self::$settings->setOption ( 'tracking_code', $result ['script'], $blogId );
