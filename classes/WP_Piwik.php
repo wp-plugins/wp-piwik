@@ -12,7 +12,7 @@ class WP_Piwik {
 	 *
 	 * @var Runtime environment variables
 	 */
-	private static $intRevisionId = 100010, $version = '0.10.0.4', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
+	private static $intRevisionId = 2015051101, $version = '0.10.0.4', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
 	
 	/**
 	 * Constructor class to configure and register all WP-Piwik components
@@ -212,7 +212,6 @@ class WP_Piwik {
 			sort ( $patches );
 			foreach ( $patches as $patch ) {
 				$patchVersion = ( int ) pathinfo ( $patch, PATHINFO_FILENAME );
-				echo $patchVersion;
 				if ($patchVersion && self::$settings->getGlobalOption ( 'revision' ) < $patchVersion)
 					self::includeFile ( 'update' . DIRECTORY_SEPARATOR . $patchVersion );
 			}
@@ -592,6 +591,9 @@ class WP_Piwik {
 	 * @return boolean Is WP-Piwik installed?
 	 */
 	private function isInstalled() {
+		$oldSettings = ($this->isNetworkMode () ? get_site_option ( 'wp-piwik_global-settings', false ) : get_option ( 'wp-piwik_global-settings', false ));
+		if ($oldSettings && isset( $oldSettings['revision'] ))
+			self::$settings->setGlobalOption ( 'revision', $oldSettings['revision'] );
 		return self::$settings->getGlobalOption ( 'revision' );
 	}
 	
