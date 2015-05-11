@@ -12,7 +12,7 @@ class WP_Piwik {
 	 *
 	 * @var Runtime environment variables
 	 */
-	private static $intRevisionId = 100000, $version = '0.10.0.3', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
+	private static $intRevisionId = 100010, $version = '0.10.0.4', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
 	
 	/**
 	 * Constructor class to configure and register all WP-Piwik components
@@ -207,11 +207,12 @@ class WP_Piwik {
 	 */
 	private function updatePlugin() {
 		self::$logger->log ( 'Upgrade WP-Piwik to ' . self::$version );
-		$patches = glob ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . 'update' . DIRECTORY_SEPARATOR . '*.php' );
+		$patches = glob ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'update' . DIRECTORY_SEPARATOR . '*.php' );
 		if (is_array ( $patches )) {
 			sort ( $patches );
 			foreach ( $patches as $patch ) {
 				$patchVersion = ( int ) pathinfo ( $patch, PATHINFO_FILENAME );
+				echo $patchVersion;
 				if ($patchVersion && self::$settings->getGlobalOption ( 'revision' ) < $patchVersion)
 					self::includeFile ( 'update' . DIRECTORY_SEPARATOR . $patchVersion );
 			}
