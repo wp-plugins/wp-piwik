@@ -969,7 +969,7 @@ class WP_Piwik {
 	 * @return array Piwik sites
 	 */
 	public function getPiwikSiteDetails() {
-		$id = WP_Piwik\Request::register ( 'SitesManager.getAllSites', array () );
+		$id = WP_Piwik\Request::register ( 'SitesManager.getSitesWithAtLeastViewAccess', array () );
 		$piwikSiteDetails = $this->request ( $id );
 		return $piwikSiteDetails;
 	}
