@@ -117,7 +117,7 @@ class Settings extends \WP_Piwik\Admin {
 				echo '<tr class="wp-piwik-auto-option' . (! self::$settings->getGlobalOption ( 'auto_site_config' ) ? ' hidden' : '') . '"><th scope="row">' . __ ( 'Determined site', 'wp-piwik' ) . ':</th><td>' . $piwikSiteDescription . '</td></tr>';
 				if (is_array ( $piwikSiteDetails ))
 					foreach ( $piwikSiteDetails as $key => $siteData )
-						$siteList [$key] = $siteData ['name'] . ' (' . $siteData ['main_url'] . ')';
+						$siteList [$siteData['idsite']] = $siteData ['name'] . ' (' . $siteData ['main_url'] . ')';
 					if (isset($siteList))
 						$this->showSelect ( 'site_id', __ ( 'Select site', 'wp-piwik' ), $siteList, 'Choose the Piwik site corresponding to this blog.', '', self::$settings->getGlobalOption ( 'auto_site_config' ), 'wp-piwik-auto-option', true, false );
 			}

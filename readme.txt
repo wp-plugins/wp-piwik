@@ -129,6 +129,7 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 
 = 0.10.0.6 =
 * Bugfix: Option storage bug if WP-Piwik is used as single site plugin on blog networks
+* Bugfix: WP-Piwik will work without Piwik superuser access, again
 
 = 0.10.0.5 =
 * Bugfix: In some cases the update message did not disappear -> fixed
