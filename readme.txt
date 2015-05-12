@@ -3,7 +3,7 @@
 Contributors: Braekling
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 0.10.0.4
+Stable tag: 0.10.0.5
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
@@ -123,12 +123,13 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 
 == Upgrade Notice ==
 
-This is a full refactored version of WP-Piwik. Please check your settings after updating and make sure everything is working as expected.
+This is a full refactored version of WP-Piwik. Please check your settings after updating and make sure everything is working as expected. If you want to upgrade from 0.8.x to 0.10.x, please install 0.9.9.18 first: https://downloads.wordpress.org/plugin/wp-piwik.0.9.9.18.zip
 
 == Changelog ==
 
 = 0.10.0.5 =
 * Bugfix: In some cases the update message did not disappear -> fixed
+* Important change: If you want to upgrade from 0.8.x to 0.10.x, please install 0.9.9.18 first: https://downloads.wordpress.org/plugin/wp-piwik.0.9.9.18.zip
 
 = 0.10.0.4 =
 * Bugfix: Settings link in admin notices fixed
