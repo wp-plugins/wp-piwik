@@ -107,7 +107,11 @@ class Settings extends \WP_Piwik\Admin {
 		if (! self::$wpPiwik->isNetworkMode() ) {
 			$this->showCheckbox ( 'auto_site_config', __ ( 'Auto config', 'wp-piwik' ), __ ( 'Check this to automatically choose your blog from your Piwik sites by URL. If your blog is not added to Piwik yet, WP-Piwik will add a new site.', 'wp-piwik' ), false, '$j(\'tr.wp-piwik-auto-option\').toggle(\'hidden\');' . ($piwikSiteId ? '$j(\'#site_id\').val(' . $piwikSiteId . ');' : '') );
 			if (self::$wpPiwik->isConfigured ()) {
-				$piwikSiteDetails = self::$wpPiwik->getPiwikSiteDetails ();
+				$piwikSiteList = self::$wpPiwik->getPiwikSiteDetails ();
+				if (is_array($piwikSiteList))
+					foreach ($piwikSiteList as $details)
+						$piwikSiteDetails[$details['idsite']] = $details;
+				unset($piwikSiteList);
 				if (($piwikSiteId == 'n/a'))
 					$piwikSiteDescription = 'n/a';
 				elseif (! self::$settings->getGlobalOption ( 'auto_site_config' ))
@@ -601,7 +605,7 @@ class Settings extends \WP_Piwik\Admin {
 			$id = \WP_Piwik\Request::register ( 'SitesManager.getSitesWithAtLeastViewAccess' );
 			echo "\n\n"; var_dump( self::$wpPiwik->request( $id ) ); echo "\n"; 
 			$GLOBALS ['wp-piwik_debug'] = false;
-		?>Test 3/3: SitesManager.getSitesWithAtLeastViewAccess<?php 
+		?>Test 3/3: SitesManager.getSitesIdFromSiteUrl<?php 
 			$GLOBALS ['wp-piwik_debug'] = true;
 			$id = \WP_Piwik\Request::register ( 'SitesManager.getSitesIdFromSiteUrl', array (
 				'url' => get_bloginfo ( 'url' )
