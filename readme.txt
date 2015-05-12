@@ -127,6 +127,9 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 
 == Changelog ==
 
+= 0.10.0.6 =
+* Bugfix: Option storage bug if WP-Piwik is used as single site plugin on blog networks
+
 = 0.10.0.5 =
 * Bugfix: In some cases the update message did not disappear -> fixed
 * Important change: If you want to upgrade from 0.8.x to 0.10.x, please install 0.9.9.18 first: https://downloads.wordpress.org/plugin/wp-piwik.0.9.9.18.zip

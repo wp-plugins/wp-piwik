@@ -202,7 +202,7 @@ class WP_Piwik {
 		self::$logger->log ( 'Running WP-Piwik uninstallation' );
 		if (! defined ( 'WP_UNINSTALL_PLUGIN' ))
 			exit ();
-		delete_site_option ( 'wp-piwik-notices' );
+		$this->deleteWordPressOption ( 'wp-piwik-notices' );
 		self::$settings->resetSettings ( true );
 	}
 	
@@ -237,13 +237,13 @@ class WP_Piwik {
 	 *        	set to true if the message should persist (default: false)
 	 */
 	private function addNotice($type, $subject, $text, $stay = false) {
-		$notices = get_site_option ( 'wp-piwik-notices', array () );
+		$notices = $this->getWordPressOption ( 'wp-piwik-notices', array () );
 		$notices [$type] = array (
 				'subject' => $subject,
 				'text' => $text,
 				'stay' => $stay 
 		);
-		update_site_option ( 'wp-piwik-notices', $notices );
+		$this->updateWordPressOption ( 'wp-piwik-notices', $notices );
 	}
 	
 	/**
@@ -253,14 +253,14 @@ class WP_Piwik {
 	 */
 	public function showNotices() {
 		$link = sprintf ( '<a href="' . $this->getSettingsURL () . '">%s</a>', __ ( 'Settings', 'wp-piwik' ) );
-		if ($notices = get_site_option ( 'wp-piwik-notices' )) {
+		if ($notices = $this->getWordPressOption ( 'wp-piwik-notices' )) {
 			foreach ( $notices as $type => $notice ) {
 				printf ( '<div class="updated fade"><p>%s <strong>%s:</strong> %s: %s</p></div>', $notice ['subject'], __ ( 'Important', 'wp-piwik' ), $notice ['text'], $link );
 				if (! $notice ['stay'])
 					unset ( $notices [$type] );
 			}
 		}
-		update_site_option ( 'wp-piwik-notices', $notices );
+		$this->updateWordPressOption ( 'wp-piwik-notices', $notices );
 	}
 	
 	/**
@@ -595,7 +595,7 @@ class WP_Piwik {
 	 * @return boolean Is WP-Piwik installed?
 	 */
 	private function isInstalled() {
-		$oldSettings = get_site_option ( 'wp-piwik_global-settings', false );
+		$oldSettings = $this->getWordPressOption ( 'wp-piwik_global-settings', false );
 		if ($oldSettings && isset( $oldSettings['revision'] ))
 			self::$settings->setGlobalOption ( 'revision', $oldSettings['revision'] );
 		return self::$settings->getGlobalOption ( 'revision' );
@@ -1164,5 +1164,40 @@ class WP_Piwik {
 			wp_die ( __ ( 'Cheatin&#8217; uh?' ) );
 		check_admin_referer ( 'wp-piwik_stats' );
 		wp_redirect ( $_POST ['_wp_http_referer'] );
+	}
+	
+	/**
+	 * Get option value, choose method depending on network mode
+	 * 
+	 * @param string $option option key
+	 * @return string option value
+	 */
+	private function getWordPressOption($option, $default = null) {
+		return ($this->isNetworkMode () ? get_site_option ( $option, $default ) : get_option ( $option, $default ));
+	}
+	
+	/**
+	 * Delete option, choose method depending on network mode
+	 * 
+	 * @param string $option option key
+	 */
+	private function deleteWordPressOption($option) {
+		if ( $this->isNetworkMode () )
+			delete_site_option ( $option );
+		else
+			delete_option ( $option );
+	}
+	
+	/**
+	 * Set option value, choose method depending on network mode
+	 * 
+	 * @param string $option option key
+	 * @param mixed $value option value
+	 */
+	private function updateWordPressOption($option, $value) {
+		if ( $this->isNetworkMode () )
+			update_site_option ( $option, $value );
+		else
+			update_option ( $option, $value );		
 	}
 }
