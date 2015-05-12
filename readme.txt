@@ -127,6 +127,9 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 
 == Changelog ==
 
+= 0.10.0.5 =
+* Bugfix: In some cases the update message did not disappear -> fixed
+
 = 0.10.0.4 =
 * Bugfix: Settings link in admin notices fixed
 * Bugfix: Shortcode result will appear where expected
