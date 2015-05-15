@@ -12,7 +12,7 @@ class WP_Piwik {
 	 *
 	 * @var Runtime environment variables
 	 */
-	private static $intRevisionId = 2015051101, $version = '0.10.0.6', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
+	private static $revisionId = 2015051501, $version = '0.10.0.7', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
 	
 	/**
 	 * Constructor class to configure and register all WP-Piwik components
@@ -191,7 +191,7 @@ class WP_Piwik {
 		self::$logger->log ( 'Running WP-Piwik installation' );
 		if (! $isUpdate)
 			$this->addNotice ( 'install', sprintf ( __ ( '%s %s installed.', 'wp-piwik' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), self::$version ), __ ( 'Next you should connect to Piwik', 'wp-piwik' ) );
-		self::$settings->setGlobalOption ( 'revision', self::$intRevisionId );
+		self::$settings->setGlobalOption ( 'revision', self::$revisionId );
 		self::$settings->setGlobalOption ( 'last_settings_update', time () );
 	}
 	
@@ -557,18 +557,18 @@ class WP_Piwik {
 	 * @return boolean settings update applied
 	 */
 	private function applySettings() {
-		if (isset ( $_POST ) && isset ( $_POST ['wp-piwik'] )) {
-			self::$settings->applyChanges ( $_POST ['wp-piwik'] );
-			if (self::$settings->getGlobalOption ( 'auto_site_config' ) && self::isConfigured ()) {
-				if ($this->isPHPMode () && ! defined ( 'PIWIK_INCLUDE_PATH' ))
-					self::definePiwikConstants ();
-				$siteId = $this->requestPiwikSiteId ();
-				$trackingCode = $this->updateTrackingCode ( $siteId );
-				self::$settings->getOption ( 'site_id', $siteId );
-			}
-			return true;
+		self::$settings->applyChanges ( $_POST ['wp-piwik'] );
+		echo 'Settings gespeichert';
+		if (self::$settings->getGlobalOption ( 'auto_site_config' ) && self::isConfigured ()) {
+			if ($this->isPHPMode () && ! defined ( 'PIWIK_INCLUDE_PATH' ))
+				self::definePiwikConstants ();
+			$siteId = $this->getPiwikSiteId ();
+			$trackingCode = $this->updateTrackingCode ( $siteId );
+			self::$settings->setOption ( 'site_id', $siteId );
 		}
-		return false;
+		self::$settings->setGlobalOption ( 'revision', self::$revisionId );
+		self::$settings->setGlobalOption ( 'last_settings_update', time () );
+		return true;
 	}
 	
 	/**
@@ -586,7 +586,7 @@ class WP_Piwik {
 	 * @return boolean Was WP-Piwik updated?
 	 */
 	private function isUpdated() {
-		return self::$settings->getGlobalOption ( 'revision' ) && self::$settings->getGlobalOption ( 'revision' ) < self::$intRevisionId;
+		return self::$settings->getGlobalOption ( 'revision' ) && self::$settings->getGlobalOption ( 'revision' ) < self::$revisionId;
 	}
 	
 	/**
@@ -598,7 +598,7 @@ class WP_Piwik {
 		$oldSettings = $this->getWordPressOption ( 'wp-piwik_global-settings', false );
 		if ($oldSettings && isset( $oldSettings['revision'] ))
 			self::$settings->setGlobalOption ( 'revision', $oldSettings['revision'] );
-		return self::$settings->getGlobalOption ( 'revision' );
+		return self::$settings->getGlobalOption ( 'revision' ) > 0;
 	}
 	
 	/**
@@ -607,7 +607,7 @@ class WP_Piwik {
 	 * @return boolean Are new settings submitted?
 	 */
 	private function isConfigSubmitted() {
-		return isset ( $_POST ['action'] ) && $_POST ['action'] == 'save_wp-piwik_settings';
+		return isset ( $_POST ) && isset ( $_POST ['wp-piwik'] );
 	}
 	
 	/**
@@ -752,7 +752,7 @@ class WP_Piwik {
 	 */
 	private function openSettings() {
 		self::$settings = new WP_Piwik\Settings ( $this, self::$logger );
-		if (! $this->applySettings () && $this->isPHPMode () && ! defined ( 'PIWIK_INCLUDE_PATH' ))
+		if (! $this->isConfigSubmitted () && $this->isPHPMode () && ! defined ( 'PIWIK_INCLUDE_PATH' ))
 			self::definePiwikConstants ();
 	}
 	
@@ -919,9 +919,13 @@ class WP_Piwik {
 	 *        	request ID
 	 * @return mixed request result
 	 */
-	public function request($id) {
+	public function request($id, $debug = false) {
+		if ( self::$settings->getGlobalOption ( 'piwik_mode' ) == 'disabled' )
+			return 'n/a';
 		if (! isset ( self::$request ))
 			self::$request = (self::$settings->getGlobalOption ( 'piwik_mode' ) == 'http' || self::$settings->getGlobalOption ( 'piwik_mode' ) == 'pro' ? new WP_Piwik\Request\Rest ( $this, self::$settings ) : new WP_Piwik\Request\Php ( $this, self::$settings ));
+		if ($debug)
+			return self::$request->getDebug ( $id );
 		return self::$request->perform ( $id );
 	}
 	
@@ -991,7 +995,7 @@ class WP_Piwik {
 			$this->log ( 'Tried to identify current site, result: ' . serialize ( $result ) );
 			if (empty ( $result ) || ! isset ( $result [0] ))
 				$result = $this->addPiwikSite ( $blogId );
-			else
+			elseif ( $result != 'n/a' )
 				$result = $result [0] ['idsite'];
 		} else
 			$result = null;

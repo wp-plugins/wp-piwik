@@ -11,7 +11,18 @@
 		}
 
 		public function show() {
-			echo '<iframe frameborder="no" width="'.(isset($this->parameter['width'])?$this->parameter['width']:'').'" height="'.(isset($this->parameter['height'])?$this->parameter['height']:'').'" src="'.self::$settings->getGlobalOption('piwik_url').'index.php?module=CoreAdminHome&action=optOut&language='.(isset($this->parameter['language'])?$this->parameter['language']:'en').'"></iframe>';
+			$protocol = (isset ( $_SERVER ['HTTPS'] ) && $_SERVER ['HTTPS'] != 'off') ? 'https' : 'http';
+			switch (self::$settings->getGlobalOption ( 'piwik_mode' )) {
+				case 'php' :
+					$PIWIK_URL = $protocol . ':' . self::$settings->getGlobalOption ( 'proxy_url' );
+					break;
+				case 'pro' :
+					$PIWIK_URL = 'https://' . self::$settings->getGlobalOption ( 'piwik_user' ) . '.piwik.pro/';
+					break;
+				default :
+					$PIWIK_URL = self::$settings->getGlobalOption ( 'piwik_url' );
+			}
+			$this->out ( '<iframe frameborder="no" width="'.(isset($this->parameter['width'])?$this->parameter['width']:'').'" height="'.(isset($this->parameter['height'])?$this->parameter['height']:'').'" src="'.$PIWIK_URL.'index.php?module=CoreAdminHome&action=optOut&language='.(isset($this->parameter['language'])?$this->parameter['language']:'en').'"></iframe>' );
 		}
 		
 	}

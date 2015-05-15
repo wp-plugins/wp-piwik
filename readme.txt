@@ -3,7 +3,7 @@
 Contributors: Braekling
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 0.10.0.6
+Stable tag: 0.10.0.7
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
@@ -127,9 +127,19 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 
 == Changelog ==
 
+= 0.10.0.7 =
+* Bugfix: Opt-out shortcode output fix
+* Bugfix: Opt-out shortcode will also work in "pro" and "php" mode
+* Bugfix: Sitebrowser link (settings page, support) fixed
+* Bugfix: Removed test script errors and notices
+* Bugfix: Keep sure the revion ID is stored and avoid re-installing the plugin again and again
+* Bugfix: http/pro - after configuration the settings page had to be reloaded once to start working
+* Typo fixes
+ 
 = 0.10.0.6 =
 * Bugfix: Option storage bug if WP-Piwik is used as single site plugin on blog networks
 * Bugfix: WP-Piwik will work without Piwik superuser access, again
+* Bugfix: Choosing the site without auto config works again
 
 = 0.10.0.5 =
 * Bugfix: In some cases the update message did not disappear -> fixed
