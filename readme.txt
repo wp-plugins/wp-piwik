@@ -3,7 +3,7 @@
 Contributors: Braekling
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 0.10.0.6
+Stable tag: 0.10.0.7
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6046779
 Tags: statistics, stats, analytics, piwik, wpmu
 
