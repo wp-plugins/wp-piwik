@@ -17,13 +17,13 @@
 					$count++;
 				}
 			}
-			$results = (function_exists('curl_init')?$this->curl($url, $params):$this->fopen($url, $params));
+			$results = (function_exists('curl_init')?$this->curl($id, $url, $params):$this->fopen($id, $url, $params));
 			if (is_array($results))
 				foreach ($results as $num => $result)
 					self::$results[$map[$num]] = $result;
 		}
 			
-		private function curl($url, $params) {
+		private function curl($id, $url, $params) {
 			$c = curl_init($url);
 			curl_setopt($c, CURLOPT_POST, 1);
 			curl_setopt($c, CURLOPT_POSTFIELDS, $params.'&token_auth='.self::$settings->getGlobalOption('piwik_token'));
@@ -45,22 +45,18 @@
 				$header = substr($result, 0, $header_size);
 				$body = substr($result, $header_size);
 				$result = $this->unserialize($body);
-				array_unshift($result[0], $header);
-				array_unshift($result[0], $url.'?'.$params.'&token_auth=...');
+				self::$debug[$id] = array ( $header, $url.'?'.$params.'&token_auth=...' );
 			} else $result = $this->unserialize($result);
 			curl_close($c);
 			return $result;
 		}
 
-		private function fopen($url, $params) {
+		private function fopen($id, $url, $params) {
 			$context = stream_context_create(array('http'=>array('timeout' => self::$settings->getGlobalOption('connection_timeout'))));		
 			$fullUrl = $url.'?'.$params.'&token_auth='.self::$settings->getGlobalOption('piwik_token');	
 			$result = $this->unserialize(@file_get_contents($fullUrl, false, $context));
-			if ($GLOBALS ['wp-piwik_debug']) {
-				$header = get_headers($fullUrl, 1);
-				array_unshift($result[0], $header);
-				array_unshift($result[0], $url.'?'.$params.'&token_auth=...');
-			}
+			if ($GLOBALS ['wp-piwik_debug'])
+				self::$debug[$id] = array ( get_headers($fullUrl, 1), $url.'?'.$params.'&token_auth=...' );
 			return $result;
 		}
 	}

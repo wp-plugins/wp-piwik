@@ -11,7 +11,7 @@
 		}
 
 		public function show() {
-			echo '<iframe frameborder="no" width="'.(isset($this->parameter['width'])?$this->parameter['width']:'').'" height="'.(isset($this->parameter['height'])?$this->parameter['height']:'').'" src="'.self::$settings->getGlobalOption('piwik_url').'index.php?module=CoreAdminHome&action=optOut&language='.(isset($this->parameter['language'])?$this->parameter['language']:'en').'"></iframe>';
+			$this->out ( '<iframe frameborder="no" width="'.(isset($this->parameter['width'])?$this->parameter['width']:'').'" height="'.(isset($this->parameter['height'])?$this->parameter['height']:'').'" src="'.self::$settings->getGlobalOption('piwik_url').'index.php?module=CoreAdminHome&action=optOut&language='.(isset($this->parameter['language'])?$this->parameter['language']:'en').'"></iframe>' );
 		}
 		
 	}

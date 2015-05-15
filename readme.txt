@@ -127,9 +127,18 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 
 == Changelog ==
 
+= 0.10.0.7 =
+* Bugfix: Opt-out shortcode output fix
+* Bugfix: Sitebrowser link (settings page, support) fixed
+* Bugfix: Removed test script errors and notices
+* Bugfix: Keep sure the revion ID is stored and avoid re-installing the plugin again and again
+* Typos fixes
+
+ 
 = 0.10.0.6 =
 * Bugfix: Option storage bug if WP-Piwik is used as single site plugin on blog networks
 * Bugfix: WP-Piwik will work without Piwik superuser access, again
+* Bugfix: Choosing the site without auto config works again
 
 = 0.10.0.5 =
 * Bugfix: In some cases the update message did not disappear -> fixed

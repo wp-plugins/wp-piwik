@@ -57,6 +57,10 @@
 			} else return false;
 		}
 		
+		public function getDebug($id) {
+			return isset( self::$debug[$id] )? self::$debug[$id] : false;
+		}
+		
 		protected function buildURL($config, $urlDecode = false) {
 			$url = 'method='.($config['method']).'&idSite='.self::$settings->getOption('site_id');
 			foreach ($config['parameter'] as $key => $value)
