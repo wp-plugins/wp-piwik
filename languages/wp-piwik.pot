@@ -160,7 +160,7 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:84
 msgid ""
 "This is the default option for a self-hosted Piwik and should work for most "
-"configurations. WP-Piwik will connect to Piwk using http(s)."
+"configurations. WP-Piwik will connect to Piwik using http(s)."
 msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:84
@@ -635,7 +635,7 @@ msgid "Adds *.-prefix to cookie domain."
 msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:231
-msgid "Do not count subdomians as outlink"
+msgid "Do not count subdomains as outlink"
 msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:231
