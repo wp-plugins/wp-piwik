@@ -129,11 +129,12 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 
 = 0.10.0.7 =
 * Bugfix: Opt-out shortcode output fix
+* Bugfix: Opt-out shortcode will also work in "pro" and "php" mode
 * Bugfix: Sitebrowser link (settings page, support) fixed
 * Bugfix: Removed test script errors and notices
 * Bugfix: Keep sure the revion ID is stored and avoid re-installing the plugin again and again
-* Typos fixes
-
+* Bugfix: http/pro - after configuration the settings page had to be reloaded once to start working
+* Typo fixes
  
 = 0.10.0.6 =
 * Bugfix: Option storage bug if WP-Piwik is used as single site plugin on blog networks

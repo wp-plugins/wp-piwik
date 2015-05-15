@@ -557,16 +557,17 @@ class WP_Piwik {
 	 * @return boolean settings update applied
 	 */
 	private function applySettings() {
-		$_POST ['wp-piwik']['last_settings_update'] = time();
-		$_POST ['wp-piwik']['revision'] = self::$revisionId;
 		self::$settings->applyChanges ( $_POST ['wp-piwik'] );
+		echo 'Settings gespeichert';
 		if (self::$settings->getGlobalOption ( 'auto_site_config' ) && self::isConfigured ()) {
 			if ($this->isPHPMode () && ! defined ( 'PIWIK_INCLUDE_PATH' ))
 				self::definePiwikConstants ();
-			$siteId = $this->requestPiwikSiteId ();
+			$siteId = $this->getPiwikSiteId ();
 			$trackingCode = $this->updateTrackingCode ( $siteId );
-			self::$settings->getOption ( 'site_id', $siteId );
+			self::$settings->setOption ( 'site_id', $siteId );
 		}
+		self::$settings->setGlobalOption ( 'revision', self::$revisionId );
+		self::$settings->setGlobalOption ( 'last_settings_update', time () );
 		return true;
 	}
 	
@@ -919,6 +920,8 @@ class WP_Piwik {
 	 * @return mixed request result
 	 */
 	public function request($id, $debug = false) {
+		if ( self::$settings->getGlobalOption ( 'piwik_mode' ) == 'disabled' )
+			return 'n/a';
 		if (! isset ( self::$request ))
 			self::$request = (self::$settings->getGlobalOption ( 'piwik_mode' ) == 'http' || self::$settings->getGlobalOption ( 'piwik_mode' ) == 'pro' ? new WP_Piwik\Request\Rest ( $this, self::$settings ) : new WP_Piwik\Request\Php ( $this, self::$settings ));
 		if ($debug)
@@ -992,7 +995,7 @@ class WP_Piwik {
 			$this->log ( 'Tried to identify current site, result: ' . serialize ( $result ) );
 			if (empty ( $result ) || ! isset ( $result [0] ))
 				$result = $this->addPiwikSite ( $blogId );
-			else
+			elseif ( $result != 'n/a' )
 				$result = $result [0] ['idsite'];
 		} else
 			$result = null;
