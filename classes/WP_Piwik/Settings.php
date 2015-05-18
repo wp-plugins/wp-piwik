@@ -23,6 +23,7 @@ class Settings {
 	private $checkSettings = array (
 			'piwik_url' => 'checkPiwikUrl',
 			'piwik_token' => 'checkPiwikToken',
+			'site_id' => 'requestPiwikSiteID',
 			'tracking_code' => 'prepareTrackingCode',
 			'noscript_code' => 'prepareNocscriptCode' 
 	);
@@ -331,6 +332,21 @@ class Settings {
 	 */
 	private function checkPiwikToken($value, $in) {
 		return str_replace ( '&token_auth=', '', $value );
+	}
+	
+	/**
+	 * Request the site ID (if not set before)
+	 *
+	 * @param string $value
+	 *        	tracking code
+	 * @param array $in
+	 *        	configuration set
+	 * @return int Piwik site ID
+	 */
+	private function requestPiwikSiteID($value, $in) {
+		if ($in ['auto_site_config'] && ! $value)
+			return self::$wpPiwik->getPiwikSiteId();
+		return $value;
 	}
 	
 	/**
