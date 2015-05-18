@@ -19,8 +19,11 @@ class Settings extends \WP_Piwik\Admin {
 			return;
 		}
 		global $wp_roles;
-		if (isset ( $_POST ) && isset ( $_POST ['wp-piwik'] ))
+		if (isset ( $_POST ) && isset ( $_POST ['wp-piwik'] )) {
 			$this->showBox ( 'updated', 'yes', __ ( 'Changes saved.' ) );
+			self::$wpPiwik->resetRequest();
+			self::$wpPiwik->updateTrackingCode();
+		}
 		?>
 <div id="plugin-options-wrap" class="widefat">
 	<?php 
@@ -112,14 +115,12 @@ class Settings extends \WP_Piwik\Admin {
 					foreach ($piwikSiteList as $details)
 						$piwikSiteDetails[$details['idsite']] = $details;
 				unset($piwikSiteList);
-				if (($piwikSiteId == 'n/a'))
-					$piwikSiteDescription = 'n/a';
-				elseif (! self::$settings->getGlobalOption ( 'auto_site_config' ))
-					$piwikSiteDescription = __ ( 'Save settings to start estimation.', 'wp-piwik' );
-				else
+				if ( $piwikSiteId != 'n/a' && isset( $piwikSiteDetails ) && is_array( $piwikSiteDetails ) )
 					$piwikSiteDescription = $piwikSiteDetails [$piwikSiteId] ['name'] . ' (' . $piwikSiteDetails [$piwikSiteId] ['main_url'] . ')';
+				else 
+					$piwikSiteDescription = 'n/a';
 				echo '<tr class="wp-piwik-auto-option' . (! self::$settings->getGlobalOption ( 'auto_site_config' ) ? ' hidden' : '') . '"><th scope="row">' . __ ( 'Determined site', 'wp-piwik' ) . ':</th><td>' . $piwikSiteDescription . '</td></tr>';
-				if (is_array ( $piwikSiteDetails ))
+				if (isset ( $piwikSiteDetails ) && is_array ( $piwikSiteDetails ))
 					foreach ( $piwikSiteDetails as $key => $siteData )
 						$siteList [$siteData['idsite']] = $siteData ['name'] . ' (' . $siteData ['main_url'] . ')';
 					if (isset($siteList))

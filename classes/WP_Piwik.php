@@ -12,7 +12,7 @@ class WP_Piwik {
 	 *
 	 * @var Runtime environment variables
 	 */
-	private static $revisionId = 2015051501, $version = '0.10.0.7', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
+	private static $revisionId = 2015051801, $version = '0.10.0.8', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
 	
 	/**
 	 * Constructor class to configure and register all WP-Piwik components
@@ -26,7 +26,6 @@ class WP_Piwik {
 		$this->addFilters ();
 		$this->addActions ();
 		$this->addShortcodes ();
-		self::$settings->save ();
 	}
 	
 	/**
@@ -47,6 +46,7 @@ class WP_Piwik {
 			$this->updatePlugin ();
 		if ($this->isConfigSubmitted ())
 			$this->applySettings ();
+		self::$settings->save ();
 	}
 	
 	/**
@@ -922,11 +922,19 @@ class WP_Piwik {
 	public function request($id, $debug = false) {
 		if ( self::$settings->getGlobalOption ( 'piwik_mode' ) == 'disabled' )
 			return 'n/a';
-		if (! isset ( self::$request ))
+		if (! isset ( self::$request ) || empty ( self::$request ))
 			self::$request = (self::$settings->getGlobalOption ( 'piwik_mode' ) == 'http' || self::$settings->getGlobalOption ( 'piwik_mode' ) == 'pro' ? new WP_Piwik\Request\Rest ( $this, self::$settings ) : new WP_Piwik\Request\Php ( $this, self::$settings ));
 		if ($debug)
 			return self::$request->getDebug ( $id );
 		return self::$request->perform ( $id );
+	}
+	
+	/**
+	 * Reset request object
+	 */
+	public function resetRequest() {
+		self::$request->reset();
+		self::$request = NULL;
 	}
 	
 	/**
@@ -1064,8 +1072,7 @@ class WP_Piwik {
 	 * @return string tracking code
 	 */
 	public function updateTrackingCode($siteId = false, $blogId = null) {
-		if (! $siteId)
-			$siteId = $this->getPiwikSiteId ();
+		$siteId = $this->getPiwikSiteId ();
 		if (self::$settings->getGlobalOption ( 'track_mode' ) == 'disabled' || self::$settings->getGlobalOption ( 'track_mode' ) == 'manually')
 			return false;
 		$id = WP_Piwik\Request::register ( 'SitesManager.getJavascriptTag', array (

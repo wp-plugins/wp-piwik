@@ -87,7 +87,7 @@ abstract class Widget {
 	 */
 	public function show() {
 		$response = self::$wpPiwik->request ( $this->apiID [$this->method] );
-		if (! empty ( $response ['result'] ) && $response ['result'] = 'error')
+		if (! empty ( $response ['result'] ) && $response ['result'] == 'error')
 			$this->out( '<strong>' . __ ( 'Piwik error', 'wp-piwik' ) . ':</strong> ' . htmlentities ( $response ['message'], ENT_QUOTES, 'utf-8' ) );
 		else {
 			if (isset ( $response [0] ['nb_uniq_visitors'] ))
