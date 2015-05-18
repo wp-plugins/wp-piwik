@@ -542,7 +542,7 @@ class Settings extends \WP_Piwik\Admin {
 				_e('enabled','wp-piwik');
 			?></strong>.</li>
 		</ol>
-		<p><a href="<?php echo admin_url( (self::$settings->checkNetworkActivation () ? 'network/settings' : 'options-general').'.php?page='.$_GET['page'].'&testscript=1' ); ?>">Run testscript</a>. <a href="<?php echo admin_url( (self::$settings->checkNetworkActivation () ? 'network/settings' : 'options-general'). '.php?page='.$_GET['page'].'&sitebrowser=1' ); ?>">Sitebrowser</a>.</p>
+		<p><a href="<?php echo admin_url( (self::$settings->checkNetworkActivation () ? 'network/settings' : 'options-general').'.php?page='.$_GET['page'].'&testscript=1' ); ?>">Run testscript</a>. <a href="<?php echo admin_url( (self::$settings->checkNetworkActivation () ? 'network/settings' : 'options-general').'.php?page='.$_GET['page'].'&sitebrowser=1' ); ?>">Sitebrowser</a>.</p>
 		<h3><?php _e('Latest support threads on WordPress.org', 'wp-piwik'); ?></h3><?php 
 		$supportThreads = $this->readRSSFeed('http://wordpress.org/support/rss/plugin/wp-piwik');
 		if (!empty($supportThreads)) {
