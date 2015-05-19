@@ -12,7 +12,7 @@ if (self::$settings->checkNetworkActivation ()) {
 $oldOptions = get_option ( 'wp-piwik_settings', array () );
 delete_option('wp-piwik_settings');
 	
-if (function_exists('is_multisite') && is_multisite()) {
+if (self::$settings->checkNetworkActivation ()) {
 	global $wpdb;
 	$aryBlogs = $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id');
 	if (is_array($aryBlogs))

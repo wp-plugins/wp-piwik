@@ -91,7 +91,7 @@ class Settings {
 			'track_datacfasync' => false,
 			'track_cdnurl' => '',
 			'track_cdnurlssl' => '',
-			'force_protocol' => 'disabled' 
+			'force_protocol' => 'disabled'
 	), $settings = array (
 			'name' => '',
 			'site_id' => NULL,
@@ -234,7 +234,8 @@ class Settings {
 				'piwik_token' => $this->getGlobalOption ( 'piwik_token' ),
 				'piwik_url' => $this->getGlobalOption ( 'piwik_url' ),
 				'piwik_path' => $this->getGlobalOption ( 'piwik_path' ),
-				'piwik_mode' => $this->getGlobalOption ( 'piwik_mode' ) 
+				'piwik_user' => $this->getGlobalOption ( 'piwik_user' ),
+				'piwik_mode' => $this->getGlobalOption ( 'piwik_mode' )
 		);
 		if (is_plugin_active_for_network ( 'wp-piwik/wp-piwik.php' )) {
 			delete_site_option ( 'wp-piwik_global-settings' );

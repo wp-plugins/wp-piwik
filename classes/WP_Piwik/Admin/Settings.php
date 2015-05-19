@@ -18,12 +18,17 @@ class Settings extends \WP_Piwik\Admin {
 			new \WP_Piwik\Admin\Sitebrowser(self::$wpPiwik);
 			return;
 		}
-		global $wp_roles;
+		if (isset($_GET['clear']) && $_GET['clear']) {
+			$this->clear($_GET['clear'] == 2);
+			self::$wpPiwik->resetRequest();
+			self::$wpPiwik->updateTrackingCode();			
+		}
 		if (isset ( $_POST ) && isset ( $_POST ['wp-piwik'] )) {
 			$this->showBox ( 'updated', 'yes', __ ( 'Changes saved.' ) );
 			self::$wpPiwik->resetRequest();
 			self::$wpPiwik->updateTrackingCode();
 		}
+		global $wp_roles;
 		?>
 <div id="plugin-options-wrap" class="widefat">
 	<?php 
@@ -31,7 +36,7 @@ class Settings extends \WP_Piwik\Admin {
 		if (isset($_GET['testscript']) && $_GET['testscript'])
 			$this->runTestscript();
 	?>
-	<form method="post">
+	<form method="post" action="?page=<?php echo $_GET['page']; ?>">
 		<input type="hidden" name="wp-piwik[revision]" value="<?php echo self::$settings->getGlobalOption('revision'); ?>" />
 		<?php wp_nonce_field('wp-piwik_settings'); ?>
 		<table class="wp-piwik-form">
@@ -543,7 +548,13 @@ class Settings extends \WP_Piwik\Admin {
 				_e('enabled','wp-piwik');
 			?></strong>.</li>
 		</ol>
-		<p><a href="<?php echo admin_url( (self::$settings->checkNetworkActivation () ? 'network/settings' : 'options-general').'.php?page='.$_GET['page'].'&testscript=1' ); ?>">Run testscript</a>. <a href="<?php echo admin_url( (self::$settings->checkNetworkActivation () ? 'network/settings' : 'options-general').'.php?page='.$_GET['page'].'&sitebrowser=1' ); ?>">Sitebrowser</a>.</p>
+		<p><?php _e('Tools', 'wp-piwik'); ?>:</p>
+		<ol>
+			<li><a href="<?php echo admin_url( (self::$settings->checkNetworkActivation () ? 'network/settings' : 'options-general').'.php?page='.$_GET['page'].'&testscript=1' ); ?>"><?php _e('Run testscript', 'wp-piwik'); ?></a></li>
+			<li><a href="<?php echo admin_url( (self::$settings->checkNetworkActivation () ? 'network/settings' : 'options-general').'.php?page='.$_GET['page'].'&sitebrowser=1' ); ?>"><?php _e('Sitebrowser', 'wp-piwik'); ?></a></li>
+			<li><a href="<?php echo admin_url( (self::$settings->checkNetworkActivation () ? 'network/settings' : 'options-general').'.php?page='.$_GET['page'].'&clear=1' ); ?>"><?php _e('Clear cache', 'wp-piwik'); ?></a></li>
+			<li><a onclick="return confirm('<?php _e('Are you sure you want to clear all settings except the connection settings?', 'wp-piwik'); ?>')" href="<?php echo admin_url( (self::$settings->checkNetworkActivation () ? 'network/settings' : 'options-general').'.php?page='.$_GET['page'].'&clear=2' ); ?>"><?php _e('Clear cache and settings except connection settings', 'wp-piwik'); ?></a></li>
+		</ol>
 		<h3><?php _e('Latest support threads on WordPress.org', 'wp-piwik'); ?></h3><?php 
 		$supportThreads = $this->readRSSFeed('http://wordpress.org/support/rss/plugin/wp-piwik');
 		if (!empty($supportThreads)) {
@@ -585,6 +596,33 @@ class Settings extends \WP_Piwik\Admin {
 			}
 		}
 		return $result;
+	}
+	
+	/**
+	 * Clear cache and reset settings
+	 *
+	 * @param boolean $clearSettings set to true to reset settings (default: false)
+	 */
+	private function clear($clearSettings = false) {
+		if ($clearSettings) {
+			self::$settings->resetSettings();
+			$this->showBox ( 'updated', 'yes', __ ( 'Settings cleared (except connection settings).' ) );
+		}
+		global $wpdb;		
+		if (self::$settings->checkNetworkActivation()) {
+			$aryBlogs = $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id');
+			if (is_array($aryBlogs))
+				foreach ($aryBlogs as $aryBlog) {
+					switch_to_blog($aryBlog->blog_id);
+					$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '_transient_wp-piwik_%'");
+					$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '_transient_timeout_wp-piwik_%'");
+					restore_current_blog();
+				}
+		} else {
+			$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '_transient_wp-piwik_%'");
+			$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '_transient_timeout_wp-piwik_%'");
+		}
+		$this->showBox ( 'updated', 'yes', __ ( 'Cache cleared.' ) );
 	}
 	
 	/**

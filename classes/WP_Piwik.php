@@ -12,7 +12,7 @@ class WP_Piwik {
 	 *
 	 * @var Runtime environment variables
 	 */
-	private static $revisionId = 2015051801, $version = '0.10.0.8', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
+	private static $revisionId = 2015051901, $version = '0.10.0.9', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
 	
 	/**
 	 * Constructor class to configure and register all WP-Piwik components
@@ -933,7 +933,8 @@ class WP_Piwik {
 	 * Reset request object
 	 */
 	public function resetRequest() {
-		self::$request->reset();
+		if (is_object(self::$request))
+			self::$request->reset();
 		self::$request = NULL;
 	}
 	

@@ -82,7 +82,6 @@ if (function_exists('is_multisite') && is_multisite()) {
 			$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '_transient_wp-piwik_%'");
 			$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '_transient_timeout_wp-piwik_%'");
 			restore_current_blog();
-			
 		}
 	foreach ($globalSettings as $key)
 		delete_site_option('wp-piwik_global-'.$key);

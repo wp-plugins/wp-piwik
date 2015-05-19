@@ -127,6 +127,10 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 
 == Changelog ==
 
+= 0.10.0.9 =
+* Add clear cache function.
+* Add clear settings function.
+
 = 0.10.0.8 =
 * Bugfix: Sitebrowser link (settings page, support) fixed
 * Bugfix: Use new settings directly after saving (reloading is not necessary anymore)
