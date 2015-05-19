@@ -127,10 +127,16 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 
 == Changelog ==
 
+= 0.10.0.8 =
+* Bugfix: Sitebrowser link (settings page, support) fixed
+* Bugfix: Use new settings directly after saving (reloading is not necessary anymore)
+* Optimized caching behaviour
+* Language update (German, French)
+
 = 0.10.0.7 =
 * Bugfix: Opt-out shortcode output fix
 * Bugfix: Opt-out shortcode will also work in "pro" and "php" mode
-* Bugfix: Sitebrowser link (settings page, support) fixed
+* Bugfix: Test script link (settings page, support) fixed
 * Bugfix: Removed test script errors and notices
 * Bugfix: Keep sure the revion ID is stored and avoid re-installing the plugin again and again
 * Bugfix: http/pro - after configuration the settings page had to be reloaded once to start working
