@@ -596,8 +596,10 @@ class WP_Piwik {
 	 */
 	private function isInstalled() {
 		$oldSettings = $this->getWordPressOption ( 'wp-piwik_global-settings', false );
-		if ($oldSettings && isset( $oldSettings['revision'] ))
+		if ($oldSettings && isset( $oldSettings['revision'] )) {
+			self::log('Save old settings');
 			self::$settings->setGlobalOption ( 'revision', $oldSettings['revision'] );
+		} else self::log( 'Current revision '.self::$settings->getGlobalOption ( 'revision' ) );
 		return self::$settings->getGlobalOption ( 'revision' ) > 0;
 	}
 	

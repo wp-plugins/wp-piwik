@@ -78,7 +78,7 @@ class Sitebrowser extends \WP_List_Table {
 			if (empty ( $dataset ['piwikid'] ) || $dataset ['piwikid'] == 'n/a')
 				$this->data [$key] ['piwikid'] = __ ( 'Site not created yet.', 'wp-piwik' );
 			if ($this->wpPiwik->isNetworkMode ())
-				$this->data [$key] ['name'] = '<a href="?page=wp-piwik_stats&wpmu_show_stats=' . $dataset ['id'] . '">' . $dataset ['name'] . '</a>';
+				$this->data [$key] ['name'] = '<a href="index.php?page=wp-piwik_stats&wpmu_show_stats=' . $dataset ['id'] . '">' . $dataset ['name'] . '</a>';
 		}
 		$this->items = $this->data;
 		return count ( $this->items );
