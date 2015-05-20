@@ -23,7 +23,7 @@ Languages: English, French, German. Partially supported: Albanian, Azerbaijani, 
 
 *This plugin is not created or provided by the Piwik project team.*
 
-== Shortcodes ==
+= Shortcodes =
 You can use following shortcodes if activated:
 
     [wp-piwik module="overview" title="" period="day" date="yesterday"]
@@ -39,6 +39,15 @@ Shows the chosen keys value related to the current post. You can define a range 
 is equal to *[wp-piwik module="overview" title="" period="day" date="yesterday"]*.
 
 More shortcodes will follow soon.
+
+= Credits =
+
+* Graphs powered by [jqPlot](http://www.jqplot.com/) (GPL 2.0 and MIT) and  and [jQuery Sparklines](http://omnipotent.net/jquery.sparkline/) (New BSD License).
+* Metabox support inspired by [Heiko Rabe's metabox demo plugin](http://www.code-styling.de/english/how-to-use-wordpress-metaboxes-at-own-plugins).
+* Donations: Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S., Thomas M., John C., Andreas G., Ben M., Myra R. I., Carlos U. R.-S., Oleg I., M. N., Daniel K., James L., Jochen K., Cyril P., Thomas K., the Piwik team itself, and all people flattering this.
+* All users who send me mails containing criticism, commendation, feature requests and bug reports - you help me to make WP-Piwik much better!
+
+Thank you all!
 
 == Frequently Asked Questions ==
 
@@ -469,12 +478,3 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 
 = 0.2.0 =
 * First public version.
-
-== Credits ==
-
-* Graphs powered by [jqPlot](http://www.jqplot.com/) (GPL 2.0 and MIT) and  and [jQuery Sparklines](http://omnipotent.net/jquery.sparkline/) (New BSD License).
-* Metabox support inspired by [Heiko Rabe's metabox demo plugin](http://www.code-styling.de/english/how-to-use-wordpress-metaboxes-at-own-plugins).
-* Donations: Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S., Thomas M., John C., Andreas G., Ben M., Myra R. I., Carlos U. R.-S., Oleg I., M. N., Daniel K., James L., Jochen K., Cyril P., Thomas K., the Piwik team itself, and all people flattering this.
-* All users who send me mails containing criticism, commendation, feature requests and bug reports - you help me to make WP-Piwik much better!
-
-Thank you all!
