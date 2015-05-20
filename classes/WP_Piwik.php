@@ -1075,7 +1075,8 @@ class WP_Piwik {
 	 * @return string tracking code
 	 */
 	public function updateTrackingCode($siteId = false, $blogId = null) {
-		$siteId = $this->getPiwikSiteId ();
+		if (!$siteId)
+			$siteId = $this->getPiwikSiteId ();
 		if (self::$settings->getGlobalOption ( 'track_mode' ) == 'disabled' || self::$settings->getGlobalOption ( 'track_mode' ) == 'manually')
 			return false;
 		$id = WP_Piwik\Request::register ( 'SitesManager.getJavascriptTag', array (
