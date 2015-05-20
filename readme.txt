@@ -11,19 +11,19 @@ This plugin adds a Piwik stats site to your WordPress or WordPress multisite das
 
 == Description ==
 
-This plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog using wp_footer.
+This plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog.
 
-To use this plugin you will need your own Piwik instance. If you do not already have a Piwik setup, you have two simple options: use either [Self-hosted](http://piwik.org/) (**Piwik 2.7.0 or higher**) or [Cloud-hosted](http://piwik.org/hosting/). 
+To use this plugin you will need your own Piwik instance. If you do not already have a Piwik setup, you have two simple options: use either [Self-hosted](http://piwik.org/) (**Piwik 2.9.0 or higher**) or [Cloud-hosted](http://piwik.org/hosting/). 
 
-**PHP 5.3 or higher** is strictly required.
+**Requirements:** PHP 5.4 (or higher), WordPress 4.0 (or higher), Piwik 2.9 (or higher)
  
+Languages: English, French, German. Partially supported: Albanian, Azerbaijani, Belorussian, Chinese (simplified), Dutch, Greek, Italian, Lithuanian, Norwegian, Persian, Romanian, Russian, Spanish, Swedish, Ukrainian
+
+**Note:** If you vote "It's broken", please tell me about your problem. It's hard to fix a bug I don't know about! ;-)
+
 *This plugin is not created or provided by the Piwik project team.*
 
-Languages: English, German, Albanian, Azerbaijani, Belorussian, Chinese (simplified), Dutch, French, Greek, Italian, Lithuanian, Norwegian, Persian, Romanian, Russian, Spanish, Swedish, Ukrainian
-
-*Note: If you vote "It's broken", please tell me about your problem. It's hard to fix a bug I don't know about! ;-)*
-
-= Shortcodes =
+== Shortcodes ==
 You can use following shortcodes if activated:
 
     [wp-piwik module="overview" title="" period="day" date="yesterday"]
@@ -39,20 +39,6 @@ Shows the chosen keys value related to the current post. You can define a range 
 is equal to *[wp-piwik module="overview" title="" period="day" date="yesterday"]*.
 
 More shortcodes will follow soon.
-
-= WP multisite =
-
-See section "Installation".
-
-= Credits =
-
-* Graphs powered by [jqPlot](http://www.jqplot.com/) (GPL 2.0 and MIT) and  and [jQuery Sparklines](http://omnipotent.net/jquery.sparkline/) (New BSD License).
-* Metabox support inspired by [Heiko Rabe's metabox demo plugin](http://www.code-styling.de/english/how-to-use-wordpress-metaboxes-at-own-plugins).
-* Translation credits see plugin settings
-* Donations: Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S., Thomas M., John C., Andreas G., Ben M., Myra R. I., Carlos U. R.-S., Oleg I., M. N., Daniel K., James L., Jochen K., Cyril P., Thomas K., the Piwik team itself, and all people flattering this.
-* All users who send me mails containing criticism, commendation, feature requests and bug reports - you help me to make WP-Piwik much better!
-
-Thank you all!
 
 == Frequently Asked Questions ==
 
@@ -123,7 +109,7 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 
 == Upgrade Notice ==
 
-This is a full refactored version of WP-Piwik. Please check your settings after updating and make sure everything is working as expected. If you want to upgrade from 0.8.x to 0.10.x, please install 0.9.9.18 first: https://downloads.wordpress.org/plugin/wp-piwik.0.9.9.18.zip
+This is a full refactored version of WP-Piwik. Please check your settings after updating and make sure everything is working as expected. If you want to upgrade from 0.8.x, please install 0.9.9.18 first: https://downloads.wordpress.org/plugin/wp-piwik.0.9.9.18.zip
 
 == Changelog ==
 
@@ -483,3 +469,12 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 
 = 0.2.0 =
 * First public version.
+
+== Credits ==
+
+* Graphs powered by [jqPlot](http://www.jqplot.com/) (GPL 2.0 and MIT) and  and [jQuery Sparklines](http://omnipotent.net/jquery.sparkline/) (New BSD License).
+* Metabox support inspired by [Heiko Rabe's metabox demo plugin](http://www.code-styling.de/english/how-to-use-wordpress-metaboxes-at-own-plugins).
+* Donations: Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S., Thomas M., John C., Andreas G., Ben M., Myra R. I., Carlos U. R.-S., Oleg I., M. N., Daniel K., James L., Jochen K., Cyril P., Thomas K., the Piwik team itself, and all people flattering this.
+* All users who send me mails containing criticism, commendation, feature requests and bug reports - you help me to make WP-Piwik much better!
+
+Thank you all!
