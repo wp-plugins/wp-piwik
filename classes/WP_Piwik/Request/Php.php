@@ -35,6 +35,7 @@
 			else serialize(array('result' => 'error', 'message' => __('Class Piwik\API\Request does not exists.','wp-piwik')));
 			if (isset($request))
 				$result = $request->process();
+			else $result = null;
 			if (!headers_sent())
 				header("Content-Type: text/html", true);
 			$result = $this->unserialize($result);

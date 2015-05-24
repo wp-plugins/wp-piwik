@@ -39,24 +39,37 @@
 				else $unique = 'sum_daily_nb_uniq_visitors';
 				$count = 0;
 				$sum = 0;
+				$class = array();
 				foreach ($response as $row) {
 					$count++;
 					$sum += isset($row[$unique])?$row[$unique]:0;
 					if ($count < $this->limit)
 						$tableBody[$row['label']] = array($row['label'], $row[$unique], 0);
-					elseif (!isset($tableBody['Others']))
+					elseif (!isset($tableBody['Others'])) {
 						$tableBody['Others'] = array($row['label'], $row[$unique], 0);
-					else 
+						$class['Others'] = 'wp-piwik-hideDetails';
+						$js['Others'] = '$j'."( '.wp-piwik-hideDetails' ).toggle( 'hidden' );";
+						$tableBody[$row['label']] = array($row['label'], $row[$unique], 0);
+						$class[$row['label']] = 'wp-piwik-hideDetails hidden';
+						$js[$row['label']] = '$j'."( '.wp-piwik-hideDetails' ).toggle( 'hidden' );";
+					} else {
 						$tableBody['Others'][1] += $row[$unique];
+						$tableBody[$row['label']] = array($row['label'], $row[$unique], 0);
+						$class[$row['label']] = 'wp-piwik-hideDetails hidden';
+						$js[$row['label']] = '$j'."( '.wp-piwik-hideDetails' ).toggle( 'hidden' );";
+					}
 				}
 				if ($count > $this->limit)
-					$tableBody['Others'][0] = __('Others', 'wp-piwik');
+					$tableBody['Others'][0] = '<u>'.__('Others', 'wp-piwik').'</u>';
+				elseif ($count == $this->limit) {
+					$class['Others'] = $js['Others'] = '';
+				}
 
 				foreach ($tableBody as $key => $row)
 					$tableBody[$key][2] = number_format($row[1]/$sum*100, 2).'%';
 				
 				if (!empty($tableBody)) $this->pieChart($tableBody);
-				$this->table($tableHead, $tableBody, null);
+				$this->table($tableHead, $tableBody, null, false, $js, $class);
 			}
 		}
 				
