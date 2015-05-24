@@ -124,6 +124,7 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 
 = 1.0.0 =
 * Feature: Expand "other" values on click
+* Bugfix: Avoid notices on invalid file path (PHP API)
 
 = 0.10.1.0 =
 * Bugfix: Fixed memory & timeout issue on multisites
