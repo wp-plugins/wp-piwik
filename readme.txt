@@ -13,7 +13,7 @@ This plugin adds a Piwik stats site to your WordPress or WordPress multisite das
 
 This plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog.
 
-To use this plugin you will need your own Piwik instance. If you do not already have a Piwik setup, you have two simple options: use either [Self-hosted](http://piwik.org/) (**Piwik 2.9.0 or higher**) or [Cloud-hosted](http://piwik.org/hosting/). 
+To use this plugin you will need your own Piwik instance. If you do not already have a Piwik setup, you have two simple options: use either [Self-hosted](http://piwik.org/) or [Cloud-hosted](http://piwik.org/hosting/). 
 
 **Requirements:** PHP 5.4 (or higher), WordPress 4.0 (or higher), Piwik 2.9 (or higher)
  
@@ -38,12 +38,9 @@ Shows the chosen keys value related to the current post. You can define a range 
 	[wp-piwik]
 is equal to *[wp-piwik module="overview" title="" period="day" date="yesterday"]*.
 
-More shortcodes will follow soon.
-
 = Credits =
 
 * Graphs powered by [jqPlot](http://www.jqplot.com/) (GPL 2.0 and MIT) and  and [jQuery Sparklines](http://omnipotent.net/jquery.sparkline/) (New BSD License).
-* Metabox support inspired by [Heiko Rabe's metabox demo plugin](http://www.code-styling.de/english/how-to-use-wordpress-metaboxes-at-own-plugins).
 * Donations: Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S., Thomas M., John C., Andreas G., Ben M., Myra R. I., Carlos U. R.-S., Oleg I., M. N., Daniel K., James L., Jochen K., Cyril P., Thomas K., the Piwik team itself, and all people flattering this.
 * All users who send me mails containing criticism, commendation, feature requests and bug reports - you help me to make WP-Piwik much better!
 
@@ -55,7 +52,7 @@ Thank you all!
 
 To use this plugin you will need your own Piwik instance. If you do not already have a Piwik setup, you have two simple options: use either [Self-hosted](http://piwik.org/) or [Cloud-hosted](http://piwik.org/hosting/). 
 
-As soon as Piwik works, you'll be able to configure WP-Piwik: The Piwik URL is the same URL you use to access your Piwik, e.g. for the demo site: http://demo.piwik.org. The auth token is some kind of secret password, which allows WP-Piwik to get the necessary data from Piwik. To get your auth token, log in to Piwik, click at your user name (top right) and click at "API" (left sidebar menu).
+As soon as Piwik works, you'll be able to configure WP-Piwik: The Piwik URL is the same URL you use to access your Piwik, e.g. for the demo site: http://demo.piwik.org. The auth token is some kind of a secret password, which allows WP-Piwik to get the necessary data from Piwik. To get your auth token, log in to Piwik, click at your user name (top right) and click at "API" (left sidebar menu).
 
 = Can I contribute to WP-Piwik as translator? =
 
@@ -71,10 +68,6 @@ Thank you very much! :-)
 
 Try to enable the "avoid mod_security" option (WP-Piwik settings, Tracking tab) or create a mod_security whitelist.
 
-= WP-Piwik does not work with SSL! =
-
-See [this support thread](http://wordpress.org/support/topic/plugin-wp-piwik-https-ssl-support?replies=3).
-
 = Overview shortcode shows no unique visitors using a yearly range. =
 
 See [Piwik FAQ](http://piwik.org/faq/how-to/#faq_113).
@@ -87,11 +80,11 @@ See [Piwik FAQ](http://piwik.org/faq/how-to/#faq_113).
 
 2. Activate the plugin through the 'Plugins' menu in WordPress. 
 
-3. Open the new 'Settings/WP-Piwik Settings' menu, enter your Piwik base URL and your auth token. Save settings.
+3. Open the new 'Settings/WP-Piwik Settings' menu and follow the instructions to configure your Piwik connection. Save settings.
 
 4. If you have view access to multiple site stats and did not enable "auto config", choose your blog and save settings again.
 
-5. Look at 'Dashboard/WP-Piwik' to get your site stats.
+5. Look at 'Dashboard/WP-Piwik' to see your site stats.
 
 = Install WP-Piwik on a WordPress blog network (WPMU/WP multisite) =
 
