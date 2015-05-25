@@ -613,7 +613,7 @@ class Settings extends \WP_Piwik\Admin {
 			$aryBlogs = \WP_Piwik\Settings::getBlogList();
 			if (is_array($aryBlogs))
 				foreach ($aryBlogs as $aryBlog) {
-					switch_to_blog($aryBlog->blog_id);
+					switch_to_blog($aryBlog['blog_id']);
 					$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '_transient_wp-piwik_%'");
 					$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '_transient_timeout_wp-piwik_%'");
 					restore_current_blog();

@@ -231,7 +231,7 @@ class Settings {
 			$aryBlogs = self::getBlogList();
 			if (is_array($aryBlogs))
 				foreach ($aryBlogs as $aryBlog) {
-					switch_to_blog($aryBlog->blog_id);
+					switch_to_blog($aryBlog['blog_id']);
 					$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'wp-piwik-%'");
 					restore_current_blog();
 				}
@@ -247,9 +247,9 @@ class Settings {
 		if ( !\wp_is_large_network() )
 			return \wp_get_sites ( array('limit' => $limit, 'offset' => $page?($page - 1) * $limit:null));
 		if ($limit && $page) 
-			$queryLimit = 'LIMIT '.(int) (($page - 1) * $limit).','.(int) $limit.' ';
+			$queryLimit = ' LIMIT '.(int) (($page - 1) * $limit).','.(int) $limit;
 		global $wpdb;
-		return $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' '.$queryLimit.'ORDER BY blog_id');
+		return $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id'.$queryLimit, ARRAY_A);
 	}
 	
 	/**
