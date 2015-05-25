@@ -376,4 +376,18 @@ class Settings {
 			return stripslashes ( $value );
 		return $value;
 	}
+	
+	/**
+	 * Get debug data
+	 *
+	 * @return array WP-Piwik settings for debug output
+	 */
+	public function getDebugData() {
+		$debug = array(
+			'global_settings' => $this->globalSettings,
+			'settings' => $this->settings
+		);
+		$debug['global_settings']['piwik_token'] = !empty($debug['global_settings']['piwik_token'])?'set':'not set';
+		return $debug;
+	}
 }

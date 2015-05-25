@@ -125,7 +125,9 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 = 1.0.0 =
 * Feature: Expand "other" values on click
 * Bugfix: Avoid notices on invalid file path (PHP API)
+* Bugfix: Cookie lifetime input boxes are in some cases shown or hidden by mistake
 * Network (multisite): Updated plugin to use wp_get_sites if possible
+* Test script: Settings dump added
 
 = 0.10.1.0 =
 * Bugfix: Fixed memory & timeout issue on multisites

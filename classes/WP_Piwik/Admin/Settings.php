@@ -44,12 +44,12 @@ class Settings extends \WP_Piwik\Admin {
 			<?php
 		$submitButton = '<tr><td colspan="2"><p class="submit"><input name="Submit" type="submit" class="button-primary" value="' . esc_attr__ ( 'Save Changes' ) . '" /></p></td></tr>';
 		printf ( '<tr><td colspan="2">%s</td></tr>', __ ( 'Thanks for using WP-Piwik!', 'wp-piwik' ) );
-		// $this->showDonation();
 		if (self::$wpPiwik->isConfigured ()) {
 			$piwikVersion = self::$wpPiwik->request ( 'global.getPiwikVersion' );
-			if (! empty ( $piwikVersion ) && ! is_array ( $piwikVersion ))
+			if (! empty ( $piwikVersion ) && ! is_array ( $piwikVersion )) {
 				$this->showText ( sprintf ( __ ( 'WP-Piwik %s is successfully connected to Piwik %s.', 'wp-piwik' ), self::$wpPiwik->getPluginVersion (), $piwikVersion ) . ' ' . (! self::$wpPiwik->isNetworkMode () ? sprintf ( __ ( 'You are running WordPress %s.', 'wp-piwik' ), get_bloginfo ( 'version' ) ) : sprintf ( __ ( 'You are running a WordPress %s blog network (WPMU). WP-Piwik will handle your sites as different websites.', 'wp-piwik' ), get_bloginfo ( 'version' ) )) );
-			else {
+				$this->showDonation();
+			} else {
 				$this->showBox ( 'error', 'no', sprintf ( __ ( 'WP-Piwik %s was not able to connect to Piwik using your configuration. Check the &raquo;Connect to Piwik&laquo; section below.', 'wp-piwik' ), self::$wpPiwik->getPluginVersion () ) );
 			}
 		} else
@@ -227,13 +227,13 @@ class Settings extends \WP_Piwik\Admin {
 		
 		$this->showCheckbox ( 'disable_cookies', __ ( 'Disable cookies', 'wp-piwik' ), __ ( 'Disable all tracking cookies for a visitor.', 'wp-piwik' ), $isNotGeneratedTracking, $fullGeneratedTrackingGroup );
 		
-		$this->showCheckbox ( 'limit_cookies', __ ( 'Limit cookie lifetime', 'wp-piwik' ), __ ( 'You can limit the cookie lifetime to avoid tracking your users over a longer period as necessary.', 'wp-piwik' ), $isNotGeneratedTracking, $fullGeneratedTrackingGroup, true, '$j(\'tr.wp-piwik-cookielifetime-option\').toggle(\'wp-piwik-hidden\');' );
-		
-		$this->showInput ( 'limit_cookies_visitor', __ ( 'Visitor timeout (seconds)', 'wp-piwik' ), false, $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'limit_cookies' ), $fullGeneratedTrackingGroup.' wp-piwik-cookielifetime-option' );
+		$this->showCheckbox ( 'limit_cookies', __ ( 'Limit cookie lifetime', 'wp-piwik' ), __ ( 'You can limit the cookie lifetime to avoid tracking your users over a longer period as necessary.', 'wp-piwik' ), $isNotGeneratedTracking, $fullGeneratedTrackingGroup, true, '$j(\'tr.wp-piwik-cookielifetime-option\').toggleClass(\'wp-piwik-hidden\');' );
 
-		$this->showInput ( 'limit_cookies_session', __ ( 'Session timeout (seconds)', 'wp-piwik' ), false, $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'limit_cookies' ), $fullGeneratedTrackingGroup . ' wp-piwik-cookielifetime-option' );
+		$this->showInput ( 'limit_cookies_visitor', __ ( 'Visitor timeout (seconds)', 'wp-piwik' ), false, $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'limit_cookies' ), $fullGeneratedTrackingGroup.' wp-piwik-cookielifetime-option'. (self::$settings->getGlobalOption ( 'limit_cookies' )? '': ' wp-piwik-hidden') );
 
-		$this->showInput ( 'limit_cookies_referral', __ ( 'Referral timeout (seconds)', 'wp-piwik' ), false, $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'limit_cookies' ), $fullGeneratedTrackingGroup . ' wp-piwik-cookielifetime-option' );
+		$this->showInput ( 'limit_cookies_session', __ ( 'Session timeout (seconds)', 'wp-piwik' ), false, $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'limit_cookies' ), $fullGeneratedTrackingGroup .' wp-piwik-cookielifetime-option'. (self::$settings->getGlobalOption ( 'limit_cookies' )? '': ' wp-piwik-hidden') );
+
+		$this->showInput ( 'limit_cookies_referral', __ ( 'Referral timeout (seconds)', 'wp-piwik' ), false, $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'limit_cookies' ), $fullGeneratedTrackingGroup .' wp-piwik-cookielifetime-option'. (self::$settings->getGlobalOption ( 'limit_cookies' )? '': ' wp-piwik-hidden') );
 		
 		$this->showCheckbox ( 'track_admin', __ ( 'Track admin pages', 'wp-piwik' ), __ ( 'Enable to track users on admin pages (remember to configure the tracking filter appropriately).', 'wp-piwik' ), $isNotTracking, $fullGeneratedTrackingGroup . ' wp-piwik-track-option-manually' );
 		
@@ -275,9 +275,9 @@ class Settings extends \WP_Piwik\Admin {
 		
 		$this->showCheckbox ( 'track_datacfasync', __ ( 'Add data-cfasync=false', 'wp-piwik' ), __ ( 'Adds data-cfasync=false to the script tag, e.g., to ask Rocket Loader to ignore the script.' . ' ' . sprintf ( __ ( 'See %sCloudFlare Knowledge Base%s.', 'wp-piwik' ), '<a href="https://support.cloudflare.com/hc/en-us/articles/200169436-How-can-I-have-Rocket-Loader-ignore-my-script-s-in-Automatic-Mode-">', '</a>' ), 'wp-piwik' ) );
 		
-		$this->showInput ( 'track_cdnurl', __ ( 'CDN URL', 'wp-piwik' ), 'Enter URL if you want to load the tracking code via CDN.' );
+		$this->showInput ( 'track_cdnurl', __ ( 'CDN URL', 'wp-piwik' ).' http://', 'Enter URL if you want to load the tracking code via CDN.' );
 		
-		$this->showInput ( 'track_cdnurlssl', __ ( 'CDN URL (SSL)', 'wp-piwik' ), 'Enter URL if you want to load the tracking code via a separate SSL CDN.' );
+		$this->showInput ( 'track_cdnurlssl', __ ( 'CDN URL (SSL)', 'wp-piwik' ).' https://', 'Enter URL if you want to load the tracking code via a separate SSL CDN.' );
 		
 		$this->showSelect ( 'force_protocol', __ ( 'Force Piwik to use a specific protocol', 'wp-piwik' ), array (
 				'disabled' => __ ( 'Disabled (default)', 'wp-piwik' ),
@@ -652,7 +652,8 @@ class Settings extends \WP_Piwik\Admin {
 				'url' => get_bloginfo ( 'url' )
 			) );
 			echo "\n\n";  var_dump( self::$wpPiwik->request( $id ) ); echo "\n";
-			var_dump( self::$wpPiwik->request( $id, true ) ); echo "`";
+			var_dump( self::$wpPiwik->request( $id, true ) ); echo "\n";
+			echo "\n\n";  var_dump( self::$settings->getDebugData() ); echo "`";
 			$GLOBALS ['wp-piwik_debug'] = false;
 		?></textarea>
 		<?php } else echo '<p>Please configure WP-Piwik first.</p>'; ?>
