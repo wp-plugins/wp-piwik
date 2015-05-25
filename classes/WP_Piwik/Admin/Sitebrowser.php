@@ -42,7 +42,7 @@ class Sitebrowser extends \WP_List_Table {
 		global $pagenow;
 		if (is_plugin_active_for_network ( 'wp-piwik/wp-piwik.php' )) {
 			$total_items = $wpdb->get_var ( 'SELECT COUNT(*) FROM ' . $wpdb->blogs );
-			$blogs = $wpdb->get_results ( $wpdb->prepare ( 'SELECT blog_id FROM ' . $wpdb->blogs . ' ORDER BY blog_id LIMIT %d,%d', (($current_page - 1) * $per_page), $per_page ) );
+			$blogs = \WP_Piwik\Settings::getBlogList($per_page, $current_page);
 			foreach ( $blogs as $blog ) {
 				$blogDetails = get_blog_details ( $blog->blog_id, true );
 				$this->data [] = array (

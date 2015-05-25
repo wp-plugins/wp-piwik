@@ -17,7 +17,7 @@ To use this plugin you will need your own Piwik instance. If you do not already 
 
 **Requirements:** PHP 5.4 (or higher), WordPress 4.0 (or higher), Piwik 2.9 (or higher)
  
-Languages: English, French, German. Partially supported: Albanian, Azerbaijani, Belorussian, Chinese (simplified), Dutch, Greek, Italian, Lithuanian, Norwegian, Persian, Romanian, Russian, Spanish, Swedish, Ukrainian
+**Languages:** English, French, German. Partially supported: Albanian, Azerbaijani, Belorussian, Chinese (simplified), Dutch, Greek, Italian, Lithuanian, Norwegian, Persian, Romanian, Russian, Spanish, Swedish, Ukrainian
 
 **Note:** If you vote "It's broken", please tell me about your problem. It's hard to fix a bug I don't know about! ;-)
 
@@ -125,6 +125,7 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 = 1.0.0 =
 * Feature: Expand "other" values on click
 * Bugfix: Avoid notices on invalid file path (PHP API)
+* Network (multisite): Updated plugin to use wp_get_sites if possible
 
 = 0.10.1.0 =
 * Bugfix: Fixed memory & timeout issue on multisites

@@ -228,7 +228,7 @@ class Settings {
 		self::$wpPiwik->log ( 'Reset WP-Piwik settings' );
 		global $wpdb;
 		if ( $this->checkNetworkActivation() ) {
-			$aryBlogs = $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id');
+			$aryBlogs = self::getBlogList();
 			if (is_array($aryBlogs))
 				foreach ($aryBlogs as $aryBlog) {
 					switch_to_blog($aryBlog->blog_id);
@@ -238,6 +238,18 @@ class Settings {
 			$wpdb->query("DELETE FROM $wpdb->sitemeta WHERE meta_key LIKE 'wp-piwik_global-%'");
 		}
 		else $wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'wp-piwik_global-%'");
+	}
+	
+	/**
+	 * Get blog list
+	 */
+	public static function getBlogList($limit = null, $page = null) {
+		if ( !\wp_is_large_network() )
+			return \wp_get_sites ( array('limit' => $limit, 'offset' => $page?($page - 1) * $limit:null));
+		if ($limit && $page) 
+			$queryLimit = 'LIMIT '.(int) (($page - 1) * $limit).','.(int) $limit.' ';
+		global $wpdb;
+		return $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' '.$queryLimit.'ORDER BY blog_id');
 	}
 	
 	/**

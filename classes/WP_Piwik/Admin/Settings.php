@@ -610,7 +610,7 @@ class Settings extends \WP_Piwik\Admin {
 		}
 		global $wpdb;		
 		if (self::$settings->checkNetworkActivation()) {
-			$aryBlogs = $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id');
+			$aryBlogs = \WP_Piwik\Settings::getBlogList();
 			if (is_array($aryBlogs))
 				foreach ($aryBlogs as $aryBlog) {
 					switch_to_blog($aryBlog->blog_id);

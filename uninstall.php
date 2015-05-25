@@ -71,7 +71,14 @@ $settings = array (
 global $wpdb;
 
 if (function_exists('is_multisite') && is_multisite()) {
-	$aryBlogs = $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id');
+	if ( !wp_is_large_network() )
+		$aryBlogs = wp_get_sites ( array('limit' => $limit, 'offset' => $page?($page - 1) * $limit:null));
+	else {
+		if ($limit && $page) 
+			$queryLimit = 'LIMIT '.(int) (($page - 1) * $limit).','.(int) $limit.' ';
+		$aryBlogs = $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' '.$queryLimit.'ORDER BY blog_id');
+	}
+
 	if (is_array($aryBlogs))
 		foreach ($aryBlogs as $aryBlog) {
 			foreach ($settings as $key) {

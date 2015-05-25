@@ -14,7 +14,7 @@ delete_option('wp-piwik_settings');
 	
 if (self::$settings->checkNetworkActivation ()) {
 	global $wpdb;
-	$aryBlogs = $wpdb->get_results('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id');
+	$aryBlogs = self::$settings->getBlogList();
 	if (is_array($aryBlogs))
 		foreach ($aryBlogs as $aryBlog) {
 			$oldOptions = get_blog_option ( $aryBlog->blog_id, 'wp-piwik_settings', array () );
