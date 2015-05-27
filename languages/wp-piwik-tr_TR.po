@@ -1,13 +1,14 @@
 # Copyright (C) 2015 WP-Piwik
 # This file is distributed under the same license as the WP-Piwik package.
 # Translators:
+# Muhammet Kaan YEŞİLYURT <m.kaan@yesilyurt.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: WP-Piwik\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-piwik\n"
 "POT-Creation-Date: 2015-05-20 21:59:25+00:00\n"
-"PO-Revision-Date: 2015-05-10 13:23+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2015-05-27 11:06+0000\n"
+"Last-Translator: Muhammet Kaan YEŞİLYURT <m.kaan@yesilyurt.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/wp-piwik/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,33 +18,33 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:24
 msgid "Reload"
-msgstr ""
+msgstr "Yenile"
 
 #: classes/WP_Piwik/Admin/Settings.php:27
 msgid "Changes saved."
-msgstr ""
+msgstr "Değişiklikler kaydedildi."
 
 #: classes/WP_Piwik/Admin/Settings.php:45
 msgid "Save Changes"
-msgstr ""
+msgstr "Değişiklikleri Kaydet"
 
 #: classes/WP_Piwik/Admin/Settings.php:46
 msgid "Thanks for using WP-Piwik!"
-msgstr ""
+msgstr "WP-Piwik'i kullandığınız için teşekkürler!"
 
 #: classes/WP_Piwik/Admin/Settings.php:51
 msgid "WP-Piwik %s is successfully connected to Piwik %s."
-msgstr ""
+msgstr "WP-Piwik %s başarılı bir şekilde Piwik %s'e bağlandı"
 
 #: classes/WP_Piwik/Admin/Settings.php:51
 msgid "You are running WordPress %s."
-msgstr ""
+msgstr "WordPress %s kullanıyorsunuz."
 
 #: classes/WP_Piwik/Admin/Settings.php:51
 msgid ""
 "You are running a WordPress %s blog network (WPMU). WP-Piwik will handle "
 "your sites as different websites."
-msgstr ""
+msgstr "WordPress %s blog ağı (WPMU) kullanıyorsunuz. Piwik sitelerinizi farklı web siteleri olarak değerlendirecek."
 
 #: classes/WP_Piwik/Admin/Settings.php:53
 msgid ""
@@ -59,23 +60,23 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:60
 msgid "Connect to Piwik"
-msgstr ""
+msgstr "Piwik'e bağlan"
 
 #: classes/WP_Piwik/Admin/Settings.php:65
 msgid "Show Statistics"
-msgstr ""
+msgstr "İstatistikleri Göster"
 
 #: classes/WP_Piwik/Admin/Settings.php:69
 msgid "Enable Tracking"
-msgstr ""
+msgstr "İzlemeti Etkinleştir"
 
 #: classes/WP_Piwik/Admin/Settings.php:74
 msgid "Expert Settings"
-msgstr ""
+msgstr "Uzman Ayarları"
 
 #: classes/WP_Piwik/Admin/Settings.php:78 classes/WP_Piwik.php:914
 msgid "Support"
-msgstr ""
+msgstr "Destek"
 
 #: classes/WP_Piwik/Admin/Settings.php:82
 msgid "Credits"
@@ -87,97 +88,97 @@ msgid ""
 "WordPress admin dashboard and to add and configure your Piwik tracking code."
 " To use this you will need your own Piwik instance. If you do not already "
 "have a Piwik setup, you have two simple options: use either"
-msgstr ""
+msgstr "WP-Piwik seçilen Piwik istatistiklerinin WordPress yönetici panelinde gösterilmesine, Piwik izleme kodlarının yapılandırılmasına ve eklenmesine yarayan bir WordPress eklentisidir. Bunu kullanmak için kendi Piwik kurulumunuza ihtiyacınız vardır. Eğer halihazırda bir Piwik kurulumunuz yoksa, iki basit seçeneğiniz var: barındırma için"
 
 #: classes/WP_Piwik/Admin/Settings.php:95
 msgid "Self-hosted"
-msgstr ""
+msgstr "Kendi-sunucuzda"
 
 #: classes/WP_Piwik/Admin/Settings.php:95
 msgid "or"
-msgstr ""
+msgstr "veya"
 
 #: classes/WP_Piwik/Admin/Settings.php:95
 msgid "Cloud-hosted"
-msgstr ""
+msgstr "Bulut-barındırma"
 
 #: classes/WP_Piwik/Admin/Settings.php:98
 msgid ""
 "Neither cURL nor fopen are available. So WP-Piwik can not use the HTTP API "
 "and not connect to Piwik Pro."
-msgstr ""
+msgstr "Ne CURL ne de fopen kullanılabilir değil. Bu nedenle WP-Piwik HTTP API'sini kullanamıyor ve Piwik Pro'ya bağlanamıyor."
 
 #: classes/WP_Piwik/Admin/Settings.php:98
 #: classes/WP_Piwik/Template/MetaBoxCustomVars.php:30
 msgid "More information"
-msgstr ""
+msgstr "Daha fazla bilgi"
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 msgid "You can choose between three connection methods:"
-msgstr ""
+msgstr "Üç bağlantı yöntemi arasından seçim yapabilirsiniz:"
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 #: classes/WP_Piwik/Admin/Settings.php:103
 msgid "Self-hosted (HTTP API, default)"
-msgstr ""
+msgstr "Kendi-sunucunuzda (HHTP API, varsayılan)"
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 msgid ""
 "This is the default option for a self-hosted Piwik and should work for most "
 "configurations. WP-Piwik will connect to Piwik using http(s)."
-msgstr ""
+msgstr "Bu kendi sunucunuzda barındıracağınız Piwik kurulumları için varsayılan seçenektir ve birçok yapılandırma için çalışması gerekir. WP-Piwik http(s) kullanarak Piwik'e bağlanacaktır."
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 #: classes/WP_Piwik/Admin/Settings.php:104
 msgid "Self-hosted (PHP API)"
-msgstr ""
+msgstr "Kendi-sunucunuzda (PHP API)"
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 msgid ""
 "Choose this, if your self-hosted Piwik and WordPress are running on the same"
 " machine and you know the full server path to your Piwik instance."
-msgstr ""
+msgstr "Eğer Piwik ve WordPress aynı makinede çalışıyorsa ve Piwik kurulumunuzun tam yolunu biliyorsanız bunu seçin."
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 #: classes/WP_Piwik/Admin/Settings.php:105
 msgid "Cloud-hosted (Piwik Pro)"
-msgstr ""
+msgstr "Bulut-barındırma (Piwik Pro)"
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 msgid ""
 "If you are using a cloud-hosted Piwik by Piwik Pro, you can simply use this "
 "option."
-msgstr ""
+msgstr "Eğer Piwik Pro tarafından sağlanan bir Bulut-barındırma Piwik kurulumu kullanıyorsanız basitçe bu seçeneği kullanabilirsiniz."
 
 #: classes/WP_Piwik/Admin/Settings.php:101
 msgid "Piwik Mode"
-msgstr ""
+msgstr "Piwik Modu"
 
 #: classes/WP_Piwik/Admin/Settings.php:102
 msgid "Disabled (WP-Piwik will not connect to Piwik)"
-msgstr ""
+msgstr "Devredışı (WP-Piwik Piwik'e bağlanmayacak)"
 
 #: classes/WP_Piwik/Admin/Settings.php:108
 msgid "Piwik URL"
-msgstr ""
+msgstr "Piwik URL'si"
 
 #: classes/WP_Piwik/Admin/Settings.php:108
 msgid ""
 "Enter your Piwik URL. This is the same URL you use to access your Piwik "
 "instance, e.g. http://www.example.com/piwik/."
-msgstr ""
+msgstr "Piwik URL'nizi girin. Bu sizin Piwik kurulumunuza erişmek için kullandığınız ile aynı URL'dir, örneğin http://www.mesela.com/piwik/."
 
 #: classes/WP_Piwik/Admin/Settings.php:109
 msgid "Piwik path"
-msgstr ""
+msgstr "Piwik yolu"
 
 #: classes/WP_Piwik/Admin/Settings.php:109
 msgid "Enter the file path to your Piwik instance, e.g. /var/www/piwik/."
-msgstr ""
+msgstr "Piwik kurulumunuzun tam yolunu girin, örneğin /var/www/piwik/."
 
 #: classes/WP_Piwik/Admin/Settings.php:110
 msgid "Piwik user"
-msgstr ""
+msgstr "Piwik kullanıcısı"
 
 #: classes/WP_Piwik/Admin/Settings.php:110
 msgid ""
@@ -224,45 +225,45 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:141
 #: classes/WP_Piwik/Admin/Settings.php:154
 msgid "Today"
-msgstr ""
+msgstr "Bugün"
 
 #: classes/WP_Piwik/Admin/Settings.php:142
 #: classes/WP_Piwik/Admin/Settings.php:153
 msgid "Yesterday"
-msgstr ""
+msgstr "Dün"
 
 #: classes/WP_Piwik/Admin/Settings.php:143
 msgid "Current month"
-msgstr ""
+msgstr "Bu ay"
 
 #: classes/WP_Piwik/Admin/Settings.php:144
 msgid "Last month"
-msgstr ""
+msgstr "Geçen ay"
 
 #: classes/WP_Piwik/Admin/Settings.php:145
 msgid "Current week"
-msgstr ""
+msgstr "Bu hafta"
 
 #: classes/WP_Piwik/Admin/Settings.php:146
 msgid "Last week"
-msgstr ""
+msgstr "Geçen hafta"
 
 #: classes/WP_Piwik/Admin/Settings.php:147
 msgid "Default date shown on statistics page."
-msgstr ""
+msgstr "İstatistik sayfasında gösterilen varsayılan tarih."
 
 #: classes/WP_Piwik/Admin/Settings.php:149
 msgid "Show SEO data"
-msgstr ""
+msgstr "SEO verilerini göster"
 
 #: classes/WP_Piwik/Admin/Settings.php:149
 msgid "Display SEO ranking data on statistics page."
-msgstr ""
+msgstr "SEO sıralama verisini istatistik sayfasında göster."
 
 #: classes/WP_Piwik/Admin/Settings.php:149
 #: classes/WP_Piwik/Admin/Settings.php:160
 msgid "Slow!"
-msgstr ""
+msgstr "Yavaş!"
 
 #: classes/WP_Piwik/Admin/Settings.php:151
 msgid "Dashboard overview"

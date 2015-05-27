@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: WP-Piwik\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-piwik\n"
 "POT-Creation-Date: 2015-05-20 21:59:25+00:00\n"
-"PO-Revision-Date: 2015-05-26 15:22+0000\n"
+"PO-Revision-Date: 2015-05-27 19:24+0000\n"
 "Last-Translator: Vasilis Lourdas\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/wp-piwik/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -217,11 +217,11 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:132
 msgid "Select site"
-msgstr ""
+msgstr "Επιλέξτε ιστοτόπο"
 
 #: classes/WP_Piwik/Admin/Settings.php:140
 msgid "Piwik default date"
-msgstr ""
+msgstr "Προκαθορισμένη ημερομηνία Piwik"
 
 #: classes/WP_Piwik/Admin/Settings.php:141
 #: classes/WP_Piwik/Admin/Settings.php:154
@@ -287,15 +287,15 @@ msgstr "Ενεργοποίηση της &quot;Σύνοψης&quot; του πίν
 
 #: classes/WP_Piwik/Admin/Settings.php:158
 msgid "Dashboard graph"
-msgstr ""
+msgstr "Γράφημα πίνακα"
 
 #: classes/WP_Piwik/Admin/Settings.php:158
 msgid "Enable WP-Piwik dashboard widget &quot;Graph&quot;."
-msgstr ""
+msgstr "Ενεργοποίηση του &quot;γραφικού&quot; συστατικού πίνακα του WP-Piwik."
 
 #: classes/WP_Piwik/Admin/Settings.php:160
 msgid "Dashboard SEO"
-msgstr ""
+msgstr "SEO πίνακα"
 
 #: classes/WP_Piwik/Admin/Settings.php:160
 msgid "Enable WP-Piwik dashboard widget &quot;SEO&quot;."
@@ -311,7 +311,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:164
 msgid "Display stats to"
-msgstr ""
+msgstr "Εμφάνιση στατιστικών σε"
 
 #: classes/WP_Piwik/Admin/Settings.php:171
 msgid "Choose user roles allowed to see the statistics page."
@@ -319,15 +319,15 @@ msgstr "Επιλέξτε τους ρόλους χρηστών, οι οποίοι
 
 #: classes/WP_Piwik/Admin/Settings.php:173
 msgid "Show per post stats"
-msgstr ""
+msgstr "Εμφάνιση στατιστικών ανά καταχώρηση"
 
 #: classes/WP_Piwik/Admin/Settings.php:173
 msgid "Show stats about single posts at the post edit admin page."
-msgstr ""
+msgstr "Εμφάνιση στατιστικών για μεμονωμένες καταχωρήσεις στη σελίδα διαχείρισης της καταχώρησης."
 
 #: classes/WP_Piwik/Admin/Settings.php:175
 msgid "Piwik shortcut"
-msgstr ""
+msgstr "Συντόμευση Piwik"
 
 #: classes/WP_Piwik/Admin/Settings.php:175
 msgid "Display a shortcut to Piwik itself."
@@ -335,23 +335,23 @@ msgstr "Εμφάνιση μιας συντόμευσης προς Piwik."
 
 #: classes/WP_Piwik/Admin/Settings.php:177
 msgid "WP-Piwik display name"
-msgstr ""
+msgstr "Εμφανιζόμενο όνομα WP-Piwik"
 
 #: classes/WP_Piwik/Admin/Settings.php:177
 msgid "Plugin name shown in WordPress."
-msgstr ""
+msgstr "Το όνομα του πρόσθετου που θα εμφανίζεται στο WordPress."
 
 #: classes/WP_Piwik/Admin/Settings.php:179
 msgid "Enable shortcodes"
-msgstr ""
+msgstr "Ενεργοποίηση σύντομων κωδικών"
 
 #: classes/WP_Piwik/Admin/Settings.php:179
 msgid "Enable shortcodes in post or page content."
-msgstr ""
+msgstr "Ενεργοποίηση σύντομων κωδικών στο περιεχόμενο καταχωρήσεων ή σελίδων."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid "You can choose between four tracking code modes:"
-msgstr ""
+msgstr "Μπορείτε να επιλέξετε μεταξύ τεσσάρων καταστάσεων κωδικών παρακολούθησης:"
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid ""
@@ -363,22 +363,22 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:193
 msgid "Default tracking"
-msgstr ""
+msgstr "Προκαθορισμένη παρακολούθηση"
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid "WP-Piwik will use Piwik's standard tracking code."
-msgstr ""
+msgstr "Το WP-Piwik θα χρησιμοποιήσει τον προκαθορισμένο κώδικα παρακολούθησης του Piwik."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:194
 msgid "Use js/index.php"
-msgstr ""
+msgstr "Χρήση του js/index.php"
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid ""
 "You can choose this tracking code, to deliver a minified proxy code and to "
 "avoid using the files called piwik.js or piwik.php."
-msgstr ""
+msgstr "Μπορείτε να επιλέξετε αυτό τον κώδικα παρακολούθησης, για να παρέχετε ένα ελαχιστοποιημένο σε μέγεθος κώδικα μεσολαβητή και να αποφύγετε την χρήση των αρχείων piwik.js ή piwik.php."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid "See %sreadme file%s."
@@ -863,27 +863,27 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:29
 msgid "Blog ID"
-msgstr ""
+msgstr "Αναγνωριστικό ιστολογήματος"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:30
 msgid "Title"
-msgstr ""
+msgstr "Τίτλος"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:31
 msgid "URL"
-msgstr ""
+msgstr "Διεύθυνση URL"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:32
 msgid "Site ID (Piwik)"
-msgstr ""
+msgstr "Αναγνωριστικό ιστοτόπου (Piwik)"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:79
 msgid "Site not created yet."
-msgstr ""
+msgstr "Ο ιστοτόπος δεν έχει ακόμη δημιουργηθεί."
 
 #: classes/WP_Piwik/Admin/Statistics.php:12
 msgid "Statistics"
-msgstr ""
+msgstr "Στατιστικά"
 
 #: classes/WP_Piwik/Admin/Statistics.php:20
 msgid "Currently shown stats:"
@@ -891,11 +891,11 @@ msgstr "Τρέχουσα προβολή στατιστικών:"
 
 #: classes/WP_Piwik/Request/Php.php:25
 msgid "Could not resolve"
-msgstr ""
+msgstr "Δεν ήταν δυνατή η επίλυση"
 
 #: classes/WP_Piwik/Request/Php.php:25
 msgid "realpath() returns false"
-msgstr ""
+msgstr "Το realpath() επιστρέφει ψευδές"
 
 #: classes/WP_Piwik/Request/Php.php:32
 msgid "Class Piwik\\FrontController does not exists."
@@ -923,7 +923,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Widget/BrowserDetails.php:16
 msgid "Browser Details"
-msgstr ""
+msgstr "Λεπτομέρειες προγράμματος πλοήγησης"
 
 #: classes/WP_Piwik/Widget/BrowserDetails.php:35
 #: classes/WP_Piwik/Widget/Browsers.php:35

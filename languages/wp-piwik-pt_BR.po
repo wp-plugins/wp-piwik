@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: WP-Piwik\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-piwik\n"
 "POT-Creation-Date: 2015-05-20 21:59:25+00:00\n"
-"PO-Revision-Date: 2015-05-26 15:49+0000\n"
-"Last-Translator: Flávio Veras <flaviove@gmail.com>\n"
+"PO-Revision-Date: 2015-05-27 10:51+0000\n"
+"Last-Translator: André Bräkling\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/wp-piwik/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -470,17 +470,17 @@ msgstr "Habilitar o rastreamento conteúdo"
 
 #: classes/WP_Piwik/Admin/Settings.php:214
 msgid "Track all content blocks"
-msgstr ""
+msgstr "Rastrear todos os blocos de conteúdo"
 
 #: classes/WP_Piwik/Admin/Settings.php:215
 msgid "Track only visible content blocks"
-msgstr ""
+msgstr "Rastrear somente blocos de conteúdo visíveis"
 
 #: classes/WP_Piwik/Admin/Settings.php:216
 msgid ""
 "Content tracking allows you to track interaction with the content of a web "
 "page or application."
-msgstr ""
+msgstr "Rastreamento de conteúdo permite que você acompanhe a interação com o conteúdo de uma página web ou aplicativo."
 
 #: classes/WP_Piwik/Admin/Settings.php:216
 #: classes/WP_Piwik/Admin/Settings.php:218
@@ -490,80 +490,80 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:247
 #: classes/WP_Piwik/Admin/Settings.php:249
 msgid "See %sPiwik documentation%s."
-msgstr ""
+msgstr "Visualizar %sPiwik docomentação%s"
 
 #: classes/WP_Piwik/Admin/Settings.php:218
 msgid "Track search"
-msgstr ""
+msgstr "Rastrear pesquisa"
 
 #: classes/WP_Piwik/Admin/Settings.php:218
 msgid "Use Piwik's advanced Site Search Analytics feature."
-msgstr ""
+msgstr "Utilize o recurso avançado Piwik Pesquisa Analítica do Site."
 
 #: classes/WP_Piwik/Admin/Settings.php:220
 msgid "Track 404"
-msgstr ""
+msgstr "Rastrear 404"
 
 #: classes/WP_Piwik/Admin/Settings.php:220
 msgid ""
 "WP-Piwik can automatically add a 404-category to track 404-page-visits."
-msgstr ""
+msgstr "WP-Piwik pode adicionar automaticamente um 404-categoria para rastrear 404-pagina-visitas."
 
 #: classes/WP_Piwik/Admin/Settings.php:222
 msgid "Add annotation on new post"
-msgstr ""
+msgstr "Adicionar anotação em nova mensagem"
 
 #: classes/WP_Piwik/Admin/Settings.php:222
 msgid "Add a Piwik annotation on each new post."
-msgstr ""
+msgstr "Adicionar uma anotação Piwik em cada nova mensagem."
 
 #: classes/WP_Piwik/Admin/Settings.php:224
 msgid "Show custom variables box"
-msgstr ""
+msgstr "Mostrar caixa de variáveis personalizadas"
 
 #: classes/WP_Piwik/Admin/Settings.php:224
 msgid " Show a &quot;custom variables&quot; edit box on post edit page."
-msgstr ""
+msgstr "Mostrar &quot;custom variables&quot; caixa de edição na pagina de edição de mensagem."
 
 #: classes/WP_Piwik/Admin/Settings.php:226
 msgid "Add new file types for download tracking"
-msgstr ""
+msgstr "Adicionar novos tipos de arquivo para rastreamento de download"
 
 #: classes/WP_Piwik/Admin/Settings.php:226
 msgid ""
 "Add file extensions for download tracking, divided by a vertical bar "
 "(&#124;)."
-msgstr ""
+msgstr "Adicionar extensões de arquivo para rastreamento de download, dividida por uma barra vertical (&#124;)."
 
 #: classes/WP_Piwik/Admin/Settings.php:228
 msgid "Disable cookies"
-msgstr ""
+msgstr "Desativar os cookies"
 
 #: classes/WP_Piwik/Admin/Settings.php:228
 msgid "Disable all tracking cookies for a visitor."
-msgstr ""
+msgstr "Desativar todos os cookies de rastreamento para um visitante."
 
 #: classes/WP_Piwik/Admin/Settings.php:230
 msgid "Limit cookie lifetime"
-msgstr ""
+msgstr "Limite de cookie vitalícia"
 
 #: classes/WP_Piwik/Admin/Settings.php:230
 msgid ""
 "You can limit the cookie lifetime to avoid tracking your users over a longer"
 " period as necessary."
-msgstr ""
+msgstr "Você pode limitar o tempo de vida de um cookie para evitar rastreamento de seus usuários ao longo de um período mais longo, se necessário."
 
 #: classes/WP_Piwik/Admin/Settings.php:232
 msgid "Visitor timeout (seconds)"
-msgstr ""
+msgstr "Tempo limite de visitante (segundos)"
 
 #: classes/WP_Piwik/Admin/Settings.php:234
 msgid "Session timeout (seconds)"
-msgstr ""
+msgstr "Tempo limite da sessão (segundos)"
 
 #: classes/WP_Piwik/Admin/Settings.php:236
 msgid "Referral timeout (seconds)"
-msgstr ""
+msgstr "Tempo limite de referência (segundos)"
 
 #: classes/WP_Piwik/Admin/Settings.php:238
 msgid "Track admin pages"
