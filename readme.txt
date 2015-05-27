@@ -108,6 +108,7 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 2. WP-Piwik statistics page.
 3. Closer look to a pie chart.
 4. WordPress toolbar graph.
+5. Piwik: Here you'll find your auth token.
 
 == Upgrade Notice ==
 
