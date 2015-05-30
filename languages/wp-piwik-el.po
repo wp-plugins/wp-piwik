@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: WP-Piwik\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-piwik\n"
 "POT-Creation-Date: 2015-05-20 21:59:25+00:00\n"
-"PO-Revision-Date: 2015-05-27 19:24+0000\n"
+"PO-Revision-Date: 2015-05-30 10:19+0000\n"
 "Last-Translator: Vasilis Lourdas\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/wp-piwik/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -57,7 +57,7 @@ msgstr "Το WP-Piwik %s δεν μπόρεσε να συνδεθεί με το P
 msgid ""
 "WP-Piwik %s has to be connected to Piwik first. Check the &raquo;Connect to "
 "Piwik&laquo; section below."
-msgstr ""
+msgstr "Το WP-Piwik %s πρέπει να συνδεθεί πρώτα με το Piwik. Ελέγξτε το τμήμα &raquo;Σύνδεση με το Piwik&laquo; παρακάτω."
 
 #: classes/WP_Piwik/Admin/Settings.php:60
 msgid "Connect to Piwik"
@@ -89,7 +89,7 @@ msgid ""
 "WordPress admin dashboard and to add and configure your Piwik tracking code."
 " To use this you will need your own Piwik instance. If you do not already "
 "have a Piwik setup, you have two simple options: use either"
-msgstr ""
+msgstr "Το WP-Piwik είναι ένα πρόσθετο για το WordPress για να εμφανίζει μια επιλογή από στατιστικά του Piwik στον πίνακα διαχείρισης του WordPress και για να προσθέτετε και παραμετροποιείτε τον κώδικα παρακολούθησης του Piwik. Αν δεν έχετε ήδη κάποια εγκατάσταση του Piwik, έχετε δύο απλές επιλογές: να χρησιμοποιήσετε είτε"
 
 #: classes/WP_Piwik/Admin/Settings.php:95
 msgid "Self-hosted"
@@ -149,7 +149,7 @@ msgstr "Φιλοξενία στο σύννεφο (Piwik Pro)"
 msgid ""
 "If you are using a cloud-hosted Piwik by Piwik Pro, you can simply use this "
 "option."
-msgstr ""
+msgstr "Αν χρησιμοποιείτε μια έκδοση του Piwik που παρέχεται από το σύννεφο από το Piwik Pro, μπορείτε να χρησιμοποιήσετε απλά αυτή την επιλογή."
 
 #: classes/WP_Piwik/Admin/Settings.php:101
 msgid "Piwik Mode"
@@ -195,11 +195,11 @@ msgstr "Σύμβολο γνησιότητας"
 msgid ""
 "Enter your Piwik auth token here. It is an alphanumerical code like "
 "0a1b2c34d56e78901fa2bc3d45678efa."
-msgstr ""
+msgstr "Εισάγετε εδώ τον κωδικό πιστοποίησης του Piwik. Είναι ένας αλφαριθμητικός κωδικός σαν το 0a1b2c34d56e78901fa2bc3d45678efa."
 
 #: classes/WP_Piwik/Admin/Settings.php:111
 msgid "See %sWP-Piwik FAQ%s."
-msgstr ""
+msgstr "Δείτε τις %sΣυχνές ερωταπαντήσεις του WP-Piwik%s."
 
 #: classes/WP_Piwik/Admin/Settings.php:116
 msgid "Auto config"
@@ -209,11 +209,11 @@ msgstr "Αυτόματη ρύθμιση"
 msgid ""
 "Check this to automatically choose your blog from your Piwik sites by URL. "
 "If your blog is not added to Piwik yet, WP-Piwik will add a new site."
-msgstr ""
+msgstr "Επιλέξτε αυτό για να γίνεται αυτόματη επιλογή του ιστολογίου σας από τους ιστοτόπους σας του Piwik με τη διεύθυνση URL. Αν το ιστολόγιό σας δεν έχει προστεθεί ακόμη, το WP-Piwik θα προσθέσει αυτόματα ένα νέο ιστοτόπο."
 
 #: classes/WP_Piwik/Admin/Settings.php:127
 msgid "Determined site"
-msgstr ""
+msgstr "Ιστοτόπος που εντοπίστηκε"
 
 #: classes/WP_Piwik/Admin/Settings.php:132
 msgid "Select site"
@@ -299,15 +299,15 @@ msgstr "SEO πίνακα"
 
 #: classes/WP_Piwik/Admin/Settings.php:160
 msgid "Enable WP-Piwik dashboard widget &quot;SEO&quot;."
-msgstr ""
+msgstr "Ενεργοποίηση του γραφικού συστατικού &quot;SEO&quot; του πίνακα ελέγχου του WP-Piwik."
 
 #: classes/WP_Piwik/Admin/Settings.php:162
 msgid "Show graph on WordPress Toolbar"
-msgstr ""
+msgstr "Εμφάνιση γραφήματος στην μπάρα εργαλείων του WordPress"
 
 #: classes/WP_Piwik/Admin/Settings.php:162
 msgid "Display a last 30 days visitor graph on WordPress' toolbar."
-msgstr ""
+msgstr "Εμφάνιση του γραφήματος επισκέψεων για τις τελευταίες 30 ημέρες στην μπάρα εργαλείων του WordPress."
 
 #: classes/WP_Piwik/Admin/Settings.php:164
 msgid "Display stats to"
@@ -358,7 +358,7 @@ msgid ""
 "WP-Piwik will not add the tracking code. Use this, if you want to add the "
 "tracking code to your template files or you use another plugin to add the "
 "tracking code."
-msgstr ""
+msgstr "Το WP-Piwik δεν θα προσθέσει τον κώδικα παρακολούθησης. Χρησιμοποιήστε το αυτό, αν θέλετε να προσθέτετε τον κώδικα παρακολούθησης στα αρχεία προτύπων ή χρησιμοποιείτε κάποιο άλλο πρόσθετο για την προσθήκη του κώδικα."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:193
@@ -382,12 +382,12 @@ msgstr "Μπορείτε να επιλέξετε αυτό τον κώδικα π
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid "See %sreadme file%s."
-msgstr ""
+msgstr "Δείτε το %sαρχείο readme%s."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:195
 msgid "Use proxy script"
-msgstr ""
+msgstr "Χρήση σεναρίου διαμεσολαβητή"
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid "Use this tracking code to not reveal the Piwik server URL."
@@ -899,11 +899,11 @@ msgstr "Το realpath() επιστρέφει ψευδές"
 
 #: classes/WP_Piwik/Request/Php.php:32
 msgid "Class Piwik\\FrontController does not exists."
-msgstr ""
+msgstr "Δεν υπάρχει η κλάση Piwik\\FrontController."
 
 #: classes/WP_Piwik/Request/Php.php:35
 msgid "Class Piwik\\API\\Request does not exists."
-msgstr ""
+msgstr "Δεν υπάρχει η κλάση Piwik\\API\\Request."
 
 #: classes/WP_Piwik/Template/MetaBoxCustomVars.php:10
 msgid "Piwik Custom Variables"
@@ -919,7 +919,7 @@ msgstr "Τιμή"
 
 #: classes/WP_Piwik/Template/MetaBoxCustomVars.php:30
 msgid "Set custom variables for a page view"
-msgstr ""
+msgstr "Ορισμός προσαρμοσμένων μεταβλητών για εμφάνιση σελίδας"
 
 #: classes/WP_Piwik/Widget/BrowserDetails.php:16
 msgid "Browser Details"
