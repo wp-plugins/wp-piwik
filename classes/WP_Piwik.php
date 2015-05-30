@@ -12,7 +12,7 @@ class WP_Piwik {
 	 *
 	 * @var Runtime environment variables
 	 */
-	private static $revisionId = 2015052401, $version = '1.0.0', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
+	private static $revisionId = 2015053001, $version = '1.0.1', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
 	
 	/**
 	 * Constructor class to configure and register all WP-Piwik components
@@ -445,14 +445,20 @@ class WP_Piwik {
 					'date' => 'last30' 
 			) );
 			$unique = $this->request ( $id );
-			if (is_array ( $unique )) {
-				$graph = "<script type='text/javascript'>var \$jSpark = jQuery.noConflict();\$jSpark(function() {var piwikSparkVals=[" . implode ( ',', $unique ) . "];\$jSpark('.wp-piwik_dynbar').sparkline(piwikSparkVals, {type: 'bar', barColor: '#ccc', barWidth:2});});</script><span class='wp-piwik_dynbar'>Loading...</span>";
-				$toolbar->add_menu ( array (
-						'id' => 'wp-piwik_stats',
-						'title' => $graph,
-						'href' => $this->getStatsURL () 
-				) );
+			$url = $this->getSettingsURL();
+			$content = 'Configure WP-Piwik';
+			// Leave if result array does contain a message instead of valid data
+			if (isset($unique['result']))
+				$content .= '<!-- '.$unique['result'].': '.($unique['message']?$unique['message']:'...').' -->';
+			elseif (is_array ( $unique ) ) {
+				$content = "<script type='text/javascript'>var \$jSpark = jQuery.noConflict();\$jSpark(function() {var piwikSparkVals=[" . implode ( ',', $unique ) . "];\$jSpark('.wp-piwik_dynbar').sparkline(piwikSparkVals, {type: 'bar', barColor: '#ccc', barWidth:2});});</script><span class='wp-piwik_dynbar'>Loading...</span>";
+				$url = $this->getStatsURL ();
 			}
+			$toolbar->add_menu ( array (
+				'id' => 'wp-piwik_stats',
+				'title' => $content,
+				'href' => $url
+			) );
 		}
 	}
 	

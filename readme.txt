@@ -54,7 +54,9 @@ To use this plugin you will need your own Piwik instance. If you do not already 
 
 As soon as Piwik works, you'll be able to configure WP-Piwik: The Piwik URL is the same URL you use to access your Piwik, e.g. for the demo site: http://demo.piwik.org. The auth token is some kind of a secret password, which allows WP-Piwik to get the necessary data from Piwik. To get your auth token, log in to Piwik, click at your user name (top right) and click at "API" (left sidebar menu).
 
-= Can I contribute to WP-Piwik as translator? =
+You can get a more detailed description here: https://piwik.org/blog/2015/05/wordpress-integration-wp-piwik-1-0/
+
+= Can I contribute to WP-Piwik as a translator? =
 
 You like to contribute to WP-Piwik translations? Please use the [Transifex translation community](https://www.transifex.com/projects/p/wp-piwik/).
 
@@ -63,6 +65,10 @@ Of course, I will add missing languages if requested, and I will also upload the
 If you can't (or don not want to) use transifex, you can also translate languages/wp-piwik.pot delivered with WP-Piwik.
 
 Thank you very much! :-)
+
+= Why does WP-Piwik require a newer PHP version than WordPress? =
+
+WP-Piwik requires a working Piwik instance which requires a higher PHP version, too. Furthermore, please have a look at the [official PHP Unsupported Branches page](http://php.net/eol.php). Even if your software still works with PHP 5.2, the PHP team stopped to deliver **security** patches in January 2011. Even PHP 5.3 does not get security patches anymore (end of life date was August 2014).
 
 = Tracking does not work on HostGator! / The test script shows an empty response. =
 
@@ -115,6 +121,10 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 This is a full refactored version of WP-Piwik. Please check your settings after updating and make sure everything is working as expected. If you want to upgrade from 0.8.x, please install 0.9.9.18 first: https://downloads.wordpress.org/plugin/wp-piwik.0.9.9.18.zip
 
 == Changelog ==
+
+= 1.0.1 =
+* Several language updates, amongst others Portuges (Brazil) finished. See https://www.transifex.com/organization/piwik/dashboard/wp-piwik for further information.
+* Bugfix: If WP-Piwik is not configured properly or the connection to Piwik could not be established, the toolbar graph won't cause a JavaScript error anymore.
 
 = 1.0.0 =
 * Feature: Expand "other" values on click
