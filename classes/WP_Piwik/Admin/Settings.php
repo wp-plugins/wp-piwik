@@ -351,8 +351,9 @@ class Settings extends \WP_Piwik\Admin {
 	 * @param boolean $isReadonly set textarea to read only (default: false)
 	 * @param boolean $global set to false if the textarea shows a site-specific option (default: true)
 	 */
-	private function showTextarea($id, $name, $rows, $description, $isHidden, $groupName, $hideDescription = true, $onChange = '', $isReadonly = false, $global = true) {
-		printf ( '<tr class="' . $groupName . ($isHidden ? ' hidden' : '') . '"><th scope="row"><label for="%2$s">%s</label>:</th><td><textarea cols="80" rows="' . $rows . '" id="%s" name="wp-piwik[%2$s]" onchange="%s"' . ($isReadonly ? ' readonly="readonly"' : '') . '>' . ($global ? self::$settings->getGlobalOption ( $id ) : self::$settings->getOption ( $id )) . '</textarea> %s</td></tr>', $name, $id, $onChange, $this->getDescription ( $id, $description, $hideDescription ) );
+	private function showTextarea($id, $name, $rows, $description, $isHidden, $groupName, $hideDescription = true, $onChange = '', $isReadonly = false, $global = true) {		
+		printf ( 
+			'<tr class="' . $groupName . ($isHidden ? ' hidden' : '') . '"><th scope="row"><label for="%2$s">%s</label>:</th><td><textarea cols="80" rows="' . $rows . '" id="%s" name="wp-piwik[%2$s]" onchange="%s"' . ($isReadonly ? ' readonly="readonly"' : '') . '>%s</textarea> %s</td></tr>', $name, $id, $onChange, ($global ? self::$settings->getGlobalOption ( $id ) : self::$settings->getOption ( $id )), $this->getDescription ( $id, $description, $hideDescription ) );
 	}
 	
 	/**

@@ -352,8 +352,10 @@ abstract class Widget {
 		$this->out( '<div id="wp-piwik_stats_' . $this->getName () . '_graph" style="height:310px;width:100%"></div>' );
 		$this->out( '<script type="text/javascript">$plotBrowsers = $j.jqplot("wp-piwik_stats_' . $this->getName () . '_graph", [[' );
 		$list = '';
-		foreach ( $data as $dataSet )
+		foreach ( $data as $key => $dataSet ) {
 			$list .= '["' . $dataSet [0] . '", ' . $dataSet [1] . '],';
+			if ($key == 'Others') break;
+		}
 		$this->out( substr ( $list, 0, - 1 ) );
 		$this->out( ']], {seriesDefaults:{renderer:$j.jqplot.PieRenderer, rendererOptions:{sliceMargin:8}},legend:{show:true}});</script>' );
 	}

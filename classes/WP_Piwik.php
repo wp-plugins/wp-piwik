@@ -445,8 +445,8 @@ class WP_Piwik {
 					'date' => 'last30' 
 			) );
 			$unique = $this->request ( $id );
-			$url = $this->getSettingsURL();
-			$content = 'Configure WP-Piwik';
+			$url = is_network_admin () ? $this->getSettingsURL () : false;
+			$content = is_network_admin () ? __('Configure WP-Piwik', 'wp-piwik') : '';
 			// Leave if result array does contain a message instead of valid data
 			if (isset($unique['result']))
 				$content .= '<!-- '.$unique['result'].': '.($unique['message']?$unique['message']:'...').' -->';
@@ -1042,7 +1042,7 @@ class WP_Piwik {
 			return null;
 		$id = WP_Piwik\Request::register ( 'SitesManager.addSite', array (
 				'urls' => $isCurrent ? get_bloginfo ( 'url' ) : get_blog_details ( $blogId )->siteurl,
-				'siteName' => $isCurrent ? get_bloginfo ( 'name' ) : get_blog_details ( $blogId )->blogname 
+				'siteName' => urlencode( $isCurrent ? get_bloginfo ( 'name' ) : get_blog_details ( $blogId )->blogname )
 		) );
 		$result = $this->request ( $id );
 		self::$logger->log ( 'Get Piwik ID: WordPress site ' . ($isCurrent ? get_bloginfo ( 'url' ) : get_blog_details ( $blogId )->siteurl) . ' = Piwik ID ' . ( int ) $result );
@@ -1155,6 +1155,7 @@ class WP_Piwik {
 		new \WP_Piwik\Widget\BrowserDetails ( $this, self::$settings, $this->statsPageId );
 		new \WP_Piwik\Widget\Screens ( $this, self::$settings, $this->statsPageId );
 		new \WP_Piwik\Widget\Systems ( $this, self::$settings, $this->statsPageId );
+		new \WP_Piwik\Widget\SystemDetails ( $this, self::$settings, $this->statsPageId );
 	}
 	
 	/**

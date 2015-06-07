@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: WP-Piwik\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-piwik\n"
 "POT-Creation-Date: 2015-05-20 21:59:25+00:00\n"
-"PO-Revision-Date: 2015-05-27 11:06+0000\n"
-"Last-Translator: Muhammet Kaan YEŞİLYURT <m.kaan@yesilyurt.com>\n"
+"PO-Revision-Date: 2015-06-07 18:38+0000\n"
+"Last-Translator: André Bräkling\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/wp-piwik/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -50,13 +50,13 @@ msgstr "WordPress %s blog ağı (WPMU) kullanıyorsunuz. Piwik sitelerinizi fark
 msgid ""
 "WP-Piwik %s was not able to connect to Piwik using your configuration. Check"
 " the &raquo;Connect to Piwik&laquo; section below."
-msgstr ""
+msgstr "WP-Piwik %s yapılandırma ayarlarınızı kullanarak Piwik'e bağlanamıyor. Aşağıdaki &raquo;Piwik'e bağlan&laquo; bölümünü kontrol edin."
 
 #: classes/WP_Piwik/Admin/Settings.php:56
 msgid ""
 "WP-Piwik %s has to be connected to Piwik first. Check the &raquo;Connect to "
 "Piwik&laquo; section below."
-msgstr ""
+msgstr "WP-Piwik %s önce Piwik'e bağlı olmalıdır. Aşağıdaki &raquo;Piwik'e bağlan&laquo; bölümünü kontrol edin."
 
 #: classes/WP_Piwik/Admin/Settings.php:60
 msgid "Connect to Piwik"
@@ -80,7 +80,7 @@ msgstr "Destek"
 
 #: classes/WP_Piwik/Admin/Settings.php:82
 msgid "Credits"
-msgstr ""
+msgstr "Teşekkür"
 
 #: classes/WP_Piwik/Admin/Settings.php:95
 msgid ""
@@ -184,11 +184,11 @@ msgstr "Piwik kullanıcısı"
 msgid ""
 "Enter your Piwik Pro username. It is also part of your URL: "
 "http://USERNAME.piwik.pro."
-msgstr ""
+msgstr "Piwik Pro kullanıcı adınızı girin. Bu aynı zamanda URL'nizin bir parçasıdır http://KULLANICIADI.piwik.pro."
 
 #: classes/WP_Piwik/Admin/Settings.php:111
 msgid "Auth token"
-msgstr ""
+msgstr "Yetki dizgesi"
 
 #: classes/WP_Piwik/Admin/Settings.php:111
 msgid ""
@@ -202,7 +202,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:116
 msgid "Auto config"
-msgstr ""
+msgstr "Oto yapılandırma"
 
 #: classes/WP_Piwik/Admin/Settings.php:116
 msgid ""
@@ -216,11 +216,11 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:132
 msgid "Select site"
-msgstr ""
+msgstr "Site seçin"
 
 #: classes/WP_Piwik/Admin/Settings.php:140
 msgid "Piwik default date"
-msgstr ""
+msgstr "Varsayılan Piwik tarihi"
 
 #: classes/WP_Piwik/Admin/Settings.php:141
 #: classes/WP_Piwik/Admin/Settings.php:154
@@ -267,26 +267,26 @@ msgstr "Yavaş!"
 
 #: classes/WP_Piwik/Admin/Settings.php:151
 msgid "Dashboard overview"
-msgstr ""
+msgstr "Panele genel bakış "
 
 #: classes/WP_Piwik/Admin/Settings.php:152
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:192
 #: classes/WP_Piwik/Admin/Settings.php:213
 msgid "Disabled"
-msgstr ""
+msgstr "Devredışı"
 
 #: classes/WP_Piwik/Admin/Settings.php:155
 msgid "Last 30 days"
-msgstr ""
+msgstr "Son 30 gün"
 
 #: classes/WP_Piwik/Admin/Settings.php:156
 msgid "Enable WP-Piwik dashboard widget &quot;Overview&quot;."
-msgstr ""
+msgstr "WP-Piwik panel bileşenini etkinleştir &quot;Genel bakış&quot;."
 
 #: classes/WP_Piwik/Admin/Settings.php:158
 msgid "Dashboard graph"
-msgstr ""
+msgstr "Panel grafiği"
 
 #: classes/WP_Piwik/Admin/Settings.php:158
 msgid "Enable WP-Piwik dashboard widget &quot;Graph&quot;."
@@ -294,7 +294,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:160
 msgid "Dashboard SEO"
-msgstr ""
+msgstr "Panel SEO"
 
 #: classes/WP_Piwik/Admin/Settings.php:160
 msgid "Enable WP-Piwik dashboard widget &quot;SEO&quot;."
@@ -302,47 +302,47 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:162
 msgid "Show graph on WordPress Toolbar"
-msgstr ""
+msgstr "Grafiği WordPress Araç çubuğunda göster"
 
 #: classes/WP_Piwik/Admin/Settings.php:162
 msgid "Display a last 30 days visitor graph on WordPress' toolbar."
-msgstr ""
+msgstr "WordPress'in araç çubuğunda son 30 günün ziyaretçi grafiğini göster"
 
 #: classes/WP_Piwik/Admin/Settings.php:164
 msgid "Display stats to"
-msgstr ""
+msgstr "İstatistikleri şunlar görebilir:"
 
 #: classes/WP_Piwik/Admin/Settings.php:171
 msgid "Choose user roles allowed to see the statistics page."
-msgstr ""
+msgstr "İstatistikler sayfasına görmeye yetkili kullanıcı  gruplarını seçin."
 
 #: classes/WP_Piwik/Admin/Settings.php:173
 msgid "Show per post stats"
-msgstr ""
+msgstr "Gönderi başına istatistikleri göster"
 
 #: classes/WP_Piwik/Admin/Settings.php:173
 msgid "Show stats about single posts at the post edit admin page."
-msgstr ""
+msgstr "Gönderi düzenleme yönetici sayfasında tekil gönderiler için istatistikleri göster."
 
 #: classes/WP_Piwik/Admin/Settings.php:175
 msgid "Piwik shortcut"
-msgstr ""
+msgstr "Piwik kısayolu"
 
 #: classes/WP_Piwik/Admin/Settings.php:175
 msgid "Display a shortcut to Piwik itself."
-msgstr ""
+msgstr "Piwik'in kendine bir kısayol göster."
 
 #: classes/WP_Piwik/Admin/Settings.php:177
 msgid "WP-Piwik display name"
-msgstr ""
+msgstr "WP-Piwik görünen adı"
 
 #: classes/WP_Piwik/Admin/Settings.php:177
 msgid "Plugin name shown in WordPress."
-msgstr ""
+msgstr "WordPress'de gösterilen eklenti adı."
 
 #: classes/WP_Piwik/Admin/Settings.php:179
 msgid "Enable shortcodes"
-msgstr ""
+msgstr "Kısakodları etkinleştir"
 
 #: classes/WP_Piwik/Admin/Settings.php:179
 msgid "Enable shortcodes in post or page content."
@@ -362,7 +362,7 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:193
 msgid "Default tracking"
-msgstr ""
+msgstr "Varsayılan izleme"
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid "WP-Piwik will use Piwik's standard tracking code."
@@ -371,7 +371,7 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:194
 msgid "Use js/index.php"
-msgstr ""
+msgstr "js/index.php kullan"
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid ""
@@ -381,7 +381,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid "See %sreadme file%s."
-msgstr ""
+msgstr "%sbenioku doyasına%s bakın."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:195
@@ -401,7 +401,7 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:196
 msgid "Enter manually"
-msgstr ""
+msgstr "Elle gir"
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid ""
@@ -416,23 +416,23 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:191
 msgid "Add tracking code"
-msgstr ""
+msgstr "İzleme kodu ekle"
 
 #: classes/WP_Piwik/Admin/Settings.php:199
 msgid "Tracking code"
-msgstr ""
+msgstr "İzleme kodu"
 
 #: classes/WP_Piwik/Admin/Settings.php:201
 msgid "JavaScript code position"
-msgstr ""
+msgstr "JavaScript kod konumu"
 
 #: classes/WP_Piwik/Admin/Settings.php:202
 msgid "Footer"
-msgstr ""
+msgstr "Sayfa Alt Bilgisi"
 
 #: classes/WP_Piwik/Admin/Settings.php:203
 msgid "Header"
-msgstr ""
+msgstr "Sayfa Üstbilgisi"
 
 #: classes/WP_Piwik/Admin/Settings.php:204
 msgid ""
@@ -441,11 +441,11 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:206
 msgid "Noscript code"
-msgstr ""
+msgstr "Noscript kodu"
 
 #: classes/WP_Piwik/Admin/Settings.php:208
 msgid "Add &lt;noscript&gt;"
-msgstr ""
+msgstr "&lt;noscript&gt; ekle"
 
 #: classes/WP_Piwik/Admin/Settings.php:208
 msgid "Adds the &lt;noscript&gt; code to your footer."
@@ -454,7 +454,7 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:208
 #: classes/WP_Piwik/Admin/Settings.php:210
 msgid "Disabled in proxy mode."
-msgstr ""
+msgstr "Vekil sunucu kipinde devredışı."
 
 #: classes/WP_Piwik/Admin/Settings.php:210
 msgid "Add rec parameter to noscript code"
@@ -466,15 +466,15 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:212
 msgid "Enable content tracking"
-msgstr ""
+msgstr "İçerik izlemeyi etkinleştir"
 
 #: classes/WP_Piwik/Admin/Settings.php:214
 msgid "Track all content blocks"
-msgstr ""
+msgstr "Tüm içerik bloklarını izle"
 
 #: classes/WP_Piwik/Admin/Settings.php:215
 msgid "Track only visible content blocks"
-msgstr ""
+msgstr "Sadece görünen içerik bloklarını izle"
 
 #: classes/WP_Piwik/Admin/Settings.php:216
 msgid ""
@@ -494,7 +494,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:218
 msgid "Track search"
-msgstr ""
+msgstr "Aramaları izle"
 
 #: classes/WP_Piwik/Admin/Settings.php:218
 msgid "Use Piwik's advanced Site Search Analytics feature."
@@ -502,7 +502,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:220
 msgid "Track 404"
-msgstr ""
+msgstr "404 hatalarını izle"
 
 #: classes/WP_Piwik/Admin/Settings.php:220
 msgid ""
@@ -537,7 +537,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:228
 msgid "Disable cookies"
-msgstr ""
+msgstr "Çerezleri devredışı bırak"
 
 #: classes/WP_Piwik/Admin/Settings.php:228
 msgid "Disable all tracking cookies for a visitor."
@@ -545,7 +545,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:230
 msgid "Limit cookie lifetime"
-msgstr ""
+msgstr "Çerez ömrünü sınırla"
 
 #: classes/WP_Piwik/Admin/Settings.php:230
 msgid ""
@@ -567,7 +567,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:238
 msgid "Track admin pages"
-msgstr ""
+msgstr "Yönetici sayfalarını izle"
 
 #: classes/WP_Piwik/Admin/Settings.php:238
 msgid ""
@@ -679,27 +679,27 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:278
 msgid "CDN URL"
-msgstr ""
+msgstr "CDN URL'si"
 
 #: classes/WP_Piwik/Admin/Settings.php:280
 msgid "CDN URL (SSL)"
-msgstr ""
+msgstr "CDN URL'si (SSL)"
 
 #: classes/WP_Piwik/Admin/Settings.php:282
 msgid "Force Piwik to use a specific protocol"
-msgstr ""
+msgstr "Piwik'i belirli bir protokol kullanmaya zorla"
 
 #: classes/WP_Piwik/Admin/Settings.php:283
 msgid "Disabled (default)"
-msgstr ""
+msgstr "Devredışı (varsayılan)"
 
 #: classes/WP_Piwik/Admin/Settings.php:284
 msgid "http"
-msgstr ""
+msgstr "http"
 
 #: classes/WP_Piwik/Admin/Settings.php:285
 msgid "https (SSL)"
-msgstr ""
+msgstr "https (SSL)"
 
 #: classes/WP_Piwik/Admin/Settings.php:286
 msgid ""
@@ -709,7 +709,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:445
 msgid "Donate"
-msgstr ""
+msgstr "Bağış yap"
 
 #: classes/WP_Piwik/Admin/Settings.php:447
 msgid "If you like WP-Piwik, you can support its development by a donation:"
@@ -754,36 +754,36 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:523
 msgid "Thank you very much"
-msgstr ""
+msgstr "Çok teşekkür ederiz,"
 
 #: classes/WP_Piwik/Admin/Settings.php:523
 msgid "for your translation work"
-msgstr ""
+msgstr "özellikle çeviri çalışmalarınız için"
 
 #: classes/WP_Piwik/Admin/Settings.php:524
 msgid ""
 "Thank you very much, all users who send me mails containing criticism, "
 "commendation, feature requests and bug reports! You help me to make WP-Piwik"
 " much better."
-msgstr ""
+msgstr "Bana eleştiri, öneri, özellik isteği ve hata bildirimi içeren postalar gönderen tüm kullanıcılara çok teşekkür ederim. Bana WP-Piwik'i daha iyi yapmakta yardım ediyorsunuz."
 
 #: classes/WP_Piwik/Admin/Settings.php:525
 msgid ""
 "Thank <strong>you</strong> for using my plugin. It is the best commendation "
 "if my piece of code is really used!"
-msgstr ""
+msgstr "<strong>Size</strong> eklentimi kullandığınız için çok teşekkür ederim.  Eğer kodumun bir parçası gerçekten işe yarıyorsa bu benim için en büyük övünçtür!"
 
 #: classes/WP_Piwik/Admin/Settings.php:534
 msgid "The best place to get help:"
-msgstr ""
+msgstr "Yardım almak için en iyi yer:"
 
 #: classes/WP_Piwik/Admin/Settings.php:534
 msgid "WP-Piwik support forum"
-msgstr ""
+msgstr "WP-Piwik destek forumu"
 
 #: classes/WP_Piwik/Admin/Settings.php:537
 msgid "Debugging"
-msgstr ""
+msgstr "Hata ayıklama"
 
 #: classes/WP_Piwik/Admin/Settings.php:538
 msgid ""
@@ -793,32 +793,32 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:541
 msgid "cURL is"
-msgstr ""
+msgstr "cURL"
 
 #: classes/WP_Piwik/Admin/Settings.php:542
 #: classes/WP_Piwik/Admin/Settings.php:547
 msgid "not"
-msgstr ""
+msgstr "değil"
 
 #: classes/WP_Piwik/Admin/Settings.php:543
 msgid "available"
-msgstr ""
+msgstr "mevcut"
 
 #: classes/WP_Piwik/Admin/Settings.php:546
 msgid "allow_url_fopen is"
-msgstr ""
+msgstr "allow_url_fopen değeri"
 
 #: classes/WP_Piwik/Admin/Settings.php:548
 msgid "enabled"
-msgstr ""
+msgstr "etkin"
 
 #: classes/WP_Piwik/Admin/Settings.php:551
 msgid "Tools"
-msgstr ""
+msgstr "Araçlar"
 
 #: classes/WP_Piwik/Admin/Settings.php:553
 msgid "Run testscript"
-msgstr ""
+msgstr "Test programcığını çalıştır"
 
 #: classes/WP_Piwik/Admin/Settings.php:554
 msgid "Sitebrowser"
@@ -826,55 +826,55 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:555
 msgid "Clear cache"
-msgstr ""
+msgstr "Önbelleği temizle"
 
 #: classes/WP_Piwik/Admin/Settings.php:556
 msgid "Are you sure you want to clear all settings?"
-msgstr ""
+msgstr "Tüm ayarları silmek istediğinizden emin misiniz?"
 
 #: classes/WP_Piwik/Admin/Settings.php:556
 msgid "Reset WP-Piwik"
-msgstr ""
+msgstr "WP-Piwik'i sıfırla"
 
 #: classes/WP_Piwik/Admin/Settings.php:558
 msgid "Latest support threads on WordPress.org"
-msgstr ""
+msgstr "WordPress.org'daki en son destek konuları"
 
 #: classes/WP_Piwik/Admin/Settings.php:609
 msgid "Settings cleared (except connection settings)."
-msgstr ""
+msgstr "Ayarlar silindi (bağlantı ayarları hariç)"
 
 #: classes/WP_Piwik/Admin/Settings.php:625
 msgid "Cache cleared."
-msgstr ""
+msgstr "Önbellek temizlendi"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:17
 msgid "site"
-msgstr ""
+msgstr "site"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:18
 msgid "sites"
-msgstr ""
+msgstr "siteler"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:24
 msgid "No site configured yet."
-msgstr ""
+msgstr "Henüz site yapılandırılmadı."
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:29
 msgid "Blog ID"
-msgstr ""
+msgstr "Blog ID"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:30
 msgid "Title"
-msgstr ""
+msgstr "Başlık"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:31
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:32
 msgid "Site ID (Piwik)"
-msgstr ""
+msgstr "Site ID (Piwik)"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:79
 msgid "Site not created yet."
@@ -882,7 +882,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Statistics.php:12
 msgid "Statistics"
-msgstr ""
+msgstr "İstatistikler"
 
 #: classes/WP_Piwik/Admin/Statistics.php:20
 msgid "Currently shown stats:"
@@ -890,7 +890,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Request/Php.php:25
 msgid "Could not resolve"
-msgstr ""
+msgstr "Çözülemedi"
 
 #: classes/WP_Piwik/Request/Php.php:25
 msgid "realpath() returns false"
@@ -910,19 +910,19 @@ msgstr ""
 
 #: classes/WP_Piwik/Template/MetaBoxCustomVars.php:21
 msgid "Name"
-msgstr ""
+msgstr "Ad"
 
 #: classes/WP_Piwik/Template/MetaBoxCustomVars.php:21
 msgid "Value"
-msgstr ""
+msgstr "Değer"
 
 #: classes/WP_Piwik/Template/MetaBoxCustomVars.php:30
 msgid "Set custom variables for a page view"
-msgstr ""
+msgstr "Sayfa görüntülemesi için özel değişkenler tanımla"
 
 #: classes/WP_Piwik/Widget/BrowserDetails.php:16
 msgid "Browser Details"
-msgstr ""
+msgstr "Tarayıcı Detayları"
 
 #: classes/WP_Piwik/Widget/BrowserDetails.php:35
 #: classes/WP_Piwik/Widget/Browsers.php:35
@@ -935,12 +935,12 @@ msgstr ""
 #: classes/WP_Piwik/Widget/Systems.php:33
 #: classes/WP_Piwik/Widget/Visitors.php:35 classes/WP_Piwik/Widget.php:91
 msgid "Piwik error"
-msgstr ""
+msgstr "Piwik hatası"
 
 #: classes/WP_Piwik/Widget/BrowserDetails.php:37
 #: classes/WP_Piwik/Widget/Browsers.php:37
 msgid "Browser"
-msgstr ""
+msgstr "Tarayıcı"
 
 #: classes/WP_Piwik/Widget/BrowserDetails.php:37
 #: classes/WP_Piwik/Widget/Browsers.php:37
@@ -948,7 +948,7 @@ msgstr ""
 #: classes/WP_Piwik/Widget/Systems.php:35
 #: classes/WP_Piwik/Widget/Visitors.php:57 classes/WP_Piwik/Widget.php:100
 msgid "Unique"
-msgstr ""
+msgstr "Tekil"
 
 #: classes/WP_Piwik/Widget/BrowserDetails.php:37
 #: classes/WP_Piwik/Widget/Browsers.php:37
@@ -956,24 +956,24 @@ msgstr ""
 #: classes/WP_Piwik/Widget/Screens.php:37
 #: classes/WP_Piwik/Widget/Systems.php:35
 msgid "Percent"
-msgstr ""
+msgstr "Yüzde"
 
 #: classes/WP_Piwik/Widget/BrowserDetails.php:53
 #: classes/WP_Piwik/Widget/Browsers.php:53
 #: classes/WP_Piwik/Widget/Screens.php:53
 #: classes/WP_Piwik/Widget/Systems.php:51
 msgid "Others"
-msgstr ""
+msgstr "Diğerleri"
 
 #: classes/WP_Piwik/Widget/Browsers.php:16
 msgid "Browsers"
-msgstr ""
+msgstr "Tarayıcılar"
 
 #: classes/WP_Piwik/Widget/Chart.php:17
 #: classes/WP_Piwik/Widget/Overview.php:40 classes/WP_Piwik/Widget/Post.php:37
 #: classes/WP_Piwik/Widget/Visitors.php:17
 msgid "Visitors"
-msgstr ""
+msgstr "Ziyaretçiler"
 
 #: classes/WP_Piwik/Widget/Chart.php:69
 msgid ""
@@ -983,52 +983,52 @@ msgstr ""
 
 #: classes/WP_Piwik/Widget/Keywords.php:16
 msgid "Keywords"
-msgstr ""
+msgstr "Anahtar kelimeler"
 
 #: classes/WP_Piwik/Widget/Noresult.php:16
 #: classes/WP_Piwik/Widget/Search.php:16
 msgid "Site Search"
-msgstr ""
+msgstr "Site araması"
 
 #: classes/WP_Piwik/Widget/Noresult.php:25
 #: classes/WP_Piwik/Widget/Search.php:25
 msgid "Keyword"
-msgstr ""
+msgstr "Anahtar kelime"
 
 #: classes/WP_Piwik/Widget/Noresult.php:25
 #: classes/WP_Piwik/Widget/Search.php:25
 msgid "Requests"
-msgstr ""
+msgstr "İstekler"
 
 #: classes/WP_Piwik/Widget/Noresult.php:25
 #: classes/WP_Piwik/Widget/Search.php:25
 #: classes/WP_Piwik/Widget/Visitors.php:57
 msgid "Bounced"
-msgstr ""
+msgstr "Hemen çıkanlar"
 
 #: classes/WP_Piwik/Widget/Overview.php:17 classes/WP_Piwik/Widget/Post.php:18
 msgid "Overview"
-msgstr ""
+msgstr "Genel bakış"
 
 #: classes/WP_Piwik/Widget/Overview.php:41 classes/WP_Piwik/Widget/Post.php:38
 msgid "Unique visitors"
-msgstr ""
+msgstr "Tekil ziyaretçiler"
 
 #: classes/WP_Piwik/Widget/Overview.php:42 classes/WP_Piwik/Widget/Post.php:39
 msgid "Page views"
-msgstr ""
+msgstr "Sayfa görüntülemeleri"
 
 #: classes/WP_Piwik/Widget/Overview.php:43 classes/WP_Piwik/Widget/Post.php:40
 msgid "Total time spent"
-msgstr ""
+msgstr "Toplam geçirilen zaman"
 
 #: classes/WP_Piwik/Widget/Overview.php:44 classes/WP_Piwik/Widget/Post.php:42
 msgid "Bounce count"
-msgstr ""
+msgstr "Hemen çıkma sayısı"
 
 #: classes/WP_Piwik/Widget/Overview.php:47 classes/WP_Piwik/Widget/Post.php:41
 msgid "Time/visit"
-msgstr ""
+msgstr "Zaman/ziyaret"
 
 #: classes/WP_Piwik/Widget/Overview.php:47
 msgid "Max. page views in one visit"
@@ -1036,32 +1036,32 @@ msgstr ""
 
 #: classes/WP_Piwik/Widget/Overview.php:48 classes/WP_Piwik/Widget/Post.php:46
 msgid "Shortcut"
-msgstr ""
+msgstr "Kısayol"
 
 #: classes/WP_Piwik/Widget/Pages.php:16
 msgid "Pages"
-msgstr ""
+msgstr "Sayfalar"
 
 #: classes/WP_Piwik/Widget/Plugins.php:16
 msgid "Plugins"
-msgstr ""
+msgstr "Eklentiler"
 
 #: classes/WP_Piwik/Widget/Plugins.php:25
 msgid "Plugin"
-msgstr ""
+msgstr "Eklenti"
 
 #: classes/WP_Piwik/Widget/Plugins.php:25
 #: classes/WP_Piwik/Widget/Visitors.php:57 classes/WP_Piwik/Widget.php:102
 msgid "Visits"
-msgstr ""
+msgstr "Ziyaretler"
 
 #: classes/WP_Piwik/Widget/Post.php:43
 msgid "Min. generation time"
-msgstr ""
+msgstr "Asgari oluşturma süresi"
 
 #: classes/WP_Piwik/Widget/Post.php:44
 msgid "Max. generation time"
-msgstr ""
+msgstr "Azami oluşturma süresi"
 
 #: classes/WP_Piwik/Widget/Referrers.php:16
 msgid "Referrers"
@@ -1069,51 +1069,51 @@ msgstr ""
 
 #: classes/WP_Piwik/Widget/Screens.php:16
 msgid "Resolutions"
-msgstr ""
+msgstr "Çözünürlükler"
 
 #: classes/WP_Piwik/Widget/Screens.php:37
 msgid "Resolution"
-msgstr ""
+msgstr "Çözünürlük"
 
 #: classes/WP_Piwik/Widget/Seo.php:13
 msgid "SEO"
-msgstr ""
+msgstr "SEO"
 
 #: classes/WP_Piwik/Widget/Systems.php:14
 msgid "Operation Systems"
-msgstr ""
+msgstr "İşletim Sistemleri"
 
 #: classes/WP_Piwik/Widget/Systems.php:35
 msgid "Operation System"
-msgstr ""
+msgstr "İşletim Sistemi"
 
 #: classes/WP_Piwik/Widget/Visitors.php:57
 msgid "Date"
-msgstr ""
+msgstr "Tarih"
 
 #: classes/WP_Piwik/Widget/Visitors.php:57
 msgid "Page Views"
-msgstr ""
+msgstr "Sayfa Görüntülemeleri"
 
 #: classes/WP_Piwik/Widget.php:104
 msgid "Hits"
-msgstr ""
+msgstr "Ziyaretler"
 
 #: classes/WP_Piwik/Widget.php:106
 msgid "Actions"
-msgstr ""
+msgstr "Eylemler"
 
 #: classes/WP_Piwik/Widget.php:162
 msgid "No data available."
-msgstr ""
+msgstr "Kullanılabilir veri yok"
 
 #: classes/WP_Piwik/Widget.php:293
 msgid "week"
-msgstr ""
+msgstr "hafta"
 
 #: classes/WP_Piwik.php:193
 msgid "%s %s installed."
-msgstr ""
+msgstr "%s %s kuruldu."
 
 #: classes/WP_Piwik.php:193
 msgid "Next you should connect to Piwik"
@@ -1125,23 +1125,23 @@ msgstr ""
 
 #: classes/WP_Piwik.php:223
 msgid "Please validate your configuration"
-msgstr ""
+msgstr "Lütfen yapılandırmanızı doğrulayın"
 
 #: classes/WP_Piwik.php:255 classes/WP_Piwik.php:471
 msgid "Settings"
-msgstr ""
+msgstr "Ayarlar"
 
 #: classes/WP_Piwik.php:258
 msgid "Important"
-msgstr ""
+msgstr "Önemli"
 
 #: classes/WP_Piwik.php:339 classes/WP_Piwik.php:361
 msgid "Piwik Statistics"
-msgstr ""
+msgstr "Piwik İstatistikleri"
 
 #: classes/WP_Piwik.php:914
 msgid "An error occured"
-msgstr ""
+msgstr "Bir hata oluştu"
 
 #: classes/WP_Piwik.php:1179
 msgid "Cheatin&#8217; uh?"
@@ -1151,15 +1151,15 @@ msgstr ""
 msgid ""
 "WP-Piwik requires at least PHP 5.3. You are using the deprecated version %s."
 " Please update PHP to use WP-Piwik."
-msgstr ""
+msgstr "WP-Piwik en az PHP 5.3 gerektirmektedir. Siz artık desteklenmeyen %s sürümünü kullanıyorsunuz. WP-Piwik kullanmak için lütfen PHP sürümünüzü güncelleyin."
 
 #. Plugin Name of the plugin/theme
 msgid "WP-Piwik"
-msgstr ""
+msgstr "WP-Piwik"
 
 #. Plugin URI of the plugin/theme
 msgid "http://wordpress.org/extend/plugins/wp-piwik/"
-msgstr ""
+msgstr "http://wordpress.org/extend/plugins/wp-piwik/"
 
 #. Description of the plugin/theme
 msgid ""
@@ -1169,8 +1169,8 @@ msgstr ""
 
 #. Author of the plugin/theme
 msgid "Andr&eacute; Br&auml;kling"
-msgstr ""
+msgstr "Andr&eacute; Br&auml;kling"
 
 #. Author URI of the plugin/theme
 msgid "http://www.braekling.de"
-msgstr ""
+msgstr "http://www.braekling.de"

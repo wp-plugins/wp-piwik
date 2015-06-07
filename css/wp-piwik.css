@@ -32,6 +32,7 @@ div.wp-piwik-debug {
 
 tr.wp-piwik-hideDetails {
 	cursor: pointer;
+	text-decoration: underline;
 }
 
 div.wp-piwik-donate {

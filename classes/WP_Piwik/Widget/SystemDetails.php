@@ -2,19 +2,17 @@
 
 	namespace WP_Piwik\Widget;
 
-	class Browsers extends \WP_Piwik\Widget {
+	class SystemDetails extends \WP_Piwik\Widget {
 	
-		public $className = __CLASS__;
-
 		protected function configure($prefix = '', $params = array()) {
-			$timeSettings = $this->getTimeSettings();
+			$timeSettings = $this->getTimeSettings();			
 			$this->parameter = array(
 				'idSite' => self::$wpPiwik->getPiwikSiteId($this->blogId),
 				'period' => $timeSettings['period'],
 				'date'  => $timeSettings['date']
 			);
-			$this->title = $prefix.__('Browsers', 'wp-piwik').' ('.__($timeSettings['description'],'wp-piwik').')';
-			$this->method = 'DevicesDetection.getBrowsers';
+			$this->title = $prefix.__('Operation System Details', 'wp-piwik').' ('.__($timeSettings['description'],'wp-piwik').')';
+			$this->method = 'DevicesDetection.getOsVersions';
 			$this->context = 'normal';
 			wp_enqueue_script('wp-piwik', self::$wpPiwik->getPluginURL().'js/wp-piwik.js', array(), self::$wpPiwik->getPluginVersion(), true);
 			wp_enqueue_script('wp-piwik-jqplot',self::$wpPiwik->getPluginURL().'js/jqplot/wp-piwik.jqplot.js',array('jquery'));
@@ -34,7 +32,7 @@
 			if (!empty($response['result']) && $response['result'] ='error')
 				echo '<strong>'.__('Piwik error', 'wp-piwik').':</strong> '.htmlentities($response['message'], ENT_QUOTES, 'utf-8');
 			else {
-				$tableHead = array(__('Browser', 'wp-piwik'), __('Unique', 'wp-piwik'), __('Percent', 'wp-piwik'));
+				$tableHead = array(__('Operation System', 'wp-piwik'), __('Unique', 'wp-piwik'), __('Percent', 'wp-piwik'));
 				if (isset($response[0]['nb_uniq_visitors'])) $unique = 'nb_uniq_visitors';
 				else $unique = 'sum_daily_nb_uniq_visitors';
 				$count = 0;
@@ -62,9 +60,6 @@
 				}
 				if ($count > $this->limit)
 					$tableBody['Others'][0] = __('Others', 'wp-piwik');
-				elseif ($count == $this->limit) {
-					$class['Others'] = $js['Others'] = '';
-				}
 
 				foreach ($tableBody as $key => $row)
 					$tableBody[$key][2] = number_format($row[1]/$sum*100, 2).'%';

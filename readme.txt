@@ -17,7 +17,7 @@ To use this plugin you will need your own Piwik instance. If you do not already 
 
 **Requirements:** PHP 5.4 (or higher), WordPress 4.0 (or higher), Piwik 2.9 (or higher)
  
-**Languages:** English, French, German. Partially supported: Albanian, Azerbaijani, Belorussian, Chinese (simplified), Dutch, Greek, Italian, Lithuanian, Norwegian, Persian, Romanian, Russian, Spanish, Swedish, Ukrainian
+**Languages:** English, French, German, Portuguese (Brazil). Partially supported: Albanian, Azerbaijani, Belarusian, Chinese (simplified), Dutch, Greek, Italian, Lithuanian, Norwegian, Persian, Romanian, Russian, Spanish, Swedish, Turkish, Ukrainian
 
 **Note:** If you vote "It's broken", please tell me about your problem. It's hard to fix a bug I don't know about! ;-)
 
@@ -121,6 +121,16 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 This is a full refactored version of WP-Piwik. Please check your settings after updating and make sure everything is working as expected. If you want to upgrade from 0.8.x, please install 0.9.9.18 first: https://downloads.wordpress.org/plugin/wp-piwik.0.9.9.18.zip
 
 == Changelog ==
+
+= 1.0.2 =
+* Several language updates.
+* Disable update notifications (expert settings).
+* Choose between cURL and fopen if both are available (expert settings).
+* Widget: System details added.
+* Update: Replaced deprecated Piwik API calls.
+* Bugfix: Settings link (toolbar, network mode) fixed.
+* Bugfix: Encode blog titles in PHP mode.
+* Bugfix: Pie charts won't show to long legends if more than 10 items are available.
 
 = 1.0.1 =
 * Several language updates, amongst others Portuges (Brazil) finished. See https://www.transifex.com/organization/piwik/dashboard/wp-piwik for further information.

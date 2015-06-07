@@ -1,12 +1,13 @@
 # Copyright (C) 2015 WP-Piwik
 # This file is distributed under the same license as the WP-Piwik package.
 # Translators:
+# Espen Bye, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: WP-Piwik\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-piwik\n"
 "POT-Creation-Date: 2015-05-20 21:59:25+00:00\n"
-"PO-Revision-Date: 2015-05-26 20:41+0000\n"
+"PO-Revision-Date: 2015-06-07 19:16+0000\n"
 "Last-Translator: André Bräkling\n"
 "Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/projects/p/wp-piwik/language/nb_NO/)\n"
 "MIME-Version: 1.0\n"
@@ -75,7 +76,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:78 classes/WP_Piwik.php:914
 msgid "Support"
-msgstr ""
+msgstr "Støtte"
 
 #: classes/WP_Piwik/Admin/Settings.php:82
 msgid "Credits"
@@ -95,7 +96,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:95
 msgid "or"
-msgstr ""
+msgstr "eller"
 
 #: classes/WP_Piwik/Admin/Settings.php:95
 msgid "Cloud-hosted"
@@ -110,7 +111,7 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:98
 #: classes/WP_Piwik/Template/MetaBoxCustomVars.php:30
 msgid "More information"
-msgstr ""
+msgstr "Mer informasjon"
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 msgid "You can choose between three connection methods:"
@@ -224,12 +225,12 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:141
 #: classes/WP_Piwik/Admin/Settings.php:154
 msgid "Today"
-msgstr ""
+msgstr "I dag"
 
 #: classes/WP_Piwik/Admin/Settings.php:142
 #: classes/WP_Piwik/Admin/Settings.php:153
 msgid "Yesterday"
-msgstr ""
+msgstr "I går"
 
 #: classes/WP_Piwik/Admin/Settings.php:143
 msgid "Current month"
@@ -245,7 +246,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:146
 msgid "Last week"
-msgstr ""
+msgstr "Forrige uke"
 
 #: classes/WP_Piwik/Admin/Settings.php:147
 msgid "Default date shown on statistics page."
@@ -277,7 +278,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:155
 msgid "Last 30 days"
-msgstr ""
+msgstr "Siste 30 dager"
 
 #: classes/WP_Piwik/Admin/Settings.php:156
 msgid "Enable WP-Piwik dashboard widget &quot;Overview&quot;."
@@ -662,7 +663,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:271
 msgid "empty"
-msgstr ""
+msgstr "tom"
 
 #: classes/WP_Piwik/Admin/Settings.php:272
 msgid "Define a specific user agent"
@@ -694,11 +695,11 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:284
 msgid "http"
-msgstr ""
+msgstr "HTTP"
 
 #: classes/WP_Piwik/Admin/Settings.php:285
 msgid "https (SSL)"
-msgstr ""
+msgstr "HTTPS (SSL)"
 
 #: classes/WP_Piwik/Admin/Settings.php:286
 msgid ""
@@ -797,11 +798,11 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:542
 #: classes/WP_Piwik/Admin/Settings.php:547
 msgid "not"
-msgstr ""
+msgstr "ikke"
 
 #: classes/WP_Piwik/Admin/Settings.php:543
 msgid "available"
-msgstr ""
+msgstr "tilgjengelig"
 
 #: classes/WP_Piwik/Admin/Settings.php:546
 msgid "allow_url_fopen is"
@@ -865,11 +866,11 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:30
 msgid "Title"
-msgstr ""
+msgstr "Tittel"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:31
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:32
 msgid "Site ID (Piwik)"
@@ -909,11 +910,11 @@ msgstr ""
 
 #: classes/WP_Piwik/Template/MetaBoxCustomVars.php:21
 msgid "Name"
-msgstr ""
+msgstr "Navn"
 
 #: classes/WP_Piwik/Template/MetaBoxCustomVars.php:21
 msgid "Value"
-msgstr ""
+msgstr "Verdi"
 
 #: classes/WP_Piwik/Template/MetaBoxCustomVars.php:30
 msgid "Set custom variables for a page view"
@@ -1076,7 +1077,7 @@ msgstr "Oppløsning"
 
 #: classes/WP_Piwik/Widget/Seo.php:13
 msgid "SEO"
-msgstr ""
+msgstr "SEO"
 
 #: classes/WP_Piwik/Widget/Systems.php:14
 msgid "Operation Systems"
@@ -1108,11 +1109,11 @@ msgstr ""
 
 #: classes/WP_Piwik/Widget.php:293
 msgid "week"
-msgstr ""
+msgstr "uke"
 
 #: classes/WP_Piwik.php:193
 msgid "%s %s installed."
-msgstr ""
+msgstr "%s %s installert."
 
 #: classes/WP_Piwik.php:193
 msgid "Next you should connect to Piwik"
@@ -1120,7 +1121,7 @@ msgstr ""
 
 #: classes/WP_Piwik.php:223
 msgid "%s updated to %s."
-msgstr ""
+msgstr "%s oppdatert til %s."
 
 #: classes/WP_Piwik.php:223
 msgid "Please validate your configuration"

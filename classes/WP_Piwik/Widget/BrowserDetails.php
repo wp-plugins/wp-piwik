@@ -14,7 +14,7 @@
 				'date'  => $timeSettings['date']
 			);
 			$this->title = $prefix.__('Browser Details', 'wp-piwik').' ('.__($timeSettings['description'],'wp-piwik').')';
-			$this->method = 'UserSettings.getBrowserVersion';
+			$this->method = 'DevicesDetection.getBrowserVersions';
 			$this->context = 'normal';
 			wp_enqueue_script('wp-piwik', self::$wpPiwik->getPluginURL().'js/wp-piwik.js', array(), self::$wpPiwik->getPluginVersion(), true);
 			wp_enqueue_script('wp-piwik-jqplot',self::$wpPiwik->getPluginURL().'js/jqplot/wp-piwik.jqplot.js',array('jquery'));
@@ -39,6 +39,7 @@
 				else $unique = 'sum_daily_nb_uniq_visitors';
 				$count = 0;
 				$sum = 0;
+				$js = array();
 				$class = array();
 				foreach ($response as $row) {
 					$count++;
@@ -60,7 +61,7 @@
 					}
 				}
 				if ($count > $this->limit)
-					$tableBody['Others'][0] = '<u>'.__('Others', 'wp-piwik').'</u>';
+					$tableBody['Others'][0] = __('Others', 'wp-piwik');
 
 				foreach ($tableBody as $key => $row)
 					$tableBody[$key][2] = number_format($row[1]/$sum*100, 2).'%';

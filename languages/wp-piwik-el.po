@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: WP-Piwik\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-piwik\n"
 "POT-Creation-Date: 2015-05-20 21:59:25+00:00\n"
-"PO-Revision-Date: 2015-05-30 10:19+0000\n"
+"PO-Revision-Date: 2015-06-02 14:56+0000\n"
 "Last-Translator: Vasilis Lourdas\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/wp-piwik/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -391,97 +391,97 @@ msgstr "Χρήση σεναρίου διαμεσολαβητή"
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid "Use this tracking code to not reveal the Piwik server URL."
-msgstr ""
+msgstr "Χρησιμοποιήστε αυτό τον κώδικα παρακολούθησης για να μην αποκαλύπτετε τη διεύθυνση URL του Piwik."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:210
 #: classes/WP_Piwik/Admin/Settings.php:220
 msgid "See %sPiwik FAQ%s."
-msgstr ""
+msgstr "Δείτε τις %sσυχνές ερωταπαντήσεις του Piwik%s."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:196
 msgid "Enter manually"
-msgstr ""
+msgstr "Εισάγετε χειροκίνητα"
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid ""
 "Enter your own tracking code manually. You can choose one of the prior "
 "options, pre-configure your tracking code and switch to manually editing at "
 "last."
-msgstr ""
+msgstr "Εισάγετε μόνοι σας τον κώδικα παρακολούθησης. Μπορείτε να επιλέξετε μία από τις προηγούμενες επιλογές, να προρυθμίσετε τον κώδικά σας και τέλος να μεταβείτε σε κατάσταση επεξεργασίας."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid "Use the placeholder {ID} to add the Piwik site ID."
-msgstr ""
+msgstr "Χρήση του κωδικού (ID) για την προσθήκη του αναγνωριστικού ιστοτόπου του Piwik."
 
 #: classes/WP_Piwik/Admin/Settings.php:191
 msgid "Add tracking code"
-msgstr ""
+msgstr "Προσθήκη κώδικα παρακολούθησης"
 
 #: classes/WP_Piwik/Admin/Settings.php:199
 msgid "Tracking code"
-msgstr ""
+msgstr "Κώδικας παρακολούθησης"
 
 #: classes/WP_Piwik/Admin/Settings.php:201
 msgid "JavaScript code position"
-msgstr ""
+msgstr "Θέση του κώδικα JavaScript"
 
 #: classes/WP_Piwik/Admin/Settings.php:202
 msgid "Footer"
-msgstr ""
+msgstr "Υποσέλιδο"
 
 #: classes/WP_Piwik/Admin/Settings.php:203
 msgid "Header"
-msgstr ""
+msgstr "Κεφαλίδα"
 
 #: classes/WP_Piwik/Admin/Settings.php:204
 msgid ""
 "Choose whether the JavaScript code is added to the footer or the header."
-msgstr ""
+msgstr "Επιλέξτε αν ο κώδικας JavaScript θα προστίθεται στο υποσέλιδο ή την κεφαλίδα."
 
 #: classes/WP_Piwik/Admin/Settings.php:206
 msgid "Noscript code"
-msgstr ""
+msgstr "Κώδικας noscript"
 
 #: classes/WP_Piwik/Admin/Settings.php:208
 msgid "Add &lt;noscript&gt;"
-msgstr ""
+msgstr "Προσθήκη του &lt;noscript&gt;"
 
 #: classes/WP_Piwik/Admin/Settings.php:208
 msgid "Adds the &lt;noscript&gt; code to your footer."
-msgstr ""
+msgstr "Προσθέτει τον κώδικα &lt;noscript&gt; στο υποσέλιδο."
 
 #: classes/WP_Piwik/Admin/Settings.php:208
 #: classes/WP_Piwik/Admin/Settings.php:210
 msgid "Disabled in proxy mode."
-msgstr ""
+msgstr "Απενεργοποιημένο σε κατάσταση διαμεσολαβητή."
 
 #: classes/WP_Piwik/Admin/Settings.php:210
 msgid "Add rec parameter to noscript code"
-msgstr ""
+msgstr "Προσθήκη παραμέτρου rec στον κώδικα noscript"
 
 #: classes/WP_Piwik/Admin/Settings.php:210
 msgid "Enable tracking for visitors without JavaScript (not recommended)."
-msgstr ""
+msgstr "Να ενεργοποιηθεί η παρακολούθηση για επισκέπτες χωρίς JavaScript (δεν προτείνεται)."
 
 #: classes/WP_Piwik/Admin/Settings.php:212
 msgid "Enable content tracking"
-msgstr ""
+msgstr "Ενεργοποίηση παρακολούθησης περιεχομένου"
 
 #: classes/WP_Piwik/Admin/Settings.php:214
 msgid "Track all content blocks"
-msgstr ""
+msgstr "Να παρακολουθούνται όλα τα μπλοκ περιεχομένου"
 
 #: classes/WP_Piwik/Admin/Settings.php:215
 msgid "Track only visible content blocks"
-msgstr ""
+msgstr "Να παρακολουθούνται μόνο τα ορατά μπλοκ"
 
 #: classes/WP_Piwik/Admin/Settings.php:216
 msgid ""
 "Content tracking allows you to track interaction with the content of a web "
 "page or application."
-msgstr ""
+msgstr "Η παρακολούθηση περιεχομένου σας επιτρέπει να παρακολουθείτε την αλληλεπίδραση με το περιεχόμενο μιας ιστοσελίδας ή εφαρμογής."
 
 #: classes/WP_Piwik/Admin/Settings.php:216
 #: classes/WP_Piwik/Admin/Settings.php:218
@@ -491,15 +491,15 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:247
 #: classes/WP_Piwik/Admin/Settings.php:249
 msgid "See %sPiwik documentation%s."
-msgstr ""
+msgstr "Δείτε την %sτεκμηρίωση του Piwik%s."
 
 #: classes/WP_Piwik/Admin/Settings.php:218
 msgid "Track search"
-msgstr ""
+msgstr "Παρακολούθηση της αναζήτησης"
 
 #: classes/WP_Piwik/Admin/Settings.php:218
 msgid "Use Piwik's advanced Site Search Analytics feature."
-msgstr ""
+msgstr "Να γίνεται χρήση του χαρακτηριστικού των προχωρημένων Αναλυτικών Αναζήτησης Ιστοτόπου."
 
 #: classes/WP_Piwik/Admin/Settings.php:220
 msgid "Track 404"
@@ -508,59 +508,59 @@ msgstr "Παρακολούθηση 404"
 #: classes/WP_Piwik/Admin/Settings.php:220
 msgid ""
 "WP-Piwik can automatically add a 404-category to track 404-page-visits."
-msgstr ""
+msgstr "Το WP-Piwik μπορεί να προσθέτει αυτόματα μια 404-κατηγορία για να παρακολουθούνται οι επισκέψεις 404."
 
 #: classes/WP_Piwik/Admin/Settings.php:222
 msgid "Add annotation on new post"
-msgstr ""
+msgstr "Προσθήκη σχολιασμού σε νέα καταχώρηση"
 
 #: classes/WP_Piwik/Admin/Settings.php:222
 msgid "Add a Piwik annotation on each new post."
-msgstr ""
+msgstr "Προσθήκη ενός σχολιασμού Piwik σε κάθε νέα καταχώρηση."
 
 #: classes/WP_Piwik/Admin/Settings.php:224
 msgid "Show custom variables box"
-msgstr ""
+msgstr "Εμφάνιση του κουτιού προσαρμοσμένων μεταβλητών"
 
 #: classes/WP_Piwik/Admin/Settings.php:224
 msgid " Show a &quot;custom variables&quot; edit box on post edit page."
-msgstr ""
+msgstr "Να εμφανίζεται ένα κουτί επεξεργασίας &quot;προσαρμοσμένων μεταβλητών&quot; στη σελίδα επεξεργασίας της καταχώρησης."
 
 #: classes/WP_Piwik/Admin/Settings.php:226
 msgid "Add new file types for download tracking"
-msgstr ""
+msgstr "Προσθήκη νέων τύπων αρχείων για την παρακολούθηση των κατεβασμάτων"
 
 #: classes/WP_Piwik/Admin/Settings.php:226
 msgid ""
 "Add file extensions for download tracking, divided by a vertical bar "
 "(&#124;)."
-msgstr ""
+msgstr "Προσθήκη επεκτάσεων αρχείων για την παρακολούθηση των κατεβασμάτων, χωρισμένα με τον χαρακτήρας της κάθετης μπάρας (&#124;)."
 
 #: classes/WP_Piwik/Admin/Settings.php:228
 msgid "Disable cookies"
-msgstr ""
+msgstr "Απενεργοποίηση των cookies"
 
 #: classes/WP_Piwik/Admin/Settings.php:228
 msgid "Disable all tracking cookies for a visitor."
-msgstr ""
+msgstr "Απενεργοποίηση όλων των cookies παρακολούθησης για ένα επισκέπτη."
 
 #: classes/WP_Piwik/Admin/Settings.php:230
 msgid "Limit cookie lifetime"
-msgstr ""
+msgstr "Περιορισμός του χρόνου ζωής των cookies"
 
 #: classes/WP_Piwik/Admin/Settings.php:230
 msgid ""
 "You can limit the cookie lifetime to avoid tracking your users over a longer"
 " period as necessary."
-msgstr ""
+msgstr "Μπορείτε να περιορίσετε το χρονικό όριο ισχύος των cookies για να μην παρακολουθείτετους χρήστες σας για ένα συγκεκριμένο χρονικό διάστημα όπως απαιτείται."
 
 #: classes/WP_Piwik/Admin/Settings.php:232
 msgid "Visitor timeout (seconds)"
-msgstr ""
+msgstr "Χρόνος λήξης επισκεπτών (δευτερόλεπτα)"
 
 #: classes/WP_Piwik/Admin/Settings.php:234
 msgid "Session timeout (seconds)"
-msgstr ""
+msgstr "Χρόνος λήξης συνόδου (δευτερόλεπτα)"
 
 #: classes/WP_Piwik/Admin/Settings.php:236
 msgid "Referral timeout (seconds)"
