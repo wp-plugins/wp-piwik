@@ -40,6 +40,7 @@
 				self::$requests[$id] = array('method' => $method, 'parameter' => $parameter);
 			return $id;
 		}
+		
 		private static function parameterToString($parameter) {
 			$return = '';
 			if (is_array($parameter))

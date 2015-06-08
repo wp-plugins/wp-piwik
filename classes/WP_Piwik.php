@@ -12,7 +12,7 @@ class WP_Piwik {
 	 *
 	 * @var Runtime environment variables
 	 */
-	private static $revisionId = 2015053001, $version = '1.0.1', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
+	private static $revisionId = 2015060801, $version = '1.0.2', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
 	
 	/**
 	 * Constructor class to configure and register all WP-Piwik components
@@ -212,15 +212,19 @@ class WP_Piwik {
 	private function updatePlugin() {
 		self::$logger->log ( 'Upgrade WP-Piwik to ' . self::$version );
 		$patches = glob ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'update' . DIRECTORY_SEPARATOR . '*.php' );
+		$isPatched = false;
 		if (is_array ( $patches )) {
-			sort ( $patches );
+			sort ( $patches );			
 			foreach ( $patches as $patch ) {
 				$patchVersion = ( int ) pathinfo ( $patch, PATHINFO_FILENAME );
-				if ($patchVersion && self::$settings->getGlobalOption ( 'revision' ) < $patchVersion)
+				if ($patchVersion && self::$settings->getGlobalOption ( 'revision' ) < $patchVersion) {
 					self::includeFile ( 'update' . DIRECTORY_SEPARATOR . $patchVersion );
+					$isPatched = true;
+				}
 			}
 		}
-		$this->addNotice ( 'update', sprintf ( __ ( '%s updated to %s.', 'wp-piwik' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), self::$version ), __ ( 'Please validate your configuration', 'wp-piwik' ) );
+		if ((self::$settings->getGlobalOption('update_notice') == 'enabled') || ((self::$settings->getGlobalOption('update_notice') == 'script') && $isPatched))
+			$this->addNotice ( 'update', sprintf ( __ ( '%s updated to %s.', 'wp-piwik' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), self::$version ), __ ( 'Please validate your configuration', 'wp-piwik' ) );
 		$this->installPlugin ( true );
 	}
 	

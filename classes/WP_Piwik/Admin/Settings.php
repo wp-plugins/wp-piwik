@@ -650,7 +650,11 @@ class Settings extends \WP_Piwik\Admin {
 	private function runTestscript() { ?>
 		<div class="wp-piwik-debug">
 		<h2>Testscript Result</h2>
-		<?php if (self::$wpPiwik->isConfigured()) { ?>
+		<?php 
+			if (self::$wpPiwik->isConfigured()) { 
+				if (isset($_GET['testscript_id']) && $_GET['testscript_id']) 
+					switch_to_blog((int) $_GET['testscript_id']);
+		?>
 		<textarea cols="80" rows="10"><?php 
 			echo '`WP-Piwik '.self::$wpPiwik->getPluginVersion()."\nMode: ".self::$settings->getGlobalOption('piwik_mode')."\n\n";
 		?>Test 1/3: global.getPiwikVersion<?php 
@@ -675,7 +679,11 @@ class Settings extends \WP_Piwik\Admin {
 			echo "\n\n";  var_dump( self::$settings->getDebugData() ); echo "`";
 			$GLOBALS ['wp-piwik_debug'] = false;
 		?></textarea>
-		<?php } else echo '<p>Please configure WP-Piwik first.</p>'; ?>
+		<?php
+				if (isset($_GET['testscript_id']) && $_GET['testscript_id']) 
+					restore_current_blog();
+			} else echo '<p>Please configure WP-Piwik first.</p>'; 
+		?>
 		</div>	
 	<?php }
 	
