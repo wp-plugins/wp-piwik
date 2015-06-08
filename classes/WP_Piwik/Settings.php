@@ -83,6 +83,8 @@ class Settings {
 			'track_feed_campaign' => 'feed',
 			// User settings: Expert configuration
 			'cache' => true,
+			'http_connection' => 'curl',
+			'http_method' => 'post',
 			'disable_timelimit' => false,
 			'connection_timeout' => 5,
 			'disable_ssl_verify' => false,

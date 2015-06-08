@@ -124,9 +124,11 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 
 = 1.0.2 =
 * Several language updates.
-* Disable update notifications (expert settings).
-* Choose between cURL and fopen if both are available (expert settings).
+* Feature: Disable update notifications (expert settings).
+* Feature: Choose between cURL and fopen if both are available (expert settings).
+* Feature: Choose between POST and GET (expert settings).
 * Widget: System details added.
+* Widget: SEO widget re-enabled.
 * Update: Replaced deprecated Piwik API calls.
 * Bugfix: Settings link (toolbar, network mode) fixed.
 * Bugfix: Encode blog titles in PHP mode.

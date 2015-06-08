@@ -261,6 +261,17 @@ class Settings extends \WP_Piwik\Admin {
 		
 		$this->showCheckbox ( 'cache', __ ( 'Enable cache', 'wp-piwik' ), __ ( 'Cache API calls, which not contain today\'s values, for a week.', 'wp-piwik' ) );
 		
+		if (function_exists('curl_init') && ini_get('allow_url_fopen'))
+			$this->showSelect ( 'http_connection', __ ( 'HTTP connection via', 'wp-piwik' ), array (
+				'curl' => __ ( 'cURL', 'wp-piwik' ),
+				'fopen' => __ ( 'fopen', 'wp-piwik' )
+			), __('Choose whether WP-Piwik should use cURL or fopen to connect to Piwik in HTTP or Pro mode.', 'wp-piwik' ) );
+
+		$this->showSelect ( 'http_method', __ ( 'HTTP method', 'wp-piwik' ), array (
+				'post' => __ ( 'POST', 'wp-piwik' ),
+				'get' => __ ( 'GET', 'wp-piwik' )
+		), __('Choose whether WP-Piwik should use POST or GET in HTTP or Pro mode.', 'wp-piwik' ) );
+		
 		$this->showCheckbox ( 'disable_timelimit', __ ( 'Disable time limit', 'wp-piwik' ), __ ( 'Use set_time_limit(0) if stats page causes a time out.', 'wp-piwik' ) );
 		
 		$this->showInput ( 'connection_timeout', __ ( 'Connection timeout', 'wp-piwik' ), 'Define a connection timeout for all HTTP requests done by WP-Piwik in seconds.' );
@@ -548,6 +559,7 @@ class Settings extends \WP_Piwik\Admin {
 				echo ' <strong>'.(ini_get('allow_url_fopen')?'':__('not','wp-piwik')).' ';
 				_e('enabled','wp-piwik');
 			?></strong>.</li>
+			<li><?php echo (((function_exists('curl_init') && ini_get('allow_url_fopen') && self::$settings->getGlobalOption('http_connection') == 'curl') || (function_exists('curl_init') && !ini_get('allow_url_fopen')))?__('cURL', 'wp-piwik'):__('fopen', 'wp-piwik')).' ('.(self::$settings->getGlobalOption('http_method')=='post'?__('POST','wp-piwik'):__('GET','wp-piwik')).') '.__('is used.', 'wp-piwik'); ?></li>
 		</ol>
 		<p><?php _e('Tools', 'wp-piwik'); ?>:</p>
 		<ol>
