@@ -93,7 +93,8 @@ class Settings {
 			'track_datacfasync' => false,
 			'track_cdnurl' => '',
 			'track_cdnurlssl' => '',
-			'force_protocol' => 'disabled'
+			'force_protocol' => 'disabled',
+			'update_notice' => 'enabled'
 	), $settings = array (
 			'name' => '',
 			'site_id' => NULL,

@@ -564,7 +564,6 @@ class WP_Piwik {
 	 */
 	private function applySettings() {
 		self::$settings->applyChanges ( $_POST ['wp-piwik'] );
-		echo 'Settings gespeichert';
 		if (self::$settings->getGlobalOption ( 'auto_site_config' ) && self::isConfigured ()) {
 			if ($this->isPHPMode () && ! defined ( 'PIWIK_INCLUDE_PATH' ))
 				self::definePiwikConstants ();

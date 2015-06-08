@@ -295,6 +295,12 @@ class Settings extends \WP_Piwik\Admin {
 				'http' => __ ( 'http', 'wp-piwik' ),
 				'https' => __ ( 'https (SSL)', 'wp-piwik' ) 
 		), __ ( 'Choose if you want to explicitly force Piwik to use HTTP or HTTPS. Does not work with a CDN URL.', 'wp-piwik' ) );
+
+		$this->showSelect ( 'update_notice', __ ( 'Update notice', 'wp-piwik' ), array (
+				'enabled' => __ ( 'Show always if WP-Piwik is updated', 'wp-piwik' ),
+				'script' => __ ( 'Show only if WP-Piwik is updated and settings were changed', 'wp-piwik' ),
+				'disabled' => __ ( 'Disabled', 'wp-piwik' ) 
+		), __ ( 'Choose if you want to get an update notice if WP-Piwik is updated.', 'wp-piwik' ) );
 		
 		echo $submitButton;
 		?>

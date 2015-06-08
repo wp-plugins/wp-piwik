@@ -54,12 +54,13 @@
 		}
 
 		private function fopen($id, $url, $params) {
-			$context = stream_context_create(array('http'=>array('timeout' => self::$settings->getGlobalOption('connection_timeout'))));
+			$contextDefinition = array('http'=>array('timeout' => self::$settings->getGlobalOption('connection_timeout')));
 			if (self::$settings->getGlobalOption('http_method')=='post') {
 				$fullUrl = $url;
-				$context['http']['method'] = 'POST';
-				$context['http']['content'] = $params.'&token_auth='.self::$settings->getGlobalOption('piwik_token');
+				$contextDefinition['http']['method'] = 'POST';
+				$contextDefinition['http']['content'] = $params.'&token_auth='.self::$settings->getGlobalOption('piwik_token');
 			} else $fullUrl = $url.'?'.$params.'&token_auth='.self::$settings->getGlobalOption('piwik_token');	
+			$context = stream_context_create($contextDefinition);
 			$result = $this->unserialize(@file_get_contents($fullUrl, false, $context));
 			if ($GLOBALS ['wp-piwik_debug'])
 				self::$debug[$id] = array ( get_headers($fullUrl, 1), $url.'?'.$params.'&token_auth=...' );

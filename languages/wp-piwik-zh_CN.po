@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WP-Piwik\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-piwik\n"
-"POT-Creation-Date: 2015-05-20 21:59:25+00:00\n"
-"PO-Revision-Date: 2015-05-26 20:30+0000\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-piwik\n"
+"POT-Creation-Date: 2015-06-08 20:50:13+00:00\n"
+"PO-Revision-Date: 2015-06-08 21:18+0000\n"
 "Last-Translator: André Bräkling\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/wp-piwik/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -31,15 +31,15 @@ msgstr ""
 msgid "Thanks for using WP-Piwik!"
 msgstr "感谢使用 WP-Piwik！"
 
-#: classes/WP_Piwik/Admin/Settings.php:51
+#: classes/WP_Piwik/Admin/Settings.php:50
 msgid "WP-Piwik %s is successfully connected to Piwik %s."
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:51
+#: classes/WP_Piwik/Admin/Settings.php:50
 msgid "You are running WordPress %s."
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:51
+#: classes/WP_Piwik/Admin/Settings.php:50
 msgid ""
 "You are running a WordPress %s blog network (WPMU). WP-Piwik will handle "
 "your sites as different websites."
@@ -73,7 +73,7 @@ msgstr ""
 msgid "Expert Settings"
 msgstr "高级设置"
 
-#: classes/WP_Piwik/Admin/Settings.php:78 classes/WP_Piwik.php:914
+#: classes/WP_Piwik/Admin/Settings.php:78 classes/WP_Piwik.php:920
 msgid "Support"
 msgstr "支持"
 
@@ -632,110 +632,148 @@ msgstr "启用缓存"
 msgid "Cache API calls, which not contain today's values, for a week."
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:264
-msgid "Disable time limit"
-msgstr "禁用时间限制"
-
-#: classes/WP_Piwik/Admin/Settings.php:264
-msgid "Use set_time_limit(0) if stats page causes a time out."
-msgstr "如果统计数据页面出现超时，请使用 set_time_limit(0)。"
+#: classes/WP_Piwik/Admin/Settings.php:265
+msgid "HTTP connection via"
+msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:266
-msgid "Connection timeout"
-msgstr "连接超时"
+#: classes/WP_Piwik/Admin/Settings.php:562
+msgid "cURL"
+msgstr ""
+
+#: classes/WP_Piwik/Admin/Settings.php:267
+#: classes/WP_Piwik/Admin/Settings.php:562
+msgid "fopen"
+msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:268
-msgid "Disable SSL peer verification"
-msgstr "禁用 SSL 端点认证"
-
-#: classes/WP_Piwik/Admin/Settings.php:268
-msgid "not recommended"
-msgstr "不推荐"
+msgid ""
+"Choose whether WP-Piwik should use cURL or fopen to connect to Piwik in HTTP"
+" or Pro mode."
+msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:270
-msgid "User agent"
-msgstr "用户代理（UA）"
-
-#: classes/WP_Piwik/Admin/Settings.php:271
-msgid "Use the PHP default user agent"
+msgid "HTTP method"
 msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:271
-msgid "empty"
+#: classes/WP_Piwik/Admin/Settings.php:562
+msgid "POST"
 msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:272
-msgid "Define a specific user agent"
+#: classes/WP_Piwik/Admin/Settings.php:562
+msgid "GET"
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:274
-msgid "Specific user agent"
+#: classes/WP_Piwik/Admin/Settings.php:273
+msgid "Choose whether WP-Piwik should use POST or GET in HTTP or Pro mode."
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:276
-msgid "Add data-cfasync=false"
-msgstr ""
+#: classes/WP_Piwik/Admin/Settings.php:275
+msgid "Disable time limit"
+msgstr "禁用时间限制"
 
-#: classes/WP_Piwik/Admin/Settings.php:278
-msgid "CDN URL"
-msgstr "CDN URL"
+#: classes/WP_Piwik/Admin/Settings.php:275
+msgid "Use set_time_limit(0) if stats page causes a time out."
+msgstr "如果统计数据页面出现超时，请使用 set_time_limit(0)。"
 
-#: classes/WP_Piwik/Admin/Settings.php:280
-msgid "CDN URL (SSL)"
+#: classes/WP_Piwik/Admin/Settings.php:277
+msgid "Connection timeout"
+msgstr "连接超时"
+
+#: classes/WP_Piwik/Admin/Settings.php:279
+msgid "Disable SSL peer verification"
+msgstr "禁用 SSL 端点认证"
+
+#: classes/WP_Piwik/Admin/Settings.php:279
+msgid "not recommended"
+msgstr "不推荐"
+
+#: classes/WP_Piwik/Admin/Settings.php:281
+msgid "User agent"
+msgstr "用户代理（UA）"
+
+#: classes/WP_Piwik/Admin/Settings.php:282
+msgid "Use the PHP default user agent"
 msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:282
-msgid "Force Piwik to use a specific protocol"
+msgid "empty"
 msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:283
-msgid "Disabled (default)"
-msgstr ""
-
-#: classes/WP_Piwik/Admin/Settings.php:284
-msgid "http"
+msgid "Define a specific user agent"
 msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:285
+msgid "Specific user agent"
+msgstr ""
+
+#: classes/WP_Piwik/Admin/Settings.php:287
+msgid "Add data-cfasync=false"
+msgstr ""
+
+#: classes/WP_Piwik/Admin/Settings.php:289
+msgid "CDN URL"
+msgstr "CDN URL"
+
+#: classes/WP_Piwik/Admin/Settings.php:291
+msgid "CDN URL (SSL)"
+msgstr ""
+
+#: classes/WP_Piwik/Admin/Settings.php:293
+msgid "Force Piwik to use a specific protocol"
+msgstr ""
+
+#: classes/WP_Piwik/Admin/Settings.php:294
+msgid "Disabled (default)"
+msgstr ""
+
+#: classes/WP_Piwik/Admin/Settings.php:295
+msgid "http"
+msgstr ""
+
+#: classes/WP_Piwik/Admin/Settings.php:296
 msgid "https (SSL)"
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:286
+#: classes/WP_Piwik/Admin/Settings.php:297
 msgid ""
 "Choose if you want to explicitly force Piwik to use HTTP or HTTPS. Does not "
 "work with a CDN URL."
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:445
+#: classes/WP_Piwik/Admin/Settings.php:457
 msgid "Donate"
 msgstr "捐赠"
 
-#: classes/WP_Piwik/Admin/Settings.php:447
+#: classes/WP_Piwik/Admin/Settings.php:459
 msgid "If you like WP-Piwik, you can support its development by a donation:"
 msgstr "如果你喜欢 WP-Piwik，可以考虑捐赠来支持它的开发："
 
-#: classes/WP_Piwik/Admin/Settings.php:485
+#: classes/WP_Piwik/Admin/Settings.php:497
 msgid "My Amazon.de wishlist"
 msgstr "我的 Amazon.de 愿望单"
 
-#: classes/WP_Piwik/Admin/Settings.php:488
-#: classes/WP_Piwik/Admin/Settings.php:535
+#: classes/WP_Piwik/Admin/Settings.php:500
+#: classes/WP_Piwik/Admin/Settings.php:547
 msgid "Please don't forget to vote the compatibility at the"
 msgstr "请记得提交兼容性投票，地址在"
 
-#: classes/WP_Piwik/Admin/Settings.php:519
+#: classes/WP_Piwik/Admin/Settings.php:531
 msgid "Thank you very much for your donation"
 msgstr "十分感谢您的捐赠"
 
-#: classes/WP_Piwik/Admin/Settings.php:519
+#: classes/WP_Piwik/Admin/Settings.php:531
 msgid "the Piwik team itself"
 msgstr "Piwik 团队本身"
 
-#: classes/WP_Piwik/Admin/Settings.php:519
+#: classes/WP_Piwik/Admin/Settings.php:531
 msgid ", and all people flattering this"
 msgstr "，所有谈论到它的人们"
 
-#: classes/WP_Piwik/Admin/Settings.php:520
+#: classes/WP_Piwik/Admin/Settings.php:532
 msgid ""
 "Graphs powered by <a href=\"http://www.jqplot.com/\">jqPlot</a> (License: "
 "GPL 2.0 and MIT) and <a "
@@ -743,107 +781,111 @@ msgid ""
 "(License: New BSD License)."
 msgstr "图表由 <a href=\"http://www.jqplot.com/\">jqPlot</a>（许可：GPL 2.0 and MIT）以及 <a href=\"http://omnipotent.net/jquery.sparkline/\">jQuery Sparklines</a>（许可：New BSD License）强力驱动。"
 
-#: classes/WP_Piwik/Admin/Settings.php:521
+#: classes/WP_Piwik/Admin/Settings.php:533
 msgid "Metabox support inspired by"
 msgstr "Metabox 支持灵感来源于"
 
-#: classes/WP_Piwik/Admin/Settings.php:522
+#: classes/WP_Piwik/Admin/Settings.php:534
 msgid "Tabbed settings page suggested by the"
 msgstr "标签式设置页面的建议来自"
 
-#: classes/WP_Piwik/Admin/Settings.php:523
+#: classes/WP_Piwik/Admin/Settings.php:535
 msgid "Thank you very much"
 msgstr "非常感谢"
 
-#: classes/WP_Piwik/Admin/Settings.php:523
+#: classes/WP_Piwik/Admin/Settings.php:535
 msgid "for your translation work"
 msgstr "你们的翻译作品"
 
-#: classes/WP_Piwik/Admin/Settings.php:524
+#: classes/WP_Piwik/Admin/Settings.php:536
 msgid ""
 "Thank you very much, all users who send me mails containing criticism, "
 "commendation, feature requests and bug reports! You help me to make WP-Piwik"
 " much better."
 msgstr "非常感谢，所有给我发邮件提出批评、建议、功能请求和 bug 报告的用户们！是你们帮助我把 WP-Piwik 做得更好。"
 
-#: classes/WP_Piwik/Admin/Settings.php:525
+#: classes/WP_Piwik/Admin/Settings.php:537
 msgid ""
 "Thank <strong>you</strong> for using my plugin. It is the best commendation "
 "if my piece of code is really used!"
 msgstr "感谢<strong>你</strong>使用我的插件。我的代码能帮到你，就是对我最大的嘉奖了！"
 
-#: classes/WP_Piwik/Admin/Settings.php:534
+#: classes/WP_Piwik/Admin/Settings.php:546
 msgid "The best place to get help:"
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:534
+#: classes/WP_Piwik/Admin/Settings.php:546
 msgid "WP-Piwik support forum"
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:537
+#: classes/WP_Piwik/Admin/Settings.php:549
 msgid "Debugging"
 msgstr "正在除错"
 
-#: classes/WP_Piwik/Admin/Settings.php:538
+#: classes/WP_Piwik/Admin/Settings.php:550
 msgid ""
 "Either allow_url_fopen has to be enabled <em>or</em> cURL has to be "
 "available:"
 msgstr "要么必须启用 allow_url_fopen，要么使用 cURL："
 
-#: classes/WP_Piwik/Admin/Settings.php:541
+#: classes/WP_Piwik/Admin/Settings.php:553
 msgid "cURL is"
 msgstr "cURL 现在"
 
-#: classes/WP_Piwik/Admin/Settings.php:542
-#: classes/WP_Piwik/Admin/Settings.php:547
+#: classes/WP_Piwik/Admin/Settings.php:554
+#: classes/WP_Piwik/Admin/Settings.php:559
 msgid "not"
 msgstr "不"
 
-#: classes/WP_Piwik/Admin/Settings.php:543
+#: classes/WP_Piwik/Admin/Settings.php:555
 msgid "available"
 msgstr "可用"
 
-#: classes/WP_Piwik/Admin/Settings.php:546
+#: classes/WP_Piwik/Admin/Settings.php:558
 msgid "allow_url_fopen is"
 msgstr "allow_url_fopen 现在"
 
-#: classes/WP_Piwik/Admin/Settings.php:548
+#: classes/WP_Piwik/Admin/Settings.php:560
 msgid "enabled"
 msgstr "启用"
 
-#: classes/WP_Piwik/Admin/Settings.php:551
+#: classes/WP_Piwik/Admin/Settings.php:562
+msgid "is used."
+msgstr ""
+
+#: classes/WP_Piwik/Admin/Settings.php:564
 msgid "Tools"
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:553
+#: classes/WP_Piwik/Admin/Settings.php:566
 msgid "Run testscript"
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:554
+#: classes/WP_Piwik/Admin/Settings.php:567
 msgid "Sitebrowser"
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:555
+#: classes/WP_Piwik/Admin/Settings.php:568
 msgid "Clear cache"
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:556
+#: classes/WP_Piwik/Admin/Settings.php:569
 msgid "Are you sure you want to clear all settings?"
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:556
+#: classes/WP_Piwik/Admin/Settings.php:569
 msgid "Reset WP-Piwik"
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:558
+#: classes/WP_Piwik/Admin/Settings.php:571
 msgid "Latest support threads on WordPress.org"
 msgstr "WordPress.org 上的最新支持讨论"
 
-#: classes/WP_Piwik/Admin/Settings.php:609
+#: classes/WP_Piwik/Admin/Settings.php:622
 msgid "Settings cleared (except connection settings)."
 msgstr ""
 
-#: classes/WP_Piwik/Admin/Settings.php:625
+#: classes/WP_Piwik/Admin/Settings.php:638
 msgid "Cache cleared."
 msgstr ""
 
@@ -931,6 +973,7 @@ msgstr "浏览器细节"
 #: classes/WP_Piwik/Widget/Plugins.php:23 classes/WP_Piwik/Widget/Post.php:25
 #: classes/WP_Piwik/Widget/Screens.php:35
 #: classes/WP_Piwik/Widget/Search.php:23 classes/WP_Piwik/Widget/Seo.php:20
+#: classes/WP_Piwik/Widget/SystemDetails.php:33
 #: classes/WP_Piwik/Widget/Systems.php:33
 #: classes/WP_Piwik/Widget/Visitors.php:35 classes/WP_Piwik/Widget.php:91
 msgid "Piwik error"
@@ -944,6 +987,7 @@ msgstr "浏览器"
 #: classes/WP_Piwik/Widget/BrowserDetails.php:37
 #: classes/WP_Piwik/Widget/Browsers.php:37
 #: classes/WP_Piwik/Widget/Screens.php:37
+#: classes/WP_Piwik/Widget/SystemDetails.php:35
 #: classes/WP_Piwik/Widget/Systems.php:35
 #: classes/WP_Piwik/Widget/Visitors.php:57 classes/WP_Piwik/Widget.php:100
 msgid "Unique"
@@ -953,14 +997,16 @@ msgstr "独立访客"
 #: classes/WP_Piwik/Widget/Browsers.php:37
 #: classes/WP_Piwik/Widget/Plugins.php:25
 #: classes/WP_Piwik/Widget/Screens.php:37
+#: classes/WP_Piwik/Widget/SystemDetails.php:35
 #: classes/WP_Piwik/Widget/Systems.php:35
 msgid "Percent"
 msgstr "百分比"
 
-#: classes/WP_Piwik/Widget/BrowserDetails.php:53
-#: classes/WP_Piwik/Widget/Browsers.php:53
-#: classes/WP_Piwik/Widget/Screens.php:53
-#: classes/WP_Piwik/Widget/Systems.php:51
+#: classes/WP_Piwik/Widget/BrowserDetails.php:64
+#: classes/WP_Piwik/Widget/Browsers.php:64
+#: classes/WP_Piwik/Widget/Screens.php:64
+#: classes/WP_Piwik/Widget/SystemDetails.php:62
+#: classes/WP_Piwik/Widget/Systems.php:62
 msgid "Others"
 msgstr "其他"
 
@@ -1078,12 +1124,17 @@ msgstr "分辨率"
 msgid "SEO"
 msgstr "SEO"
 
-#: classes/WP_Piwik/Widget/Systems.php:14
-msgid "Operation Systems"
+#: classes/WP_Piwik/Widget/SystemDetails.php:14
+msgid "Operation System Details"
 msgstr ""
 
+#: classes/WP_Piwik/Widget/SystemDetails.php:35
 #: classes/WP_Piwik/Widget/Systems.php:35
 msgid "Operation System"
+msgstr ""
+
+#: classes/WP_Piwik/Widget/Systems.php:14
+msgid "Operation Systems"
 msgstr ""
 
 #: classes/WP_Piwik/Widget/Visitors.php:57
@@ -1126,7 +1177,7 @@ msgstr ""
 msgid "Please validate your configuration"
 msgstr "请验证你的配置"
 
-#: classes/WP_Piwik.php:255 classes/WP_Piwik.php:471
+#: classes/WP_Piwik.php:255 classes/WP_Piwik.php:477
 msgid "Settings"
 msgstr "设置"
 
@@ -1138,11 +1189,15 @@ msgstr "重要"
 msgid "Piwik Statistics"
 msgstr "Piwik 统计"
 
-#: classes/WP_Piwik.php:914
+#: classes/WP_Piwik.php:449
+msgid "Configure WP-Piwik"
+msgstr ""
+
+#: classes/WP_Piwik.php:920
 msgid "An error occured"
 msgstr "出错了"
 
-#: classes/WP_Piwik.php:1179
+#: classes/WP_Piwik.php:1186
 msgid "Cheatin&#8217; uh?"
 msgstr "呃，打开的方式不对吧？"
 
