@@ -2,13 +2,15 @@
 # This file is distributed under the same license as the WP-Piwik package.
 # Translators:
 # Andre Braekling <webmaster@braekling.de>, 2009
+# André Bräkling, 2015
 # Franck, 2015
+# Vincent BIRET <vincentbiret@hotmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: WP-Piwik\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-piwik\n"
 "POT-Creation-Date: 2015-06-08 21:36:53+00:00\n"
-"PO-Revision-Date: 2015-06-08 21:38+0000\n"
+"PO-Revision-Date: 2015-06-09 06:00+0000\n"
 "Last-Translator: André Bräkling\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/wp-piwik/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -637,17 +639,17 @@ msgstr "Appels API de cache, qui ne contiennent pas les valeurs d'aujourd'hui, p
 
 #: classes/WP_Piwik/Admin/Settings.php:265
 msgid "HTTP connection via"
-msgstr ""
+msgstr "Connexion HTTP via"
 
 #: classes/WP_Piwik/Admin/Settings.php:266
 #: classes/WP_Piwik/Admin/Settings.php:568
 msgid "cURL"
-msgstr ""
+msgstr "cURL"
 
 #: classes/WP_Piwik/Admin/Settings.php:267
 #: classes/WP_Piwik/Admin/Settings.php:568
 msgid "fopen"
-msgstr ""
+msgstr "fopen"
 
 #: classes/WP_Piwik/Admin/Settings.php:268
 msgid ""
@@ -657,17 +659,17 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:270
 msgid "HTTP method"
-msgstr ""
+msgstr "Méthode HTTP"
 
 #: classes/WP_Piwik/Admin/Settings.php:271
 #: classes/WP_Piwik/Admin/Settings.php:568
 msgid "POST"
-msgstr ""
+msgstr "POST"
 
 #: classes/WP_Piwik/Admin/Settings.php:272
 #: classes/WP_Piwik/Admin/Settings.php:568
 msgid "GET"
-msgstr ""
+msgstr "GET"
 
 #: classes/WP_Piwik/Admin/Settings.php:273
 msgid "Choose whether WP-Piwik should use POST or GET in HTTP or Pro mode."
@@ -753,11 +755,11 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:300
 msgid "Show always if WP-Piwik is updated"
-msgstr ""
+msgstr "Toujours afficher si WP-Piwik est mis à jour"
 
 #: classes/WP_Piwik/Admin/Settings.php:301
 msgid "Show only if WP-Piwik is updated and settings were changed"
-msgstr ""
+msgstr "Afficher uniquement si WP-Piwik est mis à jour et que les paramètres ont change."
 
 #: classes/WP_Piwik/Admin/Settings.php:303
 msgid "Choose if you want to get an update notice if WP-Piwik is updated."
@@ -870,7 +872,7 @@ msgstr "activé"
 
 #: classes/WP_Piwik/Admin/Settings.php:568
 msgid "is used."
-msgstr ""
+msgstr "est utilisé."
 
 #: classes/WP_Piwik/Admin/Settings.php:570
 msgid "Tools"
@@ -1210,7 +1212,7 @@ msgstr "Statistiques Piwik"
 
 #: classes/WP_Piwik.php:449
 msgid "Configure WP-Piwik"
-msgstr ""
+msgstr "Paramétrer  WP-Piwik"
 
 #: classes/WP_Piwik.php:919
 msgid "An error occured"
