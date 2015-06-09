@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: WP-Piwik\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-piwik\n"
 "POT-Creation-Date: 2015-06-08 21:36:53+00:00\n"
-"PO-Revision-Date: 2015-06-09 06:00+0000\n"
+"PO-Revision-Date: 2015-06-09 11:07+0000\n"
 "Last-Translator: André Bräkling\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/wp-piwik/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -655,7 +655,7 @@ msgstr "fopen"
 msgid ""
 "Choose whether WP-Piwik should use cURL or fopen to connect to Piwik in HTTP"
 " or Pro mode."
-msgstr ""
+msgstr "Choisissez si WP-Piwik devrait utiliser cURL ou fopen pour se connecter à Piwik dans HTTP ou le mode Pro."
 
 #: classes/WP_Piwik/Admin/Settings.php:270
 msgid "HTTP method"
@@ -673,7 +673,7 @@ msgstr "GET"
 
 #: classes/WP_Piwik/Admin/Settings.php:273
 msgid "Choose whether WP-Piwik should use POST or GET in HTTP or Pro mode."
-msgstr ""
+msgstr "Choisissez si WP-Piwik devrait utiliser POST ou GET en HTTP ou le mode Pro."
 
 #: classes/WP_Piwik/Admin/Settings.php:275
 msgid "Disable time limit"
@@ -751,7 +751,7 @@ msgstr "Choisissez si vous voulez forcer explicitement Piwik à utiliser le prot
 
 #: classes/WP_Piwik/Admin/Settings.php:299
 msgid "Update notice"
-msgstr ""
+msgstr "Avis de mise à jour"
 
 #: classes/WP_Piwik/Admin/Settings.php:300
 msgid "Show always if WP-Piwik is updated"
@@ -763,7 +763,7 @@ msgstr "Afficher uniquement si WP-Piwik est mis à jour et que les paramètres o
 
 #: classes/WP_Piwik/Admin/Settings.php:303
 msgid "Choose if you want to get an update notice if WP-Piwik is updated."
-msgstr ""
+msgstr "Choisissez si vous souhaitez obtenir un avis de mise à jour si WP-Piwik est mis à jour."
 
 #: classes/WP_Piwik/Admin/Settings.php:463
 msgid "Donate"
@@ -1147,7 +1147,7 @@ msgstr "SEO"
 
 #: classes/WP_Piwik/Widget/SystemDetails.php:14
 msgid "Operation System Details"
-msgstr ""
+msgstr "Détails du système d'exploitation"
 
 #: classes/WP_Piwik/Widget/SystemDetails.php:35
 #: classes/WP_Piwik/Widget/Systems.php:35
