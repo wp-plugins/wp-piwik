@@ -2,12 +2,13 @@
 # This file is distributed under the same license as the WP-Piwik package.
 # Translators:
 # Andre Braekling <webmaster@braekling.de>, 2009
+# Hannes Bossuyt <hannesbossuyt@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: WP-Piwik\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-piwik\n"
 "POT-Creation-Date: 2015-06-08 21:36:53+00:00\n"
-"PO-Revision-Date: 2015-06-08 21:38+0000\n"
+"PO-Revision-Date: 2015-06-09 21:03+0000\n"
 "Last-Translator: André Bräkling\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/wp-piwik/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -18,33 +19,33 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:24
 msgid "Reload"
-msgstr ""
+msgstr "Herlaad"
 
 #: classes/WP_Piwik/Admin/Settings.php:27
 msgid "Changes saved."
-msgstr ""
+msgstr "Wijzigingen bewaard."
 
 #: classes/WP_Piwik/Admin/Settings.php:45
 msgid "Save Changes"
-msgstr ""
+msgstr "Bewaar wijzigingen"
 
 #: classes/WP_Piwik/Admin/Settings.php:46
 msgid "Thanks for using WP-Piwik!"
-msgstr ""
+msgstr "Bedankt om WP-Piwik te gebruiken!"
 
 #: classes/WP_Piwik/Admin/Settings.php:50
 msgid "WP-Piwik %s is successfully connected to Piwik %s."
-msgstr ""
+msgstr "WP-Piwik %s is succesvol geconnecteerd  met piwik %s."
 
 #: classes/WP_Piwik/Admin/Settings.php:50
 msgid "You are running WordPress %s."
-msgstr ""
+msgstr "Je gebruikt Wordpress %s."
 
 #: classes/WP_Piwik/Admin/Settings.php:50
 msgid ""
 "You are running a WordPress %s blog network (WPMU). WP-Piwik will handle "
 "your sites as different websites."
-msgstr ""
+msgstr "Je draait een Wordpress %s blog netwerk (WPMU). WP-Piwik zal je sites behandelen als verschillende websites."
 
 #: classes/WP_Piwik/Admin/Settings.php:53
 msgid ""
@@ -60,27 +61,27 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:60
 msgid "Connect to Piwik"
-msgstr ""
+msgstr "Verbind met Piwik"
 
 #: classes/WP_Piwik/Admin/Settings.php:65
 msgid "Show Statistics"
-msgstr ""
+msgstr "Toon statistieken."
 
 #: classes/WP_Piwik/Admin/Settings.php:69
 msgid "Enable Tracking"
-msgstr ""
+msgstr "Schakel tracking in."
 
 #: classes/WP_Piwik/Admin/Settings.php:74
 msgid "Expert Settings"
-msgstr ""
+msgstr "Exporteer instellingen."
 
 #: classes/WP_Piwik/Admin/Settings.php:78 classes/WP_Piwik.php:919
 msgid "Support"
-msgstr ""
+msgstr "Ondersteuning."
 
 #: classes/WP_Piwik/Admin/Settings.php:82
 msgid "Credits"
-msgstr ""
+msgstr "Dank aan"
 
 #: classes/WP_Piwik/Admin/Settings.php:95
 msgid ""
@@ -92,35 +93,35 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:95
 msgid "Self-hosted"
-msgstr ""
+msgstr "Zelf gehoste"
 
 #: classes/WP_Piwik/Admin/Settings.php:95
 msgid "or"
-msgstr ""
+msgstr "of"
 
 #: classes/WP_Piwik/Admin/Settings.php:95
 msgid "Cloud-hosted"
-msgstr ""
+msgstr "Cloud gehoste"
 
 #: classes/WP_Piwik/Admin/Settings.php:98
 msgid ""
 "Neither cURL nor fopen are available. So WP-Piwik can not use the HTTP API "
 "and not connect to Piwik Pro."
-msgstr ""
+msgstr "Zowel cURL als fopen zijn niet beschikbaar. WP-Piwik kan dus geen gebruik maken van de HTTP API of verbinden met Piwik Pro."
 
 #: classes/WP_Piwik/Admin/Settings.php:98
 #: classes/WP_Piwik/Template/MetaBoxCustomVars.php:30
 msgid "More information"
-msgstr ""
+msgstr "Meer informatie"
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 msgid "You can choose between three connection methods:"
-msgstr ""
+msgstr "Je kunt kiezen tussen 3 connectie methoden:"
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 #: classes/WP_Piwik/Admin/Settings.php:103
 msgid "Self-hosted (HTTP API, default)"
-msgstr ""
+msgstr "Lokale installatie (HTTP API, standaard)"
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 msgid ""
@@ -131,7 +132,7 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:100
 #: classes/WP_Piwik/Admin/Settings.php:104
 msgid "Self-hosted (PHP API)"
-msgstr ""
+msgstr "Zelf gehost (PHP-API)"
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 msgid ""
@@ -170,7 +171,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:109
 msgid "Piwik path"
-msgstr ""
+msgstr "Piwik pad"
 
 #: classes/WP_Piwik/Admin/Settings.php:109
 msgid "Enter the file path to your Piwik instance, e.g. /var/www/piwik/."
@@ -178,7 +179,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:110
 msgid "Piwik user"
-msgstr ""
+msgstr "Piwik gebruiker."
 
 #: classes/WP_Piwik/Admin/Settings.php:110
 msgid ""
@@ -198,11 +199,11 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:111
 msgid "See %sWP-Piwik FAQ%s."
-msgstr ""
+msgstr "Zie %WP-Piwik FAQ%s."
 
 #: classes/WP_Piwik/Admin/Settings.php:116
 msgid "Auto config"
-msgstr ""
+msgstr "Auto config"
 
 #: classes/WP_Piwik/Admin/Settings.php:116
 msgid ""
@@ -216,45 +217,45 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:132
 msgid "Select site"
-msgstr ""
+msgstr "Selecteer site"
 
 #: classes/WP_Piwik/Admin/Settings.php:140
 msgid "Piwik default date"
-msgstr ""
+msgstr "Piwik standaard datum"
 
 #: classes/WP_Piwik/Admin/Settings.php:141
 #: classes/WP_Piwik/Admin/Settings.php:154
 msgid "Today"
-msgstr ""
+msgstr "Vandaag"
 
 #: classes/WP_Piwik/Admin/Settings.php:142
 #: classes/WP_Piwik/Admin/Settings.php:153
 msgid "Yesterday"
-msgstr ""
+msgstr "Gisteren"
 
 #: classes/WP_Piwik/Admin/Settings.php:143
 msgid "Current month"
-msgstr ""
+msgstr "Huidige maand"
 
 #: classes/WP_Piwik/Admin/Settings.php:144
 msgid "Last month"
-msgstr ""
+msgstr "Vorige maand"
 
 #: classes/WP_Piwik/Admin/Settings.php:145
 msgid "Current week"
-msgstr ""
+msgstr "Huidige week"
 
 #: classes/WP_Piwik/Admin/Settings.php:146
 msgid "Last week"
-msgstr ""
+msgstr "Vorige week"
 
 #: classes/WP_Piwik/Admin/Settings.php:147
 msgid "Default date shown on statistics page."
-msgstr ""
+msgstr "Standaard datum die wordt weergegeven op statistieken pagina."
 
 #: classes/WP_Piwik/Admin/Settings.php:149
 msgid "Show SEO data"
-msgstr ""
+msgstr "Toon SEO data"
 
 #: classes/WP_Piwik/Admin/Settings.php:149
 msgid "Display SEO ranking data on statistics page."
@@ -263,11 +264,11 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:149
 #: classes/WP_Piwik/Admin/Settings.php:160
 msgid "Slow!"
-msgstr ""
+msgstr "Traag!"
 
 #: classes/WP_Piwik/Admin/Settings.php:151
 msgid "Dashboard overview"
-msgstr ""
+msgstr "Dashboard overzicht"
 
 #: classes/WP_Piwik/Admin/Settings.php:152
 #: classes/WP_Piwik/Admin/Settings.php:190
@@ -275,11 +276,11 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:213
 #: classes/WP_Piwik/Admin/Settings.php:302
 msgid "Disabled"
-msgstr ""
+msgstr "Uitgeschakeld"
 
 #: classes/WP_Piwik/Admin/Settings.php:155
 msgid "Last 30 days"
-msgstr ""
+msgstr "Laatste 30 dagen"
 
 #: classes/WP_Piwik/Admin/Settings.php:156
 msgid "Enable WP-Piwik dashboard widget &quot;Overview&quot;."
@@ -287,7 +288,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:158
 msgid "Dashboard graph"
-msgstr ""
+msgstr "Dashboard grafiek"
 
 #: classes/WP_Piwik/Admin/Settings.php:158
 msgid "Enable WP-Piwik dashboard widget &quot;Graph&quot;."
@@ -295,15 +296,15 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:160
 msgid "Dashboard SEO"
-msgstr ""
+msgstr "Dashboard SEO"
 
 #: classes/WP_Piwik/Admin/Settings.php:160
 msgid "Enable WP-Piwik dashboard widget &quot;SEO&quot;."
-msgstr ""
+msgstr "Schakel WP-Piwik dashboard widget &quot;SEO&quot; in."
 
 #: classes/WP_Piwik/Admin/Settings.php:162
 msgid "Show graph on WordPress Toolbar"
-msgstr ""
+msgstr "Toon grafiek op de WordPress Toolbar"
 
 #: classes/WP_Piwik/Admin/Settings.php:162
 msgid "Display a last 30 days visitor graph on WordPress' toolbar."
@@ -311,7 +312,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:164
 msgid "Display stats to"
-msgstr ""
+msgstr "Toon statistieken aan"
 
 #: classes/WP_Piwik/Admin/Settings.php:171
 msgid "Choose user roles allowed to see the statistics page."
@@ -319,7 +320,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:173
 msgid "Show per post stats"
-msgstr ""
+msgstr "Toon per post statistieken"
 
 #: classes/WP_Piwik/Admin/Settings.php:173
 msgid "Show stats about single posts at the post edit admin page."
@@ -327,27 +328,27 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:175
 msgid "Piwik shortcut"
-msgstr ""
+msgstr "Piwik snelkoppeling"
 
 #: classes/WP_Piwik/Admin/Settings.php:175
 msgid "Display a shortcut to Piwik itself."
-msgstr ""
+msgstr "Toon een shortcut van Piwik naar zichzelf."
 
 #: classes/WP_Piwik/Admin/Settings.php:177
 msgid "WP-Piwik display name"
-msgstr ""
+msgstr "WP-Piwik weergegeven naam"
 
 #: classes/WP_Piwik/Admin/Settings.php:177
 msgid "Plugin name shown in WordPress."
-msgstr ""
+msgstr "Plugin naam die wordt weergegeven in WordPress."
 
 #: classes/WP_Piwik/Admin/Settings.php:179
 msgid "Enable shortcodes"
-msgstr ""
+msgstr "Schakel shortcodes in"
 
 #: classes/WP_Piwik/Admin/Settings.php:179
 msgid "Enable shortcodes in post or page content."
-msgstr ""
+msgstr "Schakel shortcodes in voor de inhoud van posts en reacties."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid "You can choose between four tracking code modes:"
@@ -363,16 +364,16 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:193
 msgid "Default tracking"
-msgstr ""
+msgstr "Standaard tracking."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid "WP-Piwik will use Piwik's standard tracking code."
-msgstr ""
+msgstr "WP-Piwik gebruikt Piwik's standaard tracking code."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:194
 msgid "Use js/index.php"
-msgstr ""
+msgstr "Gebruik js/index.php"
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid ""
@@ -382,12 +383,12 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid "See %sreadme file%s."
-msgstr ""
+msgstr "Toon %sleesmij bestand%s."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:195
 msgid "Use proxy script"
-msgstr ""
+msgstr "Gebruik proxy script"
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid "Use this tracking code to not reveal the Piwik server URL."
@@ -397,12 +398,12 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:210
 #: classes/WP_Piwik/Admin/Settings.php:220
 msgid "See %sPiwik FAQ%s."
-msgstr ""
+msgstr "Zie de %sPiwik FAQ%s."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:196
 msgid "Enter manually"
-msgstr ""
+msgstr "Voer manueel in."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid ""
@@ -417,23 +418,23 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:191
 msgid "Add tracking code"
-msgstr ""
+msgstr "Voeg tracking code toe."
 
 #: classes/WP_Piwik/Admin/Settings.php:199
 msgid "Tracking code"
-msgstr ""
+msgstr "Tracking code"
 
 #: classes/WP_Piwik/Admin/Settings.php:201
 msgid "JavaScript code position"
-msgstr ""
+msgstr "Javascript code positie"
 
 #: classes/WP_Piwik/Admin/Settings.php:202
 msgid "Footer"
-msgstr ""
+msgstr "Voettekst"
 
 #: classes/WP_Piwik/Admin/Settings.php:203
 msgid "Header"
-msgstr ""
+msgstr "Koptekst"
 
 #: classes/WP_Piwik/Admin/Settings.php:204
 msgid ""
@@ -442,11 +443,11 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:206
 msgid "Noscript code"
-msgstr ""
+msgstr "Noscript code"
 
 #: classes/WP_Piwik/Admin/Settings.php:208
 msgid "Add &lt;noscript&gt;"
-msgstr ""
+msgstr "Voeg &lt;noscript&gt; toe."
 
 #: classes/WP_Piwik/Admin/Settings.php:208
 msgid "Adds the &lt;noscript&gt; code to your footer."
@@ -455,7 +456,7 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:208
 #: classes/WP_Piwik/Admin/Settings.php:210
 msgid "Disabled in proxy mode."
-msgstr ""
+msgstr "Uitgeschakeld in proxy mode."
 
 #: classes/WP_Piwik/Admin/Settings.php:210
 msgid "Add rec parameter to noscript code"
@@ -467,7 +468,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:212
 msgid "Enable content tracking"
-msgstr ""
+msgstr "Schakel content tracking in."
 
 #: classes/WP_Piwik/Admin/Settings.php:214
 msgid "Track all content blocks"
@@ -495,7 +496,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:218
 msgid "Track search"
-msgstr ""
+msgstr "Hou zoekopdrachten bij."
 
 #: classes/WP_Piwik/Admin/Settings.php:218
 msgid "Use Piwik's advanced Site Search Analytics feature."
@@ -503,7 +504,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:220
 msgid "Track 404"
-msgstr ""
+msgstr "Hou 404 pagina's bij."
 
 #: classes/WP_Piwik/Admin/Settings.php:220
 msgid ""
@@ -512,7 +513,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:222
 msgid "Add annotation on new post"
-msgstr ""
+msgstr "Voeg annotatie toe aan een nieuw bericht."
 
 #: classes/WP_Piwik/Admin/Settings.php:222
 msgid "Add a Piwik annotation on each new post."
@@ -520,7 +521,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:224
 msgid "Show custom variables box"
-msgstr ""
+msgstr "Toon eigen variabelen box"
 
 #: classes/WP_Piwik/Admin/Settings.php:224
 msgid " Show a &quot;custom variables&quot; edit box on post edit page."
@@ -538,7 +539,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:228
 msgid "Disable cookies"
-msgstr ""
+msgstr "Schakel cookies uit."
 
 #: classes/WP_Piwik/Admin/Settings.php:228
 msgid "Disable all tracking cookies for a visitor."
@@ -546,7 +547,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:230
 msgid "Limit cookie lifetime"
-msgstr ""
+msgstr "Beperk cookie levensduur"
 
 #: classes/WP_Piwik/Admin/Settings.php:230
 msgid ""
@@ -556,11 +557,11 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:232
 msgid "Visitor timeout (seconds)"
-msgstr ""
+msgstr "Bezoekers timeout (in seconden)"
 
 #: classes/WP_Piwik/Admin/Settings.php:234
 msgid "Session timeout (seconds)"
-msgstr ""
+msgstr "Sessie timeout (in seconden)"
 
 #: classes/WP_Piwik/Admin/Settings.php:236
 msgid "Referral timeout (seconds)"
@@ -602,7 +603,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:251
 msgid "Track RSS feeds"
-msgstr ""
+msgstr "Hou RSS feeds bij"
 
 #: classes/WP_Piwik/Admin/Settings.php:251
 msgid "Enable to track posts in feeds via tracking pixel."
@@ -614,11 +615,11 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:255
 msgid "RSS feed campaign"
-msgstr ""
+msgstr "RSS feed campagne"
 
 #: classes/WP_Piwik/Admin/Settings.php:255
 msgid "Keyword: post name."
-msgstr ""
+msgstr "Sleutelwoord: post naam."
 
 #: classes/WP_Piwik/Admin/Settings.php:260
 msgid ""
@@ -628,7 +629,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:262
 msgid "Enable cache"
-msgstr ""
+msgstr "Schakel cache in"
 
 #: classes/WP_Piwik/Admin/Settings.php:262
 msgid "Cache API calls, which not contain today's values, for a week."
@@ -636,17 +637,17 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:265
 msgid "HTTP connection via"
-msgstr ""
+msgstr "HTTP connectie via:"
 
 #: classes/WP_Piwik/Admin/Settings.php:266
 #: classes/WP_Piwik/Admin/Settings.php:568
 msgid "cURL"
-msgstr ""
+msgstr "cURL"
 
 #: classes/WP_Piwik/Admin/Settings.php:267
 #: classes/WP_Piwik/Admin/Settings.php:568
 msgid "fopen"
-msgstr ""
+msgstr "fopen"
 
 #: classes/WP_Piwik/Admin/Settings.php:268
 msgid ""
@@ -656,17 +657,17 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:270
 msgid "HTTP method"
-msgstr ""
+msgstr "HTTP methode"
 
 #: classes/WP_Piwik/Admin/Settings.php:271
 #: classes/WP_Piwik/Admin/Settings.php:568
 msgid "POST"
-msgstr ""
+msgstr "POST"
 
 #: classes/WP_Piwik/Admin/Settings.php:272
 #: classes/WP_Piwik/Admin/Settings.php:568
 msgid "GET"
-msgstr ""
+msgstr "GET"
 
 #: classes/WP_Piwik/Admin/Settings.php:273
 msgid "Choose whether WP-Piwik should use POST or GET in HTTP or Pro mode."
@@ -674,7 +675,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:275
 msgid "Disable time limit"
-msgstr ""
+msgstr "Schakel tijdslimiet uit"
 
 #: classes/WP_Piwik/Admin/Settings.php:275
 msgid "Use set_time_limit(0) if stats page causes a time out."

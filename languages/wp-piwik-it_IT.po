@@ -2,13 +2,15 @@
 # This file is distributed under the same license as the WP-Piwik package.
 # Translators:
 # Andr&eacute; Br&auml;kling <webmaster@braekling.de>, 2011
+# André Bräkling, 2015
+# Enzo Ferrara, 2015
 # Stef Binde <ste@vogliaditerra.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: WP-Piwik\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-piwik\n"
 "POT-Creation-Date: 2015-06-08 21:36:53+00:00\n"
-"PO-Revision-Date: 2015-06-08 21:38+0000\n"
+"PO-Revision-Date: 2015-06-09 08:50+0000\n"
 "Last-Translator: André Bräkling\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/wp-piwik/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -19,15 +21,15 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:24
 msgid "Reload"
-msgstr ""
+msgstr "Ricarica"
 
 #: classes/WP_Piwik/Admin/Settings.php:27
 msgid "Changes saved."
-msgstr ""
+msgstr "Cambiamenti salvati."
 
 #: classes/WP_Piwik/Admin/Settings.php:45
 msgid "Save Changes"
-msgstr ""
+msgstr "Salva cambiamenti"
 
 #: classes/WP_Piwik/Admin/Settings.php:46
 msgid "Thanks for using WP-Piwik!"
@@ -39,7 +41,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:50
 msgid "You are running WordPress %s."
-msgstr ""
+msgstr "Stai eseguendo WordPress %s."
 
 #: classes/WP_Piwik/Admin/Settings.php:50
 msgid ""
@@ -61,15 +63,15 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:60
 msgid "Connect to Piwik"
-msgstr ""
+msgstr "Collegati a Piwik"
 
 #: classes/WP_Piwik/Admin/Settings.php:65
 msgid "Show Statistics"
-msgstr ""
+msgstr "Mostra Statistiche"
 
 #: classes/WP_Piwik/Admin/Settings.php:69
 msgid "Enable Tracking"
-msgstr ""
+msgstr "Abilita il Tracking"
 
 #: classes/WP_Piwik/Admin/Settings.php:74
 msgid "Expert Settings"
@@ -77,7 +79,7 @@ msgstr "Impostazioni per esperti"
 
 #: classes/WP_Piwik/Admin/Settings.php:78 classes/WP_Piwik.php:919
 msgid "Support"
-msgstr ""
+msgstr "Assistenza"
 
 #: classes/WP_Piwik/Admin/Settings.php:82
 msgid "Credits"
@@ -97,7 +99,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:95
 msgid "or"
-msgstr ""
+msgstr "o"
 
 #: classes/WP_Piwik/Admin/Settings.php:95
 msgid "Cloud-hosted"
@@ -107,16 +109,16 @@ msgstr ""
 msgid ""
 "Neither cURL nor fopen are available. So WP-Piwik can not use the HTTP API "
 "and not connect to Piwik Pro."
-msgstr ""
+msgstr "Non sono disponibili né cURL né fopen. Dunque Piwik non può utilizzare l'API HTTP e connettersi a Piwik Pro."
 
 #: classes/WP_Piwik/Admin/Settings.php:98
 #: classes/WP_Piwik/Template/MetaBoxCustomVars.php:30
 msgid "More information"
-msgstr ""
+msgstr "Maggiori informazioni"
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 msgid "You can choose between three connection methods:"
-msgstr ""
+msgstr "Puoi scegliere tra tre metodi di connessione:"
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 #: classes/WP_Piwik/Admin/Settings.php:103
@@ -143,7 +145,7 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:100
 #: classes/WP_Piwik/Admin/Settings.php:105
 msgid "Cloud-hosted (Piwik Pro)"
-msgstr ""
+msgstr "Cloud-hosted (Piwik Pro)"
 
 #: classes/WP_Piwik/Admin/Settings.php:100
 msgid ""
@@ -217,7 +219,7 @@ msgstr "Sito rilevato"
 
 #: classes/WP_Piwik/Admin/Settings.php:132
 msgid "Select site"
-msgstr ""
+msgstr "Seleziona sito"
 
 #: classes/WP_Piwik/Admin/Settings.php:140
 msgid "Piwik default date"
@@ -226,28 +228,28 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:141
 #: classes/WP_Piwik/Admin/Settings.php:154
 msgid "Today"
-msgstr ""
+msgstr "Oggi"
 
 #: classes/WP_Piwik/Admin/Settings.php:142
 #: classes/WP_Piwik/Admin/Settings.php:153
 msgid "Yesterday"
-msgstr ""
+msgstr "Ieri"
 
 #: classes/WP_Piwik/Admin/Settings.php:143
 msgid "Current month"
-msgstr ""
+msgstr "Mese corrente"
 
 #: classes/WP_Piwik/Admin/Settings.php:144
 msgid "Last month"
-msgstr ""
+msgstr "Mese scorso"
 
 #: classes/WP_Piwik/Admin/Settings.php:145
 msgid "Current week"
-msgstr ""
+msgstr "Settimana corrente"
 
 #: classes/WP_Piwik/Admin/Settings.php:146
 msgid "Last week"
-msgstr ""
+msgstr "Settimana scorsa"
 
 #: classes/WP_Piwik/Admin/Settings.php:147
 msgid "Default date shown on statistics page."
@@ -255,7 +257,7 @@ msgstr "Il giorno che verrà mostrato sulla pagina delle statistiche."
 
 #: classes/WP_Piwik/Admin/Settings.php:149
 msgid "Show SEO data"
-msgstr ""
+msgstr "Mostra dati SEO"
 
 #: classes/WP_Piwik/Admin/Settings.php:149
 msgid "Display SEO ranking data on statistics page."
@@ -642,12 +644,12 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:266
 #: classes/WP_Piwik/Admin/Settings.php:568
 msgid "cURL"
-msgstr ""
+msgstr "cURL"
 
 #: classes/WP_Piwik/Admin/Settings.php:267
 #: classes/WP_Piwik/Admin/Settings.php:568
 msgid "fopen"
-msgstr ""
+msgstr "fopen"
 
 #: classes/WP_Piwik/Admin/Settings.php:268
 msgid ""
@@ -662,12 +664,12 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:271
 #: classes/WP_Piwik/Admin/Settings.php:568
 msgid "POST"
-msgstr ""
+msgstr "POST"
 
 #: classes/WP_Piwik/Admin/Settings.php:272
 #: classes/WP_Piwik/Admin/Settings.php:568
 msgid "GET"
-msgstr ""
+msgstr "GET"
 
 #: classes/WP_Piwik/Admin/Settings.php:273
 msgid "Choose whether WP-Piwik should use POST or GET in HTTP or Pro mode."
