@@ -27,8 +27,11 @@
 				require_once PIWIK_INCLUDE_PATH . "/index.php";
 			if (file_exists(PIWIK_INCLUDE_PATH . "/core/API/Request.php"))
 				require_once PIWIK_INCLUDE_PATH . "/core/API/Request.php";
-			if (class_exists('Piwik\FrontController'))
+			if (class_exists('Piwik\FrontController')){
+				$environment = new \Piwik\Application\Environment('tracker');
+				$environment->init();
 				\Piwik\FrontController::getInstance()->init();
+			}
 			else serialize(array('result' => 'error', 'message' => __('Class Piwik\FrontController does not exists.','wp-piwik')));
 			if (class_exists('Piwik\API\Request'))
 				$request = new \Piwik\API\Request($params.'&token_auth='.self::$settings->getGlobalOption('piwik_token'));
