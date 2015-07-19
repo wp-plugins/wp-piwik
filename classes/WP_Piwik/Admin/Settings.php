@@ -472,7 +472,7 @@ class Settings extends \WP_Piwik\Admin {
             		'title': 'Title of the thing',
             		'description': 'Description of the thing'
 				}, 'element_id', 'replace');
-			}
+			};
 			/* ]]> */
 			</script>
 	<div>

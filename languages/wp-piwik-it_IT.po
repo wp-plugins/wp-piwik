@@ -10,9 +10,9 @@ msgstr ""
 "Project-Id-Version: WP-Piwik\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-piwik\n"
 "POT-Creation-Date: 2015-06-08 21:36:53+00:00\n"
-"PO-Revision-Date: 2015-07-05 16:13+0000\n"
+"PO-Revision-Date: 2015-07-19 13:25+0000\n"
 "Last-Translator: André Bräkling\n"
-"Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/wp-piwik/language/it_IT/)\n"
+"Language-Team: Italian (Italy) (http://www.transifex.com/p/wp-piwik/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -266,7 +266,7 @@ msgstr "Mostra i dati del ranking SEO nella pagina delle statistiche."
 #: classes/WP_Piwik/Admin/Settings.php:149
 #: classes/WP_Piwik/Admin/Settings.php:160
 msgid "Slow!"
-msgstr ""
+msgstr "Lento!"
 
 #: classes/WP_Piwik/Admin/Settings.php:151
 msgid "Dashboard overview"
@@ -286,15 +286,15 @@ msgstr "Ultimi 30 giorni"
 
 #: classes/WP_Piwik/Admin/Settings.php:156
 msgid "Enable WP-Piwik dashboard widget &quot;Overview&quot;."
-msgstr ""
+msgstr "Abilita un widget della dashboard di WP-Piwik &quot;Panoramica&quot;."
 
 #: classes/WP_Piwik/Admin/Settings.php:158
 msgid "Dashboard graph"
-msgstr ""
+msgstr "Grafico dashboard"
 
 #: classes/WP_Piwik/Admin/Settings.php:158
 msgid "Enable WP-Piwik dashboard widget &quot;Graph&quot;."
-msgstr ""
+msgstr "Abilita un widget della dashboard di WP-Piwik &quot;Grafico&quot;."
 
 #: classes/WP_Piwik/Admin/Settings.php:160
 msgid "Dashboard SEO"
@@ -302,7 +302,7 @@ msgstr "Dashboard SEO"
 
 #: classes/WP_Piwik/Admin/Settings.php:160
 msgid "Enable WP-Piwik dashboard widget &quot;SEO&quot;."
-msgstr ""
+msgstr "Abilita un widget della dashboard di WP-Piwik &quot;SEO&quot;."
 
 #: classes/WP_Piwik/Admin/Settings.php:162
 msgid "Show graph on WordPress Toolbar"
@@ -346,7 +346,7 @@ msgstr "Nome del plugin mostrato in WordPress."
 
 #: classes/WP_Piwik/Admin/Settings.php:179
 msgid "Enable shortcodes"
-msgstr ""
+msgstr "Abilita gli shortcode"
 
 #: classes/WP_Piwik/Admin/Settings.php:179
 msgid "Enable shortcodes in post or page content."
@@ -361,7 +361,7 @@ msgid ""
 "WP-Piwik will not add the tracking code. Use this, if you want to add the "
 "tracking code to your template files or you use another plugin to add the "
 "tracking code."
-msgstr ""
+msgstr "WP-Piwik non aggiunge il codice di tracciamento. Usa questo se vuoi aggiungere il codice alla tua template o usa un altro plugin per aggiungerlo."
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:193
@@ -416,7 +416,7 @@ msgstr "Inserisci manualmente un tuo codice tracking. Puoi scegliere una delle o
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid "Use the placeholder {ID} to add the Piwik site ID."
-msgstr ""
+msgstr "Usa il segnaposto {ID} per aggiungere l'ID sito di Piwik."
 
 #: classes/WP_Piwik/Admin/Settings.php:191
 msgid "Add tracking code"
@@ -470,21 +470,21 @@ msgstr "Abilita il tracciamento dei visitatori senza JavaScript (non raccomandat
 
 #: classes/WP_Piwik/Admin/Settings.php:212
 msgid "Enable content tracking"
-msgstr ""
+msgstr "Abilita il content tracking"
 
 #: classes/WP_Piwik/Admin/Settings.php:214
 msgid "Track all content blocks"
-msgstr ""
+msgstr "Traccia tutti i blocchi di contenuto"
 
 #: classes/WP_Piwik/Admin/Settings.php:215
 msgid "Track only visible content blocks"
-msgstr ""
+msgstr "Traccia solo i blocchi di contenuto visibili"
 
 #: classes/WP_Piwik/Admin/Settings.php:216
 msgid ""
 "Content tracking allows you to track interaction with the content of a web "
 "page or application."
-msgstr ""
+msgstr "Il content tracking ti permette di tracciare le interazioni con il contenuto di una pagina web o di un'applicazione."
 
 #: classes/WP_Piwik/Admin/Settings.php:216
 #: classes/WP_Piwik/Admin/Settings.php:218
@@ -498,11 +498,11 @@ msgstr "Leggi la %sDocumentazione di Piwik%s."
 
 #: classes/WP_Piwik/Admin/Settings.php:218
 msgid "Track search"
-msgstr ""
+msgstr "Traccia le ricerche"
 
 #: classes/WP_Piwik/Admin/Settings.php:218
 msgid "Use Piwik's advanced Site Search Analytics feature."
-msgstr ""
+msgstr "Utilizza la funzionalità avanzata di Piwik Statistiche Ricerche nel Sito."
 
 #: classes/WP_Piwik/Admin/Settings.php:220
 msgid "Track 404"
@@ -515,15 +515,15 @@ msgstr "WP-Piwik può aggiungere in automatico una categoria per tracciare visit
 
 #: classes/WP_Piwik/Admin/Settings.php:222
 msgid "Add annotation on new post"
-msgstr ""
+msgstr "Aggiungi una nota al nuovo post"
 
 #: classes/WP_Piwik/Admin/Settings.php:222
 msgid "Add a Piwik annotation on each new post."
-msgstr ""
+msgstr "Aggiungi una nota di Piwik a ciascun nuovo post."
 
 #: classes/WP_Piwik/Admin/Settings.php:224
 msgid "Show custom variables box"
-msgstr ""
+msgstr "Mostra la casella variabili personalizzate"
 
 #: classes/WP_Piwik/Admin/Settings.php:224
 msgid " Show a &quot;custom variables&quot; edit box on post edit page."
@@ -531,13 +531,13 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:226
 msgid "Add new file types for download tracking"
-msgstr ""
+msgstr "Aggiungi nuovi tipi di file per il tracciamento dei download"
 
 #: classes/WP_Piwik/Admin/Settings.php:226
 msgid ""
 "Add file extensions for download tracking, divided by a vertical bar "
 "(&#124;)."
-msgstr ""
+msgstr "Aggiungi delle estensioni di file per il tracciamento dei download divisi da una barra verticale (&#124;)."
 
 #: classes/WP_Piwik/Admin/Settings.php:228
 msgid "Disable cookies"
@@ -593,7 +593,7 @@ msgstr "Traccia i sotto-domini nello stesso sito web"
 
 #: classes/WP_Piwik/Admin/Settings.php:247
 msgid "Adds *.-prefix to cookie domain."
-msgstr ""
+msgstr "Aggiunge il prefisso *.- al cookie di dominio."
 
 #: classes/WP_Piwik/Admin/Settings.php:249
 msgid "Do not count subdomains as outlink"
@@ -601,7 +601,7 @@ msgstr "Non contare i sotto-domini come link di uscita"
 
 #: classes/WP_Piwik/Admin/Settings.php:249
 msgid "Adds *.-prefix to tracked domain."
-msgstr ""
+msgstr "Aggiunge il prefisso *.- al dominio tracciato."
 
 #: classes/WP_Piwik/Admin/Settings.php:251
 msgid "Track RSS feeds"
@@ -613,15 +613,15 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:253
 msgid "Track RSS feed links as campaign"
-msgstr ""
+msgstr "Traccia i link dei feed RSS come campagna"
 
 #: classes/WP_Piwik/Admin/Settings.php:255
 msgid "RSS feed campaign"
-msgstr ""
+msgstr "Campagna RSS feed"
 
 #: classes/WP_Piwik/Admin/Settings.php:255
 msgid "Keyword: post name."
-msgstr ""
+msgstr "Keyword: nome post."
 
 #: classes/WP_Piwik/Admin/Settings.php:260
 msgid ""
@@ -635,7 +635,7 @@ msgstr "Abilita cache"
 
 #: classes/WP_Piwik/Admin/Settings.php:262
 msgid "Cache API calls, which not contain today's values, for a week."
-msgstr ""
+msgstr "Cache settimanale delle chiamate API che non contiene i dati di oggi."
 
 #: classes/WP_Piwik/Admin/Settings.php:265
 msgid "HTTP connection via"
@@ -960,11 +960,11 @@ msgstr "realpath() restituisce false"
 
 #: classes/WP_Piwik/Request/Php.php:32
 msgid "Class Piwik\\FrontController does not exists."
-msgstr ""
+msgstr "La classe Piwik\\FrontController non esiste."
 
 #: classes/WP_Piwik/Request/Php.php:35
 msgid "Class Piwik\\API\\Request does not exists."
-msgstr ""
+msgstr "La classe Piwik\\API\\Request non esiste."
 
 #: classes/WP_Piwik/Template/MetaBoxCustomVars.php:10
 msgid "Piwik Custom Variables"
@@ -980,7 +980,7 @@ msgstr "Valore"
 
 #: classes/WP_Piwik/Template/MetaBoxCustomVars.php:30
 msgid "Set custom variables for a page view"
-msgstr ""
+msgstr "Imposta le variabili personalizzate per una visualizzazione di pagina"
 
 #: classes/WP_Piwik/Widget/BrowserDetails.php:16
 msgid "Browser Details"
@@ -1045,7 +1045,7 @@ msgstr "Visitatori"
 msgid ""
 "The graph contains the values shown in the table below (visitors / unique / "
 "bounces). The red line show a linear trendline (unique)."
-msgstr ""
+msgstr "Il grafico contiene i valori mostrati nella tabella qui sotto (visitatori / visitatori unici / rimbalzi). La linea rossa mostra una linea di tendenza lineare (visitatori unici)."
 
 #: classes/WP_Piwik/Widget/Keywords.php:16
 msgid "Keywords"
@@ -1184,7 +1184,7 @@ msgstr "settimana"
 
 #: classes/WP_Piwik.php:193
 msgid "%s %s installed."
-msgstr ""
+msgstr "%s %s installato."
 
 #: classes/WP_Piwik.php:193
 msgid "Next you should connect to Piwik"
@@ -1240,7 +1240,7 @@ msgstr "http://wordpress.org/extend/plugins/wp-piwik/"
 msgid ""
 "Adds Piwik stats to your dashboard menu and Piwik code to your wordpress "
 "header."
-msgstr ""
+msgstr "Aggiunge le statistiche di Piwik al menù della tua dashboard e il codice di Piwik al tuo header di Wordpress."
 
 #. Author of the plugin/theme
 msgid "Andr&eacute; Br&auml;kling"

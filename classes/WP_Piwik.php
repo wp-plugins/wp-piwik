@@ -12,7 +12,7 @@ class WP_Piwik {
 	 *
 	 * @var Runtime environment variables
 	 */
-	private static $revisionId = 2015060801, $version = '1.0.2', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
+	private static $revisionId = 2015070501, $version = '1.0.3', $blog_id, $pluginBasename = NULL, $logger, $settings, $request;
 	
 	/**
 	 * Constructor class to configure and register all WP-Piwik components
@@ -511,7 +511,7 @@ class WP_Piwik {
 				if ($siteId != 'n/a')
 					self::$settings->setOption ( 'site_id', $siteId );
 				else
-					return;
+					return false;
 			}
 			$title = the_title ( null, null, false );
 			$posturl = get_permalink ( $post->ID );
@@ -1013,7 +1013,7 @@ class WP_Piwik {
 			) );
 			$result = $this->request ( $id );
 			$this->log ( 'Tried to identify current site, result: ' . serialize ( $result ) );
-			if (empty ( $result ) || ! isset ( $result [0] ))
+			if (is_array( $result ) && empty( $result ))
 				$result = $this->addPiwikSite ( $blogId );
 			elseif ( $result != 'n/a' )
 				$result = $result [0] ['idsite'];
