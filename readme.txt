@@ -11,6 +11,8 @@ This plugin adds a Piwik stats site to your WordPress or WordPress multisite das
 
 == Description ==
 
+**IMPORTANT: Piwik 2.14.0 and 2.14.1 DO NOT WORK WITH WP-PIWIK IN PHP MODE. Please DO NOT UPDATE to Piwik 2.14.0. or Piwik 2.14.1 or SWITCH TO HTTP MODE BEFORE UPDATING PIWIK. Presumably, Piwik 2.14.2 will work again. Read [this support thread](https://wordpress.org/support/topic/php-fatal-error-after-updating-piwik-to-2140) on further information.**
+
 This plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog.
 
 To use this plugin you will need your own Piwik instance. If you do not already have a Piwik setup, you have two simple options: use either [Self-hosted](http://piwik.org/) or [Cloud-hosted](http://piwik.org/hosting/). 
@@ -124,8 +126,8 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 
 = 1.0.3 =
 * Several language updates.
-* Workaround for Piwik 2.14.0 bug. See https://github.com/piwik/piwik/issues/8311 for further information.
 * Bugifx: Site duplication fix.
+* Switch to JSON renderer (Piwik 3 compatibility preparation)
 
 = 1.0.2 =
 * Several language updates.
