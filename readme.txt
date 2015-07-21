@@ -129,6 +129,7 @@ This is a full refactored version of WP-Piwik. Please check your settings after 
 * Switch to JSON renderer (Piwik 3 compatibility preparation)
 * Workaround: PHP API will work with Piwik 2.14+, see https://github.com/piwik/piwik/issues/8311 for further information.
 * Feature: Heartbeat timer support
+* Feature: Expanded token & URL/path input fields
 * Bugfix: Site duplication fix.
 * Bugfix: Avoid notice on empty overview response.
 * Bugfix: Return request error responses.

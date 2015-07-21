@@ -1095,8 +1095,8 @@ class WP_Piwik {
 				'disableCookies' => self::$settings->getGlobalOption ( 'disable_cookies' ) ? 1 : 0 
 		) );
 		$fetch = $this->request ( $id );
-		$code = isset($fetch['value'])?$fetch['value']:$fetch;
-		$result = !is_array( $code ) ? html_entity_decode ( $code ) : '<!-- '.serialize($code).' -->';
+		$code = is_array( $fetch ) ? $fetch : json_decode( $fetch );
+		$result = isset ( $code['value'] ) ? html_entity_decode ( $code['value'] ) : '<!-- '.serialize($code).' -->';
 		self::$logger->log ( 'Delivered tracking code: ' . $result );
 		$result = WP_Piwik\TrackingCode::prepareTrackingCode ( $result, self::$settings, self::$logger );
 		self::$settings->setOption ( 'tracking_code', $result ['script'], $blogId );
