@@ -1094,11 +1094,11 @@ class WP_Piwik {
 				'mergeAliasUrls' => self::$settings->getGlobalOption ( 'track_across_alias' ) ? 1 : 0,
 				'disableCookies' => self::$settings->getGlobalOption ( 'disable_cookies' ) ? 1 : 0
 		) );
-		$fetch = $this->request ( $id );
-		$code = is_array( $fetch ) ? $fetch : json_decode( $fetch, true );
-		$result = isset ( $code['value'] ) ? html_entity_decode ( $code['value'] ) : '<!-- '.serialize($code).' -->';
+		$code = $this->request ( $id );
+		//$code = is_array( $fetch ) ? $fetch : json_decode( $fetch, true );
 		self::$logger->log ( 'Delivered tracking code: ' . $result );
 		$result = WP_Piwik\TrackingCode::prepareTrackingCode ( $result, self::$settings, self::$logger );
+		$result = isset ( $code['value'] ) ? html_entity_decode ( $code['value'] ) : '<!-- '.serialize($code).' -->';
 		self::$settings->setOption ( 'tracking_code', $result ['script'], $blogId );
 		self::$settings->setOption ( 'noscript_code', $result ['noscript'], $blogId );
 		return $result;

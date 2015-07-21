@@ -12,7 +12,7 @@ class TrackingCode {
 
 	public function __construct($wpPiwik) {
 		self::$wpPiwik = $wpPiwik;
-		if (! self::$wpPiwik->isCurrentTrackingCode () || ! self::$wpPiwik->getOption ( 'tracking_code' ) || strpos( self::$wpPiwik->getOption ( 'tracking_code' ), 'a:2:{s:6:"result";s:5:"error";' ) !== false )
+		if (! self::$wpPiwik->isCurrentTrackingCode () || ! self::$wpPiwik->getOption ( 'tracking_code' ) || strpos( self::$wpPiwik->getOption ( 'tracking_code' ), '{"result":"error",' ) !== false )
 			self::$wpPiwik->updateTrackingCode ();
 		$this->trackingCode = (self::$wpPiwik->isNetworkMode () && self::$wpPiwik->getGlobalOption ( 'track_mode' ) == 'manually') ? get_site_option ( 'wp-piwik-manually' ) : self::$wpPiwik->getOption ( 'tracking_code' );
 	}
