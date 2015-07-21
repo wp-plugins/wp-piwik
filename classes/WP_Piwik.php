@@ -1095,6 +1095,8 @@ class WP_Piwik {
 				'disableCookies' => self::$settings->getGlobalOption ( 'disable_cookies' ) ? 1 : 0
 			) );
 		$code = $this->request ( $id );
+		if (is_array($code) && isset($code['value']))
+			$code = $code['value'];
 		$result = !is_array ( $code ) ? html_entity_decode ( $code ) : '<!-- '.json_encode($code).' -->';
 		self::$logger->log ( 'Delivered tracking code: ' . $result );
 		$result = WP_Piwik\TrackingCode::prepareTrackingCode ( $result, self::$settings, self::$logger, true );
