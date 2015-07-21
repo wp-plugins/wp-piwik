@@ -378,7 +378,7 @@ class Settings {
 	private function prepareNocscriptCode($value, $in) {
 		if ($in ['track_mode'] == 'manually')
 			return stripslashes ( $value );
-		return $value;
+		return $this->getOption ( 'noscript_code' );
 	}
 	
 	/**
