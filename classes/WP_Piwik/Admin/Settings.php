@@ -397,7 +397,7 @@ class Settings extends \WP_Piwik\Admin {
 	 * @param boolean $wide Create a wide box (default: false)
 	 */
 	private function showInput($id, $name, $description, $isHidden = false, $groupName = '', $rowName = false, $hideDescription = true, $wide = false) {
-		printf ( '<tr class="%s%s"%s><th scope="row"><label for="%5$s">%s:</label></th><td><input '.($wide?'style="width:100\%;" ':'').'name="wp-piwik[%s]" id="%5$s" value="%s" /> %s</td></tr>', $isHidden ? 'hidden ' : '', $groupName ? $groupName : '', $rowName ? ' id="' . $groupName . '-' . $rowName . '"' : '', $name, $id, self::$settings->getGlobalOption ( $id ), !empty($description) ? $this->getDescription ( $id, $description, $hideDescription ) : '' );
+		printf ( '<tr class="%s%s"%s><th scope="row"><label for="%5$s">%s:</label></th><td><input '.($wide?'class="" ':'').'name="wp-piwik[%s]" id="%5$s" value="%s" /> %s</td></tr>', $isHidden ? 'hidden ' : '', $groupName ? $groupName : '', $rowName ? ' id="' . $groupName . '-' . $rowName . '"' : '', $name, $id, self::$settings->getGlobalOption ( $id ), !empty($description) ? $this->getDescription ( $id, $description, $hideDescription ) : '' );
 	}
 	
 	/**
