@@ -1093,11 +1093,11 @@ class WP_Piwik {
 				'mergeSubdomains' => self::$settings->getGlobalOption ( 'track_across' ) ? 1 : 0,
 				'mergeAliasUrls' => self::$settings->getGlobalOption ( 'track_across_alias' ) ? 1 : 0,
 				'disableCookies' => self::$settings->getGlobalOption ( 'disable_cookies' ) ? 1 : 0
-		) );
+			) );
 		$code = $this->request ( $id );
+		$result = !is_array ( $code['value'] ) ? html_entity_decode ( $code ) : '<!-- '.json_decode($code).' -->';
 		self::$logger->log ( 'Delivered tracking code: ' . $result );
-		$result = isset ( $code['value'] ) ? html_entity_decode ( $code['value'] ) : '<!-- '.serialize($code).' -->';
-		$result = WP_Piwik\TrackingCode::prepareTrackingCode ( $result, self::$settings, self::$logger );
+		$result = WP_Piwik\TrackingCode::prepareTrackingCode ( $result, self::$settings, self::$logger, true );
 		self::$settings->setOption ( 'tracking_code', $result ['script'], $blogId );
 		self::$settings->setOption ( 'noscript_code', $result ['noscript'], $blogId );
 		return $result;
