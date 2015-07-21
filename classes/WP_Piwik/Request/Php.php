@@ -4,7 +4,7 @@
 
 	class Php extends \WP_Piwik\Request {
 
-		static $piwikEnvironment = false;
+		private static $piwikEnvironment = false;
 
 		protected function request($id) {
 			$count = 0;
