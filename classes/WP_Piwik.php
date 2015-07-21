@@ -1094,7 +1094,8 @@ class WP_Piwik {
 				'mergeAliasUrls' => self::$settings->getGlobalOption ( 'track_across_alias' ) ? 1 : 0,
 				'disableCookies' => self::$settings->getGlobalOption ( 'disable_cookies' ) ? 1 : 0 
 		) );
-		$code = $this->request ( $id );
+		$fetch = $this->request ( $id );
+		$code = isset($fetch['value'])?$fetch['value']:$fetch;
 		$result = !is_array( $code ) ? html_entity_decode ( $code ) : '<!-- '.serialize($code).' -->';
 		self::$logger->log ( 'Delivered tracking code: ' . $result );
 		$result = WP_Piwik\TrackingCode::prepareTrackingCode ( $result, self::$settings, self::$logger );
