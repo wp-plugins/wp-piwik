@@ -81,6 +81,7 @@ class Settings {
 			'track_feed' => false,
 			'track_feed_addcampaign' => false,
 			'track_feed_campaign' => 'feed',
+			'track_heartbeat' => 0,
 			// User settings: Expert configuration
 			'cache' => true,
 			'http_connection' => 'curl',

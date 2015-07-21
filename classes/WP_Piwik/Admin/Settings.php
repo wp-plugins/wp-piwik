@@ -254,6 +254,8 @@ class Settings extends \WP_Piwik\Admin {
 		
 		$this->showInput ( 'track_feed_campaign', __ ( 'RSS feed campaign', 'wp-piwik' ), __ ( 'Keyword: post name.', 'wp-piwik' ), $isNotGeneratedTracking || ! self::$settings->getGlobalOption ( 'track_feed_addcampaign' ), $fullGeneratedTrackingGroup . ' wp-piwik-feed_campaign-option' );
 		
+		$this->showInput ( 'track_heartbeat', __ ( 'Enable heartbeat timer', 'wp-piwik' ), __ ( 'Enable a heartbeat timer to get more accurate visit lengths by sending periodical HTTP ping requests as long as the site is opened. Enter the time between the pings in seconds (Piwik default: 15) to enable or 0 to disable this feature. <strong>Note:</strong> This will cause a lot of additional HTTP requests on your site.', 'wp-piwik' ), $isNotGeneratedTracking, $fullGeneratedTrackingGroup );
+		
 		echo $submitButton;
 		echo '</tbody></table><table id="expert" class="wp-piwik_menu-tab hidden"><tbody>';
 		
