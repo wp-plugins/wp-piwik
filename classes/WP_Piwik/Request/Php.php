@@ -31,7 +31,7 @@
 				require_once PIWIK_INCLUDE_PATH . "/core/API/Request.php";
 			if (class_exists('\Piwik\Application\Environment') && !self::$piwikEnvironment) {
 				// Piwik 2.14.* compatibility fix
-				self::$piwikEnvironment = new \Piwik\Application\Environment();
+				self::$piwikEnvironment = new \Piwik\Application\Environment(null);
 				self::$piwikEnvironment->init();
 			}
 			if (class_exists('Piwik\FrontController'))
