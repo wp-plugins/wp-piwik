@@ -1100,8 +1100,11 @@ class WP_Piwik {
 		$result = !is_array ( $code ) ? html_entity_decode ( $code ) : '<!-- '.json_encode($code).' -->';
 		self::$logger->log ( 'Delivered tracking code: ' . $result );
 		$result = WP_Piwik\TrackingCode::prepareTrackingCode ( $result, self::$settings, self::$logger, true );
-		self::$settings->setOption ( 'tracking_code', $result ['script'], $blogId );
-		self::$settings->setOption ( 'noscript_code', $result ['noscript'], $blogId );
+		if (isset ( $result ['script'] ) && ! empty ( $result ['script'] )) {
+			self::$settings->setOption ( 'tracking_code', $result ['script'], $blogId );
+			self::$settings->setOption ( 'noscript_code', $result ['noscript'], $blogId );
+			self::$settings->setGlobalOption ( 'proxy_url', $result ['proxy'], $blogId );
+		}
 		return $result;
 	}
 

@@ -17,7 +17,7 @@ To use this plugin you will need your own Piwik instance. If you do not already 
 
 **Requirements:** PHP 5.4 (or higher), WordPress 4.0 (or higher), Piwik 2.9 (or higher)
  
-**Languages:** English, Dutch, French, German, Greek, Italian, Portuguese (Brazil). Partially supported: Albanian, Azerbaijani, Belarusian, Chinese (simplified), Dutch, Greek, Italian, Lithuanian, Norwegian, Persian, Romanian, Russian, Spanish, Swedish, Turkish, Ukrainian
+**Languages:** English, Dutch, French, German, Greek, Italian, Portuguese (Brazil). Partially supported: Albanian, Azerbaijani, Belarusian, Chinese (simplified), Lithuanian, Norwegian, Persian, Romanian, Russian, Spanish, Swedish, Turkish, Ukrainian
 
 **Note:** If you vote "It's broken", please tell me about your problem. It's hard to fix a bug I don't know about! ;-)
 

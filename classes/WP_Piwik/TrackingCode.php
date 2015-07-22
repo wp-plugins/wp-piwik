@@ -41,12 +41,12 @@ class TrackingCode {
 					'https://',
 					'http://'
 			), '//', plugins_url ( 'wp-piwik' ) . '/proxy' ) . '/';
-			if (preg_match ( '/var u="([^"]*)";/', $code, $hits )) {
-				$settings->setGlobalOption ( 'proxy_url', $hits [1] );
-			}
 			$code = preg_replace ( '/var u="([^"]*)";/', 'var u="' . $proxy . '"', $code );
 			$code = preg_replace ( '/img src="([^"]*)piwik.php/', 'img src="' . $proxy . 'piwik.php', $code );
 		}
+		if (preg_match ( '/var u="([^"]*)";/', $code, $hits )) {
+			$fetchedProxyUrl = $hits [1];
+		} else $fetchedProxyUrl = '';
 		if ($settings->getGlobalOption ( 'track_cdnurl' ) || $settings->getGlobalOption ( 'track_cdnurlssl' ))
 			$code = str_replace ( array (
 					"var d=doc",
@@ -88,7 +88,8 @@ class TrackingCode {
 		$logger->log ( 'Finished noscript code: ' . $noScript );
 		return array (
 				'script' => $script,
-				'noscript' => $noScript
+				'noscript' => $noScript,
+				'proxy' => $fetchedProxyUrl
 		);
 	}
 
