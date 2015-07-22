@@ -118,7 +118,7 @@ Add WP-Piwik to your /wp-content/plugins folder and enable it as [Network Plugin
 
 == Upgrade Notice ==
 
-This is a full refactored version of WP-Piwik. Please check your settings after updating and make sure everything is working as expected. If you want to upgrade from 0.8.x, please install 0.9.9.18 first: https://downloads.wordpress.org/plugin/wp-piwik.0.9.9.18.zip
+After several changes related to Piwik 2.14.1 and to prepare Piwik 3, I recommend to create a backup of your current system before updating Piwik and/or WP-Piwik. If you want to upgrade WP-Piwik from 0.8.x, please install 0.9.9.18 first: https://downloads.wordpress.org/plugin/wp-piwik.0.9.9.18.zip
 
 == Changelog ==
 
