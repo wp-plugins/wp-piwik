@@ -15,7 +15,7 @@ This plugin adds a Piwik stats site to your WordPress dashboard. It's also able 
 
 To use this plugin you will need your own Piwik instance. If you do not already have a Piwik setup, you have two simple options: use either [Self-hosted](http://piwik.org/) or [Cloud-hosted](http://piwik.org/hosting/). 
 
-**Requirements:** PHP 5.4 (or higher), WordPress 4.0 (or higher), Piwik 2.9 (or higher)
+**Requirements:** PHP 5.4 (or higher), WordPress 4.0 (or higher), Piwik 2.9 (or higher; 2.14.1 or higher recommended)
  
 **Languages:** English, Dutch, French, German, Greek, Italian, Portuguese (Brazil). Partially supported: Albanian, Azerbaijani, Belarusian, Chinese (simplified), Lithuanian, Norwegian, Persian, Romanian, Russian, Spanish, Swedish, Turkish, Ukrainian
 
@@ -131,6 +131,7 @@ After several changes related to Piwik 2.14.1 and to prepare Piwik 3, I recommen
 * Bugfix: Site duplication fix.
 * Bugfix: Avoid notice on empty overview response.
 * Bugfix: Return request error responses.
+* Bugfix: Opt-out URL fixed.
 
 = 1.0.2 =
 * Several language updates.
