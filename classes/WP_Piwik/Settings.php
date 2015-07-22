@@ -361,9 +361,10 @@ class Settings {
 				add_site_option ( 'wp-piwik-manually', $value );
 			return $value;
 		}
-		$result = self::$wpPiwik->updateTrackingCode ();
-		$this->setOption ( 'noscript_code', $result ['noscript'] );
-		return $result ['script'];
+		/*$result = self::$wpPiwik->updateTrackingCode ();
+		echo '<pre>'; print_r($result); echo '</pre>';
+		$this->setOption ( 'noscript_code', $result ['noscript'] );*/
+		return; // $result ['script'];
 	}
 	
 	/**
