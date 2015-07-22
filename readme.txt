@@ -132,6 +132,7 @@ After several changes related to Piwik 2.14.1 and to prepare Piwik 3, I recommen
 * Bugfix: Avoid notice on empty overview response.
 * Bugfix: Return request error responses.
 * Bugfix: Opt-out URL fixed.
+* Bugfix: Capabilities: "Do not track"-filter and "show stats"-limit will work on multisites as expected again.
 
 = 1.0.2 =
 * Several language updates.

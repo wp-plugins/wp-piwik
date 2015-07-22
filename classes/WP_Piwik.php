@@ -339,8 +339,20 @@ class WP_Piwik {
 	 */
 	public function buildAdminMenu() {
 		if (self::isConfigured ()) {
+			$cap = 'wp-piwik_read_stats';
+			if (self::$settings->checkNetworkActivation ()) {
+				global $current_user;
+				$userRoles = $current_user->roles;
+				$allowed = self::$settings->getGlobalOption ( 'capability_read_stats' );
+				if (is_array($userRoles) && is_array($allowed)) 
+					foreach ($userRoles as $userRole)
+						if (isset( $allowed[$userRole] ) && $allowed[$userRole]) {
+							$cap = 'read';
+							break;
+						}
+			}
 			$statsPage = new WP_Piwik\Admin\Statistics ( $this, self::$settings );
-			$this->statsPageId = add_dashboard_page ( __ ( 'Piwik Statistics', 'wp-piwik' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), 'wp-piwik_read_stats', 'wp-piwik_stats', array (
+			$this->statsPageId = add_dashboard_page ( __ ( 'Piwik Statistics', 'wp-piwik' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), $cap, 'wp-piwik_stats', array (
 					$statsPage,
 					'show'
 			) );
@@ -359,7 +371,7 @@ class WP_Piwik {
 	/**
 	 * Register network admin menu components
 	 */
-	public function buildNetworkAdminMenu() {
+	public function buildNetworkAdminMenu() {		
 		if (self::isConfigured ()) {
 			$statsPage = new WP_Piwik\Admin\Network ( $this, self::$settings );
 			$this->statsPageId = add_dashboard_page ( __ ( 'Piwik Statistics', 'wp-piwik' ), self::$settings->getGlobalOption ( 'plugin_display_name' ), 'manage_sites', 'wp-piwik_stats', array (

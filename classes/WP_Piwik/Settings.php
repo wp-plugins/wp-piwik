@@ -157,9 +157,8 @@ class Settings {
 			) as $strCap ) {
 				$aryCaps = $this->getGlobalOption ( 'capability_' . $strCap );
 				if (isset ( $aryCaps [$strKey] ) && $aryCaps [$strKey])
-					$objRole->add_cap ( 'wp-piwik_' . $strCap );
-				else
-					$objRole->remove_cap ( 'wp-piwik_' . $strCap );
+					$wp_roles->add_cap ( $strKey, 'wp-piwik_' . $strCap );
+				else $wp_roles->remove_cap ( $strKey, 'wp-piwik_' . $strCap );
 			}
 		}
 		$this->settingsChanged = false;
