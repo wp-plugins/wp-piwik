@@ -568,7 +568,7 @@ class Settings extends \WP_Piwik\Admin {
 				echo ' <strong>'.(ini_get('allow_url_fopen')?'':__('not','wp-piwik')).' ';
 				_e('enabled','wp-piwik');
 			?></strong>.</li>
-			<li><?php echo (((function_exists('curl_init') && ini_get('allow_url_fopen') && self::$settings->getGlobalOption('http_connection') == 'curl') || (function_exists('curl_init') && !ini_get('allow_url_fopen')))?__('cURL', 'wp-piwik'):__('fopen', 'wp-piwik')).' ('.(self::$settings->getGlobalOption('http_method')=='post'?__('POST','wp-piwik'):__('GET','wp-piwik')).') '.__('is used.', 'wp-piwik'); ?></li>
+			<li><strong><?php echo (((function_exists('curl_init') && ini_get('allow_url_fopen') && self::$settings->getGlobalOption('http_connection') == 'curl') || (function_exists('curl_init') && !ini_get('allow_url_fopen')))?__('cURL', 'wp-piwik'):__('fopen', 'wp-piwik')).' ('.(self::$settings->getGlobalOption('http_method')=='post'?__('POST','wp-piwik'):__('GET','wp-piwik')).')</strong> '.__('is used.', 'wp-piwik'); ?></li>
 			<?php if (self::$settings->getGlobalOption('piwik_mode') == 'php') { ?><li><?php
 				_e('Determined Piwik base URL is', 'wp-piwik');
 				echo ' <strong>'.(self::$settings->getGlobalOption('proxy_url')).'</strong>';
