@@ -36,6 +36,10 @@ class Settings extends \WP_Piwik\Admin {
 		if (isset($_GET['testscript']) && $_GET['testscript'])
 			$this->runTestscript();
 	?>
+	<?php
+		if (! empty ( $piwikVersion ) && !is_array( $piwikVersion ))
+			$this->showDonation();
+	?>
 	<form method="post" action="?page=<?php echo $_GET['page']; ?>">
 		<input type="hidden" name="wp-piwik[revision]" value="<?php echo self::$settings->getGlobalOption('revision'); ?>" />
 		<?php wp_nonce_field('wp-piwik_settings'); ?>
@@ -48,9 +52,8 @@ class Settings extends \WP_Piwik\Admin {
 			$piwikVersion = self::$wpPiwik->request ( 'global.getPiwikVersion' );
 			if (is_array ( $piwikVersion ) && isset( $piwikVersion['value'] ))
 				$piwikVersion = $piwikVersion['value'];
-			if (! empty ( $piwikVersion ) && !is_array( $piwikVersion )) {				
+			if (! empty ( $piwikVersion ) && !is_array( $piwikVersion )) {
 				$this->showText ( sprintf ( __ ( 'WP-Piwik %s is successfully connected to Piwik %s.', 'wp-piwik' ), self::$wpPiwik->getPluginVersion (), $piwikVersion ) . ' ' . (! self::$wpPiwik->isNetworkMode () ? sprintf ( __ ( 'You are running WordPress %s.', 'wp-piwik' ), get_bloginfo ( 'version' ) ) : sprintf ( __ ( 'You are running a WordPress %s blog network (WPMU). WP-Piwik will handle your sites as different websites.', 'wp-piwik' ), get_bloginfo ( 'version' ) )) );
-				$this->showDonation();
 			} else {
 				$this->showBox ( 'error', 'no', sprintf ( __ ( 'WP-Piwik %s was not able to connect to Piwik using your configuration. Check the &raquo;Connect to Piwik&laquo; section below.', 'wp-piwik' ), self::$wpPiwik->getPluginVersion () ) );
 			}
@@ -467,50 +470,42 @@ class Settings extends \WP_Piwik\Admin {
 	<p>
 		<strong><?php _e('Donate','wp-piwik'); ?></strong>
 	</p>
-	<p><?php _e('If you like WP-Piwik, you can support its development by a donation:', 'wp-piwik'); ?></p>
+	<p>
+		<?php _e('If you like WP-Piwik, you can support its development by a donation:', 'wp-piwik'); ?>
+	</p>
 	<script type="text/javascript">
-			/* <![CDATA[ */
-			window.onload = function() {
-        		FlattrLoader.render({
-            		'uid': 'flattr',
-            		'url': 'http://wp.local',
-            		'title': 'Title of the thing',
-            		'description': 'Description of the thing'
-				}, 'element_id', 'replace');
-			};
-			/* ]]> */
-			</script>
+	/* <![CDATA[ */
+	window.onload = function() {
+		FlattrLoader.render({
+        	'uid': 'flattr',
+            'url': 'http://wp.local',
+            'title': 'Title of the thing',
+            'description': 'Description of the thing'
+		}, 'element_id', 'replace');
+	}
+	/* ]]> */
+	</script>
 	<div>
-		<a class="FlattrButton" style="display: none;"
-			title="WordPress Plugin WP-Piwik"
-			rel="flattr;uid:braekling;category:software;tags:wordpress,piwik,plugin,statistics;"
-			href="https://www.braekling.de/wp-piwik-wpmu-piwik-wordpress">This
-			WordPress plugin adds a Piwik stats site to your WordPress dashboard.
-			It's also able to add the Piwik tracking code to your blog using
-			wp_footer. You need a running Piwik installation and at least view
-			access to your stats.</a>
+		<a class="FlattrButton" style="display:none;" title="WordPress Plugin WP-Piwik" rel="flattr;uid:braekling;category:software;tags:wordpress,piwik,plugin,statistics;" href="https://www.braekling.de/wp-piwik-wpmu-piwik-wordpress">This WordPress plugin adds a Piwik stats site to your WordPress dashboard. It's also able to add the Piwik tracking code to your blog using wp_footer. You need a running Piwik installation and at least view access to your stats.</a>
 	</div>
 	<div>
 		Paypal
 		<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-			<input type="hidden" name="cmd" value="_s-xclick" /> <input
-				type="hidden" name="hosted_button_id" value="6046779" /> <input
-				type="image"
-				src="https://www.paypal.com/en_GB/i/btn/btn_donateCC_LG.gif"
-				name="submit" alt="PayPal - The safer, easier way to pay online." />
-			<img alt="" border="0"
-				src="https://www.paypal.com/de_DE/i/scr/pixel.gif" width="1"
-				height="1" />
+			<input type="hidden" name="cmd" value="_s-xclick" />
+			<input type="hidden" name="hosted_button_id" value="6046779" />
+			<input type="image" src="https://www.paypal.com/en_GB/i/btn/btn_donateCC_LG.gif" name="submit" alt="PayPal - The safer, easier way to pay online." />
+			<img alt="" border="0" src="https://www.paypal.com/de_DE/i/scr/pixel.gif" width="1" height="1" />
 		</form>
 	</div>
 	<div>
-		<a
-			href="http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&amp;filter=all&amp;sort=priority&amp;layout=standard&amp;x=12&amp;y=14"><?php _e('My Amazon.de wishlist', 'wp-piwik'); ?></a>
+		<a href="bitcoin:3N8od4UQA3jDpP5KodkxSqENaRSMWEaTHp">Bitcoin<br />
+		<img style="border:none;" src="<?php echo $this->getPluginURL(); ?>bitcoin.png" width="100" height="100" alt="Bitcoin Address" title="3N8od4UQA3jDpP5KodkxSqENaRSMWEaTHp" /></a>
 	</div>
 	<div>
-				<?php _e('Please don\'t forget to vote the compatibility at the','wp-piwik'); ?> <a
-			href="http://wordpress.org/extend/plugins/wp-piwik/">WordPress.org
-			Plugin Directory</a>.
+		<a href="http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&amp;filter=all&amp;sort=priority&amp;layout=standard&amp;x=12&amp;y=14"><?php _e('My Amazon.de wishlist', 'wp-piwik'); ?></a>
+	</div>
+	<div>
+		<?php _e('Please don\'t forget to vote the compatibility at the','wp-piwik'); ?> <a href="http://wordpress.org/extend/plugins/wp-piwik/">WordPress.org Plugin Directory</a>. 
 	</div>
 </div><?php
 	}
@@ -574,7 +569,7 @@ class Settings extends \WP_Piwik\Admin {
 			<?php if (self::$settings->getGlobalOption('piwik_mode') == 'php') { ?><li><?php
 				_e('Determined Piwik base URL is', 'wp-piwik');
 				echo ' <strong>'.(self::$settings->getGlobalOption('proxy_url')).'</strong>';
-			?></li><?php } ?>	
+			?></li><?php } ?>
 		</ol>
 		<p><?php _e('Tools', 'wp-piwik'); ?>:</p>
 		<ol>
