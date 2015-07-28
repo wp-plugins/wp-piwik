@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: WP-Piwik\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-piwik\n"
 "POT-Creation-Date: 2015-07-22 10:25:29+00:00\n"
-"PO-Revision-Date: 2015-07-22 10:33+0000\n"
-"Last-Translator: André Bräkling\n"
+"PO-Revision-Date: 2015-07-26 23:05+0000\n"
+"Last-Translator: Espen Bye\n"
 "Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/projects/p/wp-piwik/language/nb_NO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,7 +60,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:60
 msgid "Connect to Piwik"
-msgstr ""
+msgstr "Koble til Piwik"
 
 #: classes/WP_Piwik/Admin/Settings.php:65
 msgid "Show Statistics"
@@ -238,7 +238,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:144
 msgid "Last month"
-msgstr ""
+msgstr "Forrige måned"
 
 #: classes/WP_Piwik/Admin/Settings.php:145
 msgid "Current week"
@@ -275,7 +275,7 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:213
 #: classes/WP_Piwik/Admin/Settings.php:304
 msgid "Disabled"
-msgstr ""
+msgstr "Deaktivert"
 
 #: classes/WP_Piwik/Admin/Settings.php:155
 msgid "Last 30 days"
@@ -372,7 +372,7 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:190
 #: classes/WP_Piwik/Admin/Settings.php:194
 msgid "Use js/index.php"
-msgstr ""
+msgstr "Bruk js/index.php"
 
 #: classes/WP_Piwik/Admin/Settings.php:190
 msgid ""
@@ -421,7 +421,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:199
 msgid "Tracking code"
-msgstr ""
+msgstr "Sporingskode"
 
 #: classes/WP_Piwik/Admin/Settings.php:201
 msgid "JavaScript code position"
@@ -495,7 +495,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:218
 msgid "Track search"
-msgstr ""
+msgstr "Spor søk"
 
 #: classes/WP_Piwik/Admin/Settings.php:218
 msgid "Use Piwik's advanced Site Search Analytics feature."
@@ -654,12 +654,12 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:268
 #: classes/WP_Piwik/Admin/Settings.php:571
 msgid "cURL"
-msgstr ""
+msgstr "cURL"
 
 #: classes/WP_Piwik/Admin/Settings.php:269
 #: classes/WP_Piwik/Admin/Settings.php:571
 msgid "fopen"
-msgstr ""
+msgstr "fopen"
 
 #: classes/WP_Piwik/Admin/Settings.php:270
 msgid ""
@@ -674,12 +674,12 @@ msgstr ""
 #: classes/WP_Piwik/Admin/Settings.php:273
 #: classes/WP_Piwik/Admin/Settings.php:571
 msgid "POST"
-msgstr ""
+msgstr "POST"
 
 #: classes/WP_Piwik/Admin/Settings.php:274
 #: classes/WP_Piwik/Admin/Settings.php:571
 msgid "GET"
-msgstr ""
+msgstr "GET"
 
 #: classes/WP_Piwik/Admin/Settings.php:275
 msgid "Choose whether WP-Piwik should use POST or GET in HTTP or Pro mode."
@@ -703,7 +703,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:281
 msgid "not recommended"
-msgstr ""
+msgstr "ikke anbefalt"
 
 #: classes/WP_Piwik/Admin/Settings.php:283
 msgid "User agent"
@@ -777,7 +777,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:466
 msgid "Donate"
-msgstr ""
+msgstr "Donèr"
 
 #: classes/WP_Piwik/Admin/Settings.php:468
 msgid "If you like WP-Piwik, you can support its development by a donation:"
@@ -785,7 +785,7 @@ msgstr "Om du liker WP-Piwik, burde du støtte utviklingen med en donasjon:"
 
 #: classes/WP_Piwik/Admin/Settings.php:506
 msgid "My Amazon.de wishlist"
-msgstr ""
+msgstr "Min Amazon.de-ønskeliste"
 
 #: classes/WP_Piwik/Admin/Settings.php:509
 #: classes/WP_Piwik/Admin/Settings.php:556
@@ -861,7 +861,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:562
 msgid "cURL is"
-msgstr ""
+msgstr "cURL er"
 
 #: classes/WP_Piwik/Admin/Settings.php:563
 #: classes/WP_Piwik/Admin/Settings.php:568
@@ -874,15 +874,15 @@ msgstr "tilgjengelig"
 
 #: classes/WP_Piwik/Admin/Settings.php:567
 msgid "allow_url_fopen is"
-msgstr ""
+msgstr "allow_url_fopen er"
 
 #: classes/WP_Piwik/Admin/Settings.php:569
 msgid "enabled"
-msgstr ""
+msgstr "aktivert"
 
 #: classes/WP_Piwik/Admin/Settings.php:571
 msgid "is used."
-msgstr ""
+msgstr "er brukt."
 
 #: classes/WP_Piwik/Admin/Settings.php:573
 msgid "Determined Piwik base URL is"
@@ -890,7 +890,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:577
 msgid "Tools"
-msgstr ""
+msgstr "Verktøy"
 
 #: classes/WP_Piwik/Admin/Settings.php:579
 msgid "Run testscript"
@@ -910,7 +910,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Settings.php:582
 msgid "Reset WP-Piwik"
-msgstr ""
+msgstr "Nullstill WP-Piwik"
 
 #: classes/WP_Piwik/Admin/Settings.php:584
 msgid "Latest support threads on WordPress.org"
@@ -926,11 +926,11 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:17
 msgid "site"
-msgstr ""
+msgstr "side"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:18
 msgid "sites"
-msgstr ""
+msgstr "sider"
 
 #: classes/WP_Piwik/Admin/Sitebrowser.php:24
 msgid "No site configured yet."
@@ -958,7 +958,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Admin/Statistics.php:12
 msgid "Statistics"
-msgstr ""
+msgstr "Statistikk"
 
 #: classes/WP_Piwik/Admin/Statistics.php:20
 msgid "Currently shown stats:"
@@ -1047,7 +1047,7 @@ msgstr "Andre"
 
 #: classes/WP_Piwik/Widget/Browsers.php:18
 msgid "Browsers"
-msgstr ""
+msgstr "Nettlesere"
 
 #: classes/WP_Piwik/Widget/Chart.php:19
 #: classes/WP_Piwik/Widget/Overview.php:41 classes/WP_Piwik/Widget/Post.php:37
@@ -1068,7 +1068,7 @@ msgstr "Stikkord"
 #: classes/WP_Piwik/Widget/Noresult.php:16
 #: classes/WP_Piwik/Widget/Search.php:16
 msgid "Site Search"
-msgstr ""
+msgstr "Sidesøk"
 
 #: classes/WP_Piwik/Widget/Noresult.php:25
 #: classes/WP_Piwik/Widget/Search.php:25
@@ -1145,7 +1145,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Widget/Referrers.php:16
 msgid "Referrers"
-msgstr ""
+msgstr "Henvisere"
 
 #: classes/WP_Piwik/Widget/Screens.php:16
 msgid "Resolutions"
@@ -1166,11 +1166,11 @@ msgstr ""
 #: classes/WP_Piwik/Widget/SystemDetails.php:35
 #: classes/WP_Piwik/Widget/Systems.php:35
 msgid "Operation System"
-msgstr ""
+msgstr "Operativsystem"
 
 #: classes/WP_Piwik/Widget/Systems.php:14
 msgid "Operation Systems"
-msgstr ""
+msgstr "Operativsystemer"
 
 #: classes/WP_Piwik/Widget/Visitors.php:57
 msgid "Date"
@@ -1178,7 +1178,7 @@ msgstr "Dato"
 
 #: classes/WP_Piwik/Widget/Visitors.php:57
 msgid "Page Views"
-msgstr ""
+msgstr "Sidevisninger"
 
 #: classes/WP_Piwik/Widget.php:104
 msgid "Hits"
@@ -1190,7 +1190,7 @@ msgstr ""
 
 #: classes/WP_Piwik/Widget.php:162
 msgid "No data available."
-msgstr ""
+msgstr "Ingen data tilgjengelig"
 
 #: classes/WP_Piwik/Widget.php:293
 msgid "week"
@@ -1218,7 +1218,7 @@ msgstr "Alternativer"
 
 #: classes/WP_Piwik.php:262
 msgid "Important"
-msgstr ""
+msgstr "Viktig"
 
 #: classes/WP_Piwik.php:343 classes/WP_Piwik.php:365
 msgid "Piwik Statistics"
@@ -1226,7 +1226,7 @@ msgstr "Piwik Statistikk"
 
 #: classes/WP_Piwik.php:453
 msgid "Configure WP-Piwik"
-msgstr ""
+msgstr "Konfigurer WP-Piwik"
 
 #: classes/WP_Piwik.php:923
 msgid "An error occured"
@@ -1248,7 +1248,7 @@ msgstr "WP-Piwik"
 
 #. Plugin URI of the plugin/theme
 msgid "http://wordpress.org/extend/plugins/wp-piwik/"
-msgstr ""
+msgstr "http://wordpress.org/extend/plugins/wp-piwik/"
 
 #. Description of the plugin/theme
 msgid ""
@@ -1262,4 +1262,4 @@ msgstr ""
 
 #. Author URI of the plugin/theme
 msgid "http://www.braekling.de"
-msgstr ""
+msgstr "http://www.braekling.de"
