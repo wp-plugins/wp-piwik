@@ -37,8 +37,13 @@ class Settings extends \WP_Piwik\Admin {
 			$this->runTestscript();
 	?>
 	<?php
-		if (! empty ( $piwikVersion ) && !is_array( $piwikVersion ))
-			$this->showDonation();
+		if (self::$wpPiwik->isConfigured ()) {
+			$piwikVersion = self::$wpPiwik->request ( 'global.getPiwikVersion' );
+			if (is_array ( $piwikVersion ) && isset( $piwikVersion['value'] ))
+				$piwikVersion = $piwikVersion['value'];
+			if (! empty ( $piwikVersion ) && !is_array( $piwikVersion ))
+				$this->showDonation();
+		}
 	?>
 	<form method="post" action="?page=<?php echo $_GET['page']; ?>">
 		<input type="hidden" name="wp-piwik[revision]" value="<?php echo self::$settings->getGlobalOption('revision'); ?>" />
@@ -49,9 +54,6 @@ class Settings extends \WP_Piwik\Admin {
 		$submitButton = '<tr><td colspan="2"><p class="submit"><input name="Submit" type="submit" class="button-primary" value="' . esc_attr__ ( 'Save Changes' ) . '" /></p></td></tr>';
 		printf ( '<tr><td colspan="2">%s</td></tr>', __ ( 'Thanks for using WP-Piwik!', 'wp-piwik' ) );
 		if (self::$wpPiwik->isConfigured ()) {
-			$piwikVersion = self::$wpPiwik->request ( 'global.getPiwikVersion' );
-			if (is_array ( $piwikVersion ) && isset( $piwikVersion['value'] ))
-				$piwikVersion = $piwikVersion['value'];
 			if (! empty ( $piwikVersion ) && !is_array( $piwikVersion )) {
 				$this->showText ( sprintf ( __ ( 'WP-Piwik %s is successfully connected to Piwik %s.', 'wp-piwik' ), self::$wpPiwik->getPluginVersion (), $piwikVersion ) . ' ' . (! self::$wpPiwik->isNetworkMode () ? sprintf ( __ ( 'You are running WordPress %s.', 'wp-piwik' ), get_bloginfo ( 'version' ) ) : sprintf ( __ ( 'You are running a WordPress %s blog network (WPMU). WP-Piwik will handle your sites as different websites.', 'wp-piwik' ), get_bloginfo ( 'version' ) )) );
 			} else {
@@ -499,7 +501,7 @@ class Settings extends \WP_Piwik\Admin {
 	</div>
 	<div>
 		<a href="bitcoin:3N8od4UQA3jDpP5KodkxSqENaRSMWEaTHp">Bitcoin<br />
-		<img style="border:none;" src="<?php echo $this->getPluginURL(); ?>bitcoin.png" width="100" height="100" alt="Bitcoin Address" title="3N8od4UQA3jDpP5KodkxSqENaRSMWEaTHp" /></a>
+		<img style="border:none;" src="<?php echo self::$wpPiwik->getPluginURL(); ?>bitcoin.png" width="100" height="100" alt="Bitcoin Address" title="3N8od4UQA3jDpP5KodkxSqENaRSMWEaTHp" /></a>
 	</div>
 	<div>
 		<a href="http://www.amazon.de/gp/registry/wishlist/111VUJT4HP1RA?reveal=unpurchased&amp;filter=all&amp;sort=priority&amp;layout=standard&amp;x=12&amp;y=14"><?php _e('My Amazon.de wishlist', 'wp-piwik'); ?></a>
@@ -534,7 +536,7 @@ class Settings extends \WP_Piwik\Admin {
 	 */
 	public function showCredits() {
 		?>
-		<p><strong><?php _e('Thank you very much for your donation', 'wp-piwik'); ?>:</strong> Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S., Thomas M., John C., Andreas G., Ben M., Myra R. I., Carlos U. R.-S., Oleg I., M. N., Daniel K., James L., Jochen K., Cyril P., Thomas K., <?php _e('the Piwik team itself','wp-piwik');?><?php _e(', and all people flattering this','wp-piwik'); ?>!</p>
+		<p><strong><?php _e('Thank you very much for your donation', 'wp-piwik'); ?>:</strong> Marco L., Rolf W., Tobias U., Lars K., Donna F., Kevin D., Ramos S., Thomas M., John C., Andreas G., Ben M., Myra R. I., Carlos U. R.-S., Oleg I., M. N., Daniel K., James L., Jochen K., Cyril P., Thomas K., Patrik K., <?php _e('the Piwik team itself','wp-piwik');?><?php _e(', and all people flattering this','wp-piwik'); ?>!</p>
 		<p><?php _e('Graphs powered by <a href="http://www.jqplot.com/">jqPlot</a> (License: GPL 2.0 and MIT) and <a href="http://omnipotent.net/jquery.sparkline/">jQuery Sparklines</a> (License: New BSD License).','wp-piwik'); ?></p>
 		<p><?php _e('Metabox support inspired by', 'wp-piwik'); echo ' <a href="http://www.code-styling.de/english/how-to-use-wordpress-metaboxes-at-own-plugins">Heiko Rabe\'s metabox demo plugin</a>.';?></p>
 		<p><?php _e('Tabbed settings page suggested by the', 'wp-piwik'); echo' <a href="http://wp.smashingmagazine.com/2011/10/20/create-tabs-wordpress-settings-pages/">Smashing Magazine</a>.';?></p>
