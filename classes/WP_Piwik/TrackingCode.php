@@ -24,6 +24,7 @@ class TrackingCode {
 			$this->applySearchChanges ();
 		if (is_single ())
 			$this->addCustomValues ();
+		$this->trackingCode = apply_filters('wppiwik_tracking_code', $this->trackingCode);
 		return $this->trackingCode;
 	}
 
